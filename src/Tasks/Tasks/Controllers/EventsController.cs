@@ -1,4 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Tasks.Configurations;
+using Tasks.Domain.Models;
+using Tasks.Repositories.Implementations;
+using Tasks.Repositories.Interfaces;
 
 namespace Tasks.Controllers
 {
@@ -6,10 +11,19 @@ namespace Tasks.Controllers
     [Route("events")]
     public class EventsController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<string> GetEvents()
+        private readonly IConfigs _configuration;
+        private readonly IEventRepository _eventRepository;
+
+        public EventsController(IConfigs configuration)
         {
-            return Ok("Get all events");
+            _configuration = configuration;
+            _eventRepository = new EventRepository(configuration);
+        }
+
+        [HttpGet]
+        public ActionResult<List<Event>> GetEvents()
+        {
+            return Ok(_eventRepository.GetEvents());
         }
     }
 }
