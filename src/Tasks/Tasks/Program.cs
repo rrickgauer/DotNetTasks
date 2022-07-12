@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+var en = builder.Environment.IsDevelopment();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

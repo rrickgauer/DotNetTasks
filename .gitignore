@@ -272,4 +272,5 @@ __pycache__/
 ########################################
 
 .tables-output.txt
+ConfigurationProduction.cs
 
