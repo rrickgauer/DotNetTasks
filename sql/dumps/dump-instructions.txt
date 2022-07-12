@@ -1,0 +1,1 @@
+Running: mysqldump.exe --defaults-file="C:\Users\1\AppData\Local\Temp\tmpo0hkz3s8.cnf"  --host=104.225.208.163 --port=3306 --default-character-set=utf8 --user=main --protocol=tcp --column-statistics=FALSE --allow-keywords=TRUE --single-transaction=TRUE --routines --events --no-data "Tasks_Dev"
