@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `Tasks_Dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `Tasks_Dev`;
+CREATE DATABASE  IF NOT EXISTS `Tasks` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `Tasks`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
--- Host: 104.225.208.163    Database: Tasks
+-- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
 -- Server version	8.0.28-0ubuntu0.20.04.3
 
@@ -81,11 +81,7 @@ CREATE TABLE `Events` (
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `phone_number` char(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `location_address_1` varchar(70) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `location_address_2` varchar(70) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `location_city` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `location_state` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `location_zip` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location` char(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `starts_on` date NOT NULL,
   `ends_on` date DEFAULT NULL,
   `starts_at` time DEFAULT NULL,
@@ -134,11 +130,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `name`,
  1 AS `description`,
  1 AS `phone_number`,
- 1 AS `location_address_1`,
- 1 AS `location_address_2`,
- 1 AS `location_city`,
- 1 AS `location_state`,
- 1 AS `location_zip`,
+ 1 AS `location`,
  1 AS `starts_on`,
  1 AS `ends_on`,
  1 AS `starts_at`,
@@ -168,11 +160,11 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping events for database 'Tasks'
+-- Dumping events for database 'Tasks_Dev'
 --
 
 --
--- Dumping routines for database 'Tasks'
+-- Dumping routines for database 'Tasks_Dev'
 --
 /*!50003 DROP FUNCTION IF EXISTS `format_date_display` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -934,7 +926,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `View_Events` AS select `e`.`id` AS `id`,`e`.`name` AS `name`,`e`.`description` AS `description`,`e`.`phone_number` AS `phone_number`,`e`.`location_address_1` AS `location_address_1`,`e`.`location_address_2` AS `location_address_2`,`e`.`location_city` AS `location_city`,`e`.`location_state` AS `location_state`,`e`.`location_zip` AS `location_zip`,`e`.`starts_on` AS `starts_on`,`e`.`ends_on` AS `ends_on`,`e`.`starts_at` AS `starts_at`,`e`.`ends_at` AS `ends_at`,`e`.`frequency` AS `frequency`,`e`.`separation` AS `separation`,`e`.`created_on` AS `created_on`,`e`.`recurrence_day` AS `recurrence_day`,`e`.`recurrence_week` AS `recurrence_week`,`e`.`recurrence_month` AS `recurrence_month` from `Events` `e` */;
+/*!50001 VIEW `View_Events` AS select `e`.`id` AS `id`,`e`.`name` AS `name`,`e`.`description` AS `description`,`e`.`phone_number` AS `phone_number`,`e`.`location` AS `location`,`e`.`starts_on` AS `starts_on`,`e`.`ends_on` AS `ends_on`,`e`.`starts_at` AS `starts_at`,`e`.`ends_at` AS `ends_at`,`e`.`frequency` AS `frequency`,`e`.`separation` AS `separation`,`e`.`created_on` AS `created_on`,`e`.`recurrence_day` AS `recurrence_day`,`e`.`recurrence_week` AS `recurrence_week`,`e`.`recurrence_month` AS `recurrence_month` from `Events` `e` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -966,4 +958,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-12 10:21:20
+-- Dump completed on 2022-07-12 11:19:50
