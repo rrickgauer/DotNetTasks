@@ -1,6 +1,6 @@
 ﻿namespace Tasks.Configurations
 {
-    public interface IConfiguration
+    public interface IConfigs
     {
         public string DB_SERVER { get; }
         public string DB_DATABASE { get; }
