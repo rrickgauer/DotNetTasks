@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Tasks.Domain.Models;
 
 namespace Tasks.Controllers
 {
@@ -7,9 +9,13 @@ namespace Tasks.Controllers
     public class EventsController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<string> GetEvents()
+        public ActionResult<List<EventDto>> GetEvents()
         {
-            return Ok("Get all events");
+            EventDto dto = new();
+
+            List<object> events = new() { dto };
+
+            return Ok(events);
         }
     }
 }
