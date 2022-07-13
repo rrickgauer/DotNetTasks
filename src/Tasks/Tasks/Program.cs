@@ -10,8 +10,8 @@ builder.Services.AddControllers();
 
 // setup basic authentication
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpContextAccessor();
 
 ConifigureDependencies(builder);
 
@@ -20,7 +20,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-
 }
 
 app.UseHttpsRedirection();
@@ -31,10 +30,7 @@ app.MapControllers();
 app.Run();
 
 
-
-/*
- * Setup dependency injection
- */
+// Setup dependency injection
 static void ConifigureDependencies(WebApplicationBuilder builder)
 {
     // set the appropriate configuration class depending on if the app is running in development or production
@@ -44,4 +40,5 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
         builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
 
     builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IEventRepository, EventRepository>();
 }

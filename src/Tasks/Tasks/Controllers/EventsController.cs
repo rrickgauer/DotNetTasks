@@ -15,11 +15,16 @@ namespace Tasks.Controllers
     {
         private readonly IConfigs _configuration;
         private readonly IEventRepository _eventRepository;
-
-        public EventsController(IConfigs configuration)
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="eventRepository"></param>
+        public EventsController(IConfigs configuration, IEventRepository eventRepository)
         {
             _configuration = configuration;
-            _eventRepository = new EventRepository(configuration);
+            _eventRepository = eventRepository;
         }
 
         /// <summary>
