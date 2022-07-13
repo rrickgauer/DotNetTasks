@@ -76,5 +76,19 @@ namespace Tasks.Repositories.Implementations
 
             return cmd;
         }
+
+        //Task<User?> IUserRepository.GetUser(string e, string password)
+        //{
+        //    // setup a new sql command
+        //    MySqlCommand cmd = GetMySqlCommandForGetUserWithEmailPassword(email, password);
+
+        //    // fetch the record from the database
+        //    DataRow? record = _dbConnection.Fetch(cmd);
+
+        //    // map the user to the record's values if the datarow is not null
+        //    User? user = record != null ? UserMapper.ToModel(record) : null;
+
+        //    return user;
+        //}
     }
 }
