@@ -31,11 +31,23 @@ namespace Tasks.Controllers
         /// Get all events for the user
         /// </summary>
         /// <returns></returns>
-        //[AllowAnonymous]
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
             return Ok(_eventRepository.GetEvents());
+        }
+
+        [HttpGet("{eventId}")]
+        public ActionResult<Event> GetEvent(Guid eventId)
+        {
+            var e = _eventRepository.GetEvent(eventId);
+
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(e);
         }
     }
 }
