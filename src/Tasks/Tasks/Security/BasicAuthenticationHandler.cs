@@ -56,14 +56,12 @@ namespace Tasks.Security
                 return AuthenticateResult.Fail("Invalid Username or Password");
             }
                 
-            var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                //new Claim(ClaimTypes.Name, user.Username),
-            };
-
-            var identity = new ClaimsIdentity(claims, Scheme.Name);
+            var claims = new[] { new Claim("userId", user.Id.ToString()) };
+            var identity  = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            var ticket    = new AuthenticationTicket(principal, Scheme.Name);
+
+            bool added = Request.HttpContext.Items.TryAdd(RequestStorageKeys.CLIENT_USER_ID, user.Id);
 
             return AuthenticateResult.Success(ticket);
         }

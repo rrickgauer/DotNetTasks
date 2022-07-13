@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-//using System.Web.Http;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Implementations;
@@ -27,7 +26,7 @@ namespace Tasks.Controllers
         /// Get all events for the user
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
