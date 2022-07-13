@@ -20,6 +20,24 @@ namespace Tasks.Repositories
         }
 
         /// <summary>
+        /// Fetch the first row from a data table (one result).
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        public DataRow? Fetch(MySqlCommand cmd)
+        {
+            var results = FetchAll(cmd);
+
+            DataRow? row = null;
+            if (results.Rows.Count > 0)
+            {
+                row = results.Rows[0];
+            }
+
+            return row;
+        }
+
+        /// <summary>
         /// Retrieve all the data rows for the specified sql command
         /// </summary>
         /// <param name="cmd"></param>

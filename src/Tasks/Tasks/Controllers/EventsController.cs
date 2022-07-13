@@ -20,6 +20,10 @@ namespace Tasks.Controllers
             _eventRepository = new EventRepository(configuration);
         }
 
+        /// <summary>
+        /// Get all events for the user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
