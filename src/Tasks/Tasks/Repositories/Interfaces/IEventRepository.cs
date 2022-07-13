@@ -5,5 +5,6 @@ namespace Tasks.Repositories.Interfaces
     {
         public List<Event> GetEvents();
         public Event? GetEvent(Guid eventId);
+        public bool DeleteEvent(Guid eventId);
     }
 }

@@ -49,5 +49,25 @@ namespace Tasks.Controllers
 
             return Ok(e);
         }
+
+        /// <summary>
+        /// Delete event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        [HttpDelete("{eventId}")]
+        public IActionResult DeleteEvent(Guid eventId)
+        {
+            var e = _eventRepository.GetEvent(eventId);
+
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            _eventRepository.DeleteEvent(eventId);
+
+            return NoContent();
+        }
     }
 }
