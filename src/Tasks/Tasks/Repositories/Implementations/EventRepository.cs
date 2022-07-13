@@ -4,25 +4,43 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
+using Tasks.Security;
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.     
 
 namespace Tasks.Repositories.Implementations
 {
     public class EventRepository : IEventRepository
     {
-        private IConfigs _configs;
+        #region Sql Statements
+        private class SqlStatements
+        {
+            public const string SELECT_ALL = @"
+                SELECT
+                    *
+                FROM
+                    Events e
+                WHERE
+                    e.user_id = @userId";
+        }
+        #endregion
 
-        public EventRepository(IConfigs configs)
+        private readonly IConfigs _configs;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public EventRepository(IConfigs configs, IHttpContextAccessor httpContextAccessor)
         {
             _configs = configs;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public List<Event> GetEvents()
         {
             DbConnection conn = new(_configs);
-            MySqlCommand cmd = new("Select * From Events");
+            MySqlCommand cmd = BuildCommandForGetEvents();
             DataTable results = conn.FetchAll(cmd);
 
-            var events = new List<Event>();
+            List<Event> events = new();
 
             foreach(DataRow dr in results.Rows)
             {
@@ -31,6 +49,21 @@ namespace Tasks.Repositories.Implementations
             }
 
             return events;
+        }
+
+        private MySqlCommand BuildCommandForGetEvents()
+        {
+            MySqlCommand cmd = new(SqlStatements.SELECT_ALL);
+
+            var userId = GetCurrentUserId();
+            cmd.Parameters.Add(new("@userId", userId));
+
+            return cmd;
+        }
+
+        private Guid? GetCurrentUserId()
+        {
+            return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
         }
     }
 }
