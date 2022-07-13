@@ -58,6 +58,23 @@ namespace Tasks.Repositories
             return results;
         }
 
+        public int Modify(MySqlCommand cmd)
+        {
+            // setup a new database connection object
+            using MySqlConnection conn = GetNewConnection();
+            conn.Open();
+            cmd.Connection = conn;
+
+            // execute the non query command
+            int numRowsAffected = cmd.ExecuteNonQuery();
+
+            // close the connection
+            conn.Close();
+            conn.Dispose();
+
+            return numRowsAffected;
+        }
+
 
         /// <summary>
         /// Get a new connection using the connection string

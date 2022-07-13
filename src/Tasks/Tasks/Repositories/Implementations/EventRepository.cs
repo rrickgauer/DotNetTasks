@@ -23,6 +23,14 @@ namespace Tasks.Repositories.Implementations
                     Events e
                 WHERE
                     e.user_id = @userId";
+
+
+            public const string DELETE = @"
+                DELETE FROM
+                    Events e
+                WHERE
+                    e.id = @id";
+
         }
         #endregion
 
@@ -89,6 +97,21 @@ namespace Tasks.Repositories.Implementations
             return cmd;
         }
 
+        /// <summary>
+        /// Delete the specified event 
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public bool DeleteEvent(Guid eventId)
+        {
+            MySqlCommand command = new(SqlStatements.DELETE);
+            command.Parameters.Add(new("@id", eventId));
+
+            DbConnection connection = new(_configs);
+            int numRowsAffected = connection.Modify(command);
+
+            return numRowsAffected > 0;
+        }
 
         /// <summary>
         /// Get the current user id
@@ -99,6 +122,6 @@ namespace Tasks.Repositories.Implementations
             return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
         }
 
- 
+
     }
 }
