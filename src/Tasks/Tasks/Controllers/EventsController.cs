@@ -5,6 +5,7 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
+using Tasks.Security;
 
 namespace Tasks.Controllers
 {
@@ -34,13 +35,13 @@ namespace Tasks.Controllers
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
-            return Ok(_eventRepository.GetEvents());
+            return Ok(_eventRepository.GetUserEvents());
         }
 
         [HttpGet("{eventId}")]
         public ActionResult<Event> GetEvent(Guid eventId)
         {
-            var e = _eventRepository.GetEvent(eventId);
+            var e = _eventRepository.GetUserEvent(eventId);
 
             if (e == null)
             {
@@ -58,7 +59,7 @@ namespace Tasks.Controllers
         [HttpDelete("{eventId}")]
         public IActionResult DeleteEvent(Guid eventId)
         {
-            var e = _eventRepository.GetEvent(eventId);
+            var e = _eventRepository.GetUserEvent(eventId);
 
             if (e == null)
             {
@@ -69,5 +70,63 @@ namespace Tasks.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{eventId}")]
+        public ActionResult<Event> UpdateEvent(Guid eventId, [FromForm] Event eventBody)
+        {
+            Event? existingEvent = _eventRepository.GetEvent(eventId);
+            var clientUserId = SecurityMethods.GetUserIdFromRequest(Request);
+
+            // check if an event with this id already exists
+            // if so, make sure the client owns that event already
+            if (existingEvent != null && existingEvent.UserId != clientUserId)
+            {
+                return Forbid();
+            }
+
+            // create a new event object
+            eventBody.Id = eventId;
+            eventBody.UserId = clientUserId;
+
+            // save it in the database
+            _eventRepository.ModifyEvent(eventBody);
+
+            var eventFullyLoaded = _eventRepository.GetUserEvent(eventId);
+            
+            // determine if the event was created or updated
+            if (existingEvent == null)
+            {
+                return Created($"{Request.Path}", eventFullyLoaded);    // created a new event
+            }
+            else
+            {   
+                return Ok(eventFullyLoaded);                            // updated an existing event
+            }
+        }
+
+        /// <summary>
+        /// Create a new event
+        /// </summary>
+        /// <param name="eventBody"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<Event> CreateEvent([FromForm] Event eventBody)
+        {
+            // create a new event object
+            eventBody.Id = Guid.NewGuid();
+            eventBody.UserId = SecurityMethods.GetUserIdFromRequest(Request);
+
+            // save it in the database
+            _eventRepository.ModifyEvent(eventBody);
+
+            // fetch all the event fields
+            var eventFullyLoaded = _eventRepository.GetUserEvent(eventBody.Id.Value);
+
+            // return it
+            return Created($"{Request.Path}/{eventFullyLoaded.Id}", eventFullyLoaded);    // created a new event
+        }
+
+
+
     }
 }

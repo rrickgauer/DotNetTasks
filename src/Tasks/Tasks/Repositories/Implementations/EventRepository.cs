@@ -16,7 +16,7 @@ namespace Tasks.Repositories.Implementations
         #region Sql Statements
         private class SqlStatements
         {
-            public const string SELECT_ALL = @"
+            public const string SELECT_ALL_USERS_EVENTS = @"
                 SELECT
                     *
                 FROM
@@ -30,6 +30,17 @@ namespace Tasks.Repositories.Implementations
                     Events e
                 WHERE
                     e.id = @id";
+
+            public const string SELECT_BY_ID = @"
+                SELECT 
+                    * 
+                FROM 
+                    Events e 
+                WHERE
+                    e.id = @id
+                LIMIT 1";
+
+            public const string MODIFY_EVENT_PROCEDURE = "Modify_Event";
 
         }
         #endregion
@@ -49,13 +60,13 @@ namespace Tasks.Repositories.Implementations
         }
 
         /// <summary>
-        /// Get the specified event
+        /// Get the specified event from the user's events
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public Event? GetEvent(Guid eventId)
+        public Event? GetUserEvent(Guid eventId)
         {
-            var userEvents = GetEvents();
+            var userEvents = GetUserEvents();
             var filteredEvent = from result in userEvents where result.Id == eventId select result;
 
             Event? e = filteredEvent.Count() > 0 ? filteredEvent.First() : null;
@@ -66,7 +77,7 @@ namespace Tasks.Repositories.Implementations
         /// Get a list of all the user's events
         /// </summary>
         /// <returns></returns>
-        public List<Event> GetEvents()
+        public List<Event> GetUserEvents()
         {
             DbConnection conn = new(_configs);
             MySqlCommand cmd = BuildCommandForGetEvents();
@@ -89,7 +100,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         private MySqlCommand BuildCommandForGetEvents()
         {
-            MySqlCommand cmd = new(SqlStatements.SELECT_ALL);
+            MySqlCommand cmd = new(SqlStatements.SELECT_ALL_USERS_EVENTS);
 
             var userId = GetCurrentUserId();
             cmd.Parameters.Add(new("@userId", userId));
@@ -114,6 +125,66 @@ namespace Tasks.Repositories.Implementations
         }
 
         /// <summary>
+        /// Modify the specified event
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public bool ModifyEvent(Event e)
+        {
+            // make a new connection
+            DbConnection connection = new(_configs);
+
+            // create a new sql command loaded with all the parms from the event argument
+            MySqlCommand cmd = SetupModifyEventMySqlCommand(e);
+
+            // execute the query
+            int numRowsAffected = connection.Modify(cmd);
+
+            return numRowsAffected >= 0;
+        }
+
+        /// <summary>
+        /// setup a new stored procedure command for the Modify event method
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private MySqlCommand SetupModifyEventMySqlCommand(Event e)
+        {
+            // setup a new stored procedure command 
+            MySqlCommand command = new(SqlStatements.MODIFY_EVENT_PROCEDURE)
+            {
+                CommandType = CommandType.StoredProcedure,
+            };
+
+            // add all the named parms to the command
+            foreach (var parm in EventMapper.ToStoredProcDictionary(e))
+            {
+                command.Parameters.AddWithValue(parm.Key, parm.Value);
+            }
+
+            return command;
+        }
+
+
+        /// <summary>
+        /// Get the specified event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public Event? GetEvent(Guid eventId)
+        {
+            DbConnection conn = new(_configs);
+            MySqlCommand cmd = new(SqlStatements.SELECT_BY_ID);
+            cmd.Parameters.AddWithValue("@id", eventId);
+
+            DataRow? row = conn.Fetch(cmd);
+
+            Event? theEvent = row != null ? EventMapper.ToModel(row) : null;
+            
+            return theEvent;
+        }
+
+        /// <summary>
         /// Get the current user id
         /// </summary>
         /// <returns></returns>
@@ -121,7 +192,5 @@ namespace Tasks.Repositories.Implementations
         {
             return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
         }
-
-
     }
 }
