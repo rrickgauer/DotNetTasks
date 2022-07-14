@@ -163,7 +163,7 @@ namespace Tasks.Repositories.Implementations
             }
 
             return command;
-        }d
+        }
 
 
         /// <summary>

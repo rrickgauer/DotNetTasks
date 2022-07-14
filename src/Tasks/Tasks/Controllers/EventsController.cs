@@ -104,5 +104,29 @@ namespace Tasks.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a new event
+        /// </summary>
+        /// <param name="eventBody"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<Event> CreateEvent([FromForm] Event eventBody)
+        {
+            // create a new event object
+            eventBody.Id = Guid.NewGuid();
+            eventBody.UserId = SecurityMethods.GetUserIdFromRequest(Request);
+
+            // save it in the database
+            _eventRepository.ModifyEvent(eventBody);
+
+            // fetch all the event fields
+            var eventFullyLoaded = _eventRepository.GetUserEvent(eventBody.Id.Value);
+
+            // return it
+            return Created($"{Request.Path}/{eventFullyLoaded.Id}", eventFullyLoaded);    // created a new event
+        }
+
+
+
     }
 }
