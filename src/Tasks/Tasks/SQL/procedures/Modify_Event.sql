@@ -1,6 +1,7 @@
 DELIMITER $$ 
 CREATE PROCEDURE Modify_Event (
     IN in_id CHAR(36),
+    IN in_user_id CHAR(36),
     IN in_name VARCHAR(100),
     IN in_description TEXT,
     IN in_phone_number CHAR(10),
@@ -20,6 +21,7 @@ INSERT INTO
         id,
         user_id,
         name,
+        description,
         phone_number,
         location,
         starts_on,
