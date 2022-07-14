@@ -3,6 +3,8 @@ using Tasks.Configurations;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
 using Tasks.Security;
+using Tasks.Services.Implementations;
+using Tasks.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,7 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     else
         builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
 
+    builder.Services.AddScoped<IEventServices, EventServices>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IEventRepository, EventRepository>();
 }

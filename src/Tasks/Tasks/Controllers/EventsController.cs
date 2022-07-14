@@ -6,6 +6,7 @@ using Tasks.Domain.Models;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
 using Tasks.Security;
+using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers
 {
@@ -15,17 +16,17 @@ namespace Tasks.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IConfigs _configuration;
-        private readonly IEventRepository _eventRepository;
-        
+        private readonly IEventServices _eventServices;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="eventRepository"></param>
-        public EventsController(IConfigs configuration, IEventRepository eventRepository)
+        public EventsController(IConfigs configuration, IEventServices eventServices)
         {
             _configuration = configuration;
-            _eventRepository = eventRepository;
+            _eventServices = eventServices;
         }
 
         /// <summary>
@@ -35,14 +36,19 @@ namespace Tasks.Controllers
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
-            return Ok(_eventRepository.GetUserEvents());
+            var userEvents = _eventServices.GetEventsUser();
+            return Ok(userEvents);
         }
 
+        /// <summary>
+        /// GET: /event/:event_id
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [HttpGet("{eventId}")]
         public ActionResult<Event> GetEvent(Guid eventId)
         {
-            var e = _eventRepository.GetUserEvent(eventId);
-
+            var e = _eventServices.GetEventUser(eventId);
             if (e == null)
             {
                 return NotFound();
@@ -59,14 +65,12 @@ namespace Tasks.Controllers
         [HttpDelete("{eventId}")]
         public IActionResult DeleteEvent(Guid eventId)
         {
-            var e = _eventRepository.GetUserEvent(eventId);
+            var userEvent = _eventServices.GetEventUser(eventId);
 
-            if (e == null)
+            if (userEvent == null)
             {
                 return NotFound();
             }
-
-            _eventRepository.DeleteEvent(eventId);
 
             return NoContent();
         }
@@ -74,56 +78,42 @@ namespace Tasks.Controllers
         [HttpPut("{eventId}")]
         public ActionResult<Event> UpdateEvent(Guid eventId, [FromForm] Event eventBody)
         {
-            Event? existingEvent = _eventRepository.GetEvent(eventId);
-            var clientUserId = SecurityMethods.GetUserIdFromRequest(Request);
+            Event? existingEvent = _eventServices.GetEvent(eventId);
 
-            // check if an event with this id already exists
-            // if so, make sure the client owns that event already
-            if (existingEvent != null && existingEvent.UserId != clientUserId)
+            // check if an event with this id already exists or is owned by another user
+            if (!_eventServices.ClientOwnsEvent(existingEvent))
             {
-                return Forbid();
+                return NotFound();
             }
 
-            // create a new event object
+            // set the event to the id in the url and save it
             eventBody.Id = eventId;
-            eventBody.UserId = clientUserId;
+            _eventServices.UpdateEvent(eventBody);
 
-            // save it in the database
-            _eventRepository.ModifyEvent(eventBody);
-
-            var eventFullyLoaded = _eventRepository.GetUserEvent(eventId);
-            
-            // determine if the event was created or updated
+            var updatedEvent = _eventServices.GetEventUser(eventId);
             if (existingEvent == null)
             {
-                return Created($"{Request.Path}", eventFullyLoaded);    // created a new event
+                return Created($"{Request.Path}", updatedEvent);    // created a new event
             }
             else
-            {   
-                return Ok(eventFullyLoaded);                            // updated an existing event
+            {
+                return Ok(updatedEvent);                            // updated an existing event
             }
         }
 
         /// <summary>
         /// Create a new event
         /// </summary>
-        /// <param name="eventBody"></param>
+        /// <param name="eventFromBody"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<Event> CreateEvent([FromForm] Event eventBody)
+        public ActionResult<Event> CreateEvent([FromForm] Event eventFromBody)
         {
-            // create a new event object
-            eventBody.Id = Guid.NewGuid();
-            eventBody.UserId = SecurityMethods.GetUserIdFromRequest(Request);
-
-            // save it in the database
-            _eventRepository.ModifyEvent(eventBody);
-
-            // fetch all the event fields
-            var eventFullyLoaded = _eventRepository.GetUserEvent(eventBody.Id.Value);
+            Event newEvent = _eventServices.CreateNewEvent(eventFromBody);
 
             // return it
-            return Created($"{Request.Path}/{eventFullyLoaded.Id}", eventFullyLoaded);    // created a new event
+            return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event
+
         }
 
 

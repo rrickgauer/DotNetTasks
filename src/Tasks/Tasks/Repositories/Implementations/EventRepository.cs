@@ -46,63 +46,37 @@ namespace Tasks.Repositories.Implementations
         #endregion
 
         private readonly IConfigs _configs;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
         /// <param name="httpContextAccessor"></param>
-        public EventRepository(IConfigs configs, IHttpContextAccessor httpContextAccessor)
+        public EventRepository(IConfigs configs)
         {
             _configs = configs;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        /// <summary>
-        /// Get the specified event from the user's events
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        public Event? GetUserEvent(Guid eventId)
-        {
-            var userEvents = GetUserEvents();
-            var filteredEvent = from result in userEvents where result.Id == eventId select result;
-
-            Event? e = filteredEvent.Count() > 0 ? filteredEvent.First() : null;
-            return e;
         }
 
         /// <summary>
         /// Get a list of all the user's events
         /// </summary>
         /// <returns></returns>
-        public List<Event> GetUserEvents()
+        public DataTable GetUserEvents(Guid userId)
         {
-            DbConnection conn = new(_configs);
-            MySqlCommand cmd = BuildCommandForGetEvents();
-            DataTable results = conn.FetchAll(cmd);
-
-            List<Event> events = new();
-
-            foreach(DataRow dr in results.Rows)
-            {
-                Event e = EventMapper.ToModel(dr);
-                events.Add(e);
-            }
-
-            return events;
+            DbConnection connection = new(_configs);
+            MySqlCommand command = BuildCommandForGetUserEvents(userId);
+            return connection.FetchAll(command);
         }
 
         /// <summary>
         /// Build the MySqlCommand object for GetEvents
         /// </summary>
         /// <returns></returns>
-        private MySqlCommand BuildCommandForGetEvents()
+        private MySqlCommand BuildCommandForGetUserEvents(Guid userId)
         {
             MySqlCommand cmd = new(SqlStatements.SELECT_ALL_USERS_EVENTS);
 
-            var userId = GetCurrentUserId();
+            //var userId = GetCurrentUserId();
             cmd.Parameters.Add(new("@userId", userId));
 
             return cmd;
@@ -113,15 +87,14 @@ namespace Tasks.Repositories.Implementations
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public bool DeleteEvent(Guid eventId)
+        public int DeleteEvent(Guid eventId)
         {
             MySqlCommand command = new(SqlStatements.DELETE);
             command.Parameters.Add(new("@id", eventId));
 
             DbConnection connection = new(_configs);
-            int numRowsAffected = connection.Modify(command);
 
-            return numRowsAffected > 0;
+            return connection.Modify(command);
         }
 
         /// <summary>
@@ -129,7 +102,7 @@ namespace Tasks.Repositories.Implementations
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public bool ModifyEvent(Event e)
+        public int ModifyEvent(Event e)
         {
             // make a new connection
             DbConnection connection = new(_configs);
@@ -138,9 +111,7 @@ namespace Tasks.Repositories.Implementations
             MySqlCommand cmd = SetupModifyEventMySqlCommand(e);
 
             // execute the query
-            int numRowsAffected = connection.Modify(cmd);
-
-            return numRowsAffected >= 0;
+            return connection.Modify(cmd);
         }
 
         /// <summary>
@@ -165,32 +136,18 @@ namespace Tasks.Repositories.Implementations
             return command;
         }
 
-
         /// <summary>
         /// Get the specified event
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public Event? GetEvent(Guid eventId)
+        public DataRow? GetEvent(Guid eventId)
         {
             DbConnection conn = new(_configs);
             MySqlCommand cmd = new(SqlStatements.SELECT_BY_ID);
             cmd.Parameters.AddWithValue("@id", eventId);
 
-            DataRow? row = conn.Fetch(cmd);
-
-            Event? theEvent = row != null ? EventMapper.ToModel(row) : null;
-            
-            return theEvent;
-        }
-
-        /// <summary>
-        /// Get the current user id
-        /// </summary>
-        /// <returns></returns>
-        private Guid? GetCurrentUserId()
-        {
-            return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
+            return conn.Fetch(cmd);
         }
     }
 }
