@@ -13,7 +13,7 @@ namespace Tasks.Domain.Models
 		[SqlColumn("id")] 
 		public Guid? Id { get; set; }
 
-		[SqlColumn("user_id")] 
+		[SqlColumn("user_id"), JsonIgnore] 
 		public Guid? UserId { get; set; }
 
 		[SqlColumn("name")] 
@@ -28,13 +28,13 @@ namespace Tasks.Domain.Models
 		[SqlColumn("location")] 
 		public string? Location { get; set; }
 
-		[SqlColumn("starts_on")] 
-		public DateTime? StartsOn { get; set; }
+        [SqlColumn("starts_on")]
+        public DateTime? StartsOn { get; set; }
 
-		[SqlColumn("ends_on")] 
-		public DateTime? EndsOn { get; set; }
+        [SqlColumn("ends_on")]
+        public DateTime? EndsOn { get; set; }
 
-		[SqlColumn("starts_at")] 
+        [SqlColumn("starts_at")] 
 		public TimeSpan? StartsAt { get; set; }
 
 		[SqlColumn("ends_at")] 

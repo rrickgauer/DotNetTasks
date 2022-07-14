@@ -8,53 +8,6 @@ namespace Tasks.Mappers
 {
     public static class EventMapper
     {
-
-        #region Old shit commented out
-
-        //public static Event ToModel(DataRow dr)
-        //{
-        //	Event e = new();
-        //	Type t = e.GetType();
-        //	var props = t.GetProperties();
-
-        //	foreach (var eventObjectProperty in props)
-        //          {
-        //		// assume that the sql column name is the name of the object's property
-        //		string sqlColumnName = eventObjectProperty.Name;
-
-        //		// see if the property has an SqlColumn attribute value
-        //		var customAttributeSearchResult = from attr in eventObjectProperty.GetCustomAttributes(false) where attr.GetType() == typeof(SqlColumn) select attr;
-
-        //		// if it does, use that value for the sql column name
-        //		if (customAttributeSearchResult != null)
-        //		{
-        //			SqlColumn sqlColumnAttribute = (SqlColumn)customAttributeSearchResult.First();
-        //			sqlColumnName = sqlColumnAttribute.ColumnName;
-        //		}
-
-        //		if (dr.IsNull(sqlColumnName))
-        //              {
-        //			eventObjectProperty.SetValue(e, null);
-        //              }
-        //              else
-        //              {
-        //			try
-        //			{
-        //				eventObjectProperty.SetValue(e, dr[sqlColumnName]);
-        //			}
-        //			catch (Exception ex)
-        //			{ 
-        //				var message = ex.Message;
-        //			}
-        //		}
-
-        //          }
-
-        //	return e;
-        //}
-
-        #endregion
-
         /// <summary>
         /// Transform the given datarow into an Event domain model
         /// </summary>
@@ -62,7 +15,7 @@ namespace Tasks.Mappers
         /// <returns></returns>
         public static Event ToModel(DataRow dataRow)
         {
-            Event e = new()
+            Event newEvent = new()
             {
                 Id              = dataRow.Field<Guid?>("id"),
                 UserId          = dataRow.Field<Guid?>("user_id"),
@@ -82,7 +35,7 @@ namespace Tasks.Mappers
                 RecurrenceMonth = dataRow.Field<int?>("recurrence_month"),
             };
 
-            return e;
+            return newEvent;
         }
 
         /// <summary>
@@ -104,7 +57,6 @@ namespace Tasks.Mappers
             parms.Add("@in_ends_on", e.EndsOn);
             parms.Add("@in_starts_at", e.StartsAt);
             parms.Add("@in_ends_at", e.EndsAt);
-            //parms.Add("@in_frequency", null);
             parms.Add("@in_frequency", FrequencyMapper.ToText(e.Frequency));
             parms.Add("@in_separation", e.Separation);
             parms.Add("@in_recurrence_day", e.RecurrenceDay);
