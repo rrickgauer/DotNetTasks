@@ -1,20 +1,11 @@
 ﻿namespace Tasks.Domain.Enums
 {
-    public enum Frequency
+    public enum Frequency : ushort
     {
-        ONCE,
-        DAILY,
-        WEEKLY,
-        MONTHLY,
-        YEARLY,
-    }
-
-    public sealed class FrequencyStrings
-    {
-        public const string ONCE    = "ONCE";
-        public const string DAILY   = "DAILY";
-        public const string WEEKLY  = "WEEKLY";
-        public const string MONTHLY = "MONTHLY";
-        public const string YEARLY  = "YEARLY";
+        ONCE = 1,
+        DAILY = 2,
+        WEEKLY = 3,
+        MONTHLY = 4,
+        YEARLY = 5,
     }
 }

@@ -85,7 +85,8 @@ namespace Tasks.Services.Implementations
         public List<Event> GetUserEvents()
         {
             var clientUserId = GetCurrentUserId().Value;
-            var eventDataRows = _eventRepository.GetUserEvents(clientUserId).AsEnumerable();
+            var table = _eventRepository.GetUserEvents(clientUserId);
+            var eventDataRows = table.AsEnumerable();
 
             var events =
                 from dataRow
