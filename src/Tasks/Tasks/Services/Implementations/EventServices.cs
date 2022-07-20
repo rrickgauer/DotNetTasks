@@ -1,0 +1,174 @@
+﻿using System.Data;
+using Tasks.Domain.Models;
+using Tasks.Mappers;
+using Tasks.Repositories.Interfaces;
+using Tasks.Security;
+using Tasks.Services.Interfaces;
+using System.Linq;
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8629 // Nullable value type may be null.
+
+namespace Tasks.Services.Implementations
+{
+    public class EventServices : IEventServices
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEventRepository _eventRepository;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="httpContextAccessor"></param>
+        /// <param name="eventRepository"></param>
+        public EventServices(IHttpContextAccessor httpContextAccessor, IEventRepository eventRepository)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _eventRepository = eventRepository;
+        }
+
+        /// <summary>
+        /// Delete an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public bool DeleteEvent(Guid eventId)
+        {
+            int numRowsAfftected = _eventRepository.DeleteEvent(eventId);
+
+            return numRowsAfftected > 0;
+        }
+
+        /// <summary>
+        /// Get the event that is owned by the current client id
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public Event? GetUserEvent(Guid eventId)
+        {
+            DataRow? dr = _eventRepository.GetEvent(eventId);
+
+            if (dr == null)
+            {
+                return null;
+            }
+
+            Event? theEvent = EventMapper.ToModel(dr);
+
+            if (theEvent == null ||  theEvent.UserId != GetCurrentUserId())
+            {
+                return null;
+            }
+
+            return theEvent;
+        }
+
+        /// <summary>
+        /// Get the specified event.
+        /// Returns null if the event id does not exist.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public Event? GetEvent(Guid eventId)
+        {
+            DataRow? dr = _eventRepository.GetEvent(eventId);
+
+            Event? theEvent = dr != null ? EventMapper.ToModel(dr) : null;
+
+            return theEvent;
+        }
+
+        /// <summary>
+        /// Get a list of events owned by the current user
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetUserEvents()
+        {
+            var clientUserId = GetCurrentUserId().Value;
+            var eventDataRows = _eventRepository.GetUserEvents(clientUserId).AsEnumerable();
+
+            var events =
+                from dataRow
+                in eventDataRows
+                select EventMapper.ToModel(dataRow);
+
+            return events.ToList();
+        }
+
+        /// <summary>
+        /// Modify the specified event
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public bool ModifyEvent(Event e)
+        {
+            int numRowsAffected = _eventRepository.ModifyEvent(e);
+            return numRowsAffected >= 0;
+        }
+
+
+        /// <summary>
+        /// Get the current user id
+        /// </summary>
+        /// <returns></returns>
+        private Guid? GetCurrentUserId()
+        {
+            return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
+        }
+
+        /// <summary>
+        /// Create a new event
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <returns></returns>
+        public Event CreateNewEvent(Event eventData)
+        {
+            Event newEvent = eventData;
+
+            // create a new event object
+            newEvent.Id = Guid.NewGuid();
+            newEvent.UserId = GetCurrentUserId();
+
+            // save it in the database
+            ModifyEvent(newEvent);
+
+            return newEvent;
+        }
+
+        /// <summary>
+        /// check if an event with this id already exists
+        /// if so, make sure the client owns that event already
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public bool ClientOwnsEvent(Event? e)
+        {
+            if (e == null)
+            {
+                return false;
+            }
+            else if (e.UserId.Value != GetCurrentUserId())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Update the event
+        /// </summary>
+        /// <param name="eventBody"></param>
+        /// <returns></returns>
+        public Event UpdateEvent(Event eventBody)
+        {
+            // create a new event object
+            eventBody.UserId = GetCurrentUserId();
+
+            // save it in the database
+            ModifyEvent(eventBody);
+
+            return eventBody;
+        }
+    }
+}
