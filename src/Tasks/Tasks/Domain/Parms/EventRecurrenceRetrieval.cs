@@ -6,8 +6,13 @@ namespace Tasks.Domain.Parms
     public class EventRecurrenceRetrieval
     {
         public Guid UserId { get; set; }
-        [BindRequired] public DateTime StartsOn { get; set; }
-        [BindRequired] public DateTime EndsOn { get; set; }
+
+        [BindRequired] 
+        public DateTime StartsOn { get; set; }
+
+        [BindRequired] 
+        public DateTime EndsOn { get; set; }
+        
         public Guid EventId { get; set; }
     }
 

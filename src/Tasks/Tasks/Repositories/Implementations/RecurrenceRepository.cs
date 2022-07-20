@@ -23,12 +23,21 @@ namespace Tasks.Repositories.Implementations
         private readonly DbConnection _dbConnection;
         #endregion
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configs"></param>
         public RecurrenceRepository(IConfigs configs)
         {
             _configs = configs;
             _dbConnection = new(configs);
         }
 
+        /// <summary>
+        /// Get the recurrences for the user in the timestamp
+        /// </summary>
+        /// <param name="recurrenceRetrieval"></param>
+        /// <returns></returns>
         public DataTable GetRecurrences(RecurrenceRetrieval recurrenceRetrieval)
         {
             // setup a new stored procedure command 
@@ -46,6 +55,11 @@ namespace Tasks.Repositories.Implementations
             return _dbConnection.FetchAll(command);
         }
 
+        /// <summary>
+        /// Get all recurrences for the specified event
+        /// </summary>
+        /// <param name="eventRecurrenceRetrieval"></param>
+        /// <returns></returns>
         public DataTable GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
             // setup a new stored procedure command 

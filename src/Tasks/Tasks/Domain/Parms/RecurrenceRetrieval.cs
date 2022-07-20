@@ -7,8 +7,12 @@ namespace Tasks.Domain.Parms
     public class RecurrenceRetrieval
     {
         public Guid UserId { get; set; }
-        [BindRequired] public DateTime StartsOn { get; set; }
-        [BindRequired] public DateTime EndsOn { get; set; }
+
+        [BindRequired] 
+        public DateTime StartsOn { get; set; }
+
+        [BindRequired] 
+        public DateTime EndsOn { get; set; }
     }
 
 }

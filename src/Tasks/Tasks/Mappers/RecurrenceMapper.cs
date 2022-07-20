@@ -7,6 +7,21 @@ namespace Tasks.Mappers
     public static class RecurrenceMapper
     {
         /// <summary>
+        /// Map each DataRow in the table to a Recurrence domain model
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static List<Recurrence> ToModels(DataTable dataTable)
+        {
+            var recurrences =
+                from dataRow
+                in dataTable.AsEnumerable()
+                select RecurrenceMapper.ToModel(dataRow);
+
+            return recurrences.ToList();
+        }
+
+        /// <summary>
         /// Convert the data row into a recurrence domain model
         /// </summary>
         /// <param name="dataRow"></param>

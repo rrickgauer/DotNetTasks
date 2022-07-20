@@ -32,7 +32,7 @@ namespace Tasks.Services.Implementations
         {
             DataTable recurrencesTable = _recurrenceRepository.GetRecurrences(recurrenceRetrieval);
 
-            return TableToList(recurrencesTable);
+            return RecurrenceMapper.ToModels(recurrencesTable);
         }
 
         /// <summary>
@@ -45,15 +45,9 @@ namespace Tasks.Services.Implementations
         {
             DataTable recurrencesTable = _recurrenceRepository.GetEventRecurrences(eventRecurrenceRetrieval);
 
-            return TableToList(recurrencesTable);
+            return RecurrenceMapper.ToModels(recurrencesTable);
         }
 
-        private List<Recurrence> TableToList(DataTable dataTable)
-        {
-            var recurrences = from dataRow in dataTable.AsEnumerable() select RecurrenceMapper.ToModel(dataRow);
-
-            return recurrences.ToList();
-        }
 
 
     }
