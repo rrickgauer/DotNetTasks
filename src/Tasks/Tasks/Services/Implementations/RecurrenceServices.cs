@@ -1,5 +1,7 @@
-﻿using Tasks.Domain.Models;
+﻿using System.Data;
+using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -28,8 +30,9 @@ namespace Tasks.Services.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public List<Recurrence> GetRecurrences(RecurrenceRetrieval recurrenceRetrieval)
         {
-            List<Recurrence> recurrences = new();
-            return recurrences;
+            DataTable recurrencesTable = _recurrenceRepository.GetRecurrences(recurrenceRetrieval);
+
+            return TableToList(recurrencesTable);
         }
 
         /// <summary>
@@ -40,8 +43,16 @@ namespace Tasks.Services.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public List<Recurrence> GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
-            List<Recurrence> recurrences = new();
-            return recurrences;
+            DataTable recurrencesTable = _recurrenceRepository.GetEventRecurrences(eventRecurrenceRetrieval);
+
+            return TableToList(recurrencesTable);
+        }
+
+        private List<Recurrence> TableToList(DataTable dataTable)
+        {
+            var recurrences = from dataRow in dataTable.AsEnumerable() select RecurrenceMapper.ToModel(dataRow);
+
+            return recurrences.ToList();
         }
 
 

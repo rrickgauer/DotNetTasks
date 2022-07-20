@@ -43,7 +43,9 @@ namespace Tasks.Controllers
         {
             retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
 
-            return Ok(retrieval);
+            var recurrences = _recurrenceServices.GetRecurrences(retrieval);
+
+            return Ok(recurrences);
         }
 
         /// <summary>
@@ -57,7 +59,9 @@ namespace Tasks.Controllers
             retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
             retrieval.EventId = eventId;
 
-            return Ok(retrieval);
+            var recurrences = _recurrenceServices.GetEventRecurrences(retrieval);
+
+            return Ok(recurrences);
         }
 
 
