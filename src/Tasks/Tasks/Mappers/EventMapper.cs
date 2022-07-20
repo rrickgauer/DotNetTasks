@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using Tasks.CustomAttributes;
+using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 
 namespace Tasks.Mappers
@@ -27,7 +28,7 @@ namespace Tasks.Mappers
                 EndsOn          = dataRow.Field<DateTime?>("ends_on"),
                 StartsAt        = dataRow.Field<TimeSpan?>("starts_at"),
                 EndsAt          = dataRow.Field<TimeSpan?>("ends_at"),
-                Frequency       = FrequencyMapper.ToEnum(dataRow.Field<string?>("frequency")),
+                Frequency       = dataRow.Field<Frequency?>("frequency"),
                 Separation      = dataRow.Field<uint?>("separation"),
                 CreatedOn       = dataRow.Field<DateTime?>("created_on"),
                 RecurrenceDay   = dataRow.Field<int?>("recurrence_day"),
@@ -57,7 +58,8 @@ namespace Tasks.Mappers
             parms.Add("@in_ends_on", e.EndsOn);
             parms.Add("@in_starts_at", e.StartsAt);
             parms.Add("@in_ends_at", e.EndsAt);
-            parms.Add("@in_frequency", FrequencyMapper.ToText(e.Frequency));
+            //parms.Add("@in_frequency", FrequencyMapper.ToText(e.Frequency));
+            parms.Add("@in_frequency", e.Frequency);
             parms.Add("@in_separation", e.Separation);
             parms.Add("@in_recurrence_day", e.RecurrenceDay);
             parms.Add("@in_recurrence_week", e.RecurrenceWeek);
