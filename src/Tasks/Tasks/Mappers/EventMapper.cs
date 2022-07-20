@@ -43,9 +43,9 @@ namespace Tasks.Mappers
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public static Dictionary<string, object?> ToStoredProcDictionary(Event e)
+        public static SqlCommandParmsMap ToSqlCommandParmsMap(Event e)
         {
-            Dictionary<string, object?> parms = new();
+            SqlCommandParmsMap parms = new();
 
             parms.Add("@in_id", e.Id);
             parms.Add("@in_user_id", e.UserId);

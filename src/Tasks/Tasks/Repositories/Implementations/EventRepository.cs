@@ -128,10 +128,8 @@ namespace Tasks.Repositories.Implementations
             };
 
             // add all the named parms to the command
-            foreach (var parm in EventMapper.ToStoredProcDictionary(e))
-            {
-                command.Parameters.AddWithValue(parm.Key, parm.Value);
-            }
+            var map = EventMapper.ToSqlCommandParmsMap(e);
+            map.AddParmsToCommand(command);
 
             return command;
         }

@@ -8,13 +8,26 @@ namespace Tasks.Mappers
         private Dictionary<string, object?> _parms = new();
         public Dictionary<string, object?> Parms => _parms;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SqlCommandParmsMap() { }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parms"></param>
         SqlCommandParmsMap(Dictionary<string, object?> parms)
         {
             _parms = parms;
         }
 
+        /// <summary>
+        /// Add new element
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool Add(string key, object? value)
         {
             if (_parms.ContainsKey(key))
@@ -26,6 +39,10 @@ namespace Tasks.Mappers
             return true;
         }
 
+        /// <summary>
+        /// Loop through parms
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator GetEnumerator()
         {
             foreach(var x in _parms)

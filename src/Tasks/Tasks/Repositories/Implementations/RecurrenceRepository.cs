@@ -45,11 +45,8 @@ namespace Tasks.Repositories.Implementations
                 CommandType = CommandType.StoredProcedure,
             };
 
-            // add all the named parms to the command
-            foreach (var parm in RecurrenceMapper.ToStoredProcDictionary(recurrenceRetrieval))
-            {
-                command.Parameters.AddWithValue(parm.Key, parm.Value);
-            }
+            var map = RecurrenceMapper.ToSqlCommandParmsMap(recurrenceRetrieval);
+            map.AddParmsToCommand(command);
 
             return _dbConnection.FetchAll(command);
         }
@@ -67,11 +64,8 @@ namespace Tasks.Repositories.Implementations
                 CommandType = CommandType.StoredProcedure,
             };
 
-            // add all the named parms to the command
-            foreach (var parm in RecurrenceMapper.ToStoredProcDictionary(eventRecurrenceRetrieval))
-            {
-                command.Parameters.AddWithValue(parm.Key, parm.Value);
-            }
+            var map = RecurrenceMapper.ToSqlCommandParmsMap(eventRecurrenceRetrieval);
+            map.AddParmsToCommand(command);
 
             return _dbConnection.FetchAll(command);
         }

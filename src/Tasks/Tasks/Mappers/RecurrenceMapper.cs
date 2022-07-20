@@ -40,14 +40,15 @@ namespace Tasks.Mappers
             return recurrence;
         }
 
+
         /// <summary>
         /// Get a dictionary for the get recurrences stored procedure
         /// </summary>
         /// <param name="recurrenceRetrieval"></param>
         /// <returns></returns>
-        public static Dictionary<string, object?> ToStoredProcDictionary(RecurrenceRetrieval recurrenceRetrieval)
+        public static SqlCommandParmsMap ToSqlCommandParmsMap(RecurrenceRetrieval recurrenceRetrieval)
         {
-            Dictionary<string, object?> parms = new();
+            SqlCommandParmsMap parms = new();
 
             parms.Add("@user_id", recurrenceRetrieval.UserId);
             parms.Add("@range_start", recurrenceRetrieval.StartsOn);
@@ -61,9 +62,9 @@ namespace Tasks.Mappers
         /// </summary>
         /// <param name="recurrenceRetrieval"></param>
         /// <returns></returns>
-        public static Dictionary<string, object?> ToStoredProcDictionary(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+        public static SqlCommandParmsMap ToSqlCommandParmsMap(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
-            Dictionary<string, object?> parms = new();
+            SqlCommandParmsMap parms = new();
 
             parms.Add("@event_id", eventRecurrenceRetrieval.EventId);
             parms.Add("@user_id", eventRecurrenceRetrieval.UserId);
