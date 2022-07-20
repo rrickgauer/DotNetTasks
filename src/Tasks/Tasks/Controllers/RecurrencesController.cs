@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
+using Tasks.Security;
 using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers
@@ -18,7 +22,7 @@ namespace Tasks.Controllers
         #endregion
 
         /// <summary>
-        /// Constructor.
+        /// Constructor
         /// Dependencies are injected into the contructor.
         /// </summary>
         /// <param name="configs"></param>
@@ -35,9 +39,11 @@ namespace Tasks.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<Recurrence>> GetRecurrences()
+        public ActionResult<List<Recurrence>> GetRecurrences([FromQuery] RecurrenceRetrieval retrieval)
         {
-            return Ok("get all recurrences");
+            retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
+
+            return Ok(retrieval);
         }
 
         /// <summary>
@@ -46,9 +52,12 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public ActionResult<List<Recurrence>> GetEventRecurrences(Guid eventId)
+        public ActionResult<List<Recurrence>> GetEventRecurrences(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
         {
-            return Ok("get event recurrences");
+            retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
+            retrieval.EventId = eventId;
+
+            return Ok(retrieval);
         }
 
 
