@@ -7,7 +7,17 @@ CREATE FUNCTION `is_event_completed`(
 BEGIN
     DECLARE num_records INT;
     DECLARE result BOOLEAN;
-	SELECT COUNT(event_id) INTO num_records FROM Event_Completions WHERE event_id = in_event_id AND date = in_completed_date;
+	-- SELECT COUNT(event_id) INTO num_records FROM Event_Completions WHERE event_id = in_event_id AND date = in_completed_date;
+    
+    SELECT 
+		COUNT(event_id) 
+	INTO 
+		num_records 
+	FROM 
+		Event_Actions ea
+	WHERE 
+		ea.event_id = in_event_id 
+        AND ea.on_date = in_completed_date;
     
 	IF num_records > 0 THEN
 		SET result = TRUE;
