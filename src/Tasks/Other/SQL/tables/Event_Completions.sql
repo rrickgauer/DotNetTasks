@@ -1,7 +1,0 @@
-CREATE TABLE `Event_Completions` (
-  `event_id` CHAR(36) COLLATE UTF8_UNICODE_CI NOT NULL,
-  `date` DATE NOT NULL,
-  `marked_completed` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `uc_event_completetions` (`event_id`,`date`),
-  CONSTRAINT `Event_Completetions_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE=UTF8_UNICODE_CI;
