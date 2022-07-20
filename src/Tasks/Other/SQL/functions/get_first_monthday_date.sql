@@ -7,7 +7,7 @@ CREATE FUNCTION `get_first_monthday_date`(
 ) RETURNS date
     DETERMINISTIC
 BEGIN
-	
+    
     /***************************************************************************
     get_first_monthday_date retrieves the first date a "MonthDay" occurence
     can happen on/after the given range_start date

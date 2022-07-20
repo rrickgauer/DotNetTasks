@@ -1,6 +1,6 @@
 DELIMITER $$
 CREATE FUNCTION `get_start_date_daily`(
-	range_start DATE,
+    range_start DATE,
     starts_on DATE,
     event_seperation INT
 ) RETURNS DATE
