@@ -17,7 +17,6 @@ namespace Tasks.Repositories.Implementations
         }
         #endregion
 
-
         #region Private memebers
         private readonly IConfigs _configs;
         private readonly DbConnection _dbConnection;
