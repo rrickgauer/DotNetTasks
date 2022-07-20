@@ -1,5 +1,5 @@
-DELIMITER $$ 
-CREATE PROCEDURE Modify_Event (
+DELIMITER $$
+CREATE PROCEDURE `Modify_Event`(
     IN in_id CHAR(36),
     IN in_user_id CHAR(36),
     IN in_name VARCHAR(100),
@@ -10,12 +10,13 @@ CREATE PROCEDURE Modify_Event (
     IN in_ends_on DATE,
     IN in_starts_at TIME,
     IN in_ends_at TIME,
-    IN in_frequency ENUM('ONCE', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'),
+    IN in_frequency SMALLINT UNSIGNED,
     IN in_separation INT UNSIGNED,
     IN in_recurrence_day INT,
     IN in_recurrence_week INT,
     IN in_recurrence_month INT
-) BEGIN
+)
+BEGIN
 INSERT INTO
     Events (
         id,
@@ -67,5 +68,5 @@ UPDATE
     recurrence_week = new_values.recurrence_week,
     recurrence_month = new_values.recurrence_month;
 
-END$$ 
+END$$
 DELIMITER ;
