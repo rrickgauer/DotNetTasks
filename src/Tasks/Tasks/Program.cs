@@ -50,9 +50,11 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     // services
     builder.Services.AddScoped<IEventServices, EventServices>();
     builder.Services.AddScoped<IRecurrenceServices, RecurrenceServices>();
+    builder.Services.AddScoped<IEventActionServices, EventActionServices>();
 
     // repositories
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IEventRepository, EventRepository>();
     builder.Services.AddScoped<IRecurrenceRepository, RecurrenceRepository>();
+    builder.Services.AddScoped<IEventActionRepository, EventActionRepository>();
 }

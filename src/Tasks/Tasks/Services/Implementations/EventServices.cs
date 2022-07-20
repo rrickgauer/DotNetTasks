@@ -13,8 +13,10 @@ namespace Tasks.Services.Implementations
 {
     public class EventServices : IEventServices
     {
+        #region Private members
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEventRepository _eventRepository;
+        #endregion
 
         /// <summary>
         /// Constructor
