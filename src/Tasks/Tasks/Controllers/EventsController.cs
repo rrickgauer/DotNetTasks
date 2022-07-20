@@ -30,7 +30,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// Get all events for the user
+        /// GET: /events
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -41,7 +41,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// GET: /event/:event_id
+        /// GET: /events/:eventId
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
@@ -58,7 +58,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// Delete event
+        /// DELETE: /events/:eventId
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
@@ -75,6 +75,12 @@ namespace Tasks.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// PUT: /events/eventId
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="eventBody"></param>
+        /// <returns></returns>
         [HttpPut("{eventId}")]
         public ActionResult<Event> UpdateEvent(Guid eventId, [FromForm] Event eventBody)
         {
@@ -102,7 +108,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// Create a new event
+        /// POST: /events
         /// </summary>
         /// <param name="eventFromBody"></param>
         /// <returns></returns>
@@ -113,7 +119,6 @@ namespace Tasks.Controllers
 
             // return it
             return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event
-
         }
 
 

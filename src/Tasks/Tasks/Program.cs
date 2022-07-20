@@ -35,13 +35,24 @@ app.Run();
 // Setup dependency injection
 static void ConifigureDependencies(WebApplicationBuilder builder)
 {
-    // set the appropriate configuration class depending on if the app is running in development or production
+    // set the appropriate configuration class
+    // depends if the app is running in development or production
     if (builder.Environment.IsDevelopment())
+    {
         builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
+    }
     else
+    {
         builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
+    }
+        
 
+    // services
     builder.Services.AddScoped<IEventServices, EventServices>();
+    builder.Services.AddScoped<IRecurrenceServices, RecurrenceServices>();
+
+    // repositories
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IEventRepository, EventRepository>();
+    builder.Services.AddScoped<IRecurrenceRepository, RecurrenceRepository>();
 }
