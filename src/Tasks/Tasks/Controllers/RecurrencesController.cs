@@ -8,6 +8,9 @@ using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
+using Tasks.Validation;
+
+#pragma warning disable CS8629 // Nullable value type may be null.
 
 namespace Tasks.Controllers
 {
@@ -45,6 +48,15 @@ namespace Tasks.Controllers
         [HttpGet]
         public ActionResult<List<Recurrence>> GetRecurrences([FromQuery] RecurrenceRetrieval retrieval)
         {
+            try
+            {
+                ValidateRetrievalRange(retrieval);
+            } 
+            catch (ValidationException err)
+            {
+                return BadRequest(err.Message);
+            }
+
             // fill out the remaining RecurrenceRetrieval property values
             retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
 
@@ -62,6 +74,15 @@ namespace Tasks.Controllers
         [HttpGet("{eventId}")]
         public ActionResult<List<Recurrence>> GetEventRecurrences(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
         {
+            try
+            {
+                ValidateRetrievalRange(retrieval);
+            }
+            catch (ValidationException err)
+            {
+                return BadRequest(err.Message);
+            }
+
             // make sure the user owns the requested event
             var userEvent = _eventServices.GetUserEvent(eventId);
             if (userEvent == null)
@@ -77,6 +98,19 @@ namespace Tasks.Controllers
             var recurrences = _recurrenceServices.GetEventRecurrences(retrieval);
 
             return Ok(recurrences);
+        }
+
+        /// <summary>
+        /// Validate that the given range is valid
+        /// </summary>
+        /// <param name="range"></param>
+        /// <exception cref="ValidationException"></exception>
+        private void ValidateRetrievalRange(IValidDateRange range)
+        {
+            if (!range.IsValid())
+            {
+                throw new ValidationException("EndsOn must be greater than or equal to StartsOn");
+            }
         }
 
 

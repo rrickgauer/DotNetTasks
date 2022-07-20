@@ -45,8 +45,6 @@ namespace Tasks.Services.Implementations
         {
             DataTable recurrencesTable = _recurrenceRepository.GetEventRecurrences(eventRecurrenceRetrieval);
 
-
-
             return RecurrenceMapper.ToModels(recurrencesTable);
         }
 
