@@ -4,7 +4,6 @@ using System.Data.Common;
 using Tasks.CustomAttributes;
 using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
-
 namespace Tasks.Mappers
 {
     public static class EventMapper
@@ -58,7 +57,6 @@ namespace Tasks.Mappers
             parms.Add("@in_ends_on", e.EndsOn);
             parms.Add("@in_starts_at", e.StartsAt);
             parms.Add("@in_ends_at", e.EndsAt);
-            //parms.Add("@in_frequency", FrequencyMapper.ToText(e.Frequency));
             parms.Add("@in_frequency", e.Frequency);
             parms.Add("@in_separation", e.Separation);
             parms.Add("@in_recurrence_day", e.RecurrenceDay);
