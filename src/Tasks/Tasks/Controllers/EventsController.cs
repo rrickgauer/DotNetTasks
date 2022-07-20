@@ -36,7 +36,7 @@ namespace Tasks.Controllers
         [HttpGet]
         public ActionResult<List<Event>> GetEvents()
         {
-            var userEvents = _eventServices.GetEventsUser();
+            var userEvents = _eventServices.GetUserEvents();
             return Ok(userEvents);
         }
 
@@ -48,7 +48,7 @@ namespace Tasks.Controllers
         [HttpGet("{eventId}")]
         public ActionResult<Event> GetEvent(Guid eventId)
         {
-            var e = _eventServices.GetEventUser(eventId);
+            var e = _eventServices.GetUserEvent(eventId);
             if (e == null)
             {
                 return NotFound();
@@ -65,7 +65,7 @@ namespace Tasks.Controllers
         [HttpDelete("{eventId}")]
         public IActionResult DeleteEvent(Guid eventId)
         {
-            var userEvent = _eventServices.GetEventUser(eventId);
+            var userEvent = _eventServices.GetUserEvent(eventId);
 
             if (userEvent == null)
             {
@@ -90,7 +90,7 @@ namespace Tasks.Controllers
             eventBody.Id = eventId;
             _eventServices.UpdateEvent(eventBody);
 
-            var updatedEvent = _eventServices.GetEventUser(eventId);
+            var updatedEvent = _eventServices.GetUserEvent(eventId);
             if (existingEvent == null)
             {
                 return Created($"{Request.Path}", updatedEvent);    // created a new event

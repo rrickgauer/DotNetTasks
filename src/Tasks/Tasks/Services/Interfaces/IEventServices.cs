@@ -4,9 +4,9 @@ namespace Tasks.Services.Interfaces
 {
     public interface IEventServices
     {
-        public List<Event> GetEventsUser();
+        public List<Event> GetUserEvents();
         public Event? GetEvent(Guid eventId);
-        public Event? GetEventUser(Guid eventId);
+        public Event? GetUserEvent(Guid eventId);
         public bool DeleteEvent(Guid eventId);
         public Event UpdateEvent(Event eventData);
         public Event CreateNewEvent(Event eventData);
