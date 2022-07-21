@@ -17,30 +17,58 @@ namespace Tasks.Controllers
         #region Private members
         private readonly IConfigs _configuration;
         private readonly IEventActionServices _eventCompletionServices;
-        #endregion
-
+        private readonly IEventServices _eventServices;
         private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
+        #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
-        public CompletionsController(IConfigs configuration, IEventActionServices eventCompletionServices)
+        public CompletionsController(IConfigs configuration, IEventActionServices eventCompletionServices, IEventServices eventServices)
         {
             _configuration = configuration;
             _eventCompletionServices = eventCompletionServices;
+            _eventServices = eventServices; 
         }
 
         /// <summary>
-        /// GET: /events/:eventId
+        /// GET: /completions/:eventId/:onDate
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpPut("{eventId}/{onDate}")]
         public ActionResult<string> CreateCompletion([FromRoute]Guid eventId, [FromRoute]DateTime onDate)
         {
+            // make sure user owns the event before marking it complete
+            if (!_eventServices.ClientOwnsEvent(eventId))
+            {
+                return NotFound();
+            }
+
             var newCompletion = _eventCompletionServices.SaveEventCompletion(CurrentUserId, eventId, onDate);
+
             return Ok(newCompletion);
         }
+
+        /// <summary>
+        /// DELETE: /completions/:eventId/:onDate
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        [HttpDelete("{eventId}/{onDate}")]
+        public ActionResult<string> DeleteCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
+        {
+            // make sure user owns the event before marking it complete
+            if (!_eventServices.ClientOwnsEvent(eventId))
+            {
+                return NotFound();
+            }
+
+            var newCompletion = _eventCompletionServices.SaveEventCompletion(CurrentUserId, eventId, onDate);
+
+            return Ok(newCompletion);
+        }
+
     }
 }

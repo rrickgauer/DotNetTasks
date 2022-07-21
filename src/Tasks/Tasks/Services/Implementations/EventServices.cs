@@ -138,6 +138,24 @@ namespace Tasks.Services.Implementations
             return newEvent;
         }
 
+
+        /// <summary>
+        /// Check if the current user owns the event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public bool ClientOwnsEvent(Guid eventId)
+        {
+            var e = GetUserEvent(eventId);
+
+            if (e == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// check if an event with this id already exists
         /// if so, make sure the client owns that event already
@@ -173,5 +191,7 @@ namespace Tasks.Services.Implementations
 
             return eventBody;
         }
+
+
     }
 }

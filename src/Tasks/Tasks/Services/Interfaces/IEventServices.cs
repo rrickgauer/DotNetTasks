@@ -11,5 +11,6 @@ namespace Tasks.Services.Interfaces
         public Event UpdateEvent(Event eventData);
         public Event CreateNewEvent(Event eventData);
         public bool ClientOwnsEvent(Event? e);
+        public bool ClientOwnsEvent(Guid eventId);
     }
 }
