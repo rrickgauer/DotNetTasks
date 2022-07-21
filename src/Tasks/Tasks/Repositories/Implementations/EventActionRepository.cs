@@ -16,6 +16,14 @@ namespace Tasks.Repositories.Implementations
                     (event_id, on_date, event_action_type_id, created_on)
                 VALUES
                     (@event_id, @on_date, @event_action_type_id, @created_on)";
+
+            public const string DELETE = @"
+                DELETE FROM 
+                    Event_Actions ea
+                WHERE 
+                    ea.event_id                 = @event_id
+                    AND ea.on_date              = @on_date
+                    AND ea.event_action_type_id = @event_action_type_id;";
         }
 
         #endregion
@@ -46,6 +54,23 @@ namespace Tasks.Repositories.Implementations
             MySqlCommand cmd = new(SqlStatements.MODIFY);
             
             SqlCommandParmsMap map = EventActionMapper.ToSqlCommandParmsMap(eventAction);
+            map.AddParmsToCommand(cmd);
+
+            return _dbConnection.Modify(cmd);
+        }
+
+        /// <summary>
+        /// Delete an event action
+        /// </summary>
+        /// <param name="eventAction"></param>
+        /// <returns></returns>
+        public int DeleteEventAction(EventAction eventAction)
+        {
+            // map the EventAction argument's values to the sql named params
+            MySqlCommand cmd = new(SqlStatements.DELETE);
+
+            SqlCommandParmsMap map = EventActionMapper.ToSqlCommandParmsMap(eventAction);
+            map.Parms.Remove("@created_on");
             map.AddParmsToCommand(cmd);
 
             return _dbConnection.Modify(cmd);

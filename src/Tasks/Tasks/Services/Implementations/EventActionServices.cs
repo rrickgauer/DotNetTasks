@@ -45,9 +45,19 @@ namespace Tasks.Services.Implementations
         }
 
 
-        public void DeleteEventCompletion(Guid eventId, DateTime onDate)
+        public bool DeleteEventCompletion(Guid eventId, DateTime onDate)
         {
-            throw new NotImplementedException();
+            EventAction eventAction = new()
+            {
+                EventId = eventId,
+                CreatedOn = DateTime.Now,
+                EventActionType = EventActionType.COMPLETION,
+                OnDate = onDate,
+            };
+
+            var numRows = _eventActionRepository.DeleteEventAction(eventAction);
+
+            return numRows == 1;
         }
 
 

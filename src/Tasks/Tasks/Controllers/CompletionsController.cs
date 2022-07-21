@@ -65,9 +65,14 @@ namespace Tasks.Controllers
                 return NotFound();
             }
 
-            var newCompletion = _eventCompletionServices.SaveEventCompletion(CurrentUserId, eventId, onDate);
+            var recordDeleted = _eventCompletionServices.DeleteEventCompletion(eventId, onDate);
 
-            return Ok(newCompletion);
+            if (!recordDeleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
     }
