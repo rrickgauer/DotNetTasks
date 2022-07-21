@@ -33,7 +33,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// GET: /completions/:eventId/:onDate
+        /// PUT: /completions/:eventId/:onDate
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@ namespace Tasks.Controllers
                 return NotFound();
             }
 
-            var newCompletion = _eventCompletionServices.SaveEventCompletion(CurrentUserId, eventId, onDate);
+            var newCompletion = _eventCompletionServices.SaveEventCompletion(eventId, onDate);
 
             return Ok(newCompletion);
         }
@@ -57,7 +57,7 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpDelete("{eventId}/{onDate}")]
-        public ActionResult<string> DeleteCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
+        public IActionResult DeleteCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
             if (!_eventServices.ClientOwnsEvent(eventId))
@@ -73,6 +73,32 @@ namespace Tasks.Controllers
             }
 
             return NoContent();
+        }
+
+
+        /// <summary>
+        /// GET: /completions/:eventId/:onDate
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="onDate"></param>
+        /// <returns></returns>
+        [HttpGet("{eventId}/{onDate}")]
+        public ActionResult<string> GetCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
+        {
+            // make sure user owns the event before marking it complete
+            if (!_eventServices.ClientOwnsEvent(eventId))
+            {
+                return NotFound();
+            }
+
+            var eventCompletion = _eventCompletionServices.GetEventCompletion(eventId, onDate);
+
+            if (eventCompletion == null)
+            {
+                return NotFound();  // return not found if there is no completion recorded for this event on this day
+            }
+
+            return Ok(eventCompletion);
         }
 
     }

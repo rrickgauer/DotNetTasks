@@ -1,4 +1,6 @@
-﻿using Tasks.Domain.Models;
+﻿using System.Data;
+using Tasks.Domain.Enums;
+using Tasks.Domain.Models;
 
 namespace Tasks.Mappers
 {
@@ -19,6 +21,24 @@ namespace Tasks.Mappers
             map.Add("@created_on", recurrenceRetrieval.CreatedOn);
 
             return map;
+        }
+
+        /// <summary>
+        /// Map the specified DataRow to an EventAction domain model
+        /// </summary>
+        /// <param name="dataRow"></param>
+        /// <returns></returns>
+        public static EventAction ToModel(DataRow dataRow)
+        {
+            EventAction eventAction = new()
+            {
+                EventId         = dataRow.Field<Guid?>("event_id"),
+                OnDate          = dataRow.Field<DateTime?>("on_date"),
+                EventActionType = dataRow.Field<EventActionType?>("event_action_type_id"),
+                CreatedOn       = dataRow.Field<DateTime?>("created_on"),
+            };
+
+            return eventAction;
         }
     }
 }

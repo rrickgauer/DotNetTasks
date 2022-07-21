@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Data;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Mappers;
@@ -24,6 +25,21 @@ namespace Tasks.Repositories.Implementations
                     ea.event_id                 = @event_id
                     AND ea.on_date              = @on_date
                     AND ea.event_action_type_id = @event_action_type_id;";
+
+            public const string SELECT = @"
+                SELECT 
+                    ea.event_id             AS event_id,
+                    ea.on_date              AS on_date,
+                    ea.event_action_type_id AS event_action_type_id,
+                    ea.created_on           AS created_on
+                FROM 
+                    Event_Actions ea
+                WHERE 
+                    ea.event_id                 = @event_id
+                    AND ea.on_date              = @on_date
+                    AND ea.event_action_type_id = @event_action_type_id
+                LIMIT 
+                    1";
         }
 
         #endregion
@@ -51,12 +67,12 @@ namespace Tasks.Repositories.Implementations
         public int ModifyEventAction(EventAction eventAction)
         {
             // map the EventAction argument's values to the sql named params
-            MySqlCommand cmd = new(SqlStatements.MODIFY);
+            MySqlCommand command = new(SqlStatements.MODIFY);
             
-            SqlCommandParmsMap map = EventActionMapper.ToSqlCommandParmsMap(eventAction);
-            map.AddParmsToCommand(cmd);
+            SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
+            parmsMap.AddParmsToCommand(command);
 
-            return _dbConnection.Modify(cmd);
+            return _dbConnection.Modify(command);
         }
 
         /// <summary>
@@ -67,13 +83,25 @@ namespace Tasks.Repositories.Implementations
         public int DeleteEventAction(EventAction eventAction)
         {
             // map the EventAction argument's values to the sql named params
-            MySqlCommand cmd = new(SqlStatements.DELETE);
+            MySqlCommand command = new(SqlStatements.DELETE);
 
-            SqlCommandParmsMap map = EventActionMapper.ToSqlCommandParmsMap(eventAction);
-            map.Parms.Remove("@created_on");
-            map.AddParmsToCommand(cmd);
+            SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
+            parmsMap.Parms.Remove("@created_on");
+            parmsMap.AddParmsToCommand(command);
 
-            return _dbConnection.Modify(cmd);
+            return _dbConnection.Modify(command);
+        }
+
+        public DataRow? GetEventAction(EventAction eventAction)
+        {
+            // map the EventAction argument's values to the sql named params
+            MySqlCommand command = new(SqlStatements.SELECT);
+
+            SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
+            parmsMap.Parms.Remove("@created_on");
+            parmsMap.AddParmsToCommand(command);
+
+            return _dbConnection.Fetch(command);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using Tasks.Domain.Enums;
+﻿using System.Data;
+using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -11,7 +13,6 @@ namespace Tasks.Services.Implementations
         #region Private members
         private readonly IEventActionRepository _eventActionRepository;
         #endregion
-
 
         /// <summary>
         /// Constructor
@@ -29,7 +30,7 @@ namespace Tasks.Services.Implementations
         /// <param name="eventId"></param>
         /// <param name="onDate"></param>
         /// <returns></returns>
-        public EventAction SaveEventCompletion(Guid userId, Guid eventId, DateTime onDate)
+        public EventAction SaveEventCompletion(Guid eventId, DateTime onDate)
         {
             EventAction eventAction = new()
             {
@@ -44,7 +45,12 @@ namespace Tasks.Services.Implementations
             return eventAction;
         }
 
-
+        /// <summary>
+        /// Delete the event completion
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="onDate"></param>
+        /// <returns></returns>
         public bool DeleteEventCompletion(Guid eventId, DateTime onDate)
         {
             EventAction eventAction = new()
@@ -60,6 +66,31 @@ namespace Tasks.Services.Implementations
             return numRows == 1;
         }
 
+        /// <summary>
+        /// Returns an event completion object 
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="onDate"></param>
+        /// <returns></returns>
+        public EventAction? GetEventCompletion(Guid eventId, DateTime onDate)
+        {
+            EventAction potentialEventAction = new()
+            {
+                EventId         = eventId,
+                CreatedOn       = DateTime.Now,
+                EventActionType = EventActionType.COMPLETION,
+                OnDate          = onDate,
+            };
 
+            DataRow? dataRow = _eventActionRepository.GetEventAction(potentialEventAction);
+            EventAction? eventAction = null;
+
+            if (dataRow != null)
+            {
+                eventAction = EventActionMapper.ToModel(dataRow);
+            }
+
+            return eventAction;
+        }
     }
 }
