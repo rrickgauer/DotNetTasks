@@ -1,6 +1,7 @@
 
 
 import { LoginPageForm } from "./page-elements";
+import { ApiLogin } from "../../api/api-login";
 
 let m_loginForm = new LoginPageForm();
 
@@ -20,7 +21,7 @@ function addListeners() {
 
 /** Log the user in */
 async function loginUser() {
-    const successfulLogin = attemptToLogin();
+    const successfulLogin = await attemptToLogin();
 
     if (!successfulLogin) {
         return;
@@ -38,9 +39,11 @@ async function attemptToLogin() {
         return false;
     }
 
+    const api = new ApiLogin(m_loginForm.getEmailValue(), m_loginForm.getPasswordValue());
 
-    return true;
+    const apiResponse = await api.login();
 
+    return apiResponse.ok;
 }
 
 

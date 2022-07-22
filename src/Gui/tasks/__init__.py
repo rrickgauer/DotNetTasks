@@ -20,6 +20,7 @@ from .config import get_correct_config_class
 #------------------------------------------------------
 def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_test, url_prefix='/test')
+    flask_app.register_blueprint(routes.bp_api, url_prefix='/api')
     flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
 
 
@@ -29,6 +30,7 @@ _registerBlueprints(app)
 
 app_config = get_correct_config_class(app)
 app.config.from_object(app_config)
+app.secret_key = app_config.SECRET_KEY_GUI
 
 
 
