@@ -3,4 +3,4 @@
 :: --------------------------------------------
 
 cd C:\xampp\htdocs\files\DotNetTasks\scripts\dev
-wt -M start-gui-server.bat ; start-css-compiler.bat ; start-js.bat
+wt -M start-server-api.bat; start-server-gui.bat ; start-css-compiler.bat ; start-js.bat
