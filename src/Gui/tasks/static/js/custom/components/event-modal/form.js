@@ -20,6 +20,8 @@ export class EventModalForm
         this.inputRecurrenceDay   = document.getElementById(EventModalForm.Html.Inputs.RECURRENCE_DAY);
         this.inputRecurrenceWeek  = document.getElementById(EventModalForm.Html.Inputs.RECURRENCE_WEEK);
         this.inputRecurrenceMonth = document.getElementById(EventModalForm.Html.Inputs.RECURRENCE_MONTH);
+
+        this.form = document.getElementById(EventModalForm.Html.FORM);
     }
 
     /**

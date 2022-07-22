@@ -1,19 +1,17 @@
 
-import { EventModalForm } from "../../components/event-modal/form";
+// imports
+import { EventModal } from "../../components/event-modal/event-modal";
+
+// module variables
+const eventModal = new EventModal();
 
 
+/**
+ * Page entry point
+ */
 $(document).ready(function() {
-    addListeners();
+    eventModal.init();
 });
 
 
-function addListeners() {
-    $('#test-btn').on('click', printValues);
-}
-
-function printValues() {
-    const form = new EventModalForm();
-    const formValues = form.getValues();
-    console.log(formValues);
-}
 

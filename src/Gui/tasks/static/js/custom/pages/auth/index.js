@@ -51,10 +51,6 @@ async function loginUser(formSubmitEvent) {
  * @returns {Boolean}
  */
 async function attemptToLogin() {
-    if (!m_loginForm.isValid()) {
-        return false;
-    }
-
     const api = new ApiLogin(m_loginForm.getEmailValue(), m_loginForm.getPasswordValue());
     const apiResponse = await api.login();
     return apiResponse.ok;
