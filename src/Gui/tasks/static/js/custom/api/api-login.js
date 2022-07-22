@@ -1,0 +1,28 @@
+
+
+import { ApiEndpoints } from "./api-base";
+import { HttpMethods } from "./api-base";
+import { Utililties } from "../helpers/utilities";
+
+
+export class ApiLogin
+{
+    constructor(email, password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    login = async () => {
+
+        const data = Utililties.toFormData({
+            email: this.email,
+            password: this.password,
+        });
+
+        return await fetch(ApiEndpoints.LOGIN, {
+            method: HttpMethods.POST,
+            body: data,
+        });
+    }
+}
+
