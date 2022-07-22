@@ -21,7 +21,7 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_test, url_prefix='/test')
     flask_app.register_blueprint(routes.bp_api, url_prefix='/api')
     flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
-    flask_app.register_blueprint(routes.bp_home, url_prefix='/app')
+    flask_app.register_blueprint(routes.bp_home, url_prefix='/')
 
 # Main logic
 app = flask.Flask(__name__)

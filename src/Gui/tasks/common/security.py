@@ -9,6 +9,7 @@ Handles logic related to authorization and session values.
 from functools import wraps
 import flask
 import tasks.config as config
+from . import utilities as util
 
 #------------------------------------------------------
 # Session key names for the session
@@ -29,9 +30,8 @@ def login_required(f):
         # if user is not logged in, redirect to login page
         if not flask.session:
             # build the url for the login page
-            prefix = config.get_config().URL_GUI
-            suffix = flask.url_for('auth.login')
-            url    = f'{prefix}/{suffix}'
+            endpoint = flask.url_for('auth.login')
+            url = util.build_gui_url(endpoint)
 
             # redirect them to the login page
             return flask.redirect(url, 302)
