@@ -1,5 +1,6 @@
 from functools import wraps
 import flask
+import tasks.config as config
 
 #------------------------------------------------------
 # Session key names for the session
@@ -7,7 +8,6 @@ import flask
 class SessionKeys:
     EMAIL    = 'email'
     PASSWORD = 'password'
-
 
 #------------------------------------------------------
 # Decorator function that verifies that the user's session variables are set.
@@ -19,8 +19,9 @@ def login_required(f):
     def wrap(*args, **kwargs):
         # if user is not logged in, redirect to login page
         if not flask.session:
-            prefix = flask.current_app.config.get('URL_GUI')
-            url = f'{prefix}login'
+            prefix = config.get_config().URL_GUI
+            suffix = flask.url_for('auth.login')
+            url    = f'{prefix}/{suffix}'
 
             # return flask.redirect('/login', 302)
             return flask.redirect(url, 302)
@@ -32,7 +33,6 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return wrap
-
 
 
 #------------------------------------------------------

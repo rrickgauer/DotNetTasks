@@ -17,29 +17,20 @@ export class LoginPageForm
 
     /**
      * Validates the form.
-     * @returns {Boolean}
+     * @returns {Boolean} form is valid
      */
-    isValid = () => {
-        return Utililties.validateForm(this.form);
-    }
-
-
-
+    isValid = () => Utililties.validateForm(this.form);
 }
 
 
-LoginPageForm.Html = {
-    
+LoginPageForm.Html = {    
     FORM: 'login-form',
-    
-    
+
     Inputs: {
         EMAIL: 'login-form-input-email',
         PASSWORD: 'login-form-input-password',
     },
-
-
-
+    
     Buttons: {
         SUBMIT: 'login-form-btn-submit',
     }

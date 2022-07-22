@@ -10,24 +10,40 @@ let m_loginForm = new LoginPageForm();
  * Main logic
  */
 $(document).ready(function() {
-    // m_loginForm = LoginPageForm();
     addListeners();
 });
 
-/** Add the event listeners to the page */
+
+/** 
+ * Add the event listeners to the page 
+ */
 function addListeners() {
-    $(m_loginForm.submitBtn).on('click', loginUser);
+
+    // login form submission 
+    $(m_loginForm.form).on('submit', function(event) {
+        loginUser(event);
+    });
 }
 
-/** Log the user in */
-async function loginUser() {
+/**
+ * Log the user in.
+ * 
+ * If the login credentials were valid, redirect the user to the home page.
+ * 
+ * @param {Event} formSubmitEvent - event raised from the login form submission
+ */
+async function loginUser(formSubmitEvent) {
+    formSubmitEvent.preventDefault();
+
     const successfulLogin = await attemptToLogin();
 
     if (!successfulLogin) {
+        alert('Invalid login attempt');
         return;
     }
 
     // redirect to home page
+    window.location.href = '/app';
 }
 
 /**
@@ -40,9 +56,7 @@ async function attemptToLogin() {
     }
 
     const api = new ApiLogin(m_loginForm.getEmailValue(), m_loginForm.getPasswordValue());
-
     const apiResponse = await api.login();
-
     return apiResponse.ok;
 }
 

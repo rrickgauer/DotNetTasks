@@ -15,7 +15,6 @@ from .base import ConfigBase
 class ConfigProduction(ConfigBase):
     pass
 
-
 #------------------------------------------------------
 # Provide any overrides needed for development
 #------------------------------------------------------
@@ -25,5 +24,3 @@ class ConfigDev(ConfigBase):
     # SECRET_KEY_GUI = b'73fT427SmZ/TQhl7lVRvd2fSMHW+LdNPxfS+2xHtn9wjCzSy7OouBvsgoQHbtlfoTUiJUASknvIDWZ35qqoF5g=='
     
     # URL_API = 'http://127.0.0.1:5010/v1'
- 
-
