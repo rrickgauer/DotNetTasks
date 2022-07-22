@@ -78,11 +78,4 @@ class SerializerBase:
         return model
 
 
-
-# class StocksLibSearchResponseSerializer(SerializerBase):
-#     DomainModel = stockslib.StocksApiSearchResponse
-
-#     def serialize(self) -> stockslib.StocksApiSearchResponse:
-#         return super().serialize()
-
         

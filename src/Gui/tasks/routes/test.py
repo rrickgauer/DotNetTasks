@@ -20,5 +20,5 @@ bp_test = flask.Blueprint('test', __name__)
 #------------------------------------------------------
 @bp_test.route('')
 def test():
-    return flask.render_template('pages/home/index.html')
+    return flask.render_template('pages/auth/login.html')
     

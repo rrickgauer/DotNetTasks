@@ -1,0 +1,32 @@
+{#
+This is the base template that should be used for all pages.
+
+It has these blocks:
+
+    - title
+    - header
+    - content
+    - footer
+#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        {% block title %}Tasks{% endblock %}
+    </title>
+
+    {% include 'includes/header.html' %}
+    {% block header %}{% endblock %}
+
+</head>
+<body>
+    
+    {% block content %}
+    {% endblock %}
+
+    {% include 'includes/footer.html' %}
+    
+    {% block footer %}{% endblock %}
+</body>
+</html>
