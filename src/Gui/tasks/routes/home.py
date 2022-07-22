@@ -8,7 +8,6 @@ Url Prefix: /app
 
 from __future__ import annotations
 import flask
-
 from tasks.common import security
 
 # module blueprint

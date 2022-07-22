@@ -1,3 +1,11 @@
+"""
+**********************************************************************************************
+Security module.
+
+Handles logic related to authorization and session values.
+**********************************************************************************************
+"""
+
 from functools import wraps
 import flask
 import tasks.config as config
@@ -17,13 +25,15 @@ class SessionKeys:
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
+        
         # if user is not logged in, redirect to login page
         if not flask.session:
+            # build the url for the login page
             prefix = config.get_config().URL_GUI
             suffix = flask.url_for('auth.login')
             url    = f'{prefix}/{suffix}'
 
-            # return flask.redirect('/login', 302)
+            # redirect them to the login page
             return flask.redirect(url, 302)
 
         # set the flask g object
