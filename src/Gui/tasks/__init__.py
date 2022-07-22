@@ -20,7 +20,7 @@ from .config import get_correct_config_class
 #------------------------------------------------------
 def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_test, url_prefix='/test')
-
+    flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
 
 
 # Main logic

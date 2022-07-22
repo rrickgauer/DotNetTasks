@@ -20,7 +20,7 @@ class RollupConfig
 
 
 const configs = [
-    new RollupConfig('custom/pages/login/index.js', 'dist/login.bundle.js'),
+    new RollupConfig('custom/pages/auth/index.js', 'dist/auth.bundle.js'),
     new RollupConfig('custom/pages/home/index.js', 'dist/home.bundle.js'),
 ];
 
