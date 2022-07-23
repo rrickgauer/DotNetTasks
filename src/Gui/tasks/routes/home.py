@@ -21,6 +21,7 @@ bp_home = flask.Blueprint('home', __name__)
 @bp_home.route('')
 # @security.login_required
 def landing_page():
+    # return 'hi'
     endpoint = flask.url_for('.home_page')
     url = utilities.build_gui_url(endpoint)
     return flask.redirect(url, 302)
