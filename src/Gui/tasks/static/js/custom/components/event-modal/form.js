@@ -1,6 +1,6 @@
 
 
-import { EventModalFormValues } from "../../domain/models/event-modal-form-values";
+import { EventModalFormValues } from "../../domain/forms/event-modal-form-values";
 
 /**
  * This class represents all the inputs for the event modal form

@@ -10,7 +10,8 @@ const eventModal = new EventModal();
  * Page entry point
  */
 $(document).ready(function() {
-    eventModal.init();
+    // eventModal.init();
+    eventModal.listenForEventFormSubmissions();
 });
 
 

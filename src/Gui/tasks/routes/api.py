@@ -9,11 +9,13 @@ api endpoints
 """
 
 from __future__ import annotations
+from uuid import UUID
 import flask
 # import requests
 import requests
 from tasks.config import get_config
 from tasks.common import security
+import flaskforward
 
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
@@ -24,10 +26,6 @@ bp_api = flask.Blueprint('api', __name__)
 #------------------------------------------------------
 @bp_api.post('login')
 def login():
-
-    print(flask.session.get(security.SessionKeys.EMAIL))
-    print(flask.session.get(security.SessionKeys.PASSWORD))
-
     security.clear_session_values()
 
     email = flask.request.form.get('email') or None
@@ -52,7 +50,21 @@ def login():
 
     return ('', api_response.status_code)
 
-    
+
+@bp_api.put('events/<uuid:event_id>')
+@security.login_required
+def modify_event(event_id: UUID):
+    config = get_config()
+    data   = flask.request.form
+
+    response = requests.put(
+        url    = f'{config.URL_API}/events/{event_id}',
+        auth   = (flask.g.email, flask.g.password),
+        data   = data,
+        verify = False,
+    )
+
+    return (response.text, response.status_code)
 
 
     

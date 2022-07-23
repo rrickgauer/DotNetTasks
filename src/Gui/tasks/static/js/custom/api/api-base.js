@@ -7,6 +7,7 @@ const URL_PREFIX = '/api';
 
 export const ApiEndpoints = {
     LOGIN: `${URL_PREFIX}/login`,
+    EVENTS: `${URL_PREFIX}/events`,
 }
 
 export const HttpMethods = {

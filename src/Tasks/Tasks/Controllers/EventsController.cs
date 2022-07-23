@@ -17,6 +17,7 @@ namespace Tasks.Controllers
     {
         private readonly IConfigs _configuration;
         private readonly IEventServices _eventServices;
+        private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
 
         /// <summary>
         /// Constructor
@@ -87,9 +88,9 @@ namespace Tasks.Controllers
             Event? existingEvent = _eventServices.GetEvent(eventId);
 
             // check if an event with this id already exists or is owned by another user
-            if (!_eventServices.ClientOwnsEvent(existingEvent))
+            if (existingEvent != null && existingEvent.UserId != CurrentUserId)
             {
-                return NotFound();
+                return Forbid();
             }
 
             // set the event to the id in the url and save it
