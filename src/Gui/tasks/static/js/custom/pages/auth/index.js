@@ -2,9 +2,9 @@
 
 import { LoginPageForm } from "./page-elements";
 import { ApiLogin } from "../../api/api-login";
+import { SpinnerButton } from "../../helpers/spinner-button";
 
 let m_loginForm = new LoginPageForm();
-
 
 /**
  * Main logic
@@ -18,7 +18,6 @@ $(document).ready(function() {
  * Add the event listeners to the page 
  */
 function addListeners() {
-
     // login form submission 
     $(m_loginForm.form).on('submit', function(event) {
         loginUser(event);
@@ -35,9 +34,14 @@ function addListeners() {
 async function loginUser(formSubmitEvent) {
     formSubmitEvent.preventDefault();
 
+    const spinner = new SpinnerButton(m_loginForm.submitBtn);
+    spinner.showSpinner();
+
     const successfulLogin = await attemptToLogin();
 
-    if (!successfulLogin) {
+    spinner.reset();
+
+    if (!successfulLogin) {    
         alert('Invalid login attempt');
         return;
     }

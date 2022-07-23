@@ -1,7 +1,6 @@
 
 import { Utililties } from "../../helpers/utilities";
 
-
 export class LoginPageForm
 {
     constructor()
