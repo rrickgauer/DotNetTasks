@@ -98,6 +98,17 @@ namespace Tasks.Services.Implementations
             return events.ToList();
         }
 
+
+        public async Task<List<Event>> GetUserEventsAsync()
+        {
+            var clientUserId = GetCurrentUserId();
+            var table = await _eventRepository.GetUserEventsAsync(clientUserId.Value);
+            var events = from dataRow in table.AsEnumerable() select EventMapper.ToModel(dataRow);
+
+            return events.ToList();
+        }
+
+
         /// <summary>
         /// Modify the specified event
         /// </summary>
@@ -116,7 +127,15 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         private Guid? GetCurrentUserId()
         {
-            return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
+            Guid? userId = null;
+            
+            var context = _httpContextAccessor.HttpContext;
+            if (context != null)
+            {
+                userId = SecurityMethods.GetUserIdFromRequest(context.Request);
+            }
+
+            return userId;
         }
 
         /// <summary>

@@ -68,6 +68,18 @@ namespace Tasks.Repositories.Implementations
             return connection.FetchAll(command);
         }
 
+
+        public async Task<DataTable> GetUserEventsAsync(Guid userId)
+        {
+            DbConnection connection = new(_configs);
+            MySqlCommand command = BuildCommandForGetUserEvents(userId);
+            var results = await connection.FetchAllAsync(command);
+
+            return results;
+        }
+
+
+
         /// <summary>
         /// Build the MySqlCommand object for GetEvents
         /// </summary>
@@ -147,5 +159,7 @@ namespace Tasks.Repositories.Implementations
 
             return conn.Fetch(cmd);
         }
+
+
     }
 }
