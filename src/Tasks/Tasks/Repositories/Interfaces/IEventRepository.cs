@@ -17,9 +17,13 @@ namespace Tasks.Repositories.Interfaces
         public Task<DataTable> GetUserEventsAsync(Guid userId);
 
 
+        public DataRow? GetEvent(Guid eventId);
+        public Task<DataRow?> GetEventAsync(Guid eventId);
+
+
         public int DeleteEvent(Guid eventId);
         public int ModifyEvent(Event e);
-        public DataRow? GetEvent(Guid eventId);
+        
 
     }
 }

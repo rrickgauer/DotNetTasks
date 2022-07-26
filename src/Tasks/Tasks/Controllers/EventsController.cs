@@ -138,14 +138,6 @@ namespace Tasks.Controllers
         /// GET: /events
         /// </summary>
         /// <returns></returns>
-        //[HttpGet]
-        //public ActionResult<List<Event>> GetEvents()
-        //{
-        //    var userEvents = _eventServices.GetUserEvents();
-        //    return Ok(userEvents);
-        //}
-
-
         [HttpGet]
         public async Task<ActionResult<List<Event>>> GetEventsAsync()
         {
@@ -164,9 +156,22 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public ActionResult<Event> GetEvent(Guid eventId)
+        //public ActionResult<Event> GetEvent(Guid eventId)
+        //{
+        //    var e = _eventServices.GetUserEvent(eventId);
+        //    if (e == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(e);
+        //}
+
+
+        public async Task<ActionResult<Event>> GetEventAsync(Guid eventId)
         {
-            var e = _eventServices.GetUserEvent(eventId);
+            var e = await _eventServices.GetUserEventAsync(eventId);
+
             if (e == null)
             {
                 return NotFound();

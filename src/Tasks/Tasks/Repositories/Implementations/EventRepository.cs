@@ -160,6 +160,23 @@ namespace Tasks.Repositories.Implementations
             return conn.Fetch(cmd);
         }
 
+        /// <summary>
+        /// Get the specified event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public async Task<DataRow?> GetEventAsync(Guid eventId)
+        {
+            DbConnection connection = new(_configs);
+            
+            MySqlCommand command = new(SqlStatements.SELECT_BY_ID);
+            command.Parameters.AddWithValue("@id", eventId);
+
+            var result = await connection.FetchAsync(command);
+
+            return result;
+        }
+
 
     }
 }

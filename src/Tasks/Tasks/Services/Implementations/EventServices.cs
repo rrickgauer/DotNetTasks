@@ -66,6 +66,30 @@ namespace Tasks.Services.Implementations
         }
 
         /// <summary>
+        /// Get the event that is owned by the current client id
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public async Task<Event?> GetUserEventAsync(Guid eventId)
+        {
+            DataRow? dr = await _eventRepository.GetEventAsync(eventId);
+
+            if (dr == null)
+            {
+                return null;
+            }
+
+            Event theEvent = EventMapper.ToModel(dr);
+
+            if (theEvent.UserId != GetCurrentUserId())
+            {
+                return null;
+            }
+
+            return theEvent;
+        }
+
+        /// <summary>
         /// Get the specified event.
         /// Returns null if the event id does not exist.
         /// </summary>
@@ -130,6 +154,7 @@ namespace Tasks.Services.Implementations
             Guid? userId = null;
             
             var context = _httpContextAccessor.HttpContext;
+
             if (context != null)
             {
                 userId = SecurityMethods.GetUserIdFromRequest(context.Request);

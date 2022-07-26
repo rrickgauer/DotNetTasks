@@ -20,8 +20,13 @@ namespace Tasks.Services.Interfaces
         public Task<List<Event>> GetUserEventsAsync();
 
 
-        public Event? GetEvent(Guid eventId);
         public Event? GetUserEvent(Guid eventId);
+        public Task<Event?> GetUserEventAsync(Guid eventId);
+
+
+
+        public Event? GetEvent(Guid eventId);
+        
         public bool DeleteEvent(Guid eventId);
         public Event UpdateEvent(Event eventData);
         public Event CreateNewEvent(Event eventData);
