@@ -9,6 +9,7 @@ Url Prefix: /
 from __future__ import annotations
 import flask
 from tasks.common import security, utilities
+from tasks import services
 
 # module blueprint
 bp_home = flask.Blueprint('home', __name__)
@@ -33,5 +34,8 @@ def landing_page():
 @bp_home.route('app')
 @security.login_required
 def home_page():
-    return flask.render_template('pages/home/index.html')
+
+    data = services.routines.get_home_page_data()
+
+    return flask.render_template('pages/home/index.html', data=data)
     
