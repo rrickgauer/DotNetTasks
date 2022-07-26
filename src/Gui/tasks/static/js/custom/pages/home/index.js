@@ -24,10 +24,7 @@ function addListeners() {
         eventModal.createNewEvent();
     });
 
-    // set the current recurrences date to today's value
-    recurrencesBoardController.actionButtons.todayButton.addEventListener('click', function(e) {
-        recurrencesBoardController.setDateValueToday();
-    });
+    recurrencesBoardController.addListeners();
 
     // listen for event modal form submission
     eventModal.listenForEventFormSubmissions();
