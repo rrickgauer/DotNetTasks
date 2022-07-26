@@ -109,6 +109,33 @@ namespace Tasks.Repositories.Implementations
             return connection.Modify(command);
         }
 
+
+
+        public async Task<int> DeleteEventAsync(Guid eventId)
+        {
+            MySqlCommand command = new(SqlStatements.DELETE);
+            command.Parameters.Add(new("@id", eventId));
+
+            DbConnection connection = new(_configs);
+
+            var result = await connection.ModifyAsync(command);
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Modify the specified event
         /// </summary>
@@ -125,6 +152,39 @@ namespace Tasks.Repositories.Implementations
             // execute the query
             return connection.Modify(cmd);
         }
+
+
+
+        public async Task<int> ModifyEventAsync(Event e)
+        {
+            // make a new connection
+            DbConnection connection = new(_configs);
+
+            // create a new sql command loaded with all the parms from the event argument
+            MySqlCommand cmd = SetupModifyEventMySqlCommand(e);
+
+            // execute the query
+            var result = await connection.ModifyAsync(cmd);
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// setup a new stored procedure command for the Modify event method
@@ -176,6 +236,8 @@ namespace Tasks.Repositories.Implementations
 
             return result;
         }
+
+
 
 
     }

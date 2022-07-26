@@ -17,19 +17,23 @@ namespace Tasks.Services.Interfaces
 
 
         public List<Event> GetUserEvents();
-        public Task<List<Event>> GetUserEventsAsync();
-
-
         public Event? GetUserEvent(Guid eventId);
-        public Task<Event?> GetUserEventAsync(Guid eventId);
-
-
-
         public Event? GetEvent(Guid eventId);
-        
         public bool DeleteEvent(Guid eventId);
         public Event UpdateEvent(Event eventData);
         public Event CreateNewEvent(Event eventData);
+
+
+        public Task<List<Event>> GetUserEventsAsync();
+        public Task<Event?> GetUserEventAsync(Guid eventId);
+        public Task<Event?> GetEventAsync(Guid eventId);
+        public Task<bool> DeleteEventAsync(Guid eventId);
+        public Task<Event> UpdateEventAsync(Event eventData);
+        public Task<Event> CreateNewEventAsync(Event eventData);
+        public Task<bool> ClientOwnsEventAsync(Event? e);
+        public Task<bool> ClientOwnsEventAsync(Guid eventId);
+
+
         public bool ClientOwnsEvent(Event? e);
         public bool ClientOwnsEvent(Guid eventId);
     }
