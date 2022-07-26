@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasks.Configurations;
+using Tasks.Domain.Models;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 
@@ -38,15 +39,16 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpPut("{eventId}/{onDate}")]
-        public ActionResult<string> CreateCompletion([FromRoute]Guid eventId, [FromRoute]DateTime onDate)
+        public async Task<ActionResult<EventAction>> CreateCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            if (!_eventServices.ClientOwnsEvent(eventId))
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            if (!clientOwnsEvent)
             {
                 return NotFound();
             }
 
-            var newCompletion = _eventCompletionServices.SaveEventCompletion(eventId, onDate);
+            var newCompletion = await _eventCompletionServices.SaveEventCompletionAsync(eventId, onDate);
 
             return Ok(newCompletion);
         }
@@ -57,16 +59,17 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpDelete("{eventId}/{onDate}")]
-        public IActionResult DeleteCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
+        public async Task<IActionResult> DeleteCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            if (!_eventServices.ClientOwnsEvent(eventId))
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            if (!clientOwnsEvent)
             {
                 return NotFound();
             }
 
-            var recordDeleted = _eventCompletionServices.DeleteEventCompletion(eventId, onDate);
 
+            var recordDeleted = await _eventCompletionServices.DeleteEventCompletionAsync(eventId, onDate);
             if (!recordDeleted)
             {
                 return NotFound();
@@ -75,7 +78,6 @@ namespace Tasks.Controllers
             return NoContent();
         }
 
-
         /// <summary>
         /// GET: /completions/:eventId/:onDate
         /// </summary>
@@ -83,15 +85,16 @@ namespace Tasks.Controllers
         /// <param name="onDate"></param>
         /// <returns></returns>
         [HttpGet("{eventId}/{onDate}")]
-        public ActionResult<string> GetCompletion([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
+        public async Task<ActionResult<EventAction>> GetCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            if (!_eventServices.ClientOwnsEvent(eventId))
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            if (!clientOwnsEvent)
             {
                 return NotFound();
             }
 
-            var eventCompletion = _eventCompletionServices.GetEventCompletion(eventId, onDate);
+            var eventCompletion = await _eventCompletionServices.GetEventCompletionAsync(eventId, onDate);
 
             if (eventCompletion == null)
             {

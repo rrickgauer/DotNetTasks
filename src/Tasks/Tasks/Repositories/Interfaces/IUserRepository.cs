@@ -4,6 +4,6 @@ namespace Tasks.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        public User? GetUser(string email, string password);
+        public Task<User?> GetUserAsync(string email, string password);
     }
 }

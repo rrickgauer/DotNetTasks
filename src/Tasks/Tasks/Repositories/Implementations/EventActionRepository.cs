@@ -59,28 +59,20 @@ namespace Tasks.Repositories.Implementations
             _dbConnection = new(_configs);
         }
 
-        /// <summary>
-        /// Save or insert the event
-        /// </summary>
-        /// <param name="eventAction"></param>
-        /// <returns></returns>
-        public int ModifyEventAction(EventAction eventAction)
+        
+        public async Task<int> ModifyEventActionAsync(EventAction eventAction)
         {
             // map the EventAction argument's values to the sql named params
             MySqlCommand command = new(SqlStatements.MODIFY);
-            
+
             SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
             parmsMap.AddParmsToCommand(command);
 
-            return _dbConnection.Modify(command);
+            var result =  await _dbConnection.ModifyAsync(command);
+            return result;
         }
 
-        /// <summary>
-        /// Delete an event action
-        /// </summary>
-        /// <param name="eventAction"></param>
-        /// <returns></returns>
-        public int DeleteEventAction(EventAction eventAction)
+        public async Task<int> DeleteEventActionAsync(EventAction eventAction)
         {
             // map the EventAction argument's values to the sql named params
             MySqlCommand command = new(SqlStatements.DELETE);
@@ -89,10 +81,11 @@ namespace Tasks.Repositories.Implementations
             parmsMap.Parms.Remove("@created_on");
             parmsMap.AddParmsToCommand(command);
 
-            return _dbConnection.Modify(command);
+            var result = await _dbConnection.ModifyAsync(command);
+            return result;
         }
 
-        public DataRow? GetEventAction(EventAction eventAction)
+        public async Task<DataRow?> GetEventActionAsync(EventAction eventAction)
         {
             // map the EventAction argument's values to the sql named params
             MySqlCommand command = new(SqlStatements.SELECT);
@@ -101,7 +94,8 @@ namespace Tasks.Repositories.Implementations
             parmsMap.Parms.Remove("@created_on");
             parmsMap.AddParmsToCommand(command);
 
-            return _dbConnection.Fetch(command);
+            var result = await _dbConnection.FetchAsync(command);
+            return result;
         }
     }
 }

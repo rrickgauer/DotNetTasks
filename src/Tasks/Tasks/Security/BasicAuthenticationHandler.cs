@@ -43,7 +43,7 @@ namespace Tasks.Security
                 var username = credentials[0];
                 var password = credentials[1];
                 
-                user = _userRepository.GetUser(username, password);
+                user = await _userRepository.GetUserAsync(username, password);
             }
             catch(Exception ex)
             {
