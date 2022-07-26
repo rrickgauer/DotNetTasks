@@ -14,26 +14,29 @@ export class Utililties
 
     /**
      * Generate a new UUID
-     * @returns {string}
+     * @returns {string} the uuid
      */
     static getNewUUID() {
         return uuidv4();
     }
 
-    /**
-     * Map the specified object to a FormData object
-     * @param {Object} canidateObject - the object to map
-     * @returns {FormData} the form data
-     */
-    static toFormData(canidateObject) {
-        // const formData = new FormData();
-        const formData = new URLSearchParams();
-
-        for (const key in canidateObject) {
-            formData.append(key, canidateObject[key]);
+    
+    static isNullOrEmpty(val) {
+        if (val == undefined) {
+            return true;
         }
-
-        return formData;
+        else if (val == null) {
+            return true;
+        }
+        else if (val == "") {
+            return true;
+        }
+        else if (val.length == 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

@@ -9,6 +9,18 @@
 
     <h1>Home page</h1>
 
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-create-new-event">Create new event</button>
+
+
+    {% include 'components/event-modal/container.html' %}
+
 </div>
 
 {% endblock %}
+
+
+{% block footer %}
+    <script src="/static/js/dist/home.bundle.js"></script>
+{% endblock %}  
