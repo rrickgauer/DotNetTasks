@@ -24,19 +24,24 @@ export class EventModal
         });
     }
 
+    /**
+     * Submit the event form.
+     */
     _submitForm = async () => {
         const model = this._getEventModelFromFormValues(Utililties.getNewUUID());
-
-        console.log(model);
-        return;
 
         // send request
         const api = new ApiEvents();
         const response = await api.put(model);
 
         if (response.ok) {
+            EventModalActions.hideModal();
+            EventModalActions.resetForm();
+
             const responseBody = await response.json();
-            console.log(responseBody);
+        }
+        else {
+            console.error(await response.text());
         }
     }
     
@@ -60,11 +65,18 @@ export class EventModal
     //#endregion
 
     
+    /**
+     * View an event in the modal
+     * @param {string} eventId - the event id to view
+     */
     viewEvent = (eventId) => {
         EventModalActions.setModalEventIdAttribute(eventId);
         EventModalActions.showModal();
     }
 
+    /**
+     * Create a new event in the modal.
+     */
     createNewEvent = () => {
         const newEventId = Utililties.getNewUUID();
         EventModalActions.setModalEventIdAttribute(newEventId);
