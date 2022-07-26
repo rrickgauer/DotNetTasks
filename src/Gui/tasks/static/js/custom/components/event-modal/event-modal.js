@@ -27,6 +27,9 @@ export class EventModal
     _submitForm = async () => {
         const model = this._getEventModelFromFormValues(Utililties.getNewUUID());
 
+        console.log(model);
+        return;
+
         // send request
         const api = new ApiEvents();
         const response = await api.put(model);

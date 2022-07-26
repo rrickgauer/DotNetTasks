@@ -21,7 +21,6 @@ function addListeners() {
         eventModal.createNewEvent();
     });
 
-
     eventModal.listenForEventFormSubmissions();
 }
 

@@ -33,7 +33,7 @@ export class EventModalForm
         const values = new EventModalFormValues();
 
         values.name            = this.inputName.value;
-        values.phone           = this.inputPhone.value;
+        values.phoneNumber     = this.inputPhone.value;
         values.location        = this.inputLocation.value;
         values.startsOn        = this.inputStartsOn.value;
         values.endsOn          = this.inputEndsOn.value;
@@ -48,25 +48,3 @@ export class EventModalForm
         return values;
     }
 }
-
-
-// EventModalForm.Html = 
-// {
-//     FORM: 'event-modal-form',
-//     INPUTS_CLASS: 'event-modal-form-input',
-
-//     Inputs: {
-//         NAME            : 'event-modal-form-input-name',
-//         PHONE           : 'event-modal-form-input-phone',
-//         LOCATION        : 'event-modal-form-input-location',
-//         STARTS_ON       : 'event-modal-form-input-starts-on',
-//         ENDS_ON         : 'event-modal-form-input-ends-on',
-//         STARTS_AT       : 'event-modal-form-input-starts-at',
-//         ENDS_AT         : 'event-modal-form-input-ends-at',
-//         FREQUENCY       : 'event-modal-form-input-frequency',
-//         SEPARATION      : 'event-modal-form-input-separation',
-//         RECURRENCE_DAY  : 'event-modal-form-input-recurrence-day',
-//         RECURRENCE_WEEK : 'event-modal-form-input-recurrence-week',
-//         RECURRENCE_MONTH: 'event-modal-form-input-recurrence-month',
-//     },
-// }

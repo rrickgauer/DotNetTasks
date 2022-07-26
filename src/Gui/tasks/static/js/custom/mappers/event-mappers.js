@@ -15,7 +15,7 @@ export class EventMapper
         const model = new Event();
 
         model.name            = Utililties.isNullOrEmpty(eventModalFormValues.name) ? null : eventModalFormValues.name;
-        model.phone           = Utililties.isNullOrEmpty(eventModalFormValues.phone) ? null : eventModalFormValues.phone;
+        model.phoneNumber     = Utililties.isNullOrEmpty(eventModalFormValues.phoneNumber) ? null : eventModalFormValues.phoneNumber;
         model.location        = Utililties.isNullOrEmpty(eventModalFormValues.location) ? null : eventModalFormValues.location;
         model.startsAt        = Utililties.isNullOrEmpty(eventModalFormValues.startsAt) ? null : eventModalFormValues.startsAt;
         model.endsAt          = Utililties.isNullOrEmpty(eventModalFormValues.endsAt) ? null : eventModalFormValues.endsAt;

@@ -6,7 +6,7 @@ export class EventModalFormValues
 {
     constructor() {
         this.name            = null;
-        this.phone           = null;
+        this.phoneNumber           = null;
         this.location        = null;
         this.startsOn        = null;
         this.endsOn          = null;
