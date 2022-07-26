@@ -32,12 +32,13 @@ namespace Tasks.Repositories.Implementations
             _dbConnection = new(configs);
         }
 
+
         /// <summary>
-        /// Get the recurrences for the user in the timestamp
+        /// Get the recurrences from the database
         /// </summary>
         /// <param name="recurrenceRetrieval"></param>
         /// <returns></returns>
-        public DataTable GetRecurrences(RecurrenceRetrieval recurrenceRetrieval)
+        public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
         {
             // setup a new stored procedure command 
             MySqlCommand command = new(SqlStatements.GET_RECURRENCES)
@@ -48,15 +49,16 @@ namespace Tasks.Repositories.Implementations
             var map = RecurrenceMapper.ToSqlCommandParmsMap(recurrenceRetrieval);
             map.AddParmsToCommand(command);
 
-            return _dbConnection.FetchAll(command);
+            var result = await _dbConnection.FetchAllAsync(command);
+            return result;
         }
 
         /// <summary>
-        /// Get all recurrences for the specified event
+        /// Get the recurrences for a single event from the database
         /// </summary>
         /// <param name="eventRecurrenceRetrieval"></param>
         /// <returns></returns>
-        public DataTable GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+        public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
             // setup a new stored procedure command 
             MySqlCommand command = new(SqlStatements.GET_EVENT_RECURRENCES)
@@ -67,9 +69,8 @@ namespace Tasks.Repositories.Implementations
             var map = RecurrenceMapper.ToSqlCommandParmsMap(eventRecurrenceRetrieval);
             map.AddParmsToCommand(command);
 
-            return _dbConnection.FetchAll(command);
+            var result = await _dbConnection.FetchAllAsync(command);
+            return result;
         }
-
-
     }
 }

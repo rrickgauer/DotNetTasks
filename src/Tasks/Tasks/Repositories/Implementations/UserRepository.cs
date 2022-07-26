@@ -41,24 +41,26 @@ namespace Tasks.Repositories.Implementations
         }   
 
         /// <summary>
-        /// Get a user domain model by using the specified email and password
+        /// Get the user from the email/password combination.
         /// </summary>
-        /// <param name="email">User's email</param>
-        /// <param name="password">User's password</param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
-        public User? GetUser(string email, string password)
+        public async Task<User?> GetUserAsync(string email, string password)
         {
             // setup a new sql command
             MySqlCommand cmd = GetMySqlCommandForGetUserWithEmailPassword(email, password);
 
             // fetch the record from the database
-            DataRow? record = _dbConnection.Fetch(cmd);
+            DataRow? record = await _dbConnection.FetchAsync(cmd);
 
             // map the user to the record's values if the datarow is not null
             User? user = record != null ? UserMapper.ToModel(record) : null;
 
             return user;
         }
+
+
 
         /// <summary>
         /// Get a MySqlCommand for the GetUser method.
@@ -76,5 +78,7 @@ namespace Tasks.Repositories.Implementations
 
             return cmd;
         }
+
+
     }
 }

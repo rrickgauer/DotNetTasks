@@ -18,13 +18,24 @@ namespace Tasks.Repositories
             return $"server={configs.DB_SERVER};user={configs.DB_USER};database={configs.DB_DATABASE};password={configs.DB_PASSWORD}";
         }
 
-        public static DataTable LoadDataTable(MySqlCommand cmd)
+        public static DataTable LoadDataTable(MySqlCommand command)
         {
-            DataTable dt = new();
+            DataTable dataTable = new();
             
-            dt.Load(cmd.ExecuteReader());
+            dataTable.Load(command.ExecuteReader());
             
-            return dt;
+            return dataTable;
+        }
+
+
+        public static async Task<DataTable> LoadDataTableAsync(MySqlCommand command)
+        {
+            DataTable dataTable = new();
+
+            var reader = await command.ExecuteReaderAsync();
+            dataTable.Load(reader);
+
+            return dataTable;
         }
     }
 }

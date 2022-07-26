@@ -23,30 +23,27 @@ namespace Tasks.Services.Implementations
         }
 
         /// <summary>
-        /// Get the recurrences for the specific event
+        /// Get the recurrences 
         /// </summary>
         /// <param name="recurrenceRetrieval"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public List<Recurrence> GetRecurrences(RecurrenceRetrieval recurrenceRetrieval)
+        public async Task<List<Recurrence>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
         {
-            DataTable recurrencesTable = _recurrenceRepository.GetRecurrences(recurrenceRetrieval);
+            DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(recurrenceRetrieval);
 
             return RecurrenceMapper.ToModels(recurrencesTable);
         }
 
         /// <summary>
-        /// Get the event recurrences for the user
+        /// Get the event recurrences
         /// </summary>
         /// <param name="eventRecurrenceRetrieval"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public List<Recurrence> GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+        public async Task<List<Recurrence>> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
-            DataTable recurrencesTable = _recurrenceRepository.GetEventRecurrences(eventRecurrenceRetrieval);
+            DataTable recurrencesTable = await _recurrenceRepository.GetEventRecurrencesAsync(eventRecurrenceRetrieval);
 
             return RecurrenceMapper.ToModels(recurrencesTable);
         }
-
     }
 }

@@ -5,7 +5,7 @@ namespace Tasks.Services.Interfaces
 {
     public interface IRecurrenceServices
     {
-        public List<Recurrence> GetRecurrences(RecurrenceRetrieval recurrenceRetrieval);
-        public List<Recurrence> GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval);
+        public Task<List<Recurrence>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval);
+        public Task<List<Recurrence>> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval);
     }
 }

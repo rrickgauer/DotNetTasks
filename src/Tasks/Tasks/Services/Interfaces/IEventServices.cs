@@ -4,13 +4,13 @@ namespace Tasks.Services.Interfaces
 {
     public interface IEventServices
     {
-        public List<Event> GetUserEvents();
-        public Event? GetEvent(Guid eventId);
-        public Event? GetUserEvent(Guid eventId);
-        public bool DeleteEvent(Guid eventId);
-        public Event UpdateEvent(Event eventData);
-        public Event CreateNewEvent(Event eventData);
-        public bool ClientOwnsEvent(Event? e);
-        public bool ClientOwnsEvent(Guid eventId);
+        public Task<List<Event>> GetUserEventsAsync();
+        public Task<Event?> GetUserEventAsync(Guid eventId);
+        public Task<Event?> GetEventAsync(Guid eventId);
+        public Task<bool> DeleteEventAsync(Guid eventId);
+        public Task<Event> UpdateEventAsync(Event eventData);
+        public Task<Event> CreateNewEventAsync(Event eventData);
+        public Task<bool> ClientOwnsEventAsync(Event? e);
+        public Task<bool> ClientOwnsEventAsync(Guid eventId);
     }
 }

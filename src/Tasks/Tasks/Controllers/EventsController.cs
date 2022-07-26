@@ -30,16 +30,20 @@ namespace Tasks.Controllers
             _eventServices = eventServices;
         }
 
+
         /// <summary>
         /// GET: /events
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<Event>> GetEvents()
+        public async Task<ActionResult<List<Event>>> GetEventsAsync()
         {
-            var userEvents = _eventServices.GetUserEvents();
+            //var userEvents = _eventServices.GetUserEvents();
+            var userEvents = await _eventServices.GetUserEventsAsync();
+
             return Ok(userEvents);
         }
+
 
         /// <summary>
         /// GET: /events/:eventId
@@ -47,9 +51,10 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public ActionResult<Event> GetEvent(Guid eventId)
+        public async Task<ActionResult<Event>> GetEventAsync(Guid eventId)
         {
-            var e = _eventServices.GetUserEvent(eventId);
+            var e = await _eventServices.GetUserEventAsync(eventId);
+
             if (e == null)
             {
                 return NotFound();
@@ -64,9 +69,9 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpDelete("{eventId}")]
-        public IActionResult DeleteEvent(Guid eventId)
+        public async Task<IActionResult> DeleteEventAsync(Guid eventId)
         {
-            var userEvent = _eventServices.GetUserEvent(eventId);
+            var userEvent = await _eventServices.GetUserEventAsync(eventId);
 
             if (userEvent == null)
             {
@@ -83,9 +88,9 @@ namespace Tasks.Controllers
         /// <param name="eventBody"></param>
         /// <returns></returns>
         [HttpPut("{eventId}")]
-        public ActionResult<Event> UpdateEvent(Guid eventId, [FromForm] Event eventBody)
+        public async Task<ActionResult<Event>> UpdateEventAsync(Guid eventId, [FromForm] Event eventBody)
         {
-            Event? existingEvent = _eventServices.GetEvent(eventId);
+            Event? existingEvent = await _eventServices.GetEventAsync(eventId);
 
             // check if an event with this id already exists or is owned by another user
             if (existingEvent != null && existingEvent.UserId != CurrentUserId)
@@ -95,9 +100,10 @@ namespace Tasks.Controllers
 
             // set the event to the id in the url and save it
             eventBody.Id = eventId;
-            _eventServices.UpdateEvent(eventBody);
+            await _eventServices.UpdateEventAsync(eventBody);
 
-            var updatedEvent = _eventServices.GetUserEvent(eventId);
+            var updatedEvent = await _eventServices.GetUserEventAsync(eventId);
+
             if (existingEvent == null)
             {
                 return Created($"{Request.Path}", updatedEvent);    // created a new event
@@ -114,15 +120,13 @@ namespace Tasks.Controllers
         /// <param name="eventFromBody"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<Event> CreateEvent([FromForm] Event eventFromBody)
+        public async Task<ActionResult<Event>> CreateEventAsync([FromForm] Event eventFromBody)
         {
-            Event newEvent = _eventServices.CreateNewEvent(eventFromBody);
+            Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody);
 
             // return it
             return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event
         }
-
-
 
     }
 }

@@ -34,30 +34,31 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public bool DeleteEvent(Guid eventId)
+        public async Task<bool> DeleteEventAsync(Guid eventId)
         {
-            int numRowsAfftected = _eventRepository.DeleteEvent(eventId);
+            int numRowsAfftected = await _eventRepository.DeleteEventAsync(eventId);
 
             return numRowsAfftected > 0;
         }
+
 
         /// <summary>
         /// Get the event that is owned by the current client id
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public Event? GetUserEvent(Guid eventId)
+        public async Task<Event?> GetUserEventAsync(Guid eventId)
         {
-            DataRow? dr = _eventRepository.GetEvent(eventId);
+            DataRow? dr = await _eventRepository.GetEventAsync(eventId);
 
             if (dr == null)
             {
                 return null;
             }
 
-            Event? theEvent = EventMapper.ToModel(dr);
+            Event theEvent = EventMapper.ToModel(dr);
 
-            if (theEvent == null ||  theEvent.UserId != GetCurrentUserId())
+            if (theEvent.UserId != GetCurrentUserId())
             {
                 return null;
             }
@@ -71,29 +72,26 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public Event? GetEvent(Guid eventId)
+        public async Task<Event?> GetEventAsync(Guid eventId)
         {
-            DataRow? dr = _eventRepository.GetEvent(eventId);
+            DataRow? dr = await _eventRepository.GetEventAsync(eventId);
 
             Event? theEvent = dr != null ? EventMapper.ToModel(dr) : null;
 
             return theEvent;
         }
 
+
+
         /// <summary>
         /// Get a list of events owned by the current user
         /// </summary>
         /// <returns></returns>
-        public List<Event> GetUserEvents()
+        public async Task<List<Event>> GetUserEventsAsync()
         {
-            var clientUserId = GetCurrentUserId().Value;
-            var table = _eventRepository.GetUserEvents(clientUserId);
-            var eventDataRows = table.AsEnumerable();
-
-            var events =
-                from dataRow
-                in eventDataRows
-                select EventMapper.ToModel(dataRow);
+            var clientUserId = GetCurrentUserId();
+            var table = await _eventRepository.GetUserEventsAsync(clientUserId.Value);
+            var events = from dataRow in table.AsEnumerable() select EventMapper.ToModel(dataRow);
 
             return events.ToList();
         }
@@ -103,9 +101,10 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public bool ModifyEvent(Event e)
+        public async Task<bool> ModifyEventAsync(Event e)
         {
-            int numRowsAffected = _eventRepository.ModifyEvent(e);
+            int numRowsAffected = await _eventRepository.ModifyEventAsync(e);
+
             return numRowsAffected >= 0;
         }
 
@@ -116,15 +115,25 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         private Guid? GetCurrentUserId()
         {
-            return SecurityMethods.GetUserIdFromRequest(_httpContextAccessor.HttpContext.Request);
+            Guid? userId = null;
+            
+            var context = _httpContextAccessor.HttpContext;
+
+            if (context != null)
+            {
+                userId = SecurityMethods.GetUserIdFromRequest(context.Request);
+            }
+
+            return userId;
         }
+
 
         /// <summary>
         /// Create a new event
         /// </summary>
         /// <param name="eventData"></param>
         /// <returns></returns>
-        public Event CreateNewEvent(Event eventData)
+        public async Task<Event> CreateNewEventAsync(Event eventData)
         {
             Event newEvent = eventData;
 
@@ -133,7 +142,7 @@ namespace Tasks.Services.Implementations
             newEvent.UserId = GetCurrentUserId();
 
             // save it in the database
-            ModifyEvent(newEvent);
+            await ModifyEventAsync(newEvent);
 
             return newEvent;
         }
@@ -144,9 +153,9 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public bool ClientOwnsEvent(Guid eventId)
+        public async Task<bool> ClientOwnsEventAsync(Guid eventId)
         {
-            var e = GetUserEvent(eventId);
+            var e = await GetUserEventAsync(eventId);
 
             if (e == null)
             {
@@ -162,7 +171,7 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public bool ClientOwnsEvent(Event? e)
+        public async Task<bool> ClientOwnsEventAsync(Event? e)
         {
             if (e == null)
             {
@@ -176,18 +185,19 @@ namespace Tasks.Services.Implementations
             return true;
         }
 
+
         /// <summary>
         /// Update the event
         /// </summary>
         /// <param name="eventBody"></param>
         /// <returns></returns>
-        public Event UpdateEvent(Event eventBody)
+        public async Task<Event> UpdateEventAsync(Event eventBody)
         {
             // create a new event object
             eventBody.UserId = GetCurrentUserId();
 
             // save it in the database
-            ModifyEvent(eventBody);
+            await ModifyEventAsync(eventBody);
 
             return eventBody;
         }

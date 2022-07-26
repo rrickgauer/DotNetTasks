@@ -23,35 +23,81 @@ namespace Tasks.Services.Implementations
             _eventActionRepository = eventActionRepository;
         }
 
-        /// <summary>
-        /// Save the event completion
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="eventId"></param>
-        /// <param name="onDate"></param>
-        /// <returns></returns>
-        public EventAction SaveEventCompletion(Guid eventId, DateTime onDate)
-        {
-            EventAction eventAction = new()
-            {
-                EventId         = eventId,
-                CreatedOn       = DateTime.Now,
-                EventActionType = EventActionType.COMPLETION,
-                OnDate          = onDate,
-            };
+        ///// <summary>
+        ///// Save the event completion
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <param name="eventId"></param>
+        ///// <param name="onDate"></param>
+        ///// <returns></returns>
+        //public EventAction SaveEventCompletion(Guid eventId, DateTime onDate)
+        //{
+        //    EventAction eventAction = new()
+        //    {
+        //        EventId         = eventId,
+        //        CreatedOn       = DateTime.Now,
+        //        EventActionType = EventActionType.COMPLETION,
+        //        OnDate          = onDate,
+        //    };
 
-            var numRows = _eventActionRepository.ModifyEventAction(eventAction);
+        //    var numRows = _eventActionRepository.ModifyEventAction(eventAction);
 
-            return eventAction;
-        }
+        //    return eventAction;
+        //}
 
-        /// <summary>
-        /// Delete the event completion
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <param name="onDate"></param>
-        /// <returns></returns>
-        public bool DeleteEventCompletion(Guid eventId, DateTime onDate)
+        ///// <summary>
+        ///// Delete the event completion
+        ///// </summary>
+        ///// <param name="eventId"></param>
+        ///// <param name="onDate"></param>
+        ///// <returns></returns>
+        //public bool DeleteEventCompletion(Guid eventId, DateTime onDate)
+        //{
+        //    EventAction eventAction = new()
+        //    {
+        //        EventId = eventId,
+        //        CreatedOn = DateTime.Now,
+        //        EventActionType = EventActionType.COMPLETION,
+        //        OnDate = onDate,
+        //    };
+
+        //    var numRows = _eventActionRepository.DeleteEventAction(eventAction);
+
+        //    return numRows == 1;
+        //}
+
+        ///// <summary>
+        ///// Returns an event completion object 
+        ///// </summary>
+        ///// <param name="eventId"></param>
+        ///// <param name="onDate"></param>
+        ///// <returns></returns>
+        //public EventAction? GetEventCompletion(Guid eventId, DateTime onDate)
+        //{
+        //    EventAction potentialEventAction = new()
+        //    {
+        //        EventId         = eventId,
+        //        CreatedOn       = DateTime.Now,
+        //        EventActionType = EventActionType.COMPLETION,
+        //        OnDate          = onDate,
+        //    };
+
+        //    DataRow? dataRow = _eventActionRepository.GetEventAction(potentialEventAction);
+        //    EventAction? eventAction = null;
+
+        //    if (dataRow != null)
+        //    {
+        //        eventAction = EventActionMapper.ToModel(dataRow);
+        //    }
+
+        //    return eventAction;
+        //}
+
+
+
+
+
+        public async Task<EventAction> SaveEventCompletionAsync(Guid eventId, DateTime onDate)
         {
             EventAction eventAction = new()
             {
@@ -61,28 +107,38 @@ namespace Tasks.Services.Implementations
                 OnDate = onDate,
             };
 
-            var numRows = _eventActionRepository.DeleteEventAction(eventAction);
+            var numRows = await _eventActionRepository.ModifyEventActionAsync(eventAction);
+
+            return eventAction;
+        }
+
+        public async Task<bool> DeleteEventCompletionAsync(Guid eventId, DateTime onDate)
+        {
+            EventAction eventAction = new()
+            {
+                EventId = eventId,
+                CreatedOn = DateTime.Now,
+                EventActionType = EventActionType.COMPLETION,
+                OnDate = onDate,
+            };
+
+            var numRows = await _eventActionRepository.DeleteEventActionAsync(eventAction);
 
             return numRows == 1;
         }
 
-        /// <summary>
-        /// Returns an event completion object 
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <param name="onDate"></param>
-        /// <returns></returns>
-        public EventAction? GetEventCompletion(Guid eventId, DateTime onDate)
+        public async Task<EventAction?> GetEventCompletionAsync(Guid eventId, DateTime onDate)
         {
             EventAction potentialEventAction = new()
             {
-                EventId         = eventId,
-                CreatedOn       = DateTime.Now,
+                EventId = eventId,
+                CreatedOn = DateTime.Now,
                 EventActionType = EventActionType.COMPLETION,
-                OnDate          = onDate,
+                OnDate = onDate,
             };
 
-            DataRow? dataRow = _eventActionRepository.GetEventAction(potentialEventAction);
+            DataRow? dataRow = await _eventActionRepository.GetEventActionAsync(potentialEventAction);
+
             EventAction? eventAction = null;
 
             if (dataRow != null)

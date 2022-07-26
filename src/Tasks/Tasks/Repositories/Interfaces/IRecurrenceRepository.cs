@@ -5,7 +5,7 @@ namespace Tasks.Repositories.Interfaces
 {
     public interface IRecurrenceRepository
     {
-        public DataTable GetRecurrences(RecurrenceRetrieval recurrenceRetrieval);
-        public DataTable GetEventRecurrences(EventRecurrenceRetrieval eventRecurrenceRetrieval);
+        public Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval);
+        public Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval);
     }
 }

@@ -5,8 +5,8 @@ namespace Tasks.Repositories.Interfaces
 {
     public interface IEventActionRepository
     {
-        public int ModifyEventAction(EventAction eventAction);
-        public int DeleteEventAction(EventAction eventAction);
-        public DataRow? GetEventAction(EventAction eventAction);
+        public Task<int> ModifyEventActionAsync(EventAction eventAction);
+        public Task<int> DeleteEventActionAsync(EventAction eventAction);
+        public Task<DataRow?> GetEventActionAsync(EventAction eventAction);
     }
 }

@@ -46,12 +46,12 @@ namespace Tasks.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<Recurrence>> GetRecurrences([FromQuery] RecurrenceRetrieval retrieval)
+        public async Task<ActionResult<List<Recurrence>>> GetRecurrencesAsync([FromQuery] RecurrenceRetrieval retrieval)
         {
             try
             {
                 ValidateRetrievalRange(retrieval);
-            } 
+            }
             catch (ValidationException err)
             {
                 return BadRequest(err.Message);
@@ -61,7 +61,7 @@ namespace Tasks.Controllers
             retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
 
             // get the recurrences
-            var recurrences = _recurrenceServices.GetRecurrences(retrieval);
+            var recurrences = await _recurrenceServices.GetRecurrencesAsync(retrieval);
 
             return Ok(recurrences);
         }
@@ -72,7 +72,7 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public ActionResult<List<Recurrence>> GetEventRecurrences(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
+        public async Task<ActionResult<List<Recurrence>>> GetEventRecurrencesAsync(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
         {
             try
             {
@@ -84,7 +84,8 @@ namespace Tasks.Controllers
             }
 
             // make sure the user owns the requested event
-            var userEvent = _eventServices.GetUserEvent(eventId);
+            var userEvent = await _eventServices.GetUserEventAsync(eventId);
+
             if (userEvent == null)
             {
                 return NotFound();
@@ -95,7 +96,7 @@ namespace Tasks.Controllers
             retrieval.EventId = eventId;
 
             // get the recurrences
-            var recurrences = _recurrenceServices.GetEventRecurrences(retrieval);
+            var recurrences = await _recurrenceServices.GetEventRecurrencesAsync(retrieval);
 
             return Ok(recurrences);
         }
