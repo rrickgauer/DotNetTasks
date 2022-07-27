@@ -86,6 +86,6 @@ def get_recurrences_in_week(date_val: date):
         recurrences = result.data
     )
 
-    html = flask.render_template('components/recurrence-card/container.html', data=output)
+    html = flask.render_template('components/recurrences-board/container.html', data=output)
 
     return html

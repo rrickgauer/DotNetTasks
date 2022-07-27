@@ -1,12 +1,51 @@
-<div id="recurrences-board-spinner">
-    {% include 'includes/spinner-center.html' %}
+
+
+{% macro recurrences_list_item(recurrence) -%}
+
+<div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
+    <div class="d-flex align-items-center">
+
+        <div class="form-check">
+            <input class="form-check-input position-static" type="checkbox">
+        </div>
+
+        <span>
+            {% if recurrence.starts_at %}[{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}] {% endif %} 
+            {{ recurrence.name }}</span>
+    </div>
+</div>
+
+{%- endmacro %}
+
+
+
+<div class="container my-5" id="recurrences-board-container">
+
+    {% for occurence_date, recurrences in data.recurrences.items() %}
+        
+        <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
+
+            <div class="card-header">
+               {{ occurence_date|format_date(date_format_tokens.DATE_LONG) }}
+            </div>
+
+            <div class="card-body">
+                <div class="daily-recurrences-list">
+                    {% for recurrence in recurrences %}
+                       {{ recurrences_list_item(recurrence) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    {% endfor %}
+
 </div>
 
 
 
-<div class="container mt-5" id="recurrences-board-container">
 
 
-</div>
 
 

@@ -5,3 +5,4 @@ from . import serializers as serializers
 from . import dates as dates
 from .daily_recurrences_map import DailyRecurrenceMap as DailyRecurrenceMap
 from .daily_recurrences_map import DailyRecurrencesMapper as DailyRecurrencesMapper
+from . import template_filters as template_filters 

@@ -11,3 +11,5 @@ class EventRecurrence:
     occurs_on : datetime = None
     starts_at : time     = None
     completed : bool     = None
+
+

@@ -1,8 +1,25 @@
 from __future__ import annotations
+from datetime import datetime
 from tasks.domain import models
 from datetime import date, timedelta
+from enum import Enum
 
 SUNDAY_WEEKDAY_INDEX = 6
+
+class DateFormatTokens(str, Enum):
+    DATE_LONG = "%A %x"     # Tuesday 07/26/22
+    TIME = "%I:%M %p"
+
+def format_date(day: datetime, token: DateFormatTokens) -> str:
+    try:
+        formatted_date = day.strftime(token.value)
+    except ValueError as ex:
+        formatted_date = str(ex)
+    
+    return formatted_date
+
+
+
 
 #------------------------------------------------------
 # Get a week range from the specified date

@@ -10,9 +10,6 @@ A serializer transforms a dictionary into a domain model.
 from __future__ import annotations
 from dataclasses import dataclass
 import datetime
-from decimal import Decimal
-from typing import Any
-
 from tasks.domain import models
 
 #------------------------------------------------------

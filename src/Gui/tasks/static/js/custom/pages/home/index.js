@@ -39,8 +39,9 @@ async function getWeeklyRecurrences() {
     const response = await api.get(dateVal);
     
     const recurrencesHtml = await response.text();
+    console.log(recurrencesHtml);
     
     $('#recurrences-board-spinner').addClass('d-none');
-    $('#recurrences-board-container').html(recurrencesHtml);
+    $('#recurrences-board-container-wrapper').html(recurrencesHtml);
 }
 

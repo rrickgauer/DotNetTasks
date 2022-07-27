@@ -15,12 +15,19 @@
     <div class="d-flex align-items-baseline justify-content-between">
         <h1>Home page</h1>
         
-        {% include 'components/recurrences-board/board-action-buttons.html' %}
+        {% include 'pages/home/board-action-buttons.html' %}
     </div>
 </div>
 
-<!-- recurrences board -->
-{% include 'components/recurrences-board/container.html' %}
+
+<div id="recurrences-board-spinner">
+    {% include 'includes/spinner-center.html' %}
+</div>
+
+
+<div id="recurrences-board-container-wrapper">
+
+</div>
 
 <!-- event modal -->
 {% include 'components/event-modal/container.html' %}
