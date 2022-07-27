@@ -3,6 +3,10 @@
 import { ApiRecurrences } from "../../api/api-recurrences";
 import { EventModal } from "../../components/event-modal/event-modal";
 import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-actions-controller";
+import { DailyRecurrenceListElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
+import {DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
+import { RecurrencesListItemElement } from "../../components/daily-recurrences-card/list-item-element";
+
 
 // module variables
 const eventModal = new EventModal();
@@ -30,6 +34,9 @@ function addListeners() {
 
     // listen for event modal form submission
     eventModal.listenForEventFormSubmissions();
+
+    listenForRecurrenceClick();
+
 }
 
 async function getWeeklyRecurrences() {
@@ -42,4 +49,32 @@ async function getWeeklyRecurrences() {
     boardActionsController.hideSpinner();
     boardActionsController.setBoardHtml(recurrencesHtml);
 }
+
+
+function listenForRecurrenceClick() {
+    document.body.addEventListener('click', function(event) {
+        if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) {
+            viewEvent(event.target);
+        }
+    });
+}
+
+/**
+ * sd
+ * @param {HTMLSpanElement} nameElement the name element
+ */
+function viewEvent(nameElement) {
+    
+    const listItem = new RecurrencesListItemElement();
+    listItem.setListItemFromChildElement(nameElement);
+    console.log(listItem);
+
+    const eventId = listItem.getEventId();
+    console.log(eventId);
+
+    eventModal.viewEvent(eventId);
+
+    // TODO: have the event modal fetch the data from the api and display them in the form inputs
+}
+
 
