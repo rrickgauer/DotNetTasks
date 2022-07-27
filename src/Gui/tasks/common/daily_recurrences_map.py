@@ -4,9 +4,18 @@ import typing
 from tasks.domain import models
 from tasks.common.dates import get_dates_in_range
 
-DailyRecurrenceMap = typing.Dict[str, list[models.EventRecurrence]]
+#------------------------------------------------------
+# Represents a dictionary made up of:
+#   key = date string
+#   value = list of event recurrences
+#------------------------------------------------------
+DailyRecurrenceMapType = typing.Dict[str, list[models.EventRecurrence]]
 
 
+#------------------------------------------------------
+# This is a custom "dictionary" to handle creating a map of daily recurrences.
+# Python requires that dictionary keys can't be objects (like a date object)
+#------------------------------------------------------
 class DailyRecurrencesMapper:
     
     #------------------------------------------------------
@@ -23,13 +32,14 @@ class DailyRecurrencesMapper:
         occurs_on_val = recurrence.occurs_on.isoformat()
 
         # get the existing list of recurrences that occur on this date, if it exists
-        existing_values = self._result.get(occurs_on_val, [])
+        # otherwise create an empty list
+        existing_recurrences = self._result.get(occurs_on_val, [])
 
         # add the new recurrence to the list
-        existing_values.append(recurrence)
+        existing_recurrences.append(recurrence)
 
         # update the map
-        self._result[occurs_on_val] = existing_values
+        self._result[occurs_on_val] = existing_recurrences
 
     #------------------------------------------------------
     # Override [ ] index
@@ -49,7 +59,7 @@ class DailyRecurrencesMapper:
     #------------------------------------------------------
     # get a dictionary of all occurences for the specified WeekRange
     #------------------------------------------------------
-    def map_to_range(self, week_range: models.WeekRange) -> DailyRecurrenceMap:
+    def map_to_range(self, week_range: models.WeekRange) -> DailyRecurrenceMapType:
         range_map = dict()
 
         for day in get_dates_in_range(week_range):

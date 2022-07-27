@@ -1,7 +1,9 @@
 """
 **********************************************************************************************
 
-Custom flask url type converters.
+This module contains all the custom flask url type converters.
+
+See: https://werkzeug.palletsprojects.com/en/2.2.x/routing/#custom-converters
 
 **********************************************************************************************
 """
@@ -11,15 +13,15 @@ from werkzeug.routing import BaseConverter, ValidationError
 from datetime import date
 
 
+#------------------------------------------------------
+# Converts a url value of a date type into a python date object, and vice versa
+#------------------------------------------------------
 class UrlConverterDate(BaseConverter):
     """Flask url date converter."""
-
+    
     def to_python(self, value) -> date:
         try:
-            parsed_date = date.fromisoformat(value)
-            return parsed_date
-        except Exception as ex:
-            raise ValidationError(f'Invalid date value: {value}')
+            return date.fromisoformat(value)
         except ValueError as ex:
             raise ValidationError(f'Invalid date value: {value}')
 

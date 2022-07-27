@@ -34,8 +34,6 @@ def landing_page():
 @bp_home.route('app')
 @security.login_required
 def home_page():
-
     data = services.home_page.get_data()
-
     return flask.render_template('pages/home/index.html', data=data)
     

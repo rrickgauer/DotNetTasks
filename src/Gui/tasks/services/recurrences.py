@@ -6,11 +6,11 @@ from tasks.config import get_config
 from tasks.common import security
 from tasks.common import serializers
 from tasks.common import DailyRecurrencesMapper
-from tasks.common import DailyRecurrenceMap
+from tasks.common import DailyRecurrenceMapType
 
 
 class GetRecurrencesResult(BaseReturn):
-    data: DailyRecurrenceMap = None
+    data: DailyRecurrenceMapType = None
 
 
 #------------------------------------------------------
@@ -79,7 +79,7 @@ def _to_event_recurrence(response_dict: dict) -> models.EventRecurrence:
 #------------------------------------------------------
 # Create a DailyRecurrenceMap for the specified event recurrences
 #------------------------------------------------------
-def _create_date_range_map(recurrences: list[models.EventRecurrence], week_range: models.WeekRange) -> DailyRecurrenceMap:
+def _create_date_range_map(recurrences: list[models.EventRecurrence], week_range: models.WeekRange) -> DailyRecurrenceMapType:
     mapper = DailyRecurrencesMapper()
 
     for recurrence in recurrences:

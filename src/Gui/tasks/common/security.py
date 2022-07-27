@@ -5,12 +5,10 @@ Security module.
 Handles logic related to authorization and session values.
 **********************************************************************************************
 """
+
 from __future__ import annotations
 from functools import wraps
 import flask
-
-# from tasks.domain.models.user_session import UserSession
-# import tasks.config as config
 from . import utilities as util
 from tasks.domain import models
 
