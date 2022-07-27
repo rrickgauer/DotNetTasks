@@ -10,7 +10,7 @@
 #************************************************************************************
 from enum import Enum
 from flask.json import JSONEncoder
-from datetime import date, datetime
+from datetime import date, datetime, time
 from decimal import Decimal
 
 from .structs import ISerialize
@@ -18,7 +18,7 @@ from .structs import ISerialize
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         try:
-            if isinstance(obj, datetime):
+            if isinstance(obj, (datetime, date, time)):
                 return obj.isoformat()
             elif isinstance(obj, Decimal):
                 return float(obj)

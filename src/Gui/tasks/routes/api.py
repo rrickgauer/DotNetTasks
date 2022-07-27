@@ -9,20 +9,19 @@ api endpoints
 """
 
 from __future__ import annotations
+from datetime import date
 from uuid import UUID
 import flask
-# import requests
 import requests
 from tasks.config import get_config
 from tasks.common import security
-import flaskforward
+from tasks import services
 
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
 
 #------------------------------------------------------
-# Home page
-# tickle.com
+# POST: /api/login
 #------------------------------------------------------
 @bp_api.post('login')
 def login():
@@ -51,6 +50,9 @@ def login():
     return ('', api_response.status_code)
 
 
+#------------------------------------------------------
+# PUT: /api/events/:event_id
+#------------------------------------------------------
 @bp_api.put('events/<uuid:event_id>')
 @security.login_required
 def modify_event(event_id: UUID):
@@ -67,4 +69,12 @@ def modify_event(event_id: UUID):
     return (response.text, response.status_code)
 
 
-    
+#------------------------------------------------------
+# GET: /api/recurrences/:date
+#------------------------------------------------------
+@bp_api.get('recurrences/<date:date_val>')
+@security.login_required
+def get_recurrences_in_week(date_val: date):
+    week_range = services.recurrences.get_week_range(date_val)
+    data = services.recurrences.get_recurrences(week_range)
+    return (flask.jsonify(data))

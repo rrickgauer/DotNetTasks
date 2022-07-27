@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 import flask
 
-def get_home_page_data() -> dict:
+def get_data() -> dict:
     current_date = _get_current_date()
 
     result = dict(
@@ -16,7 +16,7 @@ def get_home_page_data() -> dict:
 def _get_current_date() -> str:
     try:
         current_date = datetime.fromisoformat(flask.request.args.get('d') or None)
-    except ValueError:
+    except Exception:
         current_date = datetime.today()
 
     return current_date.date()

@@ -35,7 +35,7 @@ def landing_page():
 @security.login_required
 def home_page():
 
-    data = services.routines.get_home_page_data()
+    data = services.home_page.get_data()
 
     return flask.render_template('pages/home/index.html', data=data)
     

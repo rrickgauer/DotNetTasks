@@ -16,4 +16,12 @@ export class DateTimeUtil
      */
     static getCurrentDatetime = () => DateTime.now();
 
+    
+    /**
+     * Parse the specified datetime string into a Luxon DateTime object
+     * @param {string} val datetime value string
+     * @returns {DateTime}
+     */
+    static toDateTime = (val) => DateTime.fromISO(val);
+
 }

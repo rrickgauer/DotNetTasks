@@ -6,28 +6,22 @@ Custom flask url type converters.
 **********************************************************************************************
 """
 
-# from __future__ import annotations
-# from werkzeug.routing import BaseConverter, ValidationError
-# from tickle.common.domain.enums.watches import TickerTypes, WatchTypes
+from __future__ import annotations
+from werkzeug.routing import BaseConverter, ValidationError
+from datetime import date
 
 
-# class EnumConverterBase(BaseConverter):
-#     TickleEnumClass = None
+class UrlConverterDate(BaseConverter):
+    """Flask url date converter."""
 
-#     def to_python(self, value):
-#         try:
-#             val_int = int(value)
-#             request_type = self.TickleEnumClass(val_int)
-#             return request_type
-#         except ValueError as ex:
-#             raise ValidationError()
+    def to_python(self, value) -> date:
+        try:
+            parsed_date = date.fromisoformat(value)
+            return parsed_date
+        except Exception as ex:
+            raise ValidationError(f'Invalid date value: {value}')
+        except ValueError as ex:
+            raise ValidationError(f'Invalid date value: {value}')
 
-#     def to_url(self, obj):
-#         return obj.name
-
-
-# class WatchTypeConverter(EnumConverterBase):
-#     TickleEnumClass = WatchTypes
-
-# class TickerTypeConverter(EnumConverterBase):
-#     TickleEnumClass = TickerTypes
+    def to_url(self, date_obj: date) -> str:
+        return date_obj.isoformat()

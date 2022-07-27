@@ -1,5 +1,6 @@
 
 // imports
+import { ApiRecurrences } from "../../api/api-recurrences";
 import { EventModal } from "../../components/event-modal/event-modal";
 import { RecurrencesBoardController } from "../../components/recurrences-board/recurrences-board-controller";
 
@@ -13,6 +14,8 @@ const recurrencesBoardController = new RecurrencesBoardController();
  */
 $(document).ready(function() {
     addListeners();
+
+    getWeeklyRecurrences();
 });
 
 /**
@@ -28,5 +31,14 @@ function addListeners() {
 
     // listen for event modal form submission
     eventModal.listenForEventFormSubmissions();
+}
+
+
+
+async function getWeeklyRecurrences() {
+    const dateVal = recurrencesBoardController.getDateValue();
+    const api = new ApiRecurrences();
+    const response = await api.get(dateVal);
+    console.log(await response.text());
 }
 

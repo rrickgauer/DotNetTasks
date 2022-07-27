@@ -1,5 +1,45 @@
-<div class="container mt-5">
+<div class="container mt-5" id="recurrences-board-container">
 
-    <h2>recurrences board</h2>
+    <div id="recurrences-board-spinner">
+        {% include 'includes/spinner-center.html' %}
+    </div>
+
+
+    <div class="card card-recurrences-day" data-js-date="2022-05-01">
+        <div class="card-header">
+            test-shit
+        </div>
+        <div class="card-body">
+
+            <div class="card-recurrences-day-item" data-js-event-id="event id">
+                <div class="d-flex">
+                    <div class="form-check">
+                        <input class="form-check-input position-static" type="checkbox">
+                    </div>
+    
+                    <span>this is the text for the thing</span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="card-footer">
+            bottom bitch
+        </div>
+
+    </div>
 
 </div>
+
+
+{% macro card_recurrences_day_item(event_id, event) -%}
+    <div class="card-recurrences-day-item" data-js-event-id="{{ event_id }}">
+        <div class="d-flex">
+            <div class="form-check">
+                <input class="form-check-input position-static" type="checkbox">
+            </div>
+
+            <span>{{ event_name }}</span>
+        </div>
+    </div>
+{%- endmacro %}
+
