@@ -6,10 +6,11 @@ Handles logic related to authorization and session values.
 **********************************************************************************************
 """
 
+from __future__ import annotations
 from functools import wraps
 import flask
-import tasks.config as config
 from . import utilities as util
+from tasks.domain import models
 
 #------------------------------------------------------
 # Session key names for the session
@@ -57,3 +58,21 @@ def clear_session_values():
 def set_session_values(email, password):
     flask.session.setdefault(SessionKeys.EMAIL, email)
     flask.session.setdefault(SessionKeys.PASSWORD, password)
+
+#------------------------------------------------------
+# Get the current user session values as a tuple(email, password)
+#------------------------------------------------------
+def get_user_session_tuple() -> tuple:
+    usersession = get_user_session()
+    return (usersession.email, usersession.password)
+
+#------------------------------------------------------
+# Get the current user session values
+#------------------------------------------------------
+def get_user_session() -> models.UserSession:
+    usersession = models.UserSession(
+        email = flask.g.email,
+        password = flask.g.password,
+    )
+
+    return usersession

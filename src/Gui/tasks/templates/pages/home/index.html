@@ -1,22 +1,37 @@
+<!-- 
+
+    Incoming data (data):
+        - current_date
+ -->
+
+
 {% extends 'base.html' %}
 
 {% block title %}Tasks - home page{% endblock %}
 
-
 {% block content %}
     
-<div class="my-5 container">
+<div class="mt-5 container">
+    <div class="d-flex align-items-baseline justify-content-between">
+        <h1>Home page</h1>
+        
+        {% include 'pages/home/board-action-buttons.html' %}
+    </div>
+</div>
 
-    <h1>Home page</h1>
+
+<div id="recurrences-board-spinner">
+    {% include 'includes/spinner-center.html' %}
+</div>
 
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-create-new-event">Create new event</button>
-
-
-    {% include 'components/event-modal/container.html' %}
+<div id="recurrences-board-container-wrapper">
 
 </div>
+
+<!-- event modal -->
+{% include 'components/event-modal/container.html' %}
+
 
 {% endblock %}
 

@@ -10,8 +10,7 @@ A serializer transforms a dictionary into a domain model.
 from __future__ import annotations
 from dataclasses import dataclass
 import datetime
-from decimal import Decimal
-from typing import Any
+from tasks.domain import models
 
 #------------------------------------------------------
 # Parse the given datetime string into a python datetime/date object
@@ -28,14 +27,6 @@ def parseIsoDatetime(datetime_module, date_string: str=None) -> datetime.datetim
     
     return result
 
-
-def serializeDecimal(decimal_val) -> Decimal | None | Any:
-    try:
-        result = Decimal(decimal_val)
-    except:
-        result = decimal_val
-    
-    return result
 
 #------------------------------------------------------
 # Base serializer class
@@ -70,12 +61,36 @@ class SerializerBase:
         for key, value in self.dictionary.items():
             if not key in model_keys:
                 continue
-            elif not value:
+            elif value == None:
                 setattr(model, key, None)
             else:
-                setattr(model, key, value or None)
-
+                setattr(model, key, value)
+                
         return model
 
 
-        
+
+class ApiResponseRecurrenceSerializer(SerializerBase):
+    DomainModel = models.api_responses.Recurrence
+
+    def serialize(self) -> models.api_responses.Recurrence:
+        data: models.api_responses.Recurrence = super().serialize()
+
+        data.occursOn = parseIsoDatetime(datetime.datetime, data.occursOn).date()
+        data.startsAt = parseIsoDatetime(datetime.time, data.startsAt)
+    
+        return data
+
+    def to_model(self) -> models.EventRecurrence:
+        api_model = self.serialize()
+
+        model = models.EventRecurrence(
+            event_id  = api_model.eventId,
+            name      = api_model.name,
+            occurs_on = api_model.occursOn,
+            starts_at = api_model.startsAt,
+            completed = api_model.completed,
+        )
+
+        return model
+

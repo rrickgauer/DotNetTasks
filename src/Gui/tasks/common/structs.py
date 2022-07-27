@@ -4,6 +4,7 @@ from typing import Any
 class ISerialize:
     pass
 
+
 @dataclass
 class BaseReturn:
     successful: bool      = True
