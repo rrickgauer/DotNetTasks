@@ -3,10 +3,16 @@ import { DateTimeUtil } from "../../helpers/datetime";
 import { UrlMethods } from "../../helpers/url-methods";
 import { DateTime } from "../../../lib/luxon";
 
-export class RecurrencesBoardController
-{
+/**
+ * This class handles all the recurrences board action buttons and what happens when you click them.
+ */
+export class RecurrencesBoardActionsController
+{   
+    /**
+     * Constructor
+     */
     constructor() {
-       this.actionButtons = new RecurrencesBoardActionButtons(); 
+       this.actionButtons = new RecurrencesBoardActionButtons();
     }
 
     /**
@@ -60,4 +66,17 @@ export class RecurrencesBoardController
         const newUrl = UrlMethods.setQueryParmAndRefresh('d', newDate);
         window.location.href = newUrl;
     }
+
+    /**
+     * Hide the recurrences board spinner section
+     */
+    hideSpinner = () => this.actionButtons.spinner.classList.add('d-none');
+
+
+    /**
+     * Render the given recurrences board html to the page.
+     * @param {string} dailyRecurrencesHtml the html to render to the page
+     */
+    setBoardHtml = (dailyRecurrencesHtml) => this.actionButtons.container.innerHTML = dailyRecurrencesHtml;
+
 }

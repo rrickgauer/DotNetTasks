@@ -1,0 +1,82 @@
+<form id="event-modal-form">
+
+    <!-- name -->
+    <div class="form-group">
+        <label for="event-modal-form-input-name">Name</label>
+        <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-name" maxlength="100" required>
+    </div>
+
+    <!-- phone -->
+    <div class="form-group">
+        <label for="event-modal-form-input-phone">Phone number</label>
+        <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-phone" maxlength="10">
+    </div>
+
+    <!-- location -->
+    <div class="form-group">
+        <label for="event-modal-form-input-location">Location</label>
+        <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-location" maxlength="250">
+    </div>
+
+    <!-- starts on -->
+    <div class="form-group">
+        <label for="event-modal-form-input-starts-on">Starts on</label>
+        <input type="date" class="form-control event-modal-form-input" id="event-modal-form-input-starts-on" required>
+    </div>
+
+    <!-- ends on -->
+    <div class="form-group">
+        <label for="event-modal-form-input-ends-on">Ends on</label>
+        <input type="date" class="form-control event-modal-form-input" id="event-modal-form-input-ends-on" required>
+    </div>
+
+    <!-- starts at -->
+    <div class="form-group">
+        <label for="event-modal-form-input-starts-at">Starts at</label>
+        <input type="time" class="form-control event-modal-form-input" id="event-modal-form-input-starts-at">
+    </div>
+
+    <!-- ends at -->
+    <div class="form-group">
+        <label for="event-modal-form-input-ends-at">Ends at</label>
+        <input type="time" class="form-control event-modal-form-input" id="event-modal-form-input-ends-at">
+    </div>
+
+    <!-- frequency -->
+    <div class="form-group">
+        <label for="event-modal-form-input-frequency">Frequency</label>
+        <select class="form-control event-modal-form-input" id="event-modal-form-input-frequency" required>
+            <option value="1">Once</option>
+            <option value="2">Daily</option>
+            <option value="3">Weekly</option>
+            <option value="4">Monthly</option>
+            <option value="5">Yearly</option>
+        </select>
+    </div>
+
+    <!-- seperation -->
+    <div class="form-group">
+        <label for="event-modal-form-input-separation">Separation</label>
+        <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-separation" min="1" required>
+    </div>
+
+    <!-- recurrence day -->
+    <div class="form-group">
+        <label for="event-modal-form-input-recurrence-day">Recurrence day</label>
+        <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-day">
+    </div>
+
+    <!-- recurrence week -->
+    <div class="form-group">
+        <label for="event-modal-form-input-recurrence-week">Recurrence week</label>
+        <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-week">
+    </div>
+
+    <!-- recurrence month -->
+    <div class="form-group">
+        <label for="event-modal-form-input-recurrence-month">Recurrence month</label>
+        <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-month">
+    </div>
+
+    <button type="submit" class="btn btn-success">Save changes</button>
+</form>
