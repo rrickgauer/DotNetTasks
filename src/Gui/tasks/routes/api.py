@@ -76,5 +76,9 @@ def modify_event(event_id: UUID):
 @security.login_required
 def get_recurrences_in_week(date_val: date):
     week_range = services.recurrences.get_week_range(date_val)
-    data = services.recurrences.get_recurrences(week_range)
-    return (flask.jsonify(data))
+    result = services.recurrences.get_recurrences(week_range)
+
+    if not result.successful:
+        raise result.error
+
+    return (flask.jsonify(result.data))

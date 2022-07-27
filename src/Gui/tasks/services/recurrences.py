@@ -1,6 +1,7 @@
 from __future__ import annotations
 from datetime import date, timedelta
 import requests
+from tasks.common.structs import BaseReturn
 from tasks.domain import models
 from tasks.config import get_config
 from tasks.common import security
@@ -28,9 +29,22 @@ def get_week_range(date_val: date) -> models.WeekRange:
     return week_range
     
 
-def get_recurrences(week_range: models.WeekRange):
-    api_response = _get_recurrences_from_api(week_range)
-    return _serialize_api_response(api_response)
+def get_recurrences(week_range: models.WeekRange) -> BaseReturn:
+    result = BaseReturn(successful=True)
+
+    try:
+        api_response = _get_recurrences_from_api(week_range)
+        event_recurrences =  _serialize_api_response(api_response)
+
+        result.data = event_recurrences
+    except Exception as ex:
+        result.successful = False
+        result.error = ex
+    
+    return result
+
+
+
 
 #------------------------------------------------------
 # Send a GET recurrences request to the api
