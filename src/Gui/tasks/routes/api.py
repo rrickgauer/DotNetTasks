@@ -81,4 +81,10 @@ def get_recurrences_in_week(date_val: date):
     if not result.successful:
         raise result.error
 
-    return (flask.jsonify(result.data))
+    output = dict(
+        recurrences = result.data
+    )
+
+    html = flask.render_template('components/recurrence-card/container.html', data=output)
+
+    return html

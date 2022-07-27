@@ -36,6 +36,8 @@ def get_recurrences(week_range: models.WeekRange) -> BaseReturn:
         api_response = _get_recurrences_from_api(week_range)
         event_recurrences =  _serialize_api_response(api_response)
 
+
+
         result.data = event_recurrences
     except Exception as ex:
         result.successful = False
@@ -92,6 +94,11 @@ def _to_event_recurrence(response_dict: dict) -> models.EventRecurrence:
     
     return event_recurrence
 
+
+# TODO: this function creates a dictionary(recurrence_date, recuurrences[]) of the specified recurrences collection
+def _create_date_range_map(recurrences: list[models.EventRecurrence]):
+
+    pass
 
 
 

@@ -33,12 +33,14 @@ function addListeners() {
     eventModal.listenForEventFormSubmissions();
 }
 
-
-
 async function getWeeklyRecurrences() {
     const dateVal = recurrencesBoardController.getDateValue();
     const api = new ApiRecurrences();
     const response = await api.get(dateVal);
-    console.log(await response.text());
+    
+    const recurrencesHtml = await response.text();
+    
+    $('#recurrences-board-spinner').addClass('d-none');
+    $('#recurrences-board-container').html(recurrencesHtml);
 }
 
