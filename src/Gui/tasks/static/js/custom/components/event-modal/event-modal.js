@@ -77,15 +77,18 @@ export class EventModal {
         
         const apiResponseData = await this._getEventData(eventId);
 
-        
-        
+        console.log(apiResponseData);
 
         this._removeLoadingSpinner();
     }
 
+    /**
+     * Get the specified event from the api
+     * @param {string} eventId the event id
+     * @returns {Promise<Event>}
+     */
     _getEventData = async (eventId) => {
         const api = new ApiEvents();
-
         const response = await api.get(eventId);
 
         if (!response.ok) {
@@ -93,10 +96,8 @@ export class EventModal {
         }
 
         const responseData = await response.json();
-
-        console.log(responseData);
-
-        return responseData;
+        const mappedResult = EventMapper.ToModelFromApiGetRequest(JSON.parse(responseData));
+        return mappedResult;
     }
 
 

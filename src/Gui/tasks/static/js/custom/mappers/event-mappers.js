@@ -30,4 +30,24 @@ export class EventMapper
         return model;
     }
 
+    /**
+     * Map the given api response data to an Event domain model
+     * @param {object} apiResponseData the response data from the api
+     * @returns {Event}
+     */
+    static ToModelFromApiGetRequest(apiResponseData) {
+        const model = new Event();
+        const modelKeys = Object.keys(model);
+
+        for (const apiKey in apiResponseData) {
+            if (!modelKeys.includes(apiKey)) {
+                continue;
+            }
+
+            model[apiKey] = apiResponseData[apiKey];
+        }
+
+        return model;
+    }
+
 }
