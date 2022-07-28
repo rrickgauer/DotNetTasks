@@ -10,6 +10,7 @@ from __future__ import annotations
 import flask
 from tasks.common import security, utilities
 from tasks import services
+from http import HTTPStatus
 
 # module blueprint
 bp_home = flask.Blueprint('home', __name__)
@@ -22,10 +23,9 @@ bp_home = flask.Blueprint('home', __name__)
 @bp_home.route('')
 # @security.login_required
 def landing_page():
-    # return 'hi'
     endpoint = flask.url_for('.home_page')
     url = utilities.build_gui_url(endpoint)
-    return flask.redirect(url, 302)
+    return flask.redirect(url, HTTPStatus.FOUND)
 
 
 #------------------------------------------------------

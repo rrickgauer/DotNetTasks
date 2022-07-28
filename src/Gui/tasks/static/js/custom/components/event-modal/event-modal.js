@@ -69,16 +69,37 @@ export class EventModal {
      * View an event in the modal
      * @param {string} eventId - the event id to view
      */
-    viewEvent = (eventId) => {
+    viewEvent = async (eventId) => {
         this._showLoadingSpinner();
 
         EventModalActions.setModalEventIdAttribute(eventId);
         EventModalActions.showModal();
+        
+        const apiResponseData = await this._getEventData(eventId);
 
+        
         
 
         this._removeLoadingSpinner();
     }
+
+    _getEventData = async (eventId) => {
+        const api = new ApiEvents();
+
+        const response = await api.get(eventId);
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const responseData = await response.json();
+
+        console.log(responseData);
+
+        return responseData;
+    }
+
+
 
     /**
      * Create a new event in the modal.
