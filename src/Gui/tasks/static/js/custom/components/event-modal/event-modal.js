@@ -15,29 +15,21 @@ export class EventModal {
     //#region Form submissions
 
     /**
-     * Add a submission event listener to the event form.
-     */
-    listenForEventFormSubmissions = () => {
-        $(this.eventModalForm.form).on('submit', (submissionEvent) => {
-            submissionEvent.preventDefault();
-            this._submitForm();
-        });
-    }
-
-    /**
      * Submit the event form.
      */
-    _submitForm = async () => {
-        const model = this._getEventModelFromFormValues(Utililties.getNewUUID());
+    submitForm = async () => {
+        const eventId = EventModalActions.getEventIdAttr();
+        const model = this._getEventModelFromFormValues(eventId);
 
         // send request
         const api = new ApiEvents();
         const response = await api.put(model);
 
-        if (response.ok) {
-            EventModalActions.hideModal();
-            EventModalActions.resetForm();
+        return response.ok;
 
+        if (response.ok) {
+            // EventModalActions.hideModal();
+            // EventModalActions.resetForm();
             const responseBody = await response.json();
         }
         else {

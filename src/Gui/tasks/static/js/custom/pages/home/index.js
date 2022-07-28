@@ -22,7 +22,7 @@ $(document).ready(function() {
 /**
  * Add the event listeners to the page.
  */
-function addListeners() {
+async function addListeners() {
     // listen for "create new event" button click
     boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
         eventModal.createNewEvent();
@@ -30,11 +30,14 @@ function addListeners() {
 
     boardActionsController.addListeners();
 
-    // listen for event modal form submission
-    eventModal.listenForEventFormSubmissions();
+    // listen for event modal form submission    
+    $(eventModal.eventModalForm.form).on('submit', (submissionEvent) => {
+        submissionEvent.preventDefault();
+        submitEventModalForm();
+    });
+
 
     listenForRecurrenceClick();
-
 }
 
 async function getWeeklyRecurrences() {
@@ -68,8 +71,12 @@ function viewEvent(nameElement) {
 
     const eventId = listItem.getEventId();
     eventModal.viewEvent(eventId);
+}
 
-    // TODO: have the event modal fetch the data from the api and display them in the form inputs
+
+async function submitEventModalForm() {
+    const result = await eventModal.submitForm();
+    getWeeklyRecurrences();
 }
 
 
