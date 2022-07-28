@@ -10,6 +10,7 @@ EventModalSelectors.Attributes = {
     EVENT_ID: 'data-js-event-id',
 },
 
+EventModalSelectors.SPINNER = 'event-modal-spinner';
 
 EventModalSelectors.Form = 
 {
@@ -30,6 +31,4 @@ EventModalSelectors.Form =
         RECURRENCE_WEEK : 'event-modal-form-input-recurrence-week',
         RECURRENCE_MONTH: 'event-modal-form-input-recurrence-month',
     },
-
-
 }

@@ -1,12 +1,14 @@
-
 // imports
 import { ApiRecurrences } from "../../api/api-recurrences";
 import { EventModal } from "../../components/event-modal/event-modal";
-import { RecurrencesBoardController } from "../../components/recurrences-board/recurrences-board-controller";
+import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-actions-controller";
+import {DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
+import { RecurrencesListItemElement } from "../../components/daily-recurrences-card/list-item-element";
+
 
 // module variables
 const eventModal = new EventModal();
-const recurrencesBoardController = new RecurrencesBoardController();
+const boardActionsController = new RecurrencesBoardActionsController();
 
 
 /**
@@ -14,34 +16,67 @@ const recurrencesBoardController = new RecurrencesBoardController();
  */
 $(document).ready(function() {
     addListeners();
-
     getWeeklyRecurrences();
 });
 
 /**
  * Add the event listeners to the page.
  */
-function addListeners() {
+async function addListeners() {
     // listen for "create new event" button click
-    recurrencesBoardController.actionButtons.newButton.addEventListener('click', function(e) {
+    boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
         eventModal.createNewEvent();
     });
 
-    recurrencesBoardController.addListeners();
+    boardActionsController.addListeners();
 
-    // listen for event modal form submission
-    eventModal.listenForEventFormSubmissions();
+    // listen for event modal form submission    
+    $(eventModal.eventModalForm.form).on('submit', (submissionEvent) => {
+        submissionEvent.preventDefault();
+        submitEventModalForm();
+    });
+
+
+    listenForRecurrenceClick();
 }
 
 async function getWeeklyRecurrences() {
-    const dateVal = recurrencesBoardController.getDateValue();
+    const dateVal = boardActionsController.getDateValue();
+    
     const api = new ApiRecurrences();
     const response = await api.get(dateVal);
     
     const recurrencesHtml = await response.text();
-    console.log(recurrencesHtml);
-    
-    $('#recurrences-board-spinner').addClass('d-none');
-    $('#recurrences-board-container-wrapper').html(recurrencesHtml);
+    boardActionsController.hideSpinner();
+    boardActionsController.setBoardHtml(recurrencesHtml);
 }
+
+
+function listenForRecurrenceClick() {
+    document.body.addEventListener('click', function(event) {
+        if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) {
+            viewEvent(event.target);
+        }
+    });
+}
+
+/**
+ * sd
+ * @param {HTMLSpanElement} nameElement the name element
+ */
+function viewEvent(nameElement) {
+    
+    const listItem = new RecurrencesListItemElement();
+    listItem.setListItemFromChildElement(nameElement);
+
+    const eventId = listItem.getEventId();
+    eventModal.viewEvent(eventId);
+}
+
+
+async function submitEventModalForm() {
+    const result = await eventModal.submitForm();
+    getWeeklyRecurrences();
+}
+
 
