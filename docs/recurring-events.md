@@ -2,6 +2,9 @@
 
 This document lays out the signifigance of some of the database fields and how they are related to recurring events.
 
+* https://github.com/rrickgauer/recurring_events_for
+* https://justatheory.com/2008/01/postgres-recurring-events/
+
 
 ### Frequency
 
