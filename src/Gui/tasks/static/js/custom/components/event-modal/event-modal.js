@@ -72,7 +72,9 @@ export class EventModal {
     viewEvent = async (eventId) => {
         this._showLoadingSpinner();
 
-        EventModalActions.setModalEventIdAttribute(eventId);
+        EventModalActions.resetForm();
+
+        EventModalActions.setEventIdAttr(eventId);
         EventModalActions.showModal();
         
         const eventModel = await this._getEventData(eventId);
@@ -99,18 +101,21 @@ export class EventModal {
         return mappedResult;
     }
 
-
-
     /**
      * Create a new event in the modal.
      */
     createNewEvent = () => {
+        this._showLoadingSpinner();
+        
         const newEventId = Utililties.getNewUUID();
-        EventModalActions.setModalEventIdAttribute(newEventId);
+        EventModalActions.setEventIdAttr(newEventId);
+        
+        EventModalActions.resetForm();
+        
+        this._removeLoadingSpinner();
+        
         EventModalActions.showModal();
     }
-
-
 
     //#region Show/hide form and spinner
 
