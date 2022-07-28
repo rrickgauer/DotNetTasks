@@ -75,9 +75,8 @@ export class EventModal {
         EventModalActions.setModalEventIdAttribute(eventId);
         EventModalActions.showModal();
         
-        const apiResponseData = await this._getEventData(eventId);
-
-        console.log(apiResponseData);
+        const eventModel = await this._getEventData(eventId);
+        this.eventModalForm.setFormValues(eventModel);
 
         this._removeLoadingSpinner();
     }

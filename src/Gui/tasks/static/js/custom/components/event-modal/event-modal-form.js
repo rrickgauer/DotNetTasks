@@ -2,6 +2,8 @@
 
 import { EventModalFormValues } from "../../domain/forms/event-modal-form-values";
 import { EventModalSelectors } from "./event-modal-selectors";
+import { Event } from "../../domain/models/event";
+import { DateTimeUtil } from "../../helpers/datetime";
 
 /**
  * This class represents all the inputs for the event modal form
@@ -46,5 +48,25 @@ export class EventModalForm
         values.recurrenceMonth = this.inputRecurrenceMonth.value;
 
         return values;
+    }
+
+    /**
+     * Set the form input values to the ones in the given event model
+     * @param {Event} newEvent 
+     */
+    setFormValues(newEvent) {
+        this.inputName.value            = newEvent.name;
+        this.inputPhone.value           = newEvent.phoneNumber;
+        this.inputLocation.value        = newEvent.location;
+        this.inputStartsAt.value        = newEvent.startsAt;
+        this.inputEndsAt.value          = newEvent.endsAt;
+        this.inputFrequency.value       = newEvent.frequency;
+        this.inputSeparation.value      = newEvent.separation;
+        this.inputRecurrenceDay.value   = newEvent.recurrenceDay;
+        this.inputRecurrenceWeek.value  = newEvent.recurrenceWeek;
+        this.inputRecurrenceMonth.value = newEvent.recurrenceMonth;
+        this.inputStartsOn.value        = DateTimeUtil.toDateTime(newEvent.startsOn).toISODate();
+        this.inputEndsOn.value          = DateTimeUtil.toDateTime(newEvent.endsOn).toISODate();
+        
     }
 }
