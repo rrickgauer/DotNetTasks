@@ -1,3 +1,4 @@
+//@ts-check
 
 import { EventModalForm } from "./event-modal-form";
 import { EventMapper } from "../../mappers/event-mappers";
@@ -6,8 +7,7 @@ import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
 
-export class EventModal
-{
+export class EventModal {
     constructor() {
         this.eventModalForm = new EventModalForm();
     }
@@ -44,8 +44,8 @@ export class EventModal
             console.error(await response.text());
         }
     }
-    
-    
+
+
     /**
      * Build an Event domain model from the form's current values
      * @param {string} eventId the event's id
@@ -56,7 +56,7 @@ export class EventModal
 
         // map the form values to an Event modal
         const model = EventMapper.ToModelFromFormValues(formValues);
-        
+
         model.id = eventId;
 
         return model;
@@ -64,14 +64,20 @@ export class EventModal
 
     //#endregion
 
-    
+
     /**
      * View an event in the modal
      * @param {string} eventId - the event id to view
      */
     viewEvent = (eventId) => {
+        this._showLoadingSpinner();
+
         EventModalActions.setModalEventIdAttribute(eventId);
         EventModalActions.showModal();
+
+        
+
+        this._removeLoadingSpinner();
     }
 
     /**
@@ -82,6 +88,29 @@ export class EventModal
         EventModalActions.setModalEventIdAttribute(newEventId);
         EventModalActions.showModal();
     }
+
+
+
+    //#region Show/hide form and spinner
+
+    /**
+     * Show the spinner and hide the form
+     */
+    _showLoadingSpinner = () => {
+        EventModalActions.showSpinner();
+        EventModalActions.hideForm();
+    }
+
+    /**
+     * Show the form, hide the spinner
+     */
+    _removeLoadingSpinner = () => {
+        EventModalActions.hideSpinner();
+        EventModalActions.showForm();
+    }
+
+    //#endregion
+
 }
 
 

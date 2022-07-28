@@ -12,4 +12,8 @@ export class EventModalActions
     static showModal                = () => $(m_modal).modal('show');
     static hideModal                = () => $(m_modal).modal('hide');
     static resetForm                = () => document.getElementById(EventModalSelectors.Form.FORM).reset();
+    static showSpinner              = () => document.getElementById(EventModalSelectors.SPINNER).classList.remove('d-none');
+    static hideSpinner              = () => document.getElementById(EventModalSelectors.SPINNER).classList.add('d-none');
+    static hideForm = () => document.getElementById(EventModalSelectors.Form.FORM).classList.add('d-none');
+    static showForm = () => document.getElementById(EventModalSelectors.Form.FORM).classList.remove('d-none');
 }
