@@ -82,6 +82,12 @@ def get_delete_action() -> EventDeleteAction | None:
 def delete_event(event_id: UUID) -> BaseReturn:
     result = BaseReturn(successful=True)
 
+    api_response = requests.delete(
+        url    = _build_api_event_url(event_id),
+        auth   = security.get_user_session_tuple(),
+        verify = False,
+    )
+
     return result
 
 
