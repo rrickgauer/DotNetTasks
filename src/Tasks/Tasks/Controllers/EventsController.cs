@@ -15,9 +15,11 @@ namespace Tasks.Controllers
     [Route("events")]
     public class EventsController : ControllerBase
     {
+        #region Private members
         private readonly IConfigs _configuration;
         private readonly IEventServices _eventServices;
         private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
+        #endregion
 
         /// <summary>
         /// Constructor
@@ -71,11 +73,21 @@ namespace Tasks.Controllers
         [HttpDelete("{eventId}")]
         public async Task<IActionResult> DeleteEventAsync(Guid eventId)
         {
+            // make sure the user owns this event
             var userEvent = await _eventServices.GetUserEventAsync(eventId);
 
             if (userEvent == null)
             {
                 return NotFound();
+            }
+
+            // delete the event from database 
+
+            var successfulDeletion = await _eventServices.DeleteEventAsync(eventId);
+
+            if (!successfulDeletion)
+            {
+                return BadRequest("There was an error deleting the event.");
             }
 
             return NoContent();

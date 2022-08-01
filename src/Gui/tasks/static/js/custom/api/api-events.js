@@ -15,7 +15,7 @@ export class ApiEvents
      */
     put = async (eventModel) => {
         const formData = HttpRequestMapper.toFormData(eventModel);
-        const url = `${ApiEndpoints.EVENTS}/${eventModel.id}`;
+        const url = ApiEvents._getEventUrl(eventModel.id);
 
         return await fetch(url, {
             method: HttpMethods.PUT,
@@ -29,10 +29,23 @@ export class ApiEvents
      * @returns {Promise<Response>}
      */
     get = async (eventId) => {
-        const url = `${ApiEndpoints.EVENTS}/${eventId}`;
+        const url = ApiEvents._getEventUrl(eventId);
         return await fetch(url);
     }
 
+    /** 
+     * Delete the specified event
+     * @param {string} eventId the event id
+     * @returns {Promise<Response>}
+     */
+    delete = async(eventId) => {
+        const url = ApiEvents._getEventUrl(eventId);
 
+        return await fetch(url, {
+            method: HttpMethods.DELETE,
+        });
+    }
+
+    static _getEventUrl = (eventId) => `${ApiEndpoints.EVENTS}/${eventId}`;
 }
 
