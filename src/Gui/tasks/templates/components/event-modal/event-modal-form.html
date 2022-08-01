@@ -5,20 +5,20 @@
 
         <!-- name -->
         <div class="form-group">
-            <label for="event-modal-form-input-name">Name</label>
+            <label for="event-modal-form-input-name">Name*</label>
             <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-name" maxlength="100" required>
         </div>
 
         <div class="form-row">
 
             <!-- phone -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="event-modal-form-input-phone">Phone number</label>
                 <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-phone" maxlength="10">
             </div>
 
             <!-- location -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-8">
                 <label for="event-modal-form-input-location">Location</label>
                 <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-location" maxlength="250">
             </div>
@@ -31,8 +31,8 @@
 
         <div class="form-row">
             <!-- starts on -->
-            <div class="form-group col-md-6"">
-        <label for=" event-modal-form-input-starts-on">Starts on</label>
+            <div class="form-group col-md-6">
+                <label for="event-modal-form-input-starts-on">Starts on*</label>
                 <input type="date" class="form-control event-modal-form-input" id="event-modal-form-input-starts-on" required>
             </div>
 
@@ -46,8 +46,8 @@
 
         <div class="form-row">
             <!-- ends on -->
-            <div class="form-group col-md-6"">
-        <label for=" event-modal-form-input-ends-on">Ends on</label>
+            <div class="form-group col-md-6">
+                <label for="event-modal-form-input-ends-on">Ends on*</label>
                 <input type="date" class="form-control event-modal-form-input" id="event-modal-form-input-ends-on" required>
             </div>
 
@@ -68,7 +68,7 @@
         <div class="form-row">
             <!-- frequency -->
             <div class="form-group col-md-6">
-                <label for="event-modal-form-input-frequency">Frequency</label>
+                <label for="event-modal-form-input-frequency">Frequency*</label>
                 <select class="form-control event-modal-form-input" id="event-modal-form-input-frequency" required>
                     <option value="ONCE">Once</option>
                     <option value="DAILY">Daily</option>
@@ -80,7 +80,7 @@
 
             <!-- separation -->
             <div class="form-group col-md-6">
-                <label for="event-modal-form-input-separation">Separation</label>
+                <label for="event-modal-form-input-separation">Separation*</label>
                 <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-separation" min="1" required>
             </div>
         </div>
@@ -107,7 +107,7 @@
     </div>
 
     <!-- save event modal form -->
-    <button type="submit" class="btn btn-success">Save changes</button>
+    <button type="submit" class="btn btn-success" id="event-modal-form-submit-btn">Save changes</button>
 
     <!-- delete event -->
     <button class="btn btn-outline-danger" type="button" data-toggle="collapse" data-target="#event-deletion-form-dropdown" id="event-deletion-form-dropdown-button">Delete</button>

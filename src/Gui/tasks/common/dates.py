@@ -68,3 +68,9 @@ def get_dates_in_range(week_range: models.WeekRange) -> list[date]:
     return days
 
 
+
+
+def get_weeks_interval(date_val: date, num_weeks: int) -> date:
+    # day = date_val + timedelta(days=num_weeks)
+    day = date_val + timedelta(weeks=num_weeks)
+    return day

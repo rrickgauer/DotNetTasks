@@ -12,13 +12,19 @@
         </div>
 
         <!-- recurrence date -->
-        <div class="mr-3">
+        <div class="mr-1">
             <input type="date" class="form-control form-control-sm" id="recurrences-board-action-buttons-input-date" value="{{ data.current_date }}">
+        </div>
+
+        <!-- jump to the previous or next week -->
+        <div class="btn-group btn-group-sm mr-3" role="group">
+            <a href="?d={{ data.previous_week_date }}" class="btn btn-light" title="Previous week">&larr;</a>
+            <a href="?d={{ data.next_week_date }}" class="btn btn-light" title="Next week">&rarr;</a>
         </div>
 
         <!-- Create new event -->
         <div class="mr-3">
-            <button type="button" class="btn btn-sm btn-light btn-stretch-sm mt-3 mt-md-0" id="recurrences-board-action-buttons-btn-new">Create new event</button>
+            <button type="button" class="btn btn-sm btn-light btn-stretch-sm mt-3 mt-md-0" id="recurrences-board-action-buttons-btn-new" title="Create new event">+</button>
         </div>
     </div>
 </div>
