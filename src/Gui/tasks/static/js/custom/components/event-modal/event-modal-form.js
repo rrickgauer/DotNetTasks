@@ -24,6 +24,8 @@ export class EventModalForm
         this.inputRecurrenceWeek  = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_WEEK);
         this.inputRecurrenceMonth = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_MONTH);
 
+        this.submitBtn = document.getElementById(EventModalSelectors.Form.SUBMIT_BTN);
+
         this.form = document.getElementById(EventModalSelectors.Form.FORM);
     }
 

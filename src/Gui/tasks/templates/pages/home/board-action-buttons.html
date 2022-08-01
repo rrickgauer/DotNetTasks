@@ -1,17 +1,33 @@
-<!-- recurrence board action buttons -->
-<div class="d-flex align-items-center" id="recurrences-board-action-buttons-container">
-    <!-- Today -->
-    <div class="mr-1">
-        <button type="button" class="btn btn-sm btn-light" id="recurrences-board-action-buttons-btn-today">Today</button>
-    </div>
 
-    <!-- recurrence date -->
-    <div class="mr-3">
-        <input type="date" class="form-control form-control-sm" id="recurrences-board-action-buttons-input-date" value="{{ data.current_date }}">
-    </div>
 
-    <!-- Create new event -->
-    <div class="mr-3">
-        <button type="button" class="btn btn-sm btn-light" id="recurrences-board-action-buttons-btn-new">Create new event</button>
+<button class="btn btn-sm btn-light d-md-none" type="button" data-toggle="collapse" data-target="#recurrences-board-action-buttons-collapse" id="recurrences-board-action-buttons-collapse-btn">Actions</button>
+
+<div class="collapse pt-3" id="recurrences-board-action-buttons-collapse">
+    
+    <!-- recurrence board action buttons -->
+    <div class="d-md-flex align-items-center" id="recurrences-board-action-buttons-container">
+        <!-- Today -->
+        <div class="mr-1">
+            <button type="button" class="btn btn-sm btn-light d-none d-md-block" id="recurrences-board-action-buttons-btn-today">Today</button>
+        </div>
+
+        <!-- recurrence date -->
+        <div class="mr-1">
+            <input type="date" class="form-control form-control-sm" id="recurrences-board-action-buttons-input-date" value="{{ data.current_date }}">
+        </div>
+
+        <!-- jump to the previous or next week -->
+        <div class="btn-group btn-group-sm mr-3" role="group">
+            <a href="?d={{ data.previous_week_date }}" class="btn btn-light" title="Previous week">&larr;</a>
+            <a href="?d={{ data.next_week_date }}" class="btn btn-light" title="Next week">&rarr;</a>
+        </div>
+
+        <!-- Create new event -->
+        <div class="mr-3">
+            <button type="button" class="btn btn-sm btn-light btn-stretch-sm mt-3 mt-md-0" id="recurrences-board-action-buttons-btn-new" title="Create new event">+</button>
+        </div>
     </div>
-</div>   
+</div>
+
+
+

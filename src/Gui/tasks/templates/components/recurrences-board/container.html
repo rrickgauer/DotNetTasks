@@ -9,10 +9,12 @@
             <input class="form-check-input position-static" type="checkbox">
         </div>
 
-        <span class="daily-recurrences-list-item-name">
-            {% if recurrence.starts_at %}[{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}] {% endif %} 
-            {{ recurrence.name }}
-        </span>
+
+        {% if recurrence.starts_at %}
+            <span class="mr-1">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }} </span>
+        {% endif %} 
+
+        <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
     </div>
 </div>
 

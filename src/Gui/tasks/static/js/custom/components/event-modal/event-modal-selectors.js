@@ -31,6 +31,8 @@ EventModalSelectors.Form =
         RECURRENCE_WEEK : 'event-modal-form-input-recurrence-week',
         RECURRENCE_MONTH: 'event-modal-form-input-recurrence-month',
     },
+
+    SUBMIT_BTN: 'event-modal-form-submit-btn',
 }
 
 EventModalSelectors.DeleteForm = {

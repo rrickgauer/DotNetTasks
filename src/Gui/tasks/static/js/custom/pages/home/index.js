@@ -5,7 +5,6 @@ import { RecurrencesBoardActionsController } from "../../components/recurrences-
 import { DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
 import { RecurrencesListItemElement } from "../../components/daily-recurrences-card/list-item-element";
 import { EventModalSelectors } from "../../components/event-modal/event-modal-selectors";
-import { EventModalActions } from "../../components/event-modal/actions";
 
 // module variables
 const eventModal = new EventModal();
@@ -18,6 +17,7 @@ const boardActionsController = new RecurrencesBoardActionsController();
 $(document).ready(function() {
     addListeners();
     getWeeklyRecurrences();
+    setupBoardActionVisibilities();
 });
 
 /**
@@ -40,6 +40,8 @@ async function addListeners() {
     listenForRecurrenceClick();
 
     _deleteEventListener();
+
+    window.addEventListener('resize', setupBoardActionVisibilities);
 }
 
 
@@ -92,7 +94,6 @@ async function _deleteEventListener() {
 
     eDeletionForm.addEventListener('submit', async function(event) {
         event.preventDefault();
-
         
         const eventDeleted = await eventModal.deleteEvent();
 
@@ -103,6 +104,22 @@ async function _deleteEventListener() {
             console.error('There was an error deleting the event');
         }
     });
+}
+
+
+/**
+ * Toggle the action button collapse element
+ */
+function setupBoardActionVisibilities() {
+    const eCollapseButton = document.getElementById('recurrences-board-action-buttons-collapse-btn');
+    const eMenu = document.getElementById('recurrences-board-action-buttons-collapse');
+
+    if (eCollapseButton.offsetParent == null) {
+        eMenu.classList.add('show');
+    }
+    else {
+        eMenu.classList.remove('show');
+    }
 }
 
 

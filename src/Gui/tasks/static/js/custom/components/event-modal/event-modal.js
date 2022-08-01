@@ -20,12 +20,18 @@ export class EventModal {
      * Submit the event form.
      */
     submitForm = async () => {
+
+        const spinner = new SpinnerButton(this.eventModalForm.submitBtn);
+        spinner.showSpinner();
+
         const eventId = EventModalActions.getEventIdAttr();
         const model = this._getEventModelFromFormValues(eventId);
 
         // send request
         const api = new ApiEvents();
         const response = await api.put(model);
+
+        spinner.reset();
 
         return response.ok;
     }

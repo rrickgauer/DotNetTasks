@@ -2,13 +2,18 @@
 from __future__ import annotations
 from datetime import date, datetime
 import flask
+from tasks.common import dates
 
 def get_data() -> dict:
     current_date = _get_current_date()
 
     result = dict(
         current_date = current_date,
+        next_week_date = dates.get_weeks_interval(current_date, 1),
+        previous_week_date = dates.get_weeks_interval(current_date, -1),
     )
+
+    print(flask.json.dumps(result, indent=4))
     
     return result
 
