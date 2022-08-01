@@ -2,9 +2,10 @@
 import { ApiRecurrences } from "../../api/api-recurrences";
 import { EventModal } from "../../components/event-modal/event-modal";
 import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-actions-controller";
-import {DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
+import { DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
 import { RecurrencesListItemElement } from "../../components/daily-recurrences-card/list-item-element";
-
+import { EventModalSelectors } from "../../components/event-modal/event-modal-selectors";
+import { EventModalActions } from "../../components/event-modal/actions";
 
 // module variables
 const eventModal = new EventModal();
@@ -36,8 +37,15 @@ async function addListeners() {
         submitEventModalForm();
     });
 
-
     listenForRecurrenceClick();
+
+    _deleteEventListener();
+}
+
+
+async function submitEventModalForm() {
+    const result = await eventModal.submitForm();
+    getWeeklyRecurrences();
 }
 
 async function getWeeklyRecurrences() {
@@ -51,6 +59,7 @@ async function getWeeklyRecurrences() {
     boardActionsController.setBoardHtml(recurrencesHtml);
 }
 
+//#region View an event in the modal
 
 function listenForRecurrenceClick() {
     document.body.addEventListener('click', function(event) {
@@ -61,11 +70,10 @@ function listenForRecurrenceClick() {
 }
 
 /**
- * sd
+ * View an event in the modal
  * @param {HTMLSpanElement} nameElement the name element
  */
 function viewEvent(nameElement) {
-    
     const listItem = new RecurrencesListItemElement();
     listItem.setListItemFromChildElement(nameElement);
 
@@ -73,10 +81,28 @@ function viewEvent(nameElement) {
     eventModal.viewEvent(eventId);
 }
 
+//#endregion
 
-async function submitEventModalForm() {
-    const result = await eventModal.submitForm();
-    getWeeklyRecurrences();
+
+/**
+ * Listen for a delete event form submission
+ */
+async function _deleteEventListener() {
+    const eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
+
+    eDeletionForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        
+        const eventDeleted = await eventModal.deleteEvent();
+
+        if (eventDeleted) {
+            getWeeklyRecurrences();
+        }
+        else {
+            console.error('There was an error deleting the event');
+        }
+    });
 }
 
 

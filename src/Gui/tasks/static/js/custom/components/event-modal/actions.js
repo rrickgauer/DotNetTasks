@@ -15,4 +15,6 @@ export class EventModalActions
     static hideSpinner    = () => document.getElementById(EventModalSelectors.SPINNER).classList.add('d-none');
     static hideForm       = () => document.getElementById(EventModalSelectors.Form.FORM).classList.add('d-none');
     static showForm       = () => document.getElementById(EventModalSelectors.Form.FORM).classList.remove('d-none');
+    static showDeleteForm = () => $(`#${EventModalSelectors.DeleteForm.DROPDOWN}`).collapse('show');
+    static hideDeleteForm = () => $(`#${EventModalSelectors.DeleteForm.DROPDOWN}`).collapse('hide');
 }

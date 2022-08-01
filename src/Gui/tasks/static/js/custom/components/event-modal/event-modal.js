@@ -6,6 +6,8 @@ import { ApiEvents } from "../../api/api-events";
 import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
+import { EventModalSelectors } from "./event-modal-selectors";
+import { SpinnerButton } from "../../helpers/spinner-button";
 
 export class EventModal {
     constructor() {
@@ -26,15 +28,6 @@ export class EventModal {
         const response = await api.put(model);
 
         return response.ok;
-
-        if (response.ok) {
-            // EventModalActions.hideModal();
-            // EventModalActions.resetForm();
-            const responseBody = await response.json();
-        }
-        else {
-            console.error(await response.text());
-        }
     }
 
 
@@ -48,7 +41,6 @@ export class EventModal {
 
         // map the form values to an Event modal
         const model = EventMapper.ToModelFromFormValues(formValues);
-
         model.id = eventId;
 
         return model;
@@ -129,6 +121,37 @@ export class EventModal {
 
     //#endregion
 
+
+    /**
+     * Delete the current event.
+     * @returns {Promise<Boolean>}
+     */
+    deleteEvent = async () => {
+        // setup a spinner button for the submit button
+        const eSubmitButton = $(`#${EventModalSelectors.DeleteForm.SUBMIT_BTN}`);
+        const spinner = new SpinnerButton(eSubmitButton);
+        spinner.showSpinner();
+
+        // send api request to delete the event
+        const eventId = this._getCurrentEventId();
+        const api = new ApiEvents();
+        const response = await api.delete(eventId);
+        const wasDeleted = response.ok;
+
+        // close the modal and hide the delete form
+        EventModalActions.hideModal();
+        EventModalActions.hideDeleteForm();
+        spinner.reset();
+
+        return wasDeleted;
+    }
+
+
+    /**
+     * Get the current event id
+     * @returns {String}
+     */
+    _getCurrentEventId = () => EventModalActions.getEventIdAttr();
 }
 
 
