@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import date
 import flask
 import requests
 from tasks.common.structs import BaseReturn
@@ -10,6 +11,7 @@ from tasks.common import DailyRecurrencesMapper
 from tasks.common import DailyRecurrenceMapType
 
 
+# Override the BaseReturn.data type 
 class GetRecurrencesResult(BaseReturn):
     data: DailyRecurrenceMapType = None
 
@@ -94,9 +96,12 @@ def _create_date_range_map(recurrences: list[models.EventRecurrence], week_range
 #------------------------------------------------------
 # Generate the html for the recurrences board
 #------------------------------------------------------
-def get_recurrences_board_html(recurrences: DailyRecurrenceMapType) -> str:
+def get_recurrences_board_html(recurrences: DailyRecurrenceMapType, recurrence_date: date) -> str:
     # setup the argument data
-    output = dict(recurrences = recurrences)
+    output = dict(
+        recurrences = recurrences,
+        recurrence_date = recurrence_date.isoformat(),
+    )
 
     # load up the template macro
     recurrences_board_macro = flask.get_template_attribute('macros/recurrences.html', 'recurrences_board')

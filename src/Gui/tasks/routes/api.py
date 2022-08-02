@@ -17,7 +17,6 @@ from tasks import services
 from tasks.common.dates import get_week_range
 from http import HTTPStatus
 from tasks.common.url_rules import DeleteEventUrlRules
-from tasks.services.events import EventDeleteAction
 
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
@@ -90,7 +89,7 @@ def get_recurrences_in_week(date_val: date):
         raise result.error
 
     # generate the html for the recurrences board
-    html = services.recurrences.get_recurrences_board_html(result.data)
+    html = services.recurrences.get_recurrences_board_html(result.data, date_val)
 
     return html
 
