@@ -10,19 +10,34 @@ The macros are:
 
 
 
-{# Create the html for the daily recurrences board #}
+{# 
+
+    Create the html for the daily recurrences board 
+
+    data:
+        - recurrence_date (date)
+        
+        - recurrences: dictionary['2022-01-01', recurrences]
+            - event_id  : UUID     
+            - name      : str      
+            - occurs_on : datetime 
+            - starts_at : time     
+            - completed : bool
+#}
 {% macro recurrences_board(data) -%}
 
 <div class="container my-5" id="recurrences-board-container">
-
+   
     {% for occurence_date, recurrences in data.recurrences.items() %}
         
-        <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
+        <div class="card card-daily-recurrences mt-3 {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
 
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
+                    
                     {# Occurence date #}
                     <div class="">
+
                         {# Mon #}
                         <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
                         
@@ -30,11 +45,13 @@ The macros are:
                         
                         {# 01/01/22 #}
                         <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+
                     </div>
 
                     {# Recurrences count #}
                     <span class="badge badge-secondary">{{ recurrences|length }}</span>
                 </div>
+
             </div>
 
             <div class="card-body">
