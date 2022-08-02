@@ -70,24 +70,12 @@ def get_event(event_id: UUID):
 @bp_api.delete(DeleteEventUrlRules.FOLLOWING.value)
 @security.login_required
 def delete_all_events(event_id: UUID, date_val: date=None):
-    result = None
-    delete_action = services.events.get_delete_action()
-
-    # if delete_action == EventDeleteAction.ALL:
-    #     result = services.events.delete_event(event_id)
-    # elif delete_action == EventDeleteAction.SINGLE:
-    #     # result = services.events.delete_event_occurence(event_id, date_val)
-    #     result = services.events.delete_event(event_id)
-    # elif delete_action == EventDeleteAction.FOLLOWING:
-    #     # result = services.events.delete_event_occurence_following(event_id, date_val)
-
     result = services.events.delete_event(event_id)
 
     if not result.successful:
         return (str(result.error), HTTPStatus.BAD_REQUEST)
 
     return ('', HTTPStatus.NO_CONTENT)
-
 
 
 #------------------------------------------------------
@@ -109,3 +97,23 @@ def get_recurrences_in_week(date_val: date):
     html = flask.render_template('components/recurrences-board/container.html', data=output)
 
     return html
+
+
+#------------------------------------------------------
+# PUT: /api/completions/:eventId/:onDate
+# DELETE: /api/completions/:eventId/:onDate
+#------------------------------------------------------
+@bp_api.route('completions/<uuid:event_id>/<date:on_date>', methods=['PUT', 'DELETE'])
+@security.login_required
+def event_completetions(event_id: UUID, on_date: date):
+    
+    if flask.request.method == 'DELETE':
+        result = services.completions.delete_event_completion()
+    else:
+        result = services.completions.create_event_completion()
+
+    if not result.successful:
+        raise result.error
+        return (str(result.error), 400)
+
+    return (result.data, 200)

@@ -12,8 +12,6 @@ def get_data() -> dict:
         next_week_date = dates.get_weeks_interval(current_date, 1),
         previous_week_date = dates.get_weeks_interval(current_date, -1),
     )
-
-    print(flask.json.dumps(result, indent=4))
     
     return result
 

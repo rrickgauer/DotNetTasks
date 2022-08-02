@@ -6,15 +6,20 @@
     <div class="d-flex align-items-center">
 
         <div class="form-check">
-            <input class="form-check-input position-static" type="checkbox">
+            <input class="form-check-input position-static" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
+        </div>
+
+        <div class="daily-recurrences-list-item-text-display">
+            <span class="daily-recurrences-list-item-starts-on">
+                {% if recurrence.starts_at %}
+                    {{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}
+                {% endif %} 
+            </span>
+
+            <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
         </div>
 
 
-        {% if recurrence.starts_at %}
-            <span class="mr-1">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }} </span>
-        {% endif %} 
-
-        <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
     </div>
 </div>
 
