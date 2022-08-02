@@ -70,17 +70,6 @@ def get_event(event_id: UUID):
 @bp_api.delete(DeleteEventUrlRules.FOLLOWING.value)
 @security.login_required
 def delete_all_events(event_id: UUID, date_val: date=None):
-    result = None
-    delete_action = services.events.get_delete_action()
-
-    # if delete_action == EventDeleteAction.ALL:
-    #     result = services.events.delete_event(event_id)
-    # elif delete_action == EventDeleteAction.SINGLE:
-    #     # result = services.events.delete_event_occurence(event_id, date_val)
-    #     result = services.events.delete_event(event_id)
-    # elif delete_action == EventDeleteAction.FOLLOWING:
-    #     # result = services.events.delete_event_occurence_following(event_id, date_val)
-
     result = services.events.delete_event(event_id)
 
     if not result.successful:

@@ -36,6 +36,10 @@ def _get_recurrences_from_api(week_range: models.WeekRange) -> requests.Response
     # setup url
     config = get_config()
     api_url   = f'{config.URL_API}/recurrences'
+
+    print("\n" * 10)
+    print(f'{api_url}?startsOn={week_range.start}&endsOn={week_range.end}')
+    print("\n" * 10)
     
     # setup url query parms
     parms = dict(
