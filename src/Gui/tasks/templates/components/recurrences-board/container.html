@@ -12,7 +12,7 @@
         <div class="daily-recurrences-list-item-text-display">
             <span class="daily-recurrences-list-item-starts-on">
                 {% if recurrence.starts_at %}
-                    {{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}
+                <span class="badge badge-secondary">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
                 {% endif %} 
             </span>
 

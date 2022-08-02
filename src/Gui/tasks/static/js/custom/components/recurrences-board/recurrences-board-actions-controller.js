@@ -79,4 +79,9 @@ export class RecurrencesBoardActionsController
      */
     setBoardHtml = (dailyRecurrencesHtml) => this.actionButtons.container.innerHTML = dailyRecurrencesHtml;
 
+    
+    jumpToNextWeek     = () => this.actionButtons.nextButton.click();
+    jumpToPreviousWeek = () => this.actionButtons.previousButton.click();
+    jumpToCurrentDate  = () => this.actionButtons.todayButton.click();
+
 }

@@ -5,10 +5,11 @@ import { RecurrencesBoardActionsController } from "../../components/recurrences-
 import { DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";
 import { RecurrencesListItemElement } from "../../components/daily-recurrences-card/list-item-element";
 import { EventModalSelectors } from "../../components/event-modal/event-modal-selectors";
+import { KeyCodes } from "../../domain/constants/keycodes";
 
 // module variables
-const eventModal = new EventModal();
-const boardActionsController = new RecurrencesBoardActionsController();
+const m_eventModal = new EventModal();
+const m_boardActionsController = new RecurrencesBoardActionsController();
 
 
 /**
@@ -25,14 +26,14 @@ $(document).ready(function() {
  */
 async function addListeners() {
     // listen for "create new event" button click
-    boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
-        eventModal.createNewEvent();
+    m_boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
+        m_eventModal.createNewEvent();
     });
 
-    boardActionsController.addListeners();
+    m_boardActionsController.addListeners();
 
     // listen for event modal form submission    
-    $(eventModal.eventModalForm.form).on('submit', (submissionEvent) => {
+    $(m_eventModal.eventModalForm.form).on('submit', (submissionEvent) => {
         submissionEvent.preventDefault();
         submitEventModalForm();
     });
@@ -45,23 +46,25 @@ async function addListeners() {
     window.addEventListener('resize', setupBoardActionVisibilities);
 
     listenForEventCompletions();
+
+    listenForArrowKeys();
 }
 
 
 async function submitEventModalForm() {
-    const result = await eventModal.submitForm();
+    const result = await m_eventModal.submitForm();
     getWeeklyRecurrences();
 }
 
 async function getWeeklyRecurrences() {
-    const dateVal = boardActionsController.getDateValue();
+    const dateVal = m_boardActionsController.getDateValue();
     
     const api = new ApiRecurrences();
     const response = await api.get(dateVal);
     
     const recurrencesHtml = await response.text();
-    boardActionsController.hideSpinner();
-    boardActionsController.setBoardHtml(recurrencesHtml);
+    m_boardActionsController.hideSpinner();
+    m_boardActionsController.setBoardHtml(recurrencesHtml);
 }
 
 
@@ -76,7 +79,7 @@ async function _deleteEventListener() {
     eDeletionForm.addEventListener('submit', async function(event) {
         event.preventDefault();
         
-        const eventDeleted = await eventModal.deleteEvent();
+        const eventDeleted = await m_eventModal.deleteEvent();
 
         if (eventDeleted) {
             getWeeklyRecurrences();
@@ -120,13 +123,12 @@ function listenForRecurrenceClick() {
  */
 function viewEvent(nameElement) {
     const listItem = RecurrencesListItemElement.createFromChildElement(nameElement);
-    eventModal.viewEvent(listItem.eventId);
+    m_eventModal.viewEvent(listItem.eventId);
 }
 
 //#endregion
 
 function listenForEventCompletions() {
-    
     document.body.addEventListener('change', function(event) {
         if (!event.target.classList.contains(DailyRecurrenceListItemElements.CHECK_BOX)) {
             return;
@@ -137,7 +139,36 @@ function listenForEventCompletions() {
 
         listItem.toggleEventCompletion();
     });
+}
 
 
+/**
+ * Listen for when users hit Ctrl+left/right/down
+ * 
+ * Ctrl + Left Arrow = jump to previous week
+ * Ctrl + Right Arrow = jump to next week
+ * Ctrl + Down Arrow = jump to current date
+ */
+function listenForArrowKeys() {
+    
+    document.addEventListener('keydown', function(e) {
+        if (!e.ctrlKey) {
+            return;
+        }
+        
+        if (e.code == KeyCodes.ARROW_LEFT) 
+        {
+            m_boardActionsController.jumpToPreviousWeek();
+        }
+        else if (e.code == KeyCodes.ARROW_RIGHT) 
+        {
+            m_boardActionsController.jumpToNextWeek();
+        }
+        else if (e.code == KeyCodes.ARROW_UP) 
+        {
+            m_boardActionsController.jumpToCurrentDate();
+        }
+
+    });
 }
 

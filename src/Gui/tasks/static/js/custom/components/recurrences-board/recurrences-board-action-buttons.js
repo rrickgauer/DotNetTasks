@@ -12,6 +12,12 @@ export class RecurrencesBoardActionButtons
         /** @type {HTMLButtonElement} */
         this.todayButton = document.getElementById(RecurrencesBoardActionButtons.TODAY);
 
+        /** @type {HTMLAnchorElement} */
+        this.previousButton = document.getElementById(RecurrencesBoardActionButtons.PREVIOUS_WEEK);
+
+        /** @type {HTMLAnchorElement} */
+        this.nextButton = document.getElementById(RecurrencesBoardActionButtons.NEXT_WEEK);
+
         /** @type {HTMLDivElement} */
         this.spinner = document.getElementById(RecurrencesBoardActionButtons.SPINNER);
 
@@ -20,9 +26,12 @@ export class RecurrencesBoardActionButtons
     }
 }
 
-RecurrencesBoardActionButtons.NEW       = 'recurrences-board-action-buttons-btn-new';
-RecurrencesBoardActionButtons.DATE      = 'recurrences-board-action-buttons-input-date';
-RecurrencesBoardActionButtons.TODAY     = 'recurrences-board-action-buttons-btn-today';
-RecurrencesBoardActionButtons.SPINNER   = 'recurrences-board-spinner';
-RecurrencesBoardActionButtons.CONTAINER = 'recurrences-board-container-wrapper';
+RecurrencesBoardActionButtons.NEW           = 'recurrences-board-action-buttons-btn-new';
+RecurrencesBoardActionButtons.DATE          = 'recurrences-board-action-buttons-input-date';
+RecurrencesBoardActionButtons.TODAY         = 'recurrences-board-action-buttons-btn-today';
+RecurrencesBoardActionButtons.PREVIOUS_WEEK = 'recurrences-board-action-buttons-btn-previous';
+RecurrencesBoardActionButtons.NEXT_WEEK     = 'recurrences-board-action-buttons-btn-next';
+RecurrencesBoardActionButtons.SPINNER       = 'recurrences-board-spinner';
+RecurrencesBoardActionButtons.CONTAINER     = 'recurrences-board-container-wrapper';
+
 
