@@ -12,19 +12,23 @@ const m_eventModal = new EventModal();
 const m_boardActionsController = new RecurrencesBoardActionsController();
 
 
+
+
+
 /**
  * Main logic
  */
 $(document).ready(function() {
     addListeners();
-    getWeeklyRecurrences();
+    m_boardActionsController.getWeeklyRecurrences();
     setupBoardActionVisibilities();
 });
 
 /**
  * Add the event listeners to the page.
  */
-async function addListeners() {
+async function addListeners() 
+{
     // listen for "create new event" button click
     m_boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
         m_eventModal.createNewEvent();
@@ -32,11 +36,7 @@ async function addListeners() {
 
     m_boardActionsController.addListeners();
 
-    // listen for event modal form submission    
-    $(m_eventModal.eventModalForm.form).on('submit', (submissionEvent) => {
-        submissionEvent.preventDefault();
-        submitEventModalForm();
-    });
+    listenForEventModalFormSubmission();
 
     // listen for when a recurrence list item is clicked (opens the event modal)
     listenForRecurrenceClick();
@@ -51,23 +51,20 @@ async function addListeners() {
 }
 
 
-async function submitEventModalForm() {
-    const result = await m_eventModal.submitForm();
-    getWeeklyRecurrences();
+/**
+ * Listen for event modal form submissions
+ */
+function listenForEventModalFormSubmission() 
+{
+    m_eventModal.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
+    {
+        submissionEvent.preventDefault();
+
+        await m_eventModal.submitForm();
+        m_boardActionsController.getWeeklyRecurrences();
+
+    });
 }
-
-async function getWeeklyRecurrences() {
-    const dateVal = m_boardActionsController.getDateValue();
-    
-    const api = new ApiRecurrences();
-    const response = await api.get(dateVal);
-    
-    const recurrencesHtml = await response.text();
-    m_boardActionsController.hideSpinner();
-    m_boardActionsController.setBoardHtml(recurrencesHtml);
-}
-
-
 
 
 /**
@@ -82,7 +79,7 @@ async function _deleteEventListener() {
         const eventDeleted = await m_eventModal.deleteEvent();
 
         if (eventDeleted) {
-            getWeeklyRecurrences();
+            m_boardActionsController.getWeeklyRecurrences();
         }
         else {
             console.error('There was an error deleting the event');
@@ -107,27 +104,23 @@ function setupBoardActionVisibilities() {
 }
 
 
-//#region View an event in the modal
-
+/**
+ * View an event in the modal
+ */
 function listenForRecurrenceClick() {
     document.body.addEventListener('click', function(event) {
+
         if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) {
-            viewEvent(event.target);
+            const listItem = RecurrencesListItemElement.createFromChildElement(event.target);
+            m_eventModal.viewEvent(listItem.eventId);
         }
+
     });
 }
 
 /**
- * View an event in the modal
- * @param {HTMLSpanElement} nameElement the name element
+ * Listen for an event completion action
  */
-function viewEvent(nameElement) {
-    const listItem = RecurrencesListItemElement.createFromChildElement(nameElement);
-    m_eventModal.viewEvent(listItem.eventId);
-}
-
-//#endregion
-
 function listenForEventCompletions() {
     document.body.addEventListener('change', function(event) {
         if (!event.target.classList.contains(DailyRecurrenceListItemElements.CHECK_BOX)) {
@@ -135,8 +128,6 @@ function listenForEventCompletions() {
         }
 
         const listItem = RecurrencesListItemElement.createFromChildElement(event.target);
-        console.log(listItem);
-
         listItem.toggleEventCompletion();
     });
 }

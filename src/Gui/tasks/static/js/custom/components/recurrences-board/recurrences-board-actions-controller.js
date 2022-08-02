@@ -2,41 +2,26 @@ import { RecurrencesBoardActionButtons } from "./recurrences-board-action-button
 import { DateTimeUtil } from "../../helpers/datetime";
 import { UrlMethods } from "../../helpers/url-methods";
 import { DateTime } from "../../../lib/luxon";
+import { ApiRecurrences } from "../../api/recurrences";
 
 /**
  * This class handles all the recurrences board action buttons and what happens when you click them.
  */
-export class RecurrencesBoardActionsController
-{   
+export class RecurrencesBoardActionsController 
+{
     /**
      * Constructor
      */
-    constructor() {
-       this.actionButtons = new RecurrencesBoardActionButtons();
+    constructor() 
+    {
+        this.actionButtons = new RecurrencesBoardActionButtons();
     }
-
-    /**
-     * Set the current value of the date input
-     * @param {string} newDateValue - the new date value
-     */
-    setDateValue = (newDateValue) => {
-        this.actionButtons.dateInput.value = newDateValue;
-    }
-
-    /**
-     * Get the current date input value as a Luxon DateTime
-     * @returns {DateTime}
-     */
-    getDateValue = () => {
-        const currentValue = this.actionButtons.dateInput.value;
-        return DateTimeUtil.toDateTime(currentValue);
-    }
-
 
     /**
      * Add the event listeners to the page
      */
-    addListeners = () => {
+    addListeners = () => 
+    {
         // set the current recurrences date to today's value
         this.actionButtons.todayButton.addEventListener('click', (e) => {
             this._setDateValueToday();
@@ -49,11 +34,24 @@ export class RecurrencesBoardActionsController
         });
     }
 
+    getWeeklyRecurrences = async () => 
+    {
+        const dateVal = this.getDateValue();
+
+        const api = new ApiRecurrences();
+        const response = await api.get(dateVal);
+
+        const recurrencesHtml = await response.text();
+        this.hideSpinner();
+        this.setBoardHtml(recurrencesHtml);
+    }
+
 
     /**
      * Set the curernt value of the date input to today's date
      */
-    _setDateValueToday = () => {
+    _setDateValueToday = () => 
+    {
         const currentDate = DateTimeUtil.getCurrentDateIso();
         this.setDateValue(currentDate);
     }
@@ -61,7 +59,8 @@ export class RecurrencesBoardActionsController
     /**
      * Set the URL's query parm to the value of the date input
      */
-    _setUrlDateValueToValue = () => {
+    _setUrlDateValueToValue = () => 
+    {
         const newDate = this.actionButtons.dateInput.value;
         const newUrl = UrlMethods.setQueryParmAndRefresh('d', newDate);
         window.location.href = newUrl;
@@ -79,9 +78,26 @@ export class RecurrencesBoardActionsController
      */
     setBoardHtml = (dailyRecurrencesHtml) => this.actionButtons.container.innerHTML = dailyRecurrencesHtml;
 
-    
-    jumpToNextWeek     = () => this.actionButtons.nextButton.click();
+
+    jumpToNextWeek = () => this.actionButtons.nextButton.click();
     jumpToPreviousWeek = () => this.actionButtons.previousButton.click();
-    jumpToCurrentDate  = () => this.actionButtons.todayButton.click();
+    jumpToCurrentDate = () => this.actionButtons.todayButton.click();
+
+
+    /**
+     * Get the current date input value as a Luxon DateTime
+     * @returns {DateTime}
+     */
+    getDateValue = () => 
+    {
+        const currentValue = this.actionButtons.dateInput.value;
+        return DateTimeUtil.toDateTime(currentValue);
+    }
+
+    /**
+     * Set the current value of the date input
+     * @param {string} newDateValue - the new date value
+     */
+    setDateValue = (newDateValue) => this.actionButtons.dateInput.value = newDateValue;
 
 }
