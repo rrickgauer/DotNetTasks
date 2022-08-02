@@ -34,7 +34,15 @@
         <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
 
             <div class="card-header">
-               {{ occurence_date|format_date(date_format_tokens.DATE_LONG) }}
+                <span>
+                    {{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}
+                </span>
+
+                &sdot;
+                <span>
+                    {{ occurence_date|format_date(date_format_tokens.SLASHES) }}
+                </span>
+               
             </div>
 
             <div class="card-body">

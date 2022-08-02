@@ -152,10 +152,20 @@ function listenForEventCompletions() {
 function listenForArrowKeys() {
     
     document.addEventListener('keydown', function(e) {
-        if (!e.ctrlKey) {
+        if (!e.ctrlKey) 
+        {
+            return;
+        }
+        else if (e.shiftKey || e.altKey) 
+        {
+            return;
+        }
+        else if (e.target != document.body) 
+        {
             return;
         }
         
+    
         if (e.code == KeyCodes.ARROW_LEFT) 
         {
             m_boardActionsController.jumpToPreviousWeek();
@@ -168,6 +178,12 @@ function listenForArrowKeys() {
         {
             m_boardActionsController.jumpToCurrentDate();
         }
+        else 
+        {
+            return;
+        }
+
+        console.log(e);
 
     });
 }
