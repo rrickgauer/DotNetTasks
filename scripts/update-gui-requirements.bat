@@ -1,7 +1,11 @@
 :: This script updates the requirements.txt file
 
-set pip=C:\xampp\htdocs\files\DotNetTasks\venv\Scripts\pip
+set pip=C:\xampp\htdocs\files\DotNetTasks\src\Gui\.venv\Scripts\pip
 
-%pip% freeze -l > C:\xampp\htdocs\files\DotNetTasks\src\Gui\requirements.txt
+cd C:\xampp\htdocs\files\DotNetTasks\src\Gui
 
-pause
+%pip% freeze -l > requirements.txt
+
+start notepad "requirements.txt"
+
+exit

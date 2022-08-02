@@ -4,7 +4,7 @@
 
 cd C:\xampp\htdocs\files\DotNetTasks\src\Gui
 
-set flask_program=C:\xampp\htdocs\files\DotNetTasks\venv\Scripts\flask
+set flask_program=C:\xampp\htdocs\files\DotNetTasks\src\Gui\.venv\Scripts\flask
 set FLASK_ENV=development
 set FLASK_APP=tasks
 
