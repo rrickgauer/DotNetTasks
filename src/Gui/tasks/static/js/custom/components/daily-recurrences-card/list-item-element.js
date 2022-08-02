@@ -1,6 +1,6 @@
 
 import { DateTime } from "../../../lib/luxon";
-import { ApiCompletions } from "../../api/api-completion";
+import { ApiCompletions } from "../../api/completion";
 import { EventCompletion } from "../../domain/models/event-completion";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DailyRecurrenceListElements, DailyRecurrenceListItemElements } from "./daily-recurrences-list-elements";

@@ -1,5 +1,5 @@
 // imports
-import { ApiRecurrences } from "../../api/api-recurrences";
+import { ApiRecurrences } from "../../api/recurrences";
 import { EventModal } from "../../components/event-modal/event-modal";
 import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-actions-controller";
 import { DailyRecurrenceListItemElements } from "../../components/daily-recurrences-card/daily-recurrences-list-elements";

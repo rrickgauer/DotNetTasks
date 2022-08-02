@@ -2,7 +2,7 @@
 
 import { EventModalForm } from "./event-modal-form";
 import { EventMapper } from "../../mappers/event-mappers";
-import { ApiEvents } from "../../api/api-events";
+import { ApiEvents } from "../../api/events";
 import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
