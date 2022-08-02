@@ -1,4 +1,4 @@
-import { RecurrencesBoardActionButtons } from "./recurrences-board-action-buttons";
+import { RecurrencesBoardActionButtons } from "./action-buttons";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { UrlMethods } from "../../helpers/url-methods";
 import { DateTime } from "../../../lib/luxon";

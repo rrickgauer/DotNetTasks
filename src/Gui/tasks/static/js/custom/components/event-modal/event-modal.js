@@ -8,11 +8,30 @@ import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
 import { EventModalSelectors } from "./event-modal-selectors";
 import { SpinnerButton } from "../../helpers/spinner-button";
+import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 
 export class EventModal {
     constructor() {
         this.eventModalForm = new EventModalForm();
+        this.boardActionsController = new RecurrencesBoardActionsController();
     }
+
+    /**
+     * Listen for event modal form submissions
+     */
+    listenForEventModalFormSubmission = () =>
+    {
+        this.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
+        {
+            submissionEvent.preventDefault();
+
+            await this.submitForm();
+            this.boardActionsController.getWeeklyRecurrences();
+        });
+    }
+
+
+
 
     //#region Form submissions
 
@@ -20,7 +39,6 @@ export class EventModal {
      * Submit the event form.
      */
     submitForm = async () => {
-
         const spinner = new SpinnerButton(this.eventModalForm.submitBtn);
         spinner.showSpinner();
 
