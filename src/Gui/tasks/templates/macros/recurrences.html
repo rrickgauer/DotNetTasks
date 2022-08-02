@@ -1,5 +1,62 @@
+{# 
+
+This file contains jinja macros (functions) for generating the html for the recurrences board.
+
+The macros are:
+    - recurrences_board
+    - recurrences_list_item
+
+#}
 
 
+
+{# Create the html for the daily recurrences board #}
+{% macro recurrences_board(data) -%}
+
+<div class="container my-5" id="recurrences-board-container">
+
+    {% for occurence_date, recurrences in data.recurrences.items() %}
+        
+        <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
+
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    {# Occurence date #}
+                    <div class="">
+                        {# Mon #}
+                        <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
+                        
+                        &sdot;
+                        
+                        {# 01/01/22 #}
+                        <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+                    </div>
+
+                    {# Recurrences count #}
+                    <span class="badge badge-secondary">{{ recurrences|length }}</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="daily-recurrences-list">
+                    {% for recurrence in recurrences %}
+                       {{ recurrences_list_item(recurrence) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+
+</div>
+
+{%- endmacro %}
+
+
+
+{# Create the html for a daily recurrences list item #}
 {% macro recurrences_list_item(recurrence) -%}
 
 <div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
@@ -24,48 +81,3 @@
 </div>
 
 {%- endmacro %}
-
-
-
-<div class="container my-5" id="recurrences-board-container">
-
-    {% for occurence_date, recurrences in data.recurrences.items() %}
-        
-        <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
-
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    {# Occurence date #}
-                    <div class="">
-                        {# Mon #}
-                        <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
-                        &sdot;
-                        {# 01/01/22 #}
-                        <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
-                    </div>
-
-                    {# Recurrences count #}
-                    <span class="badge badge-secondary">{{ recurrences|length }}</span>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div class="daily-recurrences-list">
-                    {% for recurrence in recurrences %}
-                       {{ recurrences_list_item(recurrence) }}
-                    {% endfor %}
-                </div>
-            </div>
-
-        </div>
-
-    {% endfor %}
-
-</div>
-
-
-
-
-
-
-

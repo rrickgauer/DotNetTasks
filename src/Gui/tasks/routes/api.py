@@ -84,17 +84,17 @@ def delete_all_events(event_id: UUID, date_val: date=None):
 @bp_api.get('recurrences/<date:date_val>')
 @security.login_required
 def get_recurrences_in_week(date_val: date):
+    # fetch the recurrences from the api
     week_range = get_week_range(date_val)
     result = services.recurrences.get_recurrences(week_range)
 
     if not result.successful:
         raise result.error
 
-    output = dict(
-        recurrences = result.data
-    )
-
-    html = flask.render_template('components/recurrences-board/container.html', data=output)
+    # generate the html for the recurrences board
+    output = dict(recurrences = result.data)
+    recurrences_board_macro = flask.get_template_attribute('macros/recurrences.html', 'recurrences_board')
+    html = recurrences_board_macro(output)
 
     return html
 
