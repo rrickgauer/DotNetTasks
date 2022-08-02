@@ -1,7 +1,5 @@
 
 
-
-
 export const DailyRecurrenceListElements = {
     CARD: 'card-daily-recurrences',
     LIST: 'daily-recurrences-list',

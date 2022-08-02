@@ -18,6 +18,8 @@ export class EventModal {
         this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
     }
 
+    //#region Event listeners
+
     /**
      * Listen for event modal form submissions
      */
@@ -55,7 +57,7 @@ export class EventModal {
         });
     }
 
-
+    //#endregion
 
 
     //#region Form submissions

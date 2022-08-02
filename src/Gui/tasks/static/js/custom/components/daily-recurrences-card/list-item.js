@@ -67,9 +67,6 @@ export class RecurrencesListItemElement
         this.eListItem.classList.toggle(DailyRecurrenceListItemElements.COMPLETED);
     }
 
-
-
-
     //#region Static methods
 
     /**

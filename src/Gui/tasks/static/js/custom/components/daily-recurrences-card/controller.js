@@ -2,12 +2,14 @@ import { EventModal } from "../event-modal/event-modal";
 import { DailyRecurrenceListItemElements } from "./elements";
 import { RecurrencesListItemElement } from "./list-item";
 
-
-
 export class DailyRecurrenceListController
 {
 
-    constructor() {
+    /** 
+     * Constructor 
+     */
+    constructor() 
+    {
         this.eventModal = new EventModal();
     }
 
