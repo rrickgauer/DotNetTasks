@@ -100,4 +100,15 @@ export class RecurrencesBoardActionsController
      */
     setDateValue = (newDateValue) => this.actionButtons.dateInput.value = newDateValue;
 
+    /**
+     * Checks if the collapse menu toggle button is visisble
+     * @returns {bool}
+     */
+    isCollpaseButtonVisibile = () => this.actionButtons.collapseButton.offsetParent == null;
+
+    /** Show the collapse menu */
+    showCollapseMenu = () => this.actionButtons.collapseMenu.classList.add('show');
+
+    /** Hide the collapse menu */
+    hideCollapseMenu = () => this.actionButtons.collapseMenu.classList.remove('show');
 }

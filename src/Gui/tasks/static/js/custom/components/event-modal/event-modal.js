@@ -14,12 +14,14 @@ export class EventModal {
     constructor() {
         this.eventModalForm = new EventModalForm();
         this.boardActionsController = new RecurrencesBoardActionsController();
+
+        this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
     }
 
     /**
      * Listen for event modal form submissions
      */
-    listenForEventModalFormSubmission = () =>
+    listenForFormSubmission = () =>
     {
         this.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
         {
@@ -27,6 +29,29 @@ export class EventModal {
 
             await this.submitForm();
             this.boardActionsController.getWeeklyRecurrences();
+        });
+    }
+
+
+    /**
+     * Listen for a delete event form submission
+     */
+    listenForEventDeletion = async ()  =>
+    {
+        this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
+        {
+            submissionEvent.preventDefault();
+            
+            const eventDeleted = await this.deleteEvent();
+
+            if (eventDeleted) 
+            {
+                this.boardActionsController.getWeeklyRecurrences();
+            }
+            else 
+            {
+                console.error('There was an error deleting the event');
+            }
         });
     }
 
