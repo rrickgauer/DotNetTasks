@@ -10,8 +10,10 @@ SUNDAY_WEEKDAY_INDEX = 6
 # Custom date formatting values
 #------------------------------------------------------
 class DateFormatTokens(str, Enum):
-    DATE_LONG = "%A %x"     # Tuesday 07/26/22
-    TIME      = "%I:%M %p"       # 10:13 AM
+    DATE_LONG       = "%a %x"       # Tue 07/26/22
+    DAY_OF_THE_WEEK = "%a"          # Tue
+    SLASHES         = "%x"          # 07/26/22
+    TIME            = "%I:%M %p"    # 10:13 AM
 
 #------------------------------------------------------
 # Format the given datetime object to the specified token

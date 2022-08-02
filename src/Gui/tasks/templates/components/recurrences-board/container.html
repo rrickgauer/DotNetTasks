@@ -12,7 +12,7 @@
         <div class="daily-recurrences-list-item-text-display">
             <span class="daily-recurrences-list-item-starts-on">
                 {% if recurrence.starts_at %}
-                    {{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}
+                <span class="badge badge-light">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
                 {% endif %} 
             </span>
 
@@ -34,7 +34,19 @@
         <div class="card card-daily-recurrences mt-3" data-js-occurence-date="{{ occurence_date }}">
 
             <div class="card-header">
-               {{ occurence_date|format_date(date_format_tokens.DATE_LONG) }}
+                <div class="d-flex justify-content-between align-items-center">
+                    {# Occurence date #}
+                    <div class="">
+                        {# Mon #}
+                        <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
+                        &sdot;
+                        {# 01/01/22 #}
+                        <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+                    </div>
+
+                    {# Recurrences count #}
+                    <span class="badge badge-secondary">{{ recurrences|length }}</span>
+                </div>
             </div>
 
             <div class="card-body">
