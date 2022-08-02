@@ -16,7 +16,6 @@ from .common import url_converters as url_converters
 from .common import dates
 from .common import template_filters
 
-
 #------------------------------------------------------
 # Setup the custom url type converters for some enums
 #------------------------------------------------------
@@ -32,37 +31,40 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
     flask_app.register_blueprint(routes.bp_home, url_prefix='/')
 
-
-def _register_template_data():
-    return dict(
+#------------------------------------------------------
+# Register global template data
+#------------------------------------------------------
+def _register_template_data(flask_app: flask.Flask):
+    flask_app.jinja_env.globals.update(
         date_format_tokens = dates.DateFormatTokens,
     )
 
-
+#------------------------------------------------------
+# Add custom template functions
+#------------------------------------------------------
 def _add_template_filters(flask_app: flask.Flask):
     flask_app.add_template_filter(template_filters.format_date, 'format_date')
     flask_app.add_template_filter(template_filters.format_time_obj, 'format_time_obj')
+
 
 # Main logic
 app = flask.Flask(__name__)
 
 _setupCustomConverters(app)
+
 _registerBlueprints(app)
 
 app_config = get_correct_config_class(app)
+
 app.config.from_object(app_config)
 
 app.json_encoder = app_config.JSON_ENCODER
 
 app.secret_key = app_config.SECRET_KEY_GUI
 
-app.context_processor(_register_template_data)
+_register_template_data(app)
 
 _add_template_filters(app)
-
-
-
-
 
 
 
