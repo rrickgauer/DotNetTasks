@@ -1,15 +1,16 @@
 //@ts-check
 
-import { ApiEndpoints } from "./api-base";
-import { HttpMethods } from "./api-base";
+import { ApiEndpoints } from "./base";
+import { HttpMethods } from "./base";
 import { EventCompletion } from "../domain/models/event-completion";
-import { DateTimeUtil } from "../helpers/datetime";
 
 export class ApiCompletions
 {
     /**
-     * Send a put request.
+     * PUT: /completions/:eventId/:onDate
+     * 
      * @param {EventCompletion} completionModel the event object to send
+     * 
      * @returns {Promise<Response>} the api response promise
      */
     put = async (completionModel) => {
@@ -21,8 +22,10 @@ export class ApiCompletions
     }
 
     /**
-     * Send a delete request.
+     * DELETE: /completions/:eventId/:onDate
+     * 
      * @param {EventCompletion} completionModel the event object to send
+     * 
      * @returns {Promise<Response>} the api response promise
      */
     delete = async (completionModel) => {
@@ -33,6 +36,7 @@ export class ApiCompletions
         });
     }
 
+    
     static _getUrl = (eventId, onDate) => `${ApiEndpoints.COMPLETIONS}/${eventId}/${onDate}`;
 }
 

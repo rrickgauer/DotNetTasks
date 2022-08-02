@@ -2,17 +2,63 @@
 
 import { EventModalForm } from "./event-modal-form";
 import { EventMapper } from "../../mappers/event-mappers";
-import { ApiEvents } from "../../api/api-events";
+import { ApiEvents } from "../../api/events";
 import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
 import { EventModalSelectors } from "./event-modal-selectors";
 import { SpinnerButton } from "../../helpers/spinner-button";
+import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 
 export class EventModal {
     constructor() {
         this.eventModalForm = new EventModalForm();
+        this.boardActionsController = new RecurrencesBoardActionsController();
+
+        this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
     }
+
+    //#region Event listeners
+
+    /**
+     * Listen for event modal form submissions
+     */
+    listenForFormSubmission = () =>
+    {
+        this.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
+        {
+            submissionEvent.preventDefault();
+
+            await this.submitForm();
+            this.boardActionsController.getWeeklyRecurrences();
+        });
+    }
+
+
+    /**
+     * Listen for a delete event form submission
+     */
+    listenForEventDeletion = async ()  =>
+    {
+        this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
+        {
+            submissionEvent.preventDefault();
+            
+            const eventDeleted = await this.deleteEvent();
+
+            if (eventDeleted) 
+            {
+                this.boardActionsController.getWeeklyRecurrences();
+            }
+            else 
+            {
+                console.error('There was an error deleting the event');
+            }
+        });
+    }
+
+    //#endregion
+
 
     //#region Form submissions
 
@@ -20,7 +66,6 @@ export class EventModal {
      * Submit the event form.
      */
     submitForm = async () => {
-
         const spinner = new SpinnerButton(this.eventModalForm.submitBtn);
         spinner.showSpinner();
 

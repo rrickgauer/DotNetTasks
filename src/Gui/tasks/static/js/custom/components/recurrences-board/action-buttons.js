@@ -23,6 +23,12 @@ export class RecurrencesBoardActionButtons
 
         /** @type {HTMLDivElement} */
         this.container = document.getElementById(RecurrencesBoardActionButtons.CONTAINER);
+
+        /** @type {HTMLButtonElement} */
+        this.collapseButton = document.getElementById(RecurrencesBoardActionButtons.COLLAPSE_BTN);
+        
+        /** @type {HTMLDivElement} */
+        this.collapseMenu = document.getElementById(RecurrencesBoardActionButtons.COLLAPSE_MENU);
     }
 }
 
@@ -33,5 +39,6 @@ RecurrencesBoardActionButtons.PREVIOUS_WEEK = 'recurrences-board-action-buttons-
 RecurrencesBoardActionButtons.NEXT_WEEK     = 'recurrences-board-action-buttons-btn-next';
 RecurrencesBoardActionButtons.SPINNER       = 'recurrences-board-spinner';
 RecurrencesBoardActionButtons.CONTAINER     = 'recurrences-board-container-wrapper';
-
+RecurrencesBoardActionButtons.COLLAPSE_BTN = 'recurrences-board-action-buttons-collapse-btn';
+RecurrencesBoardActionButtons.COLLAPSE_MENU = 'recurrences-board-action-buttons-collapse';
 
