@@ -6,7 +6,7 @@
     <div class="d-flex align-items-center">
 
         <div class="form-check">
-            <input class="form-check-input position-static" type="checkbox">
+            <input class="form-check-input position-static" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
         </div>
 
         <div class="daily-recurrences-list-item-text-display">

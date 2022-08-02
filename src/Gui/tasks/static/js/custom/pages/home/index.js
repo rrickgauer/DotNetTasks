@@ -37,11 +37,14 @@ async function addListeners() {
         submitEventModalForm();
     });
 
+    // listen for when a recurrence list item is clicked (opens the event modal)
     listenForRecurrenceClick();
 
     _deleteEventListener();
 
     window.addEventListener('resize', setupBoardActionVisibilities);
+
+    listenForEventCompletions();
 }
 
 
@@ -61,29 +64,7 @@ async function getWeeklyRecurrences() {
     boardActionsController.setBoardHtml(recurrencesHtml);
 }
 
-//#region View an event in the modal
 
-function listenForRecurrenceClick() {
-    document.body.addEventListener('click', function(event) {
-        if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) {
-            viewEvent(event.target);
-        }
-    });
-}
-
-/**
- * View an event in the modal
- * @param {HTMLSpanElement} nameElement the name element
- */
-function viewEvent(nameElement) {
-    const listItem = new RecurrencesListItemElement();
-    listItem.setListItemFromChildElement(nameElement);
-
-    const eventId = listItem.getEventId();
-    eventModal.viewEvent(eventId);
-}
-
-//#endregion
 
 
 /**
@@ -122,4 +103,41 @@ function setupBoardActionVisibilities() {
     }
 }
 
+
+//#region View an event in the modal
+
+function listenForRecurrenceClick() {
+    document.body.addEventListener('click', function(event) {
+        if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) {
+            viewEvent(event.target);
+        }
+    });
+}
+
+/**
+ * View an event in the modal
+ * @param {HTMLSpanElement} nameElement the name element
+ */
+function viewEvent(nameElement) {
+    const listItem = RecurrencesListItemElement.createFromChildElement(nameElement);
+    eventModal.viewEvent(listItem.eventId);
+}
+
+//#endregion
+
+function listenForEventCompletions() {
+    
+    document.body.addEventListener('change', function(event) {
+        if (!event.target.classList.contains(DailyRecurrenceListItemElements.CHECK_BOX)) {
+            return;
+        }
+
+        const listItem = RecurrencesListItemElement.createFromChildElement(event.target);
+        console.log(listItem);
+
+        listItem.toggleEventCompletion();
+    });
+
+
+}
 

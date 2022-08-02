@@ -2,9 +2,10 @@
 export const URL_PREFIX = '/api';
 
 export const ApiEndpoints = {
-    LOGIN: `${URL_PREFIX}/login`,
-    EVENTS: `${URL_PREFIX}/events`,
-    RECURRENCES: `${URL_PREFIX}/recurrences`,
+    LOGIN : `${URL_PREFIX}/login`,
+    EVENTS : `${URL_PREFIX}/events`,
+    RECURRENCES : `${URL_PREFIX}/recurrences`,
+    COMPLETIONS : `${URL_PREFIX}/completions`,
 }
 
 export const HttpMethods = {

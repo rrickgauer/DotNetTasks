@@ -78,7 +78,6 @@ def delete_all_events(event_id: UUID, date_val: date=None):
     return ('', HTTPStatus.NO_CONTENT)
 
 
-
 #------------------------------------------------------
 # GET: /api/recurrences/:date
 #------------------------------------------------------
@@ -98,3 +97,23 @@ def get_recurrences_in_week(date_val: date):
     html = flask.render_template('components/recurrences-board/container.html', data=output)
 
     return html
+
+
+#------------------------------------------------------
+# PUT: /api/completions/:eventId/:onDate
+# DELETE: /api/completions/:eventId/:onDate
+#------------------------------------------------------
+@bp_api.route('completions/<uuid:event_id>/<date:on_date>', methods=['PUT', 'DELETE'])
+@security.login_required
+def event_completetions(event_id: UUID, on_date: date):
+    
+    if flask.request.method == 'DELETE':
+        result = services.completions.delete_event_completion()
+    else:
+        result = services.completions.create_event_completion()
+
+    if not result.successful:
+        raise result.error
+        return (str(result.error), 400)
+
+    return (result.data, 200)

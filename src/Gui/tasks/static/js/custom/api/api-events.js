@@ -2,7 +2,6 @@
 
 import { ApiEndpoints } from "./api-base";
 import { HttpMethods } from "./api-base";
-// import { Utililties } from "../helpers/utilities";
 import { Event } from "../domain/models/event";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 
