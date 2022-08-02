@@ -43,8 +43,6 @@ def modify_event(event_id: UUID):
     response = services.events.update_event_from_request(event_id)
     return (response.text, response.status_code)
 
-
-
 #------------------------------------------------------
 # GET: /api/events/:event_id
 #------------------------------------------------------
@@ -92,9 +90,7 @@ def get_recurrences_in_week(date_val: date):
         raise result.error
 
     # generate the html for the recurrences board
-    output = dict(recurrences = result.data)
-    recurrences_board_macro = flask.get_template_attribute('macros/recurrences.html', 'recurrences_board')
-    html = recurrences_board_macro(output)
+    html = services.recurrences.get_recurrences_board_html(result.data)
 
     return html
 
