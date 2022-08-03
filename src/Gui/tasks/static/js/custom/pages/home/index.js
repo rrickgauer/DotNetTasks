@@ -38,11 +38,10 @@ async function addListeners()
 
     m_listController.listenForEventCompletions();
     m_listController.listenForRecurrenceClick();
+    m_listController.listenForDailyRecurrencesCardNewEvent();
 
     listenForWindowResize();
     listenForArrowKeys();
+
 }
-
-
-
 
