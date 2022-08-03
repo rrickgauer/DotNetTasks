@@ -9,6 +9,7 @@ import { EventModalActions } from "./actions";
 import { EventModalSelectors } from "./event-modal-selectors";
 import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
+import { DateTime } from "../../../lib/luxon";
 
 export class EventModal {
     constructor() {
@@ -135,6 +136,22 @@ export class EventModal {
         const mappedResult = EventMapper.ToModelFromApiGetRequest(JSON.parse(responseData));
         return mappedResult;
     }
+
+    /**
+     * Create a new event that starts on the specified date.
+     * @param {DateTime} startsOn when the event starts on
+     */
+    createNewEventStartsOn = (startsOn) =>
+    {
+        this.createNewEvent();
+
+        const dateString = startsOn.toISODate();
+        this.eventModalForm.inputStartsOn.value = dateString;
+        this.eventModalForm.inputEndsOn.value = dateString;
+
+        this.eventModalForm.inputSeparation.value = '1';
+    }
+
 
     /**
      * Create a new event in the modal.

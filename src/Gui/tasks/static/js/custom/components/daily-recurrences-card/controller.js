@@ -1,6 +1,8 @@
 import { EventModal } from "../event-modal/event-modal";
+import { DailyRecurrenceCard } from "./card-element";
 import { DailyRecurrenceListItemElements } from "./elements";
 import { RecurrencesListItemElement } from "./list-item";
+
 
 export class DailyRecurrenceListController
 {
@@ -44,6 +46,26 @@ export class DailyRecurrenceListController
                 this.eventModal.viewEvent(listItem.eventId);
             }
         });
+    }
+
+    /**
+     * Listen for the new event button click on the daily recurrence card.
+     */
+    listenForDailyRecurrencesCardNewEvent = () =>
+    {
+        document.body.addEventListener('click', (event) => 
+        {
+            const isNewEventButton = event.target.classList.contains('card-daily-recurrences-new-event-btn');
+            if (!isNewEventButton)
+            {
+                return;
+            }
+
+            const eCard = new DailyRecurrenceCard(event.target);
+            const occurenceDate = eCard.occurenceDate;
+            this.eventModal.createNewEventStartsOn(occurenceDate);
+        });
+
     }
 
 }

@@ -11,21 +11,46 @@ import { DateTimeUtil } from "../../helpers/datetime";
 export class EventModalForm
 {
     constructor() {
+        /** @type {HTMLInputElement} */
         this.inputName            = document.getElementById(EventModalSelectors.Form.Inputs.NAME);
-        this.inputPhone           = document.getElementById(EventModalSelectors.Form.Inputs.PHONE);
-        this.inputLocation        = document.getElementById(EventModalSelectors.Form.Inputs.LOCATION);
-        this.inputStartsOn        = document.getElementById(EventModalSelectors.Form.Inputs.STARTS_ON);
-        this.inputEndsOn          = document.getElementById(EventModalSelectors.Form.Inputs.ENDS_ON);
-        this.inputStartsAt        = document.getElementById(EventModalSelectors.Form.Inputs.STARTS_AT);
-        this.inputEndsAt          = document.getElementById(EventModalSelectors.Form.Inputs.ENDS_AT);
-        this.inputFrequency       = document.getElementById(EventModalSelectors.Form.Inputs.FREQUENCY);
-        this.inputSeparation      = document.getElementById(EventModalSelectors.Form.Inputs.SEPARATION);
-        this.inputRecurrenceDay   = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_DAY);
-        this.inputRecurrenceWeek  = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_WEEK);
-        this.inputRecurrenceMonth = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_MONTH);
 
+        /** @type {HTMLInputElement} */
+        this.inputPhone           = document.getElementById(EventModalSelectors.Form.Inputs.PHONE);
+
+        /** @type {HTMLInputElement} */
+        this.inputLocation        = document.getElementById(EventModalSelectors.Form.Inputs.LOCATION);
+
+        /** @type {HTMLInputElement} */
+        this.inputStartsOn        = document.getElementById(EventModalSelectors.Form.Inputs.STARTS_ON);
+
+        /** @type {HTMLInputElement} */
+        this.inputEndsOn          = document.getElementById(EventModalSelectors.Form.Inputs.ENDS_ON);
+
+        /** @type {HTMLInputElement} */
+        this.inputStartsAt        = document.getElementById(EventModalSelectors.Form.Inputs.STARTS_AT);
+
+        /** @type {HTMLInputElement} */
+        this.inputEndsAt          = document.getElementById(EventModalSelectors.Form.Inputs.ENDS_AT);
+
+        /** @type {HTMLInputElement} */
+        this.inputFrequency       = document.getElementById(EventModalSelectors.Form.Inputs.FREQUENCY);
+
+        /** @type {HTMLInputElement} */
+        this.inputSeparation      = document.getElementById(EventModalSelectors.Form.Inputs.SEPARATION);
+
+        /** @type {HTMLInputElement} */
+        this.inputRecurrenceDay   = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_DAY);
+
+        /** @type {HTMLInputElement} */
+        this.inputRecurrenceWeek  = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_WEEK);
+
+        /** @type {HTMLInputElement} */
+        this.inputRecurrenceMonth = document.getElementById(EventModalSelectors.Form.Inputs.RECURRENCE_MONTH);
+        
+        /** @type {HTMLButtonElement} */
         this.submitBtn = document.getElementById(EventModalSelectors.Form.SUBMIT_BTN);
 
+        /** @type {HTMLFormElement} */
         this.form = document.getElementById(EventModalSelectors.Form.FORM);
     }
 
