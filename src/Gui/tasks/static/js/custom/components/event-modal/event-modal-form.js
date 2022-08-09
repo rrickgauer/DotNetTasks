@@ -2,7 +2,7 @@
 
 import { EventModalFormValues } from "../../domain/forms/event-modal-form-values";
 import { EventModalSelectors } from "./event-modal-selectors";
-import { Event } from "../../domain/models/event";
+import { Event as EventModel } from "../../domain/models/event";
 import { DateTimeUtil } from "../../helpers/datetime";
 
 /**
@@ -79,9 +79,10 @@ export class EventModalForm
 
     /**
      * Set the form input values to the ones in the given event model
-     * @param {Event} newEvent 
+     * @param {EventModel} newEvent 
      */
-    setFormValues(newEvent) {
+    setFormValues = (newEvent) =>
+    {
         this.inputName.value            = newEvent.name;
         this.inputPhone.value           = newEvent.phoneNumber;
         this.inputLocation.value        = newEvent.location;
@@ -94,6 +95,30 @@ export class EventModalForm
         this.inputRecurrenceMonth.value = newEvent.recurrenceMonth;
         this.inputStartsOn.value        = DateTimeUtil.toDateTime(newEvent.startsOn).toISODate();
         this.inputEndsOn.value          = DateTimeUtil.toDateTime(newEvent.endsOn).toISODate();
-        
+
+        this.fireInputChangeEvents();
     }
+
+    /**
+     * Fire off a change event for all the inputs in the form.
+     */
+    fireInputChangeEvents = () =>
+    {
+        const changeEvent = new Event('change');
+
+        this.inputName.dispatchEvent(changeEvent);
+        this.inputPhone.dispatchEvent(changeEvent);
+        this.inputLocation.dispatchEvent(changeEvent);
+        this.inputStartsAt.dispatchEvent(changeEvent);
+        this.inputEndsAt.dispatchEvent(changeEvent);
+        this.inputFrequency.dispatchEvent(changeEvent);
+        this.inputSeparation.dispatchEvent(changeEvent);
+        this.inputRecurrenceDay.dispatchEvent(changeEvent);
+        this.inputRecurrenceWeek.dispatchEvent(changeEvent);
+        this.inputRecurrenceMonth.dispatchEvent(changeEvent);
+        this.inputStartsOn.dispatchEvent(changeEvent);
+        this.inputEndsOn.dispatchEvent(changeEvent);
+    }
+
+
 }
