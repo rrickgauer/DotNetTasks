@@ -1,7 +1,9 @@
 import { EventFrequencies } from "../../domain/constants/event-frequencies";
 import { EventModalForm } from "./event-modal-form";
 
-
+/**
+ * This class is responsible for showing/hiding recurrenc inputs based on the current frequency input value.
+ */
 export class EventModalInputToggle
 {
     constructor()
@@ -10,6 +12,9 @@ export class EventModalInputToggle
     }
 
 
+    /**
+     * Toggle the recurrence inputs.
+     */
     toggleInputs = () =>
     {
         const currentValue = this._getCurrentValue();
@@ -34,7 +39,9 @@ export class EventModalInputToggle
         }
     }
     
-
+    /**
+     * Toggle the inputs for a ONCE frequency
+     */
     _toggleOnce = () =>
     {
         this._showAll();
@@ -47,37 +54,42 @@ export class EventModalInputToggle
         this.eForm.inputSeparation.value = '1';
     }
 
+    /**
+     * Toggle the inputs for a DAILY frequency
+     */
     _toggleDaily = () =>
     {
         this._showAll();
 
-        // this._hideElement(this.eForm.inputSeparation);
         this._hideElement(this.eForm.inputRecurrenceDay);
         this._hideElement(this.eForm.inputRecurrenceWeek);
         this._hideElement(this.eForm.inputRecurrenceMonth);
     }
 
+    /**
+     * Toggle the inputs for a WEEKLY frequency
+     */
     _toggleWeekly = () =>
     {
         this._showAll();
 
-        // this._hideElement(this.eForm.inputSeparation);
-        // this._hideElement(this.eForm.inputRecurrenceDay);
         this._hideElement(this.eForm.inputRecurrenceWeek);
         this._hideElement(this.eForm.inputRecurrenceMonth);
     }
 
+    /**
+     * Toggle the inputs for a MONTHLY frequency
+     */
     _toggleMonthly = () =>
     {
         this._showAll();
 
-        // this._hideElement(this.eForm.inputSeparation);
-        // this._hideElement(this.eForm.inputRecurrenceDay);
-        // this._hideElement(this.eForm.inputRecurrenceWeek);
         this._hideElement(this.eForm.inputRecurrenceMonth);
     }
 
-
+    /**
+     * Show all the inputs
+     */
     _showAll = () =>
     {
         this._showElement(this.eForm.inputSeparation);
@@ -87,7 +99,7 @@ export class EventModalInputToggle
     }
 
     /**
-     * 
+     * Hide the specified element's parent form group
      * @param {HTMLElement} eInput 
      */
     _hideElement = (eInput) =>
@@ -96,7 +108,7 @@ export class EventModalInputToggle
     }
 
     /**
-     * 
+     * Show the specified element's parent form group
      * @param {HTMLElement} eInput 
      */
     _showElement = (eInput) =>
@@ -104,6 +116,10 @@ export class EventModalInputToggle
         eInput.closest(EventModalInputToggle.FORM_GROUP).classList.remove(EventModalInputToggle.D_NONE);
     }
 
+    /**
+     * Get the current Frequency input value
+     * @returns {string}
+     */
     _getCurrentValue = () => this.eForm.inputFrequency.value;
 
 }
