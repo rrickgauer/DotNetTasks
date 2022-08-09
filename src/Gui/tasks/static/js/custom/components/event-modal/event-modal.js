@@ -10,13 +10,16 @@ import { EventModalSelectors } from "./event-modal-selectors";
 import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 import { DateTime } from "../../../lib/luxon";
+import { EventModalInputToggle } from "./input-toggle";
 
 export class EventModal {
-    constructor() {
+    
+    constructor() 
+    {
         this.eventModalForm = new EventModalForm();
         this.boardActionsController = new RecurrencesBoardActionsController();
-
         this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
+        this.inputToggle = new EventModalInputToggle();
     }
 
     //#region Event listeners
@@ -57,6 +60,18 @@ export class EventModal {
             }
         });
     }
+
+    /**
+     * Listen for the frequency input value to change
+     */
+    listenForFrequencyInputChange = () =>
+    {
+        this.eventModalForm.inputFrequency.addEventListener('change', (event) => 
+        {
+            this.inputToggle.toggleInputs();
+        });
+    }
+
 
     //#endregion
 
@@ -163,6 +178,8 @@ export class EventModal {
         EventModalActions.setEventIdAttr(newEventId);
         
         EventModalActions.resetForm();
+        // this.eventModalForm.inputFrequency.dispatchEvent(new Event('chage'));
+        this.eventModalForm.fireInputChangeEvents();
         
         this._removeLoadingSpinner();
         

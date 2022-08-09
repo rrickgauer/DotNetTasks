@@ -35,6 +35,7 @@ async function addListeners()
 
     m_eventModal.listenForFormSubmission();
     m_eventModal.listenForEventDeletion();
+    m_eventModal.listenForFrequencyInputChange();
 
     m_listController.listenForEventCompletions();
     m_listController.listenForRecurrenceClick();
