@@ -24,3 +24,5 @@ class ConfigDev(ConfigBase):
     # SECRET_KEY_GUI = b'73fT427SmZ/TQhl7lVRvd2fSMHW+LdNPxfS+2xHtn9wjCzSy7OouBvsgoQHbtlfoTUiJUASknvIDWZ35qqoF5g=='
     
     # URL_API = 'http://127.0.0.1:5010/v1'
+    URL_API = 'https://localhost:7259'
+    URL_GUI = 'http://127.0.0.1:5020'

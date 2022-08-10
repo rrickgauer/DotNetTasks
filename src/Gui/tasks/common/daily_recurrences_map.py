@@ -9,7 +9,8 @@ from tasks.common.dates import get_dates_in_range
 #   key = date string
 #   value = list of event recurrences
 #------------------------------------------------------
-DailyRecurrenceMapType = typing.Dict[str, list[models.EventRecurrence]]
+event_recurrences_list = typing.List[models.EventRecurrence]
+DailyRecurrenceMapType = typing.Dict[str, event_recurrences_list]
 
 
 #------------------------------------------------------

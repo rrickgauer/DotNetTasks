@@ -57,17 +57,6 @@ namespace Tasks.Repositories.Implementations
             _configs = configs;
         }
 
-        /// <summary>
-        /// Get a list of all the user's events
-        /// </summary>
-        /// <returns></returns>
-        public DataTable GetUserEvents(Guid userId)
-        {
-            DbConnection connection = new(_configs);
-            MySqlCommand command = BuildCommandForGetUserEvents(userId);
-            return connection.FetchAll(command);
-        }
-
 
         public async Task<DataTable> GetUserEventsAsync(Guid userId)
         {
@@ -94,22 +83,6 @@ namespace Tasks.Repositories.Implementations
             return cmd;
         }
 
-        /// <summary>
-        /// Delete the specified event 
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        public int DeleteEvent(Guid eventId)
-        {
-            MySqlCommand command = new(SqlStatements.DELETE);
-            command.Parameters.Add(new("@id", eventId));
-
-            DbConnection connection = new(_configs);
-
-            return connection.Modify(command);
-        }
-
-
 
         public async Task<int> DeleteEventAsync(Guid eventId)
         {
@@ -122,37 +95,6 @@ namespace Tasks.Repositories.Implementations
 
             return result;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// Modify the specified event
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public int ModifyEvent(Event e)
-        {
-            // make a new connection
-            DbConnection connection = new(_configs);
-
-            // create a new sql command loaded with all the parms from the event argument
-            MySqlCommand cmd = SetupModifyEventMySqlCommand(e);
-
-            // execute the query
-            return connection.Modify(cmd);
-        }
-
 
 
         public async Task<int> ModifyEventAsync(Event e)
@@ -168,22 +110,6 @@ namespace Tasks.Repositories.Implementations
 
             return result;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -204,20 +130,6 @@ namespace Tasks.Repositories.Implementations
             map.AddParmsToCommand(command);
 
             return command;
-        }
-
-        /// <summary>
-        /// Get the specified event
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        public DataRow? GetEvent(Guid eventId)
-        {
-            DbConnection conn = new(_configs);
-            MySqlCommand cmd = new(SqlStatements.SELECT_BY_ID);
-            cmd.Parameters.AddWithValue("@id", eventId);
-
-            return conn.Fetch(cmd);
         }
 
         /// <summary>

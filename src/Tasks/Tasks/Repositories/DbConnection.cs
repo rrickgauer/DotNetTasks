@@ -39,24 +39,6 @@ namespace Tasks.Repositories
             return row;
         }
 
-        /// <summary>
-        /// Fetch the first row from a data table (one result).
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        public DataRow? Fetch(MySqlCommand cmd)
-        {
-            var results = FetchAll(cmd);
-
-            DataRow? row = null;
-            if (results.Rows.Count > 0)
-            {
-                row = results.Rows[0];
-            }
-
-            return row;
-        }
-
 
         /// <summary>
         /// Retrieve all the data rows for the specified sql command
@@ -79,29 +61,6 @@ namespace Tasks.Repositories
             return results;
         }
 
-        /// <summary>
-        /// Retrieve all the data rows for the specified sql command
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        public DataTable FetchAll(MySqlCommand cmd)
-        {
-            // setup a new database connection object
-            using MySqlConnection conn = GetNewConnection();
-            conn.Open();
-            cmd.Connection = conn;
-
-            // fill the datatable with the command results
-            //DataTable results = RepositoryUtils.LoadDataTable(cmd);
-            DataTable results = RepositoryUtils.LoadDataTable(cmd);
-
-            // close the connection
-            conn.Close();
-            conn.Dispose();
-
-            return results;
-        }
-
 
         public async Task<int> ModifyAsync(MySqlCommand cmd)
         {
@@ -115,23 +74,6 @@ namespace Tasks.Repositories
 
             // close the connection
             await CloseConnectionAsync(conn);
-
-            return numRowsAffected;
-        }
-
-        public int Modify(MySqlCommand cmd)
-        {
-            // setup a new database connection object
-            using MySqlConnection conn = GetNewConnection();
-            conn.Open();
-            cmd.Connection = conn;
-
-            // execute the non query command
-            int numRowsAffected = cmd.ExecuteNonQuery();
-
-            // close the connection
-            conn.Close();
-            conn.Dispose();
 
             return numRowsAffected;
         }

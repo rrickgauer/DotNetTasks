@@ -438,3 +438,6 @@ ConfigurationProduction.cs
 **/config/base.py
 **/tasks/static/js/dist/
 **tasks/static/css/dist/custom/
+
+# INCLUDE THIS DIRECTORY!!!
+!**/tasks/static/js/lib/
