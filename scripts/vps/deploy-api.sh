@@ -1,11 +1,4 @@
 
-# Fetch the latest code from the main branch
-echo ''
-echo 'Fetching the latest code from GitHub...'
-echo ''
-cd /var/www/DotNetTasks
-git pull
-
 # Compile the code
 echo ''
 echo ''
