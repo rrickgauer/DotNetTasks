@@ -30,7 +30,7 @@ class DailyRecurrencesMapper:
         self._result = dict()
 
     #------------------------------------------------------
-    # Add the specified recurrence to storage
+    # Add the specified event recurrence to storage
     #------------------------------------------------------
     def add(self, recurrence: models.EventRecurrence):
         # get the iso string value of the date
@@ -68,8 +68,15 @@ class DailyRecurrencesMapper:
         range_map = dict()
 
         for day in get_dates_in_range(week_range):
-            range_map[day.isoformat()] = self[day]        
-        
+            # get the recurrences for the day
+            recurrences_for_day = self.get(day)
+
+            # setup the key
+            key = day.isoformat()
+
+            # store the recurrences value for the day key
+            range_map[key] = recurrences_for_day 
+
         return range_map
     
     
