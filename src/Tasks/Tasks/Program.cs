@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
 using Tasks.Configurations;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
@@ -6,9 +8,16 @@ using Tasks.Security;
 using Tasks.Services.Implementations;
 using Tasks.Services.Interfaces;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownProxies.Add(IPAddress.Parse("104.225.208.163"));
+});
 
 // setup basic authentication
 builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
@@ -19,12 +28,14 @@ ConifigureDependencies(builder);
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -43,18 +54,20 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     }
     else
     {
-        builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
+        //builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
+        builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
     }
-        
 
+    
+    builder.Services
     // services
-    builder.Services.AddScoped<IEventServices, EventServices>();
-    builder.Services.AddScoped<IRecurrenceServices, RecurrenceServices>();
-    builder.Services.AddScoped<IEventActionServices, EventActionServices>();
+    .AddScoped<IEventServices, EventServices>()
+    .AddScoped<IRecurrenceServices, RecurrenceServices>()
+    .AddScoped<IEventActionServices, EventActionServices>()
 
     // repositories
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IEventRepository, EventRepository>();
-    builder.Services.AddScoped<IRecurrenceRepository, RecurrenceRepository>();
-    builder.Services.AddScoped<IEventActionRepository, EventActionRepository>();
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IEventRepository, EventRepository>()
+    .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
+    .AddScoped<IEventActionRepository, EventActionRepository>();
 }
