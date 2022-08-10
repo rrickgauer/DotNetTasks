@@ -86,6 +86,7 @@ def _to_event_recurrence(response_dict: dict) -> models.EventRecurrence:
 def _create_date_range_map(recurrences: list[models.EventRecurrence], week_range: models.WeekRange) -> DailyRecurrenceMapType:
     mapper = DailyRecurrencesMapper()
 
+    # add all the recurrence to the mapper
     for recurrence in recurrences:
         mapper.add(recurrence)
 

@@ -1,16 +1,20 @@
 from __future__ import annotations
 from datetime import date
-import typing
+# import typing
+from tasks.domain.typedefs import DailyRecurrenceMapType
 from tasks.domain import models
 from tasks.common.dates import get_dates_in_range
 
-#------------------------------------------------------
-# Represents a dictionary made up of:
-#   key = date string
-#   value = list of event recurrences
-#------------------------------------------------------
-event_recurrences_list = typing.List[models.EventRecurrence]
-DailyRecurrenceMapType = typing.Dict[str, event_recurrences_list]
+# #------------------------------------------------------
+# # Represents a dictionary made up of:
+# #   key = date string
+# #   value = list of event recurrences
+# #------------------------------------------------------
+# # event_recurrences_list = typing.List[models.EventRecurrence]
+# # DailyRecurrenceMapType = typing.Dict[str, event_recurrences_list]
+
+# # event_recurrences_list = typing.List[models.EventRecurrence]
+# DailyRecurrenceMapType = typing.Dict[str, typing.List[models.EventRecurrence]]
 
 
 #------------------------------------------------------
@@ -26,7 +30,7 @@ class DailyRecurrencesMapper:
         self._result = dict()
 
     #------------------------------------------------------
-    # Add the specified recurrence to storage
+    # Add the specified event recurrence to storage
     #------------------------------------------------------
     def add(self, recurrence: models.EventRecurrence):
         # get the iso string value of the date
@@ -64,8 +68,15 @@ class DailyRecurrencesMapper:
         range_map = dict()
 
         for day in get_dates_in_range(week_range):
-            range_map[day.isoformat()] = self[day]        
-        
+            # get the recurrences for the day
+            recurrences_for_day = self.get(day)
+
+            # setup the key
+            key = day.isoformat()
+
+            # store the recurrences value for the day key
+            range_map[key] = recurrences_for_day 
+
         return range_map
     
     
