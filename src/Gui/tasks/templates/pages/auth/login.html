@@ -8,31 +8,71 @@ Login
 {% block content %}
 
 
-<div class="container my-5">
-    <h1>Login to your account</h1>
-</div>
 
 
-<div class="container">
-    <div class="card my-shadow">
-        <div class="card-body">
+<div class="container mt-5 py-5">
 
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-form-input-email">Email address</label>
-                    <input type="email" class="form-control" id="login-form-input-email" required>
+    <div class="d-flex justify-content-center">
+
+        <div class="card card-body my-shadow card-sm">
+
+            <!-- tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-toggle="tab" href="#home-tab-login" role="tab">Log in</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" href="#home-tab-sign-up" role="tab">Sign up</a>
+                </li>
+            </ul>
+
+            <!-- tab content -->
+            <div class="tab-content">
+
+                <!-- log in -->
+                <div class="tab-pane show active fade" id="home-tab-login" role="tabpanel">
+                    <form id="login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="login-form-input-email">Email address</label>
+                            <input type="email" class="form-control" id="login-form-input-email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-form-input-password">Password</label>
+                            <input type="password" class="form-control" id="login-form-input-password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-stretch-sm" id="login-form-btn-submit">Log in</button>
+                    </form>
+
                 </div>
 
-                <div class="form-group">
-                    <label for="login-form-input-password">Password</label>
-                    <input type="password" class="form-control" id="login-form-input-password" required>
-                </div>
 
-                <button type="submit" class="btn btn-success" id="login-form-btn-submit">Submit</button>
-            </form>
+                <!-- sign up -->
+                <div class="tab-pane fade" id="home-tab-sign-up" role="tabpanel">
+                    <form id="sign-up-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="sign-up-form-input-email">Email address</label>
+                            <input type="email" class="form-control" id="sign-up-form-input-email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sign-up-form-input-password">Password</label>
+                            <input type="password" class="form-control" id="sign-up-form-input-password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-stretch-sm" id="sign-up-form-btn-submit">Create account</button>
+                    </form>
+                </div>
+            </div>
         </div>
+
     </div>
+
 </div>
+
+
+
 
 
 {% endblock %}

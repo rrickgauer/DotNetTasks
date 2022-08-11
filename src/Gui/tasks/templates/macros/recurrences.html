@@ -30,7 +30,7 @@ The macros are:
    
     {% for occurence_date, recurrences in data.recurrences.items() %}
         
-        <div class="card card-daily-recurrences mt-3 {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
+        <div class="card card-daily-recurrences mt-3 my-shadow {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
 
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
@@ -44,14 +44,18 @@ The macros are:
                         
                         {# 01/01/22 #}
                         <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+
+                        &sdot;
+
+                        {# Recurrences count #}
+                        <span class="badge badge-secondary">{{ recurrences|length }}</span>
                     </div>
                     
                     <div class="d-flex align-items-baseline justify-content-end">
                         {# New event button #}
-                        <button type="button" class="btn btn-xs btn-light mr-2 card-daily-recurrences-new-event-btn" title="Create a new event">+</button>
+                        <button type="button" class="btn btn-xs btn-light card-daily-recurrences-new-event-btn" title="Create a new event">+</button>
 
-                        {# Recurrences count #}
-                        <span class="badge badge-secondary">{{ recurrences|length }}</span>
+
                     </div>
                     
                 </div>
