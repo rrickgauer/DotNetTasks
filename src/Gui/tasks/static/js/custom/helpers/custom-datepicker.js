@@ -1,3 +1,4 @@
+import { DateTime } from "../../lib/luxon";
 
 
 /**
@@ -8,10 +9,25 @@ export function initCustomDatePickers()
     flatpickr(`.${DatePicker.CSS_CLASS}`, DatePicker.STANDARD_CONFIG);
 }
 
-
 export class DatePicker
 {
+    constructor(eInput)
+    {
+        /** @type {HTMLInputElement} */
+        this.eInput = eInput;
 
+        this._flatpickr = this.eInput._flatpickr;
+    }
+
+
+    /**
+     * Set the value    
+     * @param {DateTime} newValue new value
+     */
+    setValueFromDateTime = (newValue) =>
+    {
+        this._flatpickr.setDate(newValue.toISODate(), true);
+    }
 }
 
 
