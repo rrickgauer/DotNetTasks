@@ -5,6 +5,7 @@ import { DailyRecurrenceListController } from "../../components/daily-recurrence
 import { listenForArrowKeys } from "./page-listeners";
 import { setupBoardActionVisibilities } from "./page-listeners";
 import { listenForWindowResize } from "./page-listeners";
+import { initCustomDatePickers } from "../../helpers/custom-datepicker";
 
 // module variables
 const m_eventModal = new EventModal();
@@ -16,6 +17,7 @@ const m_listController = new DailyRecurrenceListController();
  */
 $(document).ready(function() 
 {
+    initCustomDatePickers();
     addListeners();
     m_boardActionsController.getWeeklyRecurrences();
     setupBoardActionVisibilities();

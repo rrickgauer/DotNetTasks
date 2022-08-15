@@ -4,6 +4,8 @@ import { EventModalFormValues } from "../../domain/forms/event-modal-form-values
 import { EventModalSelectors } from "./event-modal-selectors";
 import { Event as EventModel } from "../../domain/models/event";
 import { DateTimeUtil } from "../../helpers/datetime";
+import { DatePicker } from "../../helpers/custom-datepicker";
+import { DateTime } from "../../../lib/luxon";
 
 /**
  * This class represents all the inputs for the event modal form
@@ -93,10 +95,31 @@ export class EventModalForm
         this.inputRecurrenceDay.value   = newEvent.recurrenceDay;
         this.inputRecurrenceWeek.value  = newEvent.recurrenceWeek;
         this.inputRecurrenceMonth.value = newEvent.recurrenceMonth;
-        this.inputStartsOn.value        = DateTimeUtil.toDateTime(newEvent.startsOn).toISODate();
-        this.inputEndsOn.value          = DateTimeUtil.toDateTime(newEvent.endsOn).toISODate();
+
+        this.setStartsOnValue(DateTimeUtil.toDateTime(newEvent.startsOn));
+        this.setEndsOnValue(DateTimeUtil.toDateTime(newEvent.endsOn));
 
         this.fireInputChangeEvents();
+    }
+
+    /**
+     * Set the starts on value 
+     * @param {DateTime} newValue new value
+     */
+    setStartsOnValue = (newValue) =>
+    {
+        const flatPicker = new DatePicker(this.inputStartsOn);
+        flatPicker.setValueFromDateTime(newValue);
+    }
+
+    /**
+     * Set the ends on value
+     * @param {DateTime} newValue the new value
+     */
+    setEndsOnValue = (newValue) =>
+    {
+        const flatPicker = new DatePicker(this.inputEndsOn);
+        flatPicker.setValueFromDateTime(newValue);
     }
 
     /**
@@ -119,6 +142,8 @@ export class EventModalForm
         this.inputStartsOn.dispatchEvent(changeEvent);
         this.inputEndsOn.dispatchEvent(changeEvent);
     }
+
+
 
 
 }

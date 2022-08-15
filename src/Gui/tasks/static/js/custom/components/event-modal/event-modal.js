@@ -160,9 +160,8 @@ export class EventModal {
     {
         this.createNewEvent();
 
-        const dateString = startsOn.toISODate();
-        this.eventModalForm.inputStartsOn.value = dateString;
-        this.eventModalForm.inputEndsOn.value = dateString;
+        this.eventModalForm.setStartsOnValue(startsOn);
+        this.eventModalForm.setEndsOnValue(startsOn);
 
         this.eventModalForm.inputSeparation.value = '1';
     }
@@ -178,7 +177,6 @@ export class EventModal {
         EventModalActions.setEventIdAttr(newEventId);
         
         EventModalActions.resetForm();
-        // this.eventModalForm.inputFrequency.dispatchEvent(new Event('chage'));
         this.eventModalForm.fireInputChangeEvents();
         
         this._removeLoadingSpinner();
