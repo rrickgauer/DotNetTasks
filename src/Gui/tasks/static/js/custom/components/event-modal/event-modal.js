@@ -11,7 +11,9 @@ import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 import { DateTime } from "../../../lib/luxon";
 import { EventModalInputToggle } from "./input-toggle";
-import { AlertPageTopBase, AlertPageTopSuccess } from "../page-alerts/alert-page-top";
+import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
+import { DateTimeUtil } from "../../helpers/datetime";
+import { DatePicker } from "../../helpers/custom-datepicker";
 
 export class EventModal {
     
@@ -78,6 +80,21 @@ export class EventModal {
         this.eventModalForm.inputFrequency.addEventListener('change', (event) => 
         {
             this.inputToggle.toggleInputs();
+        });
+    }
+
+    /**
+     * Listen for starts on input value change
+     */
+    listenForDateInputChange = () =>
+    {
+        // set the minimum date value for the ends on input 
+        this.eventModalForm.inputStartsOn.addEventListener('change', (event) => 
+        {
+            const startsOnValue = DateTimeUtil.toDateTime(this.eventModalForm.inputStartsOn.value);
+
+            const flatpick = new DatePicker(this.eventModalForm.inputEndsOn);
+            flatpick.setMinimumDate(startsOnValue);
         });
     }
 

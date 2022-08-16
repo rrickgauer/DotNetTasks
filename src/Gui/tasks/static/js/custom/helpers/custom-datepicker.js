@@ -28,6 +28,15 @@ export class DatePicker
     {
         this._flatpickr.setDate(newValue.toISODate(), true);
     }
+
+    /**
+     * Set the minimum date value of the element
+     * @param {DateTime} minDate new minimum date
+     */
+    setMinimumDate = (minDate) =>
+    {
+        this._flatpickr.set('minDate', minDate.toISODate(), true);
+    }
 }
 
 
