@@ -175,7 +175,6 @@ export class EventModal {
         this.eventModalForm.inputSeparation.value = '1';
     }
 
-
     /**
      * Create a new event in the modal.
      */
@@ -191,6 +190,8 @@ export class EventModal {
         this._removeLoadingSpinner();
         
         EventModalActions.showModal();
+
+        this.eventModalForm.inputName.focus();
     }
 
     //#region Show/hide form and spinner
