@@ -11,6 +11,7 @@ import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 import { DateTime } from "../../../lib/luxon";
 import { EventModalInputToggle } from "./input-toggle";
+import { AlertPageTopBase, AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 
 export class EventModal {
     
@@ -27,14 +28,19 @@ export class EventModal {
     /**
      * Listen for event modal form submissions
      */
-    listenForFormSubmission = () =>
+    listenForFormSubmission = async () =>
     {
         this.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
         {
             submissionEvent.preventDefault();
 
-            await this.submitForm();
-            this.boardActionsController.getWeeklyRecurrences();
+            const success = await this.submitForm();
+            await this.boardActionsController.getWeeklyRecurrences();
+
+            EventModalActions.hideModal();
+            
+            const alertTop = new AlertPageTopSuccess('Saved!');
+            alertTop.show();
         });
     }
 
@@ -52,7 +58,10 @@ export class EventModal {
 
             if (eventDeleted) 
             {
-                this.boardActionsController.getWeeklyRecurrences();
+                await this.boardActionsController.getWeeklyRecurrences();
+
+                const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
+                alertTop.show();
             }
             else 
             {
