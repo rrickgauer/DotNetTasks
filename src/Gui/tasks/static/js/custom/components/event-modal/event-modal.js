@@ -28,7 +28,7 @@ export class EventModal {
     /**
      * Listen for event modal form submissions
      */
-    listenForFormSubmission = () =>
+    listenForFormSubmission = async () =>
     {
         this.eventModalForm.form.addEventListener('submit', async (submissionEvent) => 
         {
@@ -58,7 +58,10 @@ export class EventModal {
 
             if (eventDeleted) 
             {
-                this.boardActionsController.getWeeklyRecurrences();
+                await this.boardActionsController.getWeeklyRecurrences();
+
+                const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
+                alertTop.show();
             }
             else 
             {

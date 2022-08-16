@@ -51,9 +51,8 @@ AlertPageTopBase.Html =
     CONTAINER: 'alerts-page-top',
 }
 
-/**
- * Successful alert
- */
+
+
 export class AlertPageTopSuccess extends AlertPageTopBase
 {
     /**
@@ -65,3 +64,6 @@ export class AlertPageTopSuccess extends AlertPageTopBase
         super(message, AlertTypes.SUCCESS);
     }
 }
+
+
+
