@@ -11,6 +11,7 @@ import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 import { DateTime } from "../../../lib/luxon";
 import { EventModalInputToggle } from "./input-toggle";
+import { AlertPageTopBase, AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 
 export class EventModal {
     
@@ -33,8 +34,13 @@ export class EventModal {
         {
             submissionEvent.preventDefault();
 
-            await this.submitForm();
-            this.boardActionsController.getWeeklyRecurrences();
+            const success = await this.submitForm();
+            await this.boardActionsController.getWeeklyRecurrences();
+
+            EventModalActions.hideModal();
+            
+            const alertTop = new AlertPageTopSuccess('Saved!');
+            alertTop.show();
         });
     }
 
