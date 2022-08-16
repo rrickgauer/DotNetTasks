@@ -6,6 +6,7 @@ import { listenForArrowKeys } from "./page-listeners";
 import { setupBoardActionVisibilities } from "./page-listeners";
 import { listenForWindowResize } from "./page-listeners";
 import { initCustomDatePickers } from "../../helpers/custom-datepicker";
+import { DateTimeUtil } from "../../helpers/datetime";
 
 // module variables
 const m_eventModal = new EventModal();
@@ -30,7 +31,8 @@ async function addListeners()
 {
     // listen for "create new event" button click
     m_boardActionsController.actionButtons.newButton.addEventListener('click', function(e) {
-        m_eventModal.createNewEvent();
+        const today = DateTimeUtil.getCurrentDatetime();
+        m_eventModal.createNewEventStartsOn(today);
     });
 
     m_boardActionsController.addListeners();
@@ -38,6 +40,7 @@ async function addListeners()
     m_eventModal.listenForFormSubmission();
     m_eventModal.listenForEventDeletion();
     m_eventModal.listenForFrequencyInputChange();
+    m_eventModal.listenForDateInputChange();
 
     m_listController.listenForEventCompletions();
     m_listController.listenForRecurrenceClick();

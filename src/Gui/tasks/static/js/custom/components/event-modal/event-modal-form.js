@@ -110,6 +110,9 @@ export class EventModalForm
     {
         const flatPicker = new DatePicker(this.inputStartsOn);
         flatPicker.setValueFromDateTime(newValue);
+
+        const endsOnFlatpicker = new DatePicker(this.inputEndsOn);
+        endsOnFlatpicker.setMinimumDate(newValue);
     }
 
     /**
@@ -139,8 +142,8 @@ export class EventModalForm
         this.inputRecurrenceDay.dispatchEvent(changeEvent);
         this.inputRecurrenceWeek.dispatchEvent(changeEvent);
         this.inputRecurrenceMonth.dispatchEvent(changeEvent);
-        this.inputStartsOn.dispatchEvent(changeEvent);
-        this.inputEndsOn.dispatchEvent(changeEvent);
+        // this.inputStartsOn.dispatchEvent(changeEvent);
+        // this.inputEndsOn.dispatchEvent(changeEvent);
     }
 
 
