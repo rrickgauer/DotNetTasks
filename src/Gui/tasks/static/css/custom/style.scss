@@ -50,10 +50,15 @@ textarea {
 
 .daily-recurrences-list-item.completed {
 
-    .daily-recurrences-list-item-text-display{
+    .daily-recurrences-list-item-text-display {
         text-decoration: line-through;
         color: darkgray;
     }
+}
+
+// hide cancelled items
+.daily-recurrences-list-item.cancelled {
+    display: none;
 }
 
 

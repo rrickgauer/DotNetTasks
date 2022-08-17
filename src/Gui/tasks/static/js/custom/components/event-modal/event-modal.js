@@ -17,12 +17,18 @@ import { DatePicker } from "../../helpers/custom-datepicker";
 
 export class EventModal {
     
+    /**
+     * Constructor for the event modal
+     */
     constructor() 
     {
         this.eventModalForm = new EventModalForm();
         this.boardActionsController = new RecurrencesBoardActionsController();
         this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
         this.inputToggle = new EventModalInputToggle();
+
+        const eSubmitButton = $(`#${EventModalSelectors.DeleteForm.SUBMIT_BTN}`);
+        this.deleteEventFormSpinnerButton = new SpinnerButton(eSubmitButton);
     }
 
     //#region Event listeners
@@ -52,23 +58,28 @@ export class EventModal {
      */
     listenForEventDeletion = async ()  =>
     {
+        // this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
+        // {
+        //     submissionEvent.preventDefault();
+            
+        //     const eventDeleted = await this._deleteEvent();
+
+        //     if (eventDeleted) 
+        //     {
+        //         await this.boardActionsController.getWeeklyRecurrences();
+
+        //         const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
+        //         alertTop.show();
+        //     }
+        //     else 
+        //     {
+        //         console.error('There was an error deleting the event');
+        //     }
+        // });
+
         this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
         {
-            submissionEvent.preventDefault();
-            
-            const eventDeleted = await this.deleteEvent();
-
-            if (eventDeleted) 
-            {
-                await this.boardActionsController.getWeeklyRecurrences();
-
-                const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
-                alertTop.show();
-            }
-            else 
-            {
-                console.error('There was an error deleting the event');
-            }
+            this._handleDeleteEventFormSubmission(submissionEvent);
         });
     }
 
@@ -100,7 +111,6 @@ export class EventModal {
 
 
     //#endregion
-
 
     //#region Form submissions
 
@@ -141,6 +151,7 @@ export class EventModal {
 
     //#endregion
 
+    //#region View event and get its data from api
 
     /**
      * View an event in the modal
@@ -178,6 +189,10 @@ export class EventModal {
         return mappedResult;
     }
 
+    //#endregion
+
+    //#region Create new event
+
     /**
      * Create a new event that starts on the specified date.
      * @param {DateTime} startsOn when the event starts on
@@ -211,6 +226,8 @@ export class EventModal {
         this.eventModalForm.inputName.focus();
     }
 
+    //#endregion
+
     //#region Show/hide form and spinner
 
     /**
@@ -231,30 +248,77 @@ export class EventModal {
 
     //#endregion
 
+    //#region Delete event
+
+    /**
+     * Steps to take when the delete event form is submitted
+     * @param {SubmitEvent} submissionEvent the submission event
+     */
+    _handleDeleteEventFormSubmission = async (submissionEvent) =>
+    {
+        // stop the normal js processing
+        submissionEvent.preventDefault();
+
+        // disable the submit button and show the spinner
+        this.deleteEventFormSpinnerButton.showSpinner();
+            
+        // send the delete request to the api
+        const eventDeleted = await this._deleteEvent();
+
+        if (eventDeleted)
+        {
+            this._handleSuccessfulDeleteRequest();
+        }
+        else
+        {
+            this._handleBadDeleteRequest();
+        }
+    }
+
 
     /**
      * Delete the current event.
      * @returns {Promise<Boolean>}
      */
-    deleteEvent = async () => {
-        // setup a spinner button for the submit button
-        const eSubmitButton = $(`#${EventModalSelectors.DeleteForm.SUBMIT_BTN}`);
-        const spinner = new SpinnerButton(eSubmitButton);
-        spinner.showSpinner();
-
+    _deleteEvent = async () => {
         // send api request to delete the event
         const eventId = this._getCurrentEventId();
+
         const api = new ApiEvents();
         const response = await api.delete(eventId);
-        const wasDeleted = response.ok;
+        
+        return response.ok;
+    }
+    
+    /**
+     * Steps to take when a delete request was unsuccessful
+     */
+    _handleBadDeleteRequest = () =>
+    {
+        console.error('There was an error deleting the event');
+        alert('There was an error deleting the event');
+    }
+
+    /**
+     * Steps to take after a successful DELETE event api request
+     */
+    _handleSuccessfulDeleteRequest = async () =>
+    {
+        // refresh the recurrences board
+        await this.boardActionsController.getWeeklyRecurrences();
+
+        // notify user that the event was successfully deleted
+        const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
+        alertTop.show();
 
         // close the modal and hide the delete form
         EventModalActions.hideModal();
         EventModalActions.hideDeleteForm();
-        spinner.reset();
-
-        return wasDeleted;
+        this.deleteEventFormSpinnerButton.reset();
     }
+
+
+    //#endregion
 
 
     /**
