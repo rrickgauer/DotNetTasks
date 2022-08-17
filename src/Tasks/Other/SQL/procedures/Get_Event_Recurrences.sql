@@ -123,7 +123,8 @@ SP: BEGIN
             e.name AS name,
             teod.occurs_on AS occurs_on,
             e.starts_at AS starts_at,
-            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed
+            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
+            IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
         FROM
             Temp_Event_Occurrence_Dates teod
             LEFT JOIN Events e ON teod.event_id = e.id

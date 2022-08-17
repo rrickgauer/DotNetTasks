@@ -1,29 +1,18 @@
 DELIMITER $$
-CREATE FUNCTION `is_event_completed`(
+CREATE DEFINER=`main`@`%` FUNCTION `is_event_completed`(
     in_event_id CHAR(36),
-    in_completed_date DATE
+	in_occurence_date DATE
 ) RETURNS TINYINT(1)
-    DETERMINISTIC
+    READS SQL DATA
 BEGIN
-    DECLARE num_records INT;
+    -- Check if the specified event is completed on the specified date
     DECLARE result BOOLEAN;
-    -- SELECT COUNT(event_id) INTO num_records FROM Event_Completions WHERE event_id = in_event_id AND date = in_completed_date;
+    DECLARE event_action_type SMALLINT DEFAULT 1;
     
     SELECT 
-        COUNT(event_id) 
-    INTO 
-        num_records 
-    FROM 
-        Event_Actions ea
-    WHERE 
-        ea.event_id = in_event_id 
-        AND ea.on_date = in_completed_date;
-    
-    IF num_records > 0 THEN
-        SET result = TRUE;
-    ELSE
-        SET result = FALSE;
-    END IF;
+        EVENT_HAS_ACTION_OCCURENCE(in_event_id, in_occurence_date, event_action_type)
+    INTO
+        result;
     
     RETURN (result);
 

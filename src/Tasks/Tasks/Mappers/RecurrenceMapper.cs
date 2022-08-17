@@ -32,6 +32,7 @@ namespace Tasks.Mappers
             {
                 EventId   = dataRow.Field<Guid?>("event_id"),
                 Completed = dataRow.Field<bool?>("completed"),
+                Cancelled = dataRow.Field<bool?>("cancelled"),
                 Name      = dataRow.Field<string?>("name"),
                 OccursOn  = dataRow.Field<DateTime?>("occurs_on"),
                 StartsAt  = dataRow.Field<TimeSpan?>("starts_at"),
@@ -39,7 +40,6 @@ namespace Tasks.Mappers
 
             return recurrence;
         }
-
 
         /// <summary>
         /// Get a dictionary for the get recurrences stored procedure

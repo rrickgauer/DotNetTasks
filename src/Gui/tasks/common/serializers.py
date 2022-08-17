@@ -90,6 +90,7 @@ class ApiResponseRecurrenceSerializer(SerializerBase):
             occurs_on = api_model.occursOn,
             starts_at = api_model.startsAt,
             completed = api_model.completed,
+            cancelled = api_model.cancelled,
         )
 
         return model

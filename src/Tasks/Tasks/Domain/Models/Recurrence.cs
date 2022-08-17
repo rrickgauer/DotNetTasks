@@ -21,5 +21,8 @@ namespace Tasks.Domain.Models
 
         [SqlColumn("completed")]
         public bool? Completed { get; set; }
+
+        [SqlColumn("cancelled")]
+        public bool? Cancelled { get; set; }
     }
 }
