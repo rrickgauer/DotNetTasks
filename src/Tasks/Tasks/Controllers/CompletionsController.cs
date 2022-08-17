@@ -10,6 +10,9 @@ using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers
 {
+    /// <summary>
+    /// URL Prefix: /completions
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("completions")]
