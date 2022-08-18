@@ -15,7 +15,6 @@ import flask
 from tasks.common import security
 from tasks import services
 from http import HTTPStatus
-from tasks.common.url_rules import DeleteEventUrlRules
 
 # module blueprint
 bp_api_events = flask.Blueprint('api_events', __name__)
@@ -42,17 +41,40 @@ def get_event(event_id: UUID):
 
     return flask.jsonify(result.data)
 
-
 #------------------------------------------------------
 # DELETE: /api/events/:event_id
+#------------------------------------------------------
+@bp_api_events.delete('<uuid:event_id>')
+@security.login_required
+def delete_all_events(event_id: UUID):
+    result = services.events.delete_event(event_id)
+
+    if not result.successful:
+        return (str(result.error), HTTPStatus.BAD_REQUEST)
+
+    return ('', HTTPStatus.NO_CONTENT)
+
+
+#------------------------------------------------------
 # DELETE: /api/events/:event_id/:date
+#------------------------------------------------------
+@bp_api_events.delete('<uuid:event_id>/<date:date_val>')
+@security.login_required
+def delete_single_occurence(event_id: UUID, date_val: date=None):
+    result = services.events.delete_event(event_id)
+
+    if not result.successful:
+        return (str(result.error), HTTPStatus.BAD_REQUEST)
+
+    return ('', HTTPStatus.NO_CONTENT)
+
+
+#------------------------------------------------------
 # DELETE: /api/events/:event_id/:date/remaining
 #------------------------------------------------------
-@bp_api_events.delete(DeleteEventUrlRules.ALL.value)
-@bp_api_events.delete(DeleteEventUrlRules.SINGLE.value)
-@bp_api_events.delete(DeleteEventUrlRules.FOLLOWING.value)
+@bp_api_events.delete('<uuid:event_id>/<date:date_val>/remaining')
 @security.login_required
-def delete_all_events(event_id: UUID, date_val: date=None):
+def delete_occurence_and_following(event_id: UUID, date_val: date=None):
     result = services.events.delete_event(event_id)
 
     if not result.successful:
