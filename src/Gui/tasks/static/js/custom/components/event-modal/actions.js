@@ -1,4 +1,6 @@
 
+import { DateTime } from "../../../lib/luxon";
+import { DateTimeUtil } from "../../helpers/datetime";
 import { EventModalSelectors } from "./event-modal-selectors";
 
 
@@ -17,4 +19,15 @@ export class EventModalActions
     static showForm       = () => document.getElementById(EventModalSelectors.Form.FORM).classList.remove('d-none');
     static showDeleteForm = () => $(`#${EventModalSelectors.DeleteForm.DROPDOWN}`).collapse('show');
     static hideDeleteForm = () => $(`#${EventModalSelectors.DeleteForm.DROPDOWN}`).collapse('hide');
+
+    /**
+     * Get the current datetime
+     * @returns {DateTime}
+     */
+    static getOccurenceDateAttr = () => DateTimeUtil.toDateTime(m_modal.getAttribute(EventModalSelectors.Attributes.OCCURENCE_DATE));
+
+    /**
+     * @param {DateTime} newOccurenceDate 
+     */
+    static setOccurenceDateAttr = (newOccurenceDate) => m_modal.setAttribute(EventModalSelectors.Attributes.OCCURENCE_DATE, newOccurenceDate.toISODate());
 }

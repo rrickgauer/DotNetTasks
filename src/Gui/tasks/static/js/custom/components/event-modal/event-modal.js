@@ -6,7 +6,6 @@ import { ApiEvents } from "../../api/events";
 import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
 import { EventModalActions } from "./actions";
-import { EventModalSelectors } from "./event-modal-selectors";
 import { SpinnerButton } from "../../helpers/spinner-button";
 import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
 import { DateTime } from "../../../lib/luxon";
@@ -14,6 +13,7 @@ import { EventModalInputToggle } from "./input-toggle";
 import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DatePicker } from "../../helpers/custom-datepicker";
+import { EventModalDeleteForm } from "./event-modal-delete-form";
 
 export class EventModal {
     
@@ -22,13 +22,11 @@ export class EventModal {
      */
     constructor() 
     {
-        this.eventModalForm = new EventModalForm();
-        this.boardActionsController = new RecurrencesBoardActionsController();
-        this.eDeletionForm = document.getElementById(EventModalSelectors.DeleteForm.FORM);
-        this.inputToggle = new EventModalInputToggle();
-
-        const eSubmitButton = $(`#${EventModalSelectors.DeleteForm.SUBMIT_BTN}`);
-        this.deleteEventFormSpinnerButton = new SpinnerButton(eSubmitButton);
+        this.eventModalForm               = new EventModalForm();
+        this.boardActionsController       = new RecurrencesBoardActionsController();
+        this.inputToggle                  = new EventModalInputToggle();
+        this.deleteForm                   = new EventModalDeleteForm();
+        this.deleteEventFormSpinnerButton = new SpinnerButton(this.deleteForm.eSubmitButton);
     }
 
     //#region Event listeners
@@ -58,26 +56,7 @@ export class EventModal {
      */
     listenForEventDeletion = async ()  =>
     {
-        // this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
-        // {
-        //     submissionEvent.preventDefault();
-            
-        //     const eventDeleted = await this._deleteEvent();
-
-        //     if (eventDeleted) 
-        //     {
-        //         await this.boardActionsController.getWeeklyRecurrences();
-
-        //         const alertTop = new AlertPageTopSuccess('Event was deleted successfully.');
-        //         alertTop.show();
-        //     }
-        //     else 
-        //     {
-        //         console.error('There was an error deleting the event');
-        //     }
-        // });
-
-        this.eDeletionForm.addEventListener('submit', async (submissionEvent) => 
+        this.deleteForm.eForm.addEventListener('submit', async (submissionEvent) => 
         {
             this._handleDeleteEventFormSubmission(submissionEvent);
         });
@@ -155,14 +134,15 @@ export class EventModal {
 
     /**
      * View an event in the modal
-     * @param {string} eventId - the event id to view
+     * @param {string} eventId the event id to view
+     * @param {DateTime} occurenceDate the occurence date
      */
-    viewEvent = async (eventId) => {
+    viewEvent = async (eventId, occurenceDate) => {
         this._showLoadingSpinner();
 
         EventModalActions.resetForm();
-
         EventModalActions.setEventIdAttr(eventId);
+        EventModalActions.setOccurenceDateAttr(occurenceDate);
         EventModalActions.showModal();
         
         const eventModel = await this._getEventData(eventId);
@@ -170,6 +150,7 @@ export class EventModal {
 
         this._removeLoadingSpinner();
     }
+    
 
     /**
      * Get the specified event from the api
@@ -203,6 +184,8 @@ export class EventModal {
 
         this.eventModalForm.setStartsOnValue(startsOn);
         this.eventModalForm.setEndsOnValue(startsOn);
+
+        EventModalActions.setOccurenceDateAttr(startsOn);
 
         this.eventModalForm.inputSeparation.value = '1';
     }
@@ -265,13 +248,14 @@ export class EventModal {
         // send the delete request to the api
         const eventDeleted = await this._deleteEvent();
 
+        // handle the api response
         if (eventDeleted)
         {
-            this._handleSuccessfulDeleteRequest();
+            // this._handleSuccessfulDeleteRequest();
         }
         else
         {
-            this._handleBadDeleteRequest();
+            // this._handleBadDeleteRequest();
         }
     }
 
@@ -283,11 +267,33 @@ export class EventModal {
     _deleteEvent = async () => {
         // send api request to delete the event
         const eventId = this._getCurrentEventId();
+        // const occurenceDate = /
 
         const api = new ApiEvents();
-        const response = await api.delete(eventId);
-        
-        return response.ok;
+
+
+        // get the current value of the delete radio input
+
+        const currentRadioValue = this.deleteForm.getRadioValue();
+        console.log(currentRadioValue);
+
+
+
+        // let response = null;
+
+        // switch (currentRadioValue)
+        // {
+        //     case EventDeletionOptions.SINGLE:
+        //         // response = api.deleteThisEvent()
+                
+        //         break;
+        // }
+
+
+        return true;
+
+        // const response = await api.delete(eventId);
+        // return response.ok;
     }
     
     /**
@@ -320,7 +326,7 @@ export class EventModal {
 
     //#endregion
 
-
+    
     /**
      * Get the current event id
      * @returns {String}

@@ -42,8 +42,12 @@ export class DailyRecurrenceListController
         {
             if (event.target.classList.contains(DailyRecurrenceListItemElements.NAME)) 
             {
+                const eCard = new DailyRecurrenceCard(event.target);
+                const occurenceDate = eCard.occurenceDate;
+                // this.eventModal.createNewEventStartsOn(occurenceDate);
+
                 const listItem = RecurrencesListItemElement.createFromChildElement(event.target);
-                this.eventModal.viewEvent(listItem.eventId);
+                this.eventModal.viewEvent(listItem.eventId, occurenceDate);
             }
         });
     }
