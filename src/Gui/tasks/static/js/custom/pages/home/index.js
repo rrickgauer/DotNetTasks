@@ -1,7 +1,7 @@
 // imports
 import { EventModal } from "../../components/event-modal/event-modal";
-import { RecurrencesBoardActionsController } from "../../components/recurrences-board/controller";
-import { DailyRecurrenceListController } from "../../components/daily-recurrences-card/controller";
+import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-controller";
+import { DailyRecurrenceListController } from "../../components/daily-recurrences-card/daily-recurrences-controller";
 import { listenForArrowKeys } from "./page-listeners";
 import { setupBoardActionVisibilities } from "./page-listeners";
 import { listenForWindowResize } from "./page-listeners";

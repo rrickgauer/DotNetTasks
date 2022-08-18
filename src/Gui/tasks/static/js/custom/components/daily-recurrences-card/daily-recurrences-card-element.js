@@ -1,6 +1,6 @@
 import { DateTime } from "../../../lib/luxon";
 import { DateTimeUtil } from "../../helpers/datetime";
-import { DailyRecurrenceListElements } from "./elements";
+import { DailyRecurrenceListElements } from "./daily-recurrences-elements";
 
 
 

@@ -1,8 +1,8 @@
-import { RecurrencesBoardActionButtons } from "./action-buttons";
+import { RecurrencesBoardActionButtons } from "./recurrences-board-action-buttons";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { UrlMethods } from "../../helpers/url-methods";
 import { DateTime } from "../../../lib/luxon";
-import { ApiRecurrences } from "../../api/recurrences";
+import { ApiRecurrences } from "../../api/api-recurrences";
 
 /**
  * This class handles all the recurrences board action buttons and what happens when you click them.

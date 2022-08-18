@@ -1,7 +1,7 @@
 //@ts-check
 
-import { ApiEndpoints } from "./base";
-import { HttpMethods } from "./base";
+import { ApiEndpoints } from "./api-base";
+import { HttpMethods } from "./api-base";
 import { Event } from "../domain/models/event";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 import { DateTime } from "../../lib/luxon";

@@ -1,4 +1,4 @@
-import { RecurrencesBoardActionsController } from "../../components/recurrences-board/controller";
+import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-controller";
 import { KeyCodes } from "../../domain/constants/keycodes";
 
 const m_boardActionsController = new RecurrencesBoardActionsController();

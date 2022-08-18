@@ -1,7 +1,7 @@
 import { EventModal } from "../event-modal/event-modal";
-import { DailyRecurrenceCard } from "./card-element";
-import { DailyRecurrenceListItemElements } from "./elements";
-import { RecurrencesListItemElement } from "./list-item";
+import { DailyRecurrenceCard } from "./daily-recurrences-card-element";
+import { DailyRecurrenceListItemElements } from "./daily-recurrences-elements";
+import { RecurrencesListItemElement } from "./daily-recurrences-list-item";
 
 
 export class DailyRecurrenceListController

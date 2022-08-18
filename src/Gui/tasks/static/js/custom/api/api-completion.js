@@ -1,7 +1,7 @@
 //@ts-check
 
-import { ApiEndpoints } from "./base";
-import { HttpMethods } from "./base";
+import { ApiEndpoints } from "./api-base";
+import { HttpMethods } from "./api-base";
 import { EventCompletion } from "../domain/models/event-completion";
 
 export class ApiCompletions

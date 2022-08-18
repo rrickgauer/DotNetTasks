@@ -2,14 +2,14 @@
 
 import { EventModalForm } from "./event-modal-form";
 import { EventMapper } from "../../mappers/event-mappers";
-import { ApiEvents } from "../../api/events";
+import { ApiEvents } from "../../api/api-events";
 import { Utililties } from "../../helpers/utilities";
 import { Event } from "../../domain/models/event";
-import { EventModalActions } from "./actions";
+import { EventModalActions } from "./event-modal-actions";
 import { SpinnerButton } from "../../helpers/spinner-button";
-import { RecurrencesBoardActionsController } from "../recurrences-board/controller";
+import { RecurrencesBoardActionsController } from "../recurrences-board/recurrences-board-controller";
 import { DateTime } from "../../../lib/luxon";
-import { EventModalInputToggle } from "./input-toggle";
+import { EventModalInputToggle } from "./event-modal-input-toggle";
 import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DatePicker } from "../../helpers/custom-datepicker";
