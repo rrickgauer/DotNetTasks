@@ -11,17 +11,3 @@ export const DailyRecurrenceListElements = {
 }
 
 
-export const DailyRecurrenceListItemElements = {
-    LIST_ITEM : 'daily-recurrences-list-item',
-    CHECK_BOX: 'daily-recurrences-list-item-checkbox',
-    NAME      : 'daily-recurrences-list-item-name',
-    COMPLETED : 'completed',
-
-    Attributes: {
-        EVENT_ID: 'data-js-event-id'
-    },
-}
-
-
-
-
