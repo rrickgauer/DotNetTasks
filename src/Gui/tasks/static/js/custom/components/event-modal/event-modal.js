@@ -14,6 +14,7 @@ import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DatePicker } from "../../helpers/custom-datepicker";
 import { EventModalDeleteForm } from "./event-modal-delete-form";
+import { EventDeletionOptions } from "../../domain/enums/event-deletion-options";
 
 export class EventModal {
     
@@ -27,6 +28,7 @@ export class EventModal {
         this.inputToggle                  = new EventModalInputToggle();
         this.deleteForm                   = new EventModalDeleteForm();
         this.deleteEventFormSpinnerButton = new SpinnerButton(this.deleteForm.eSubmitButton);
+        this.apiEvents                    = new ApiEvents();
     }
 
     //#region Event listeners
@@ -104,8 +106,7 @@ export class EventModal {
         const model = this._getEventModelFromFormValues(eventId);
 
         // send request
-        const api = new ApiEvents();
-        const response = await api.put(model);
+        const response = await this.apiEvents.put(model);
 
         spinner.reset();
 
@@ -158,8 +159,7 @@ export class EventModal {
      * @returns {Promise<Event>}
      */
     _getEventData = async (eventId) => {
-        const api = new ApiEvents();
-        const response = await api.get(eventId);
+        const response = await this.apiEvents.get(eventId);
 
         if (!response.ok) {
             return null;
@@ -251,11 +251,11 @@ export class EventModal {
         // handle the api response
         if (eventDeleted)
         {
-            // this._handleSuccessfulDeleteRequest();
+            this._handleSuccessfulDeleteRequest();
         }
         else
         {
-            // this._handleBadDeleteRequest();
+            this._handleBadDeleteRequest();
         }
     }
 
@@ -265,37 +265,39 @@ export class EventModal {
      * @returns {Promise<Boolean>}
      */
     _deleteEvent = async () => {
-        // send api request to delete the event
+        // get the required attribute values from the modal
         const eventId = this._getCurrentEventId();
-        // const occurenceDate = /
-
-        const api = new ApiEvents();
-
+        const occurenceDate = EventModalActions.getOccurenceDateAttr();
 
         // get the current value of the delete radio input
+        const selectedDeleteOption = this.deleteForm.getRadioValue();
 
-        const currentRadioValue = this.deleteForm.getRadioValue();
-        console.log(currentRadioValue);
+        // determine the api request to send
+        let responsePromise = null;
 
+        switch (selectedDeleteOption)
+        {
+            case EventDeletionOptions.SINGLE:
+                responsePromise = this.apiEvents.deleteThisEvent(eventId, occurenceDate);
+                break;
 
+            case EventDeletionOptions.FOLLOWING:
+                responsePromise = this.apiEvents.deleteThisEventAndFollowing(eventId, occurenceDate);
+                break;
 
-        // let response = null;
+            default:
+                responsePromise = this.apiEvents.delete(eventId);
+                break;
+        }
 
-        // switch (currentRadioValue)
-        // {
-        //     case EventDeletionOptions.SINGLE:
-        //         // response = api.deleteThisEvent()
-                
-        //         break;
-        // }
+        // await the api's response
+        const response = await Promise.resolve(responsePromise);
 
-
-        return true;
-
-        // const response = await api.delete(eventId);
-        // return response.ok;
+        // return if it was successful
+        return response.ok;
     }
-    
+
+
     /**
      * Steps to take when a delete request was unsuccessful
      */
