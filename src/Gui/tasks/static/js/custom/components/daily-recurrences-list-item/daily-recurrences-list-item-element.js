@@ -82,11 +82,14 @@ export class DailyRecurrencesListItemElement
 
 
 
-DailyRecurrencesListItemElement.LIST_ITEM = 'daily-recurrences-list-item';
-DailyRecurrencesListItemElement.CHECK_BOX = 'daily-recurrences-list-item-checkbox';
-DailyRecurrencesListItemElement.NAME      = 'daily-recurrences-list-item-name';
-DailyRecurrencesListItemElement.COMPLETED = 'completed';
+DailyRecurrencesListItemElement.LIST_ITEM    = 'daily-recurrences-list-item';
+DailyRecurrencesListItemElement.CHECK_BOX    = 'daily-recurrences-list-item-checkbox';
+DailyRecurrencesListItemElement.NAME         = 'daily-recurrences-list-item-name';
+DailyRecurrencesListItemElement.COMPLETED    = 'completed';
+DailyRecurrencesListItemElement.DROPDOWN     = 'daily-recurrences-list-item-dropdown';
+DailyRecurrencesListItemElement.DROPDOWN_BTN = 'daily-recurrences-list-item-dropdown-btn';
 
 DailyRecurrencesListItemElement.Attributes =  {
-    EVENT_ID: 'data-js-event-id'
+    EVENT_ID: 'data-js-event-id',
+    DROPDOWN_BTN_ACTION: 'data-js-dropdown-action',
 }

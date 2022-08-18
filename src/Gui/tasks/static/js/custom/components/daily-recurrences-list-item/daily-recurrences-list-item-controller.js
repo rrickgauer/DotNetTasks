@@ -2,6 +2,7 @@
 ////@ts-check
 
 import { ApiCompletions } from "../../api/api-completion";
+import { DailyRecurrencesListItemDropdownBtnActions } from "../../domain/enums/daily-recurrences-list-item-dropdown-actions";
 import { DailyRecurrenceCard } from "../daily-recurrences-card/daily-recurrences-card-element";
 import { EventModal } from "../event-modal/event-modal";
 import { DailyRecurrencesListItemElement } from "./daily-recurrences-list-item-element";
@@ -25,6 +26,7 @@ export class DailyRecurrencesListItemController
     {
         this._listenForRecurrenceClick();
         this._listenForEventCompletions();
+        this._listenForDropdownMenuBtnClick();
     }
 
 
@@ -104,6 +106,62 @@ export class DailyRecurrencesListItemController
 
 
     //#endregion
+
+
+    //#region Dropdown menu buttons
+
+    _listenForDropdownMenuBtnClick = () =>
+    {
+        document.body.addEventListener('click', (event) => 
+        {
+            if (!event.target.classList.contains(DailyRecurrencesListItemElement.DROPDOWN_BTN))
+            {
+                return;
+            }
+
+            this._handleDropdownMenuBtnClick(event.target);
+        });
+    }
+
+    /**
+     * Handle a dropdown menu button click event
+     * @param {HTMLButtonElement} eClickedBtn the clicked button
+     */
+    _handleDropdownMenuBtnClick = (eClickedBtn) =>
+    {
+        const listItem = this._getListItemFromChild(eClickedBtn);
+        const actionValue = this._getDropdownMenuBtnActionValue(eClickedBtn);
+
+        switch(actionValue)
+        {
+            case DailyRecurrencesListItemDropdownBtnActions.DELETE_THIS_EVENT:
+                alert('delete this event');
+                break;
+
+            case DailyRecurrencesListItemDropdownBtnActions.DELETE_THIS_AND_FOLLOWING_EVENTS:
+                alert('delete this and following events');
+                break;
+        }
+    }
+
+
+    /**
+     * Get the action data attribute value from the given dropdown menu button element
+     * @param {HTMLButtonElement} eBtn the button element
+     * @returns {Number}
+     */
+    _getDropdownMenuBtnActionValue = (eBtn) => 
+    {
+        const value = eBtn.getAttribute(DailyRecurrencesListItemElement.Attributes.DROPDOWN_BTN_ACTION);
+
+        return parseInt(value);
+    }
+
+
+    //#endregion
+
+
+
 
 
     //#region Additional utilities
