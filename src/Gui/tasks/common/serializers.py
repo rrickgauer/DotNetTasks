@@ -10,7 +10,8 @@ A serializer transforms a dictionary into a domain model.
 from __future__ import annotations
 from dataclasses import dataclass
 import datetime
-from tasks.domain import models
+from uuid import UUID
+from tasks.domain import models, enums
 
 #------------------------------------------------------
 # Parse the given datetime string into a python datetime/date object
@@ -94,4 +95,35 @@ class ApiResponseRecurrenceSerializer(SerializerBase):
         )
 
         return model
+
+
+class EventApiResponseSerializer(SerializerBase):
+    DomainModel = models.api_responses.EventApiResponse
+
+    def serialize(self) -> models.api_responses.EventApiResponse:
+        event_model = super().serialize()
+
+        event_model.id = UUID(event_model.id)
+        event_model.frequency = enums.EventFrequency(event_model.frequency)
+        
+        self._serialize_dates(event_model)
+
+        return event_model
+
+    def _serialize_dates(self, event_model: models.api_responses.EventApiResponse):
+        event_model.createdOn = parseIsoDatetime(datetime.datetime, event_model.createdOn)
+        
+        if event_model.startsOn != None:
+            event_model.startsOn = parseIsoDatetime(datetime.datetime, event_model.startsOn).date()
+
+        if event_model.endsOn != None:
+            event_model.endsOn = parseIsoDatetime(datetime.datetime, event_model.endsOn).date()
+            
+        event_model.startsAt = parseIsoDatetime(datetime.time, event_model.startsAt)
+        event_model.endsAt = parseIsoDatetime(datetime.time, event_model.endsAt)
+
+
+
+
+
 
