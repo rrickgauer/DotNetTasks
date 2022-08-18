@@ -1,5 +1,5 @@
-import { ApiEndpoints } from "./base";
-import { HttpMethods } from "./base";
+import { ApiEndpoints } from "./api-base";
+import { HttpMethods } from "./api-base";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 
 

@@ -1,7 +1,7 @@
 
 
 export const EventDeletionOptions = {
-    ALL: 1,
-    SINGLE: 2,
-    FOLLOWING: 3
+    SINGLE: 1,
+    FOLLOWING: 2,
+    ALL: 3,
 };

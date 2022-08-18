@@ -1,46 +1,92 @@
+"""
+********************************************************************************************
+
+Service methods for events
+
+********************************************************************************************
+"""
+
 from __future__ import annotations
-from datetime import date
-from enum import Enum, auto
+from dataclasses import dataclass
 from uuid import UUID
 import flask
 import requests
-from tasks.config.routines import get_config
+from tasks.domain.models.api_responses import EventApiResponse
+from tasks.common.api_url_builder import ApiUrlBuilder
 from tasks.common import security
 from tasks.common.structs import BaseReturn
-from tasks.common.url_rules import DeleteEventUrlRules
+from tasks.common import serializers
+
+@dataclass
+class GetEventApiResponse(BaseReturn):
+    data: str = None
 
 
-class EventDeleteAction(Enum):
-    ALL       = auto()
-    SINGLE    = auto()
-    FOLLOWING = auto()
+@dataclass
+class GetEventModelResult(BaseReturn):
+    data: EventApiResponse | None = None
+
 
 #------------------------------------------------------
 # Send an api request to update an event using the data gathered from the request form
 #------------------------------------------------------
 def update_event_from_request(event_id: UUID) -> requests.Response:
+    return send_put_request(event_id, flask.request.form)
+
+#------------------------------------------------------
+# Send a PUT request to the api for the specified event using the given event data
+#------------------------------------------------------
+def send_put_request(event_id, event_data) -> requests.Response:
     response = requests.put(
         verify = False,
         auth   = security.get_user_session_tuple(),
         url    = _build_api_event_url(event_id),
-        data   = flask.request.form,
+        data   = event_data,
     )
 
     return response
+
+#------------------------------------------------------
+# Get an event from the api
+#------------------------------------------------------
+def get_event_model(event_id: UUID) -> GetEventModelResult:
+    # fetch the data from the api
+    api_response = send_get_request(event_id)
+
+    if not api_response.successful:
+        return api_response
+
+    result = GetEventModelResult(successful=True)
+
+    try:
+        # parse the json string into a dict
+        json_object = flask.json.loads(api_response.data)
+
+        # serialize the dict into a domain model
+        serializer = serializers.EventApiResponseSerializer(json_object)
+        model = serializer.serialize()
+
+        result.data = model
+    
+    except Exception as ex:
+        result.successful = False
+        result.error = ex
+
+    return result
 
 
 #------------------------------------------------------
 # Get the specified event from the api
 #------------------------------------------------------
-def get_event(event_id: UUID) -> BaseReturn:
-    result = BaseReturn(successful=True)
+def send_get_request(event_id: UUID) -> GetEventApiResponse:
+    result = GetEventApiResponse(successful=True)
 
-    url = _build_api_event_url(event_id)
+    # url = _build_api_event_url(event_id)
 
     response = requests.get(
         verify = False,
         auth   = security.get_user_session_tuple(),
-        url    = url,
+        url    = _build_api_event_url(event_id),
     )
 
     if not response.ok:
@@ -54,45 +100,41 @@ def get_event(event_id: UUID) -> BaseReturn:
 
 
 #------------------------------------------------------
-# Build the url for the /events resource for the api
+# Delete the specified event
 #------------------------------------------------------
-def _build_api_event_url(event_id) -> str:
-    config = get_config()
-    url = f'{config.URL_API}/events/{event_id}'
-
-    return url
-
-
-#------------------------------------------------------
-# Get the appropriate delete event action by examining the request url
-#------------------------------------------------------
-def get_delete_action() -> EventDeleteAction | None:
-    url_rule = flask.request.url_rule.rule
-
-    if url_rule == f'/api/{DeleteEventUrlRules.ALL}':
-        return EventDeleteAction.ALL
-    elif url_rule == f'/api/{DeleteEventUrlRules.SINGLE}':
-        return EventDeleteAction.SINGLE
-    elif url_rule == f'/api/{DeleteEventUrlRules.FOLLOWING}':
-        return EventDeleteAction.FOLLOWING
-    else:
-        return None
-
-
 def delete_event(event_id: UUID) -> BaseReturn:
-    result = BaseReturn(successful=True)
+    result = BaseReturn()
 
+    try:
+        api_response = _send_delete_request(event_id)
+        result.data = api_response.text
+        result.successful = api_response.ok
+
+    except Exception as ex:
+        result.successful = False
+        result.error = ex
+
+    return result
+
+
+#------------------------------------------------------
+# Send a delete api request
+#------------------------------------------------------
+def _send_delete_request(event_id) -> requests.Response:
     api_response = requests.delete(
         url    = _build_api_event_url(event_id),
         auth   = security.get_user_session_tuple(),
         verify = False,
     )
 
-    return result
+    return api_response
 
 
-def delete_event_occurence(event_id: UUID, date_val: date):
-    return 'delete_event_occurence'
+#------------------------------------------------------
+# Build the url for the /events resource for the api
+#------------------------------------------------------
+def _build_api_event_url(event_id) -> str:
+    url_builder = ApiUrlBuilder()
+    return url_builder.events(event_id)
 
-def delete_event_occurence_following(event_id: UUID, date_val: date):
-    return 'delete_event_occurence_following'
+    

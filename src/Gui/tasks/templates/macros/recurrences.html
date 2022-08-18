@@ -23,6 +23,7 @@ The macros are:
             - occurs_on : datetime 
             - starts_at : time     
             - completed : bool
+            - cancelled : bool
 #}
 {% macro recurrences_board(data) -%}
 
@@ -84,11 +85,11 @@ The macros are:
 {# Create the html for a daily recurrences list item #}
 {% macro recurrences_list_item(recurrence) -%}
 
-<div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
+<div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %} {% if recurrence.cancelled %}cancelled{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
     <div class="d-flex align-items-center">
 
         <div class="form-check">
-            <input class="form-check-input position-static" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
+            <input class="form-check-input position-static daily-recurrences-list-item-checkbox" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
         </div>
 
         <div class="daily-recurrences-list-item-text-display">

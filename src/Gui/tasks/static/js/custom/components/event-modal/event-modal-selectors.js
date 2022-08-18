@@ -8,6 +8,7 @@ EventModalSelectors.CONTAINER = 'event-modal';
 
 EventModalSelectors.Attributes = {
     EVENT_ID: 'data-js-event-id',
+    OCCURENCE_DATE: 'data-js-occurence-date',
 },
 
 EventModalSelectors.SPINNER = 'event-modal-spinner';
@@ -40,4 +41,10 @@ EventModalSelectors.DeleteForm = {
     INPUT: 'event-deletion-form-radio',
     SUBMIT_BTN: 'event-deletion-form-submit',
     FORM: 'event-deletion-form',
+
+    Radios: {
+        THIS_EVENT              : 'event-deletion-form-radio-1',
+        THIS_EVENT_AND_FOLLOWING: 'event-deletion-form-radio-2',
+        ALL_EVENTS              : 'event-deletion-form-radio-3',
+    },
 }

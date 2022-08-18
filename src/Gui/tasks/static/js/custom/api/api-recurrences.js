@@ -1,5 +1,5 @@
 
-import { ApiEndpoints } from "./base";
+import { ApiEndpoints } from "./api-base";
 import { DateTime } from "../../lib/luxon";
 
 export class ApiRecurrences
