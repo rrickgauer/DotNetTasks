@@ -1,3 +1,11 @@
+"""
+********************************************************************************************
+
+Service methods for events
+
+********************************************************************************************
+"""
+
 from __future__ import annotations
 from datetime import date
 from uuid import UUID
@@ -52,21 +60,32 @@ def _build_api_event_url(event_id) -> str:
 
     return url
 
-
+#------------------------------------------------------
+# Delete the specified event
+#------------------------------------------------------
 def delete_event(event_id: UUID) -> BaseReturn:
-    result = BaseReturn(successful=True)
+    result = BaseReturn()
 
+    try:
+        api_response = _send_delete_request(event_id)
+        result.data = api_response.text
+        result.successful = api_response.ok
+
+    except Exception as ex:
+        result.successful = False
+        result.error = ex
+
+    return result
+
+
+#------------------------------------------------------
+# Send a delete api request
+#------------------------------------------------------
+def _send_delete_request(event_id) -> requests.Response:
     api_response = requests.delete(
         url    = _build_api_event_url(event_id),
         auth   = security.get_user_session_tuple(),
         verify = False,
     )
 
-    return result
-
-
-def delete_event_occurence(event_id: UUID, date_val: date):
-    return 'delete_event_occurence'
-
-def delete_event_occurence_following(event_id: UUID, date_val: date):
-    return 'delete_event_occurence_following'
+    return api_response

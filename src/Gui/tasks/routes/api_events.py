@@ -16,6 +16,7 @@ from tasks.common import security
 from tasks import services
 from http import HTTPStatus
 
+
 # module blueprint
 bp_api_events = flask.Blueprint('api_events', __name__)
 
@@ -54,20 +55,18 @@ def delete_all_events(event_id: UUID):
 
     return ('', HTTPStatus.NO_CONTENT)
 
-
 #------------------------------------------------------
 # DELETE: /api/events/:event_id/:date
 #------------------------------------------------------
 @bp_api_events.delete('<uuid:event_id>/<date:date_val>')
 @security.login_required
 def delete_single_occurence(event_id: UUID, date_val: date=None):
-    result = services.events.delete_event(event_id)
+    result = services.cancellations.create_cancellation(event_id, date_val)
 
     if not result.successful:
         return (str(result.error), HTTPStatus.BAD_REQUEST)
 
-    return ('', HTTPStatus.NO_CONTENT)
-
+    return ('', HTTPStatus.OK)
 
 #------------------------------------------------------
 # DELETE: /api/events/:event_id/:date/remaining
