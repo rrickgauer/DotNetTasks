@@ -7,11 +7,10 @@ Service methods for events
 """
 
 from __future__ import annotations
-from datetime import date
 from uuid import UUID
 import flask
 import requests
-from tasks.config.routines import get_config
+from tasks.common.api_url_builder import ApiUrlBuilder
 from tasks.common import security
 from tasks.common.structs import BaseReturn
 
@@ -51,14 +50,7 @@ def get_event(event_id: UUID) -> BaseReturn:
 
     return result
 
-#------------------------------------------------------
-# Build the url for the /events resource for the api
-#------------------------------------------------------
-def _build_api_event_url(event_id) -> str:
-    config = get_config()
-    url = f'{config.URL_API}/events/{event_id}'
 
-    return url
 
 #------------------------------------------------------
 # Delete the specified event
@@ -89,3 +81,13 @@ def _send_delete_request(event_id) -> requests.Response:
     )
 
     return api_response
+
+
+#------------------------------------------------------
+# Build the url for the /events resource for the api
+#------------------------------------------------------
+def _build_api_event_url(event_id) -> str:
+    url_builder = ApiUrlBuilder()
+    return url_builder.events(event_id)
+
+    
