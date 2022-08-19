@@ -43,8 +43,6 @@ EventModalSelectors.DeleteForm = {
     FORM: 'event-deletion-form',
 
     Radios: {
-        THIS_EVENT              : 'event-deletion-form-radio-1',
-        THIS_EVENT_AND_FOLLOWING: 'event-deletion-form-radio-2',
         ALL_EVENTS              : 'event-deletion-form-radio-3',
     },
 }

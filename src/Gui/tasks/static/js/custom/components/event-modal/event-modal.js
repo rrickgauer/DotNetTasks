@@ -193,7 +193,8 @@ export class EventModal {
     /**
      * Create a new event in the modal.
      */
-    createNewEvent = () => {
+    createNewEvent = () => 
+    {
         this._showLoadingSpinner();
         
         const newEventId = Utililties.getNewUUID();
@@ -267,31 +268,9 @@ export class EventModal {
     _deleteEvent = async () => {
         // get the required attribute values from the modal
         const eventId = this._getCurrentEventId();
-        const occurenceDate = EventModalActions.getOccurenceDateAttr();
-
-        // get the current value of the delete radio input
-        const selectedDeleteOption = this.deleteForm.getRadioValue();
-
-        // determine the api request to send
-        let responsePromise = null;
-
-        switch (selectedDeleteOption)
-        {
-            case EventDeletionOptions.SINGLE:
-                responsePromise = this.apiEvents.deleteThisEvent(eventId, occurenceDate);
-                break;
-
-            case EventDeletionOptions.FOLLOWING:
-                responsePromise = this.apiEvents.deleteThisEventAndFollowing(eventId, occurenceDate);
-                break;
-
-            default:
-                responsePromise = this.apiEvents.delete(eventId);
-                break;
-        }
 
         // await the api's response
-        const response = await Promise.resolve(responsePromise);
+        const response = await this.apiEvents.delete(eventId);
 
         // return if it was successful
         return response.ok;

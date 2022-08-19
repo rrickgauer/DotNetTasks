@@ -70,7 +70,6 @@ export class DailyRecurrencesListItemController
 
     //#endregion
 
-
     //#region Event completion
 
     /**
@@ -111,7 +110,6 @@ export class DailyRecurrencesListItemController
 
 
     //#endregion
-
 
     //#region Dropdown menu buttons
 
@@ -218,7 +216,6 @@ export class DailyRecurrencesListItemController
     }
 
     //#endregion
-
 
     //#region Additional utilities
 
