@@ -35,7 +35,7 @@ data:
    
     {% for occurence_date, recurrences in data.recurrences.items() %}
         
-        <div class="card card-daily-recurrences mt-3 my-shadow {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
+        <div class="card card-daily-recurrences my-shadow mb-3 {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
 
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
