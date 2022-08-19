@@ -49,18 +49,11 @@ data:
                         
                         {# 01/01/22 #}
                         <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
-
-                        &sdot;
-
-                        {# Recurrences count #}
-                        <span class="badge badge-secondary">{{ recurrences|length }}</span>
                     </div>
                     
                     <div class="d-flex align-items-baseline justify-content-end">
                         {# New event button #}
                         <button type="button" class="btn btn-xs btn-light card-daily-recurrences-new-event-btn" title="Create a new event">+</button>
-
-
                     </div>
                     
                 </div>
