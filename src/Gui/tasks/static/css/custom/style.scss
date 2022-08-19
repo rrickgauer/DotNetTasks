@@ -81,3 +81,16 @@ textarea {
         display: none;
     }
 }
+
+
+.card-daily-recurrences-new-btn-container {
+    display: flex;
+    margin-top: -30px;
+    justify-content: center;
+}
+
+.card-daily-recurrences-new-event-btn {
+    position: relative;
+    left: 20px;
+    top: 30px;   
+}

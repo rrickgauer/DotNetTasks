@@ -34,41 +34,41 @@ data:
 <div id="recurrences-board-container">
    
     {% for occurence_date, recurrences in data.recurrences.items() %}
-        
-        <div class="card card-daily-recurrences my-shadow mb-3 {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
 
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    
-                    {# Occurence date #}
-                    <div>
-                        {# Mon #}
-                        <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
-                        
-                        &sdot;
-                        
-                        {# 01/01/22 #}
-                        <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
-                    </div>
-                    
-                    <div class="d-flex align-items-baseline justify-content-end">
-                        {# New event button #}
-                        <button type="button" class="btn btn-xs btn-light card-daily-recurrences-new-event-btn" title="Create a new event">+</button>
-                    </div>
-                    
+
+        <div class="row mb-5 daily-recurrences-row">
+
+            <div class="col-xl-2">
+                {# Occurence date #}
+                <div>
+                    {# 01/01/22 #}
+                    <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+                    &sdot;
+                    {# Mon #}
+                    <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
                 </div>
-
             </div>
 
-            <div class="card-body">
-                <div class="daily-recurrences-list">
-                    {% for recurrence in recurrences %}
-                       {{ recurrences_list_item(recurrence) }}
-                    {% endfor %}
+            <div class="col-xl-10">
+                <div class="card card-daily-recurrences my-shadow {% if data.recurrence_date == occurence_date %}current-date{% endif %}" data-js-occurence-date="{{ occurence_date }}" >
+        
+                    <div class="card-body">
+                        <div class="daily-recurrences-list">
+                            {% for recurrence in recurrences %}
+                               {{ recurrences_list_item(recurrence) }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="card-daily-recurrences-new-btn-container">
+                            <button type="button" class="btn btn-sm btn-light card-daily-recurrences-new-event-btn" title="Create a new event">+</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
+        
+
 
     {% endfor %}
 

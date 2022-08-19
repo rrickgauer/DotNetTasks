@@ -12,12 +12,13 @@
 {% block content %}
 
 {# Page header section #}
-<div class="container border-bottom my-5">
-    <h1>Your tasks</h1>
-</div>
+<div class="container border-bottom my-5 d-md-flex justify-content-between">
 
-{# Board action buttons #}
-<div class="container">
+    <div>
+        <h1>Your tasks</h1>
+    </div>
+
+    {# Board action buttons #}
     {% include 'pages/home/board-action-buttons.html' %}
 </div>
 
