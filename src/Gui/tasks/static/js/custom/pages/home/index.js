@@ -1,3 +1,5 @@
+//@ts-check
+
 // imports
 import { EventModal } from "../../components/event-modal/event-modal";
 import { RecurrencesBoardActionsController } from "../../components/recurrences-board/recurrences-board-controller";
@@ -7,11 +9,14 @@ import { setupBoardActionVisibilities } from "./page-listeners";
 import { listenForWindowResize } from "./page-listeners";
 import { initCustomDatePickers } from "../../helpers/custom-datepicker";
 import { DateTimeUtil } from "../../helpers/datetime";
+import { DailyRecurrencesListItemController } from "../../components/daily-recurrences-list-item/daily-recurrences-list-item-controller";
 
 // module variables
 const m_eventModal = new EventModal();
 const m_boardActionsController = new RecurrencesBoardActionsController();
-const m_listController = new DailyRecurrenceListController();
+const m_recurrenceListController = new DailyRecurrenceListController();
+const m_listItemController = new DailyRecurrencesListItemController();
+
 
 /**
  * Main logic
@@ -24,6 +29,7 @@ $(document).ready(function()
     setupBoardActionVisibilities();
 });
 
+
 /**
  * Add the event listeners to the page.
  */
@@ -35,19 +41,22 @@ async function addListeners()
         m_eventModal.createNewEventStartsOn(today);
     });
 
+    // board actions
     m_boardActionsController.addListeners();
 
+    // event modal 
     m_eventModal.listenForFormSubmission();
     m_eventModal.listenForEventDeletion();
     m_eventModal.listenForFrequencyInputChange();
     m_eventModal.listenForDateInputChange();
 
-    m_listController.listenForEventCompletions();
-    m_listController.listenForRecurrenceClick();
-    m_listController.listenForDailyRecurrencesCardNewEvent();
+    // daily recurrences list items
+    m_listItemController.addEventListeners();
+
+    // dailt recurrence cards
+    m_recurrenceListController.listenForDailyRecurrencesCardNewEvent();
 
     listenForWindowResize();
     listenForArrowKeys();
-
 }
 

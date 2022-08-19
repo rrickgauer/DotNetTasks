@@ -1,4 +1,4 @@
-{# 
+{############################################################################################################ 
 
 This file contains jinja macros (functions) for generating the html for the recurrences board.
 
@@ -6,25 +6,29 @@ The macros are:
     - recurrences_board
     - recurrences_list_item
 
-#}
+#############################################################################################################}
 
 
 
-{# 
 
-    Create the html for the daily recurrences board 
 
-    data:
-        - recurrence_date (date)
-        
-        - recurrences: dictionary['2022-01-01', recurrences]
-            - event_id  : UUID     
-            - name      : str      
-            - occurs_on : datetime 
-            - starts_at : time     
-            - completed : bool
-            - cancelled : bool
-#}
+
+{#############################################################################################################
+
+Create the html for the daily recurrences board 
+
+data:
+    - recurrence_date (date)
+    
+    - recurrences: dictionary['2022-01-01', recurrences]
+        - event_id  : UUID     
+        - name      : str      
+        - occurs_on : datetime 
+        - starts_at : time     
+        - completed : bool
+        - cancelled : bool
+
+#############################################################################################################}
 {% macro recurrences_board(data) -%}
 
 <div class="container my-5" id="recurrences-board-container">
@@ -82,26 +86,52 @@ The macros are:
 
 
 
-{# Create the html for a daily recurrences list item #}
+{#############################################################################################################
+    
+Create the html for a daily recurrences list item 
+
+#############################################################################################################}
 {% macro recurrences_list_item(recurrence) -%}
 
 <div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %} {% if recurrence.cancelled %}cancelled{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
 
-        <div class="form-check">
-            <input class="form-check-input position-static daily-recurrences-list-item-checkbox" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
+        <div class="d-flex align-items-center">
+            {# Check box #}
+            <div class="form-check">
+                <input class="form-check-input position-static daily-recurrences-list-item-checkbox" type="checkbox" {% if recurrence.completed %}checked{% endif %}>
+            </div>
+
+            {# Event text #}
+            <div class="daily-recurrences-list-item-text-display">
+
+                {# Starts on #}
+                <span class="daily-recurrences-list-item-starts-on">
+                    {% if recurrence.starts_at %}
+                        <span class="badge badge-light">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
+                    {% endif %} 
+                </span>
+
+                {# Name #}
+                <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
+            </div>
+
         </div>
 
-        <div class="daily-recurrences-list-item-text-display">
-            <span class="daily-recurrences-list-item-starts-on">
-                {% if recurrence.starts_at %}
-                <span class="badge badge-light">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
-                {% endif %} 
-            </span>
+        <div class="d-flex align-items-center">
 
-            <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
+            {# Dropdown menu #}
+            <div class="dropleft daily-recurrences-list-item-dropdown">
+                <button class="btn btn-xs font-weight-bold" type="button" data-toggle="dropdown">&#8943;</button>
+
+                <div class="dropdown-menu">
+                    <h6 class="dropdown-header">Delete</h6>
+                    <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="1" type="button">This event</button>
+                    <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="2" type="button">This and following events</button>
+                </div>
+            </div>
+
         </div>
-
 
     </div>
 </div>

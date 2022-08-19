@@ -12,12 +12,6 @@ export class EventModalDeleteForm
         this.eSubmitButton = document.getElementById(EventModalSelectors.DeleteForm.SUBMIT_BTN);
 
         /** @type {HTMLInputElement} */
-        this.eRadioInputThisEvent = document.getElementById(EventModalSelectors.DeleteForm.Radios.THIS_EVENT);
-        
-        /** @type {HTMLInputElement} */
-        this.eRadioInputThisEventAndFollowing = document.getElementById(EventModalSelectors.DeleteForm.Radios.THIS_EVENT_AND_FOLLOWING);
-
-        /** @type {HTMLInputElement} */
         this.eRadioInputAllEvents = document.getElementById(EventModalSelectors.DeleteForm.Radios.ALL_EVENTS);
     }
 
