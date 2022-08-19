@@ -85,12 +85,23 @@ textarea {
 
 .card-daily-recurrences-new-btn-container {
     display: flex;
-    margin-top: -30px;
+    margin-top: -20px;
     justify-content: center;
 }
 
 .card-daily-recurrences-new-event-btn {
     position: relative;
-    left: 20px;
     top: 30px;   
+}
+
+// only hide the new button on screens that support hover events
+@media (any-hover: hover) {
+    .card-daily-recurrences-new-btn-container {
+        display: none;
+        margin-top: -30px;
+    }
+
+    .card-daily-recurrences:hover .card-daily-recurrences-new-btn-container  {
+        display: flex;
+    }
 }
