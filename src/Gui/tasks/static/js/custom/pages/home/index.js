@@ -10,12 +10,14 @@ import { listenForWindowResize } from "./page-listeners";
 import { initCustomDatePickers } from "../../helpers/custom-datepicker";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DailyRecurrencesListItemController } from "../../components/daily-recurrences-list-item/daily-recurrences-list-item-controller";
+import { AppSidebarController } from "../../components/app-sidebar/app-sidebar-controller";
 
 // module variables
 const m_eventModal = new EventModal();
 const m_boardActionsController = new RecurrencesBoardActionsController();
 const m_recurrenceListController = new DailyRecurrenceListController();
 const m_listItemController = new DailyRecurrencesListItemController();
+const m_sidebarController = new AppSidebarController();
 
 
 /**
@@ -55,6 +57,8 @@ async function addListeners()
 
     // dailt recurrence cards
     m_recurrenceListController.listenForDailyRecurrencesCardNewEvent();
+
+    m_sidebarController.addEventListeners();
 
     listenForWindowResize();
     listenForArrowKeys();
