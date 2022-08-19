@@ -17,5 +17,5 @@ $(document).ready(function()
 
 function addListeners() 
 {
-    console.log(m_updatePasswordFormController);
+    m_updatePasswordFormController.addListeners();
 }
