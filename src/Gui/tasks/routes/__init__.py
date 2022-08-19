@@ -4,6 +4,7 @@ from .test import bp_test as bp_test
 # pages
 from .auth import bp_auth as bp_auth
 from .home import bp_home as bp_home
+from .account import bp_account as bp_account
 
 # api
 from .api_login import bp_api_login as bp_api_login

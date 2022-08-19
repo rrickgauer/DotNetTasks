@@ -28,6 +28,7 @@ def _setupCustomConverters(flask_app: flask.Flask):
 def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_test, url_prefix='/test')
     flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
+    flask_app.register_blueprint(routes.bp_account, url_prefix='/account')
 
     flask_app.register_blueprint(routes.bp_api_login, url_prefix='/api/login')
     flask_app.register_blueprint(routes.bp_api_events, url_prefix='/api/events')
