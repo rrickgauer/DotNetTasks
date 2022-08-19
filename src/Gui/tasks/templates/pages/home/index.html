@@ -11,21 +11,41 @@
 
 {% block content %}
     
-<div class="mt-5 container">
-    <div class="d-md-flex align-items-baseline justify-content-between">
-        <h1>Weekly Tasks</h1>
-        
-        {% include 'pages/home/board-action-buttons.html' %}
+<div class="container mt-5">
+    <h1>Your tasks</h1>
+
+    {% include 'pages/home/board-action-buttons.html' %}
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-9">
+
+            <div id="recurrences-board-spinner">
+                {% include 'includes/spinner-center.html' %}
+            </div>
+            
+            <div id="recurrences-board-container-wrapper"></div>
+        </div>
+    
+        <div class="col-md-3">
+            
+            {% include 'components/sidebar/container.html' %}
+    
+        </div>
+    
+    
     </div>
 </div>
 
 
-<div id="recurrences-board-spinner">
-    {% include 'includes/spinner-center.html' %}
-</div>
 
 
-<div id="recurrences-board-container-wrapper"></div>
+
+
 
 <!-- event modal -->
 {% include 'components/event-modal/container.html' %}

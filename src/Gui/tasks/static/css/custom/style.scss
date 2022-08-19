@@ -74,3 +74,10 @@ textarea {
 .card-sm {
     max-width: 500px;
 }
+
+
+#recurrences-board-container-wrapper.hide-completed {
+    .daily-recurrences-list-item.completed {
+        display: none;
+    }
+}
