@@ -52,4 +52,10 @@ export class UpdatePasswordFormValidator
         return true;
     }
 
+
+    _currentPasswordIsCorrect = async () =>
+    {
+        
+    }
+
 }
