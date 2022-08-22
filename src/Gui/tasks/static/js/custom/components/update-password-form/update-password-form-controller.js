@@ -1,7 +1,9 @@
+import { ApiPassword } from "../../api/api-password";
 import { UpdatePasswordFormValidatorResults } from "../../domain/enums/update-password-form-validator-results";
+import { UpdatePasswordFormValues } from "../../domain/forms/update-password-form";
+import { SpinnerButton } from "../../helpers/spinner-button";
 import { UpdatePasswordFormElements } from "./update-password-form-elements";
 import { UpdatePasswordFormSelectors } from "./update-password-form-selectors";
-import { UpdatePasswordFormValidator } from "./update-password-form-validator";
 
 
 
@@ -10,6 +12,8 @@ export class UpdatePasswordFormController
     constructor()
     {
         this.elements = new UpdatePasswordFormElements();
+
+        this.spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
     }
 
     /**
@@ -37,58 +41,93 @@ export class UpdatePasswordFormController
      * 
      * @param {SubmitEvent} submissionEvent 
      */
-    _handleFormSubmission = (submissionEvent) =>
+    _handleFormSubmission = async (submissionEvent) =>
     {
         submissionEvent.preventDefault();
 
-        const validator = this._getNewPasswordValidator();
-        const validationResult = validator.validate();
+        this._setFormToLoading();
 
-        switch(validationResult)
+        const formValues = this._getFormValues();
+        const api = new ApiPassword();
+        const response = await api.post(formValues);
+
+        if (response.ok)
         {
-            case UpdatePasswordFormValidatorResults.NEW_PASSWORDS_NOT_MATCHING:
-                this._newPasswordsDontMatch();
-                break;
-
-            default:
-                this._submitForm();
-                break;
+            window.location.href = '/auth/login';
+        }
+        else
+        {
+            this._handleInvalidUpdate(await response.json());
         }
 
-        this.elements.formGroupCurrent.clearInputValue();
+        this._removeFormLoading();
     }
 
     /**
-     * Get a new password validator object
-     * @returns {UpdatePasswordFormValidator}
+     * Get a new UpdatePasswordFormValues object
+     * @returns {UpdatePasswordFormValues}
      */
-    _getNewPasswordValidator = () =>
+    _getFormValues = () =>
     {
         // get the current input values
         const currentVal = this.elements.formGroupCurrent.getInputValue();
         const newVal = this.elements.formGroupNew.getInputValue();
         const confirmVal = this.elements.formGroupConfirm.getInputValue();
 
-        // setup the return object
-        const validator = new UpdatePasswordFormValidator(currentVal, newVal, confirmVal);
+        const result = new UpdatePasswordFormValues(currentVal, newVal, confirmVal);
 
-        return validator;
+        return result;
     }
 
-    _newPasswordsDontMatch = () =>
+
+    /**
+     * Disable the form inputs and show the spinner button
+     */
+    _setFormToLoading = () =>
     {
-        // alert('new passwords do not match');
+        this.spinnerButton.showSpinner();
 
-        this.elements.formGroupNew.setInvalid('');
-        this.elements.formGroupConfirm.setInvalid('Passwords do not match');
+        this.elements.formGroupCurrent.eInput.disabled = true;
+        this.elements.formGroupNew.eInput.disabled     = true;
+        this.elements.formGroupConfirm.eInput.disabled = true;
     }
 
-    _submitForm = () =>
+    /**
+     * Enable the form inputs and reset the spinner button
+     */
+    _removeFormLoading = () =>
     {
-        alert('submit the form, validation passed');
+        this.spinnerButton.reset();
+
+        this.elements.formGroupCurrent.eInput.disabled = false;
+        this.elements.formGroupNew.eInput.disabled     = false;
+        this.elements.formGroupConfirm.eInput.disabled = false;
     }
 
-    //#endregion\
+    /**
+     * Handle an invalid attempt at updating the password
+     * @param {Object} apiResponse the api response object
+     */
+    _handleInvalidUpdate = (apiResponse) =>
+    {
+        const errorCode = apiResponse.code;
+
+        switch(errorCode)
+        {
+            case UpdatePasswordFormValidatorResults.NEW_PASSWORDS_NOT_MATCHING:
+                this.elements.formGroupNew.setInvalid('');
+                this.elements.formGroupConfirm.setInvalid('Passwords do not match');
+                break;
+
+            case UpdatePasswordFormValidatorResults.CURRENT_PASSWORD_INCORRECT:
+                this.elements.formGroupCurrent.setInvalid('Current password is not correct');
+                break;
+        }
+
+    }
+
+
+    //#endregion
 
     //#region Password input changes
 

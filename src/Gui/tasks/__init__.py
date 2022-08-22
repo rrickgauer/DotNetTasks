@@ -34,6 +34,7 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_api_events, url_prefix='/api/events')
     flask_app.register_blueprint(routes.bp_api_recurrences, url_prefix='/api/recurrences')
     flask_app.register_blueprint(routes.bp_api_completions, url_prefix='/api/completions')
+    flask_app.register_blueprint(routes.bp_api_password, url_prefix='/api/password')
 
     flask_app.register_blueprint(routes.bp_home, url_prefix='/')
 

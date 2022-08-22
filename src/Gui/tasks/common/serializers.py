@@ -124,6 +124,6 @@ class EventApiResponseSerializer(SerializerBase):
 
 
 
-
-
+class UpdatePasswordArgsSerializer(SerializerBase):
+    DomainModel = models.UpdatePasswordArgs
 

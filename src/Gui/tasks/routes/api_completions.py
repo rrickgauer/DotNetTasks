@@ -33,7 +33,6 @@ def event_completetions(event_id: UUID, on_date: date):
         result = services.completions.create_event_completion()
 
     if not result.successful:
-        raise result.error
         return (str(result.error), HTTPStatus.BAD_REQUEST)
 
     return (result.data, HTTPStatus.OK)

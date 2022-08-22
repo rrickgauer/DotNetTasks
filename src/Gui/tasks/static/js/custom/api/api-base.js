@@ -7,6 +7,7 @@ export const ApiEndpoints = {
     RECURRENCES: `${URL_PREFIX}/recurrences`,
     COMPLETIONS: `${URL_PREFIX}/completions`,
     USER       : `${URL_PREFIX}/user`,
+    PASSWORD   : `${URL_PREFIX}/password`,
 }
 
 export const HttpMethods = {
