@@ -3,6 +3,9 @@ from enum import Enum
 import flask
 from tasks.domain import models
 from tasks.common import security, serializers
+import requests
+
+from tasks.common import ApiUrlBuilder
 
 class ValidatePasswordUpdateResult(Enum):
     VALID                      = 1
@@ -42,10 +45,29 @@ def get_update_password_args_from_request() -> models.UpdatePasswordArgs:
 
     return serializer.serialize()
 
-
+#------------------------------------------------------
+# Transform the validation result into a dict
+#------------------------------------------------------
 def get_validation_error_response_object(validation_result: ValidatePasswordUpdateResult) -> dict:
     result = dict(
         code = validation_result.value
     )
 
     return result
+
+#------------------------------------------------------
+# Send the api request to update the password
+#------------------------------------------------------
+def send_request(new_password) -> requests.Response:
+
+    url_builder = ApiUrlBuilder()
+    url = url_builder.password()
+
+    response = requests.post(
+        url    = url,
+        data   = dict(password=new_password),
+        verify = False,
+        auth   = security.get_user_session_tuple(),
+    )
+
+    return response

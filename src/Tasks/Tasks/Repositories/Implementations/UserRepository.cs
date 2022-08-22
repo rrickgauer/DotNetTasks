@@ -24,6 +24,16 @@ namespace Tasks.Repositories.Implementations
                     u.email = @email
                     AND u.password = @password
                 LIMIT 1";
+
+
+            public const string UPDATE_PASSWORD = @"
+                UPDATE
+                    Users
+                SET
+                    password = @password
+                WHERE
+                    id = @id";
+
         }
         #endregion
 
@@ -79,6 +89,23 @@ namespace Tasks.Repositories.Implementations
             return cmd;
         }
 
+        /// <summary>
+        /// Update the user password
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
+        {
+            MySqlCommand cmd = new(SqlStatements.UPDATE_PASSWORD);
 
+            cmd.Parameters.Add(new("@password", password));
+            cmd.Parameters.Add(new("@id", userId));
+
+            int numRecords = await _dbConnection.ModifyAsync(cmd);
+
+            return numRecords;
+
+        }
     }
 }
