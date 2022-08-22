@@ -27,3 +27,7 @@ class ApiUrlBuilder:
     #------------------------------------------------------
     def events(self, event_id) -> str:
         return f'{self.api_url}/events/{event_id}'
+
+
+    def password(self) -> str:
+        return f'{self.api_url}/password'

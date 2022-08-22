@@ -22,6 +22,12 @@ It has these blocks:
 </head>
 <body>
 
+    {% block navbar %}
+        {% include 'includes/navbar.html' %}
+    {% endblock %}
+
+    
+
     <div id="alerts-page-top"></div>
     
     {% block content %}

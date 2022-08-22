@@ -1,7 +1,7 @@
 """
 ********************************************************************************************
 
-Url Prefix: /auth
+Url Prefix: /account
 
 ********************************************************************************************
 """
@@ -11,17 +11,13 @@ import flask
 from tasks.common import security
 
 # module blueprint
-bp_auth = flask.Blueprint('auth', __name__)
+bp_account = flask.Blueprint('account', __name__)
 
 #------------------------------------------------------
-# tickle.com/auth
-# tickle.com/auth/login
+# tasks.com/account
 #------------------------------------------------------
-@bp_auth.route('')
-@bp_auth.route('login')
-def login():
-    # clear out the session values
-    security.clear_session_values()
-
-    return flask.render_template('pages/auth/login.html')
+@bp_account.route('')
+@security.login_required
+def account_page():
+    return flask.render_template('pages/account/index.html')
     
