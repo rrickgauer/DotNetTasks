@@ -1,0 +1,29 @@
+@import "variables";
+
+// primary color
+.custom-color-primary-darkest { color: $custom-color-primary-darkest; }
+.custom-color-primary-darker { color: $custom-color-primary-darker; }
+.custom-color-primary { color: $custom-color-primary; }
+.custom-color-primary-lighter { color: $custom-color-primary-lighter; }
+.custom-color-primary-lightest { color: $custom-color-primary-lightest; }
+
+// gray color
+.custom-color-gray-darkest { color: $custom-color-gray-darkest; }
+.custom-color-gray-darker { color: $custom-color-gray-darker; }
+.custom-color-gray { color: $custom-color-gray; }
+.custom-color-gray-lighter { color: $custom-color-gray-lighter; }
+.custom-color-gray-lightest { color: $custom-color-gray-lightest; }
+
+// primary background color
+.custom-bg-color-primary-darkest { background-color: $custom-color-primary-darkest; }
+.custom-bg-color-primary-darker { background-color: $custom-color-primary-darker; }
+.custom-bg-color-primary { background-color: $custom-color-primary; }
+.custom-bg-color-primary-lighter { background-color: $custom-color-primary-lighter; }
+.custom-bg-color-primary-lightest { background-color: $custom-color-primary-lightest; }
+
+// gray background color
+.custom-bg-color-gray-darkest { background-color: $custom-color-gray-darkest; }
+.custom-bg-color-gray-darker { background-color: $custom-color-gray-darker; }
+.custom-bg-color-gray { background-color: $custom-color-gray; }
+.custom-bg-color-gray-lighter { background-color: $custom-color-gray-lighter; }
+.custom-bg-color-gray-lightest { background-color: $custom-color-gray-lightest; }
