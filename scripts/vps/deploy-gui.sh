@@ -5,6 +5,7 @@ cd /var/www/DotNetTasks/src/Gui
 # Compile sass
 cd /var/www/DotNetTasks/src/Gui/tasks/static/css
 sass custom/style.scss dist/custom/style.css
+sass custom/custom-bootstrap.scss dist/custom/bootstrap.css
 
 # Compile js
 cd /var/www/DotNetTasks/src/Gui/tasks/static/js
