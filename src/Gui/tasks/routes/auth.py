@@ -23,5 +23,5 @@ def login():
     # clear out the session values
     security.clear_session_values()
 
-    return flask.render_template('pages/auth/login.html')
+    return flask.render_template('pages/auth/index.html')
     

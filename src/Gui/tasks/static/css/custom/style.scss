@@ -108,3 +108,14 @@ textarea {
         display: flex;
     }
 }
+
+
+.form-group.form-group-custom {
+    label {
+        display: block;
+    }
+
+    .form-group-custom-label {
+        margin-bottom: 0.5rem;
+    }
+}
