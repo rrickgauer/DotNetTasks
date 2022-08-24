@@ -5,3 +5,4 @@ from . import events as events
 from . import completions as completions
 from . import cancellations as cancellations 
 from . import update_password as update_password
+from . import user as user

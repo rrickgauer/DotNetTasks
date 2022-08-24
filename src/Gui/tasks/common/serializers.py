@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import datetime
 from uuid import UUID
+from tasks.domain.models import api_responses
 from tasks.domain import models, enums
 
 #------------------------------------------------------
@@ -127,3 +128,24 @@ class EventApiResponseSerializer(SerializerBase):
 class UpdatePasswordArgsSerializer(SerializerBase):
     DomainModel = models.UpdatePasswordArgs
 
+
+class UserSignUpApiResponseUserSerializer(SerializerBase):
+    DomainModel = api_responses.UserSignUpApiResponseUser
+
+    def serialize(self) -> api_responses.UserSignUpApiResponseUser:
+        user = super().serialize()
+        user.createdOn = parseIsoDatetime(datetime.datetime, user.createdOn)
+
+        return user
+
+
+class UserSignUpApiResponseSerializer(SerializerBase):
+    DomainModel = api_responses.UserSignUpApiResponse
+
+    def serialize(self) -> api_responses.UserSignUpApiResponse:
+        signup_response = super().serialize()
+
+        if signup_response.user != None:
+            signup_response.user = UserSignUpApiResponseUserSerializer(signup_response.user).serialize()
+
+        return signup_response

@@ -1,0 +1,26 @@
+
+
+{% macro auth_page_form(form_id, submit_button_text) -%}
+
+<form id="{{ form_id }}" class="auth-form">
+    
+    {# Email #}
+    <div class="form-group form-group-custom">
+        <label>
+            <div class="form-group-custom-label">Email address</div>
+            <input type="email" class="form-control" required>
+        </label>
+    </div>
+
+    {# Password #}
+    <div class="form-group form-group-custom">
+        <label>
+            <div class="form-group-custom-label">Password</div>
+            <input type="password" class="form-control" required>
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-stretch-sm">{{ submit_button_text }}</button>
+</form>
+
+{%- endmacro %}

@@ -4,7 +4,6 @@ import flask
 from tasks.domain import models
 from tasks.common import security, serializers
 import requests
-
 from tasks.common import ApiUrlBuilder
 
 class ValidatePasswordUpdateResult(Enum):

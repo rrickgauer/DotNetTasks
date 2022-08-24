@@ -40,7 +40,6 @@ namespace Tasks.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Event>>> GetEventsAsync()
         {
-            //var userEvents = _eventServices.GetUserEvents();
             var userEvents = await _eventServices.GetUserEventsAsync();
 
             return Ok(userEvents);
