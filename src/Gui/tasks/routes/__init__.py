@@ -12,3 +12,4 @@ from .api_events import bp_api_events as bp_api_events
 from .api_recurrences import bp_api_recurrences as bp_api_recurrences
 from .api_completions import bp_api_completions as bp_api_completions
 from .api_password import bp_api_password as bp_api_password
+from .api_user import bp_api_user as bp_api_user

@@ -1,6 +1,7 @@
 
 
 import { ApiLogin } from "../../api/api-login";
+import { ApiUser } from "../../api/api-user";
 import { AuthPageForm } from "../../components/auth-page-form/auth-page-form";
 import { AuthPageFormElements } from "../../components/auth-page-form/auth-page-form-elements";
 
@@ -25,6 +26,12 @@ function addListeners() {
         formSubmitEvent.preventDefault();
         loginUser();
     });
+
+    m_formSignUp.eForm.addEventListener('submit', (e) => 
+    {
+        e.preventDefault();
+        signUpUser();
+    })
 }
 
 //#region Log in
@@ -70,4 +77,26 @@ async function sendLoginRequest() {
 //#endregion
 
 
+async function signUpUser() 
+{
+    m_formSignUp.spinnerBtn.showSpinner();
+
+    const response = await sendSignupRequest();
+
+    console.log(await response.text());
+
+    m_formSignUp.spinnerBtn.reset();
+}
+
+/**
+ * Send a sign up request
+ * @returns {Promise<Response>}
+ */
+async function sendSignupRequest() {
+    const api = new ApiUser();
+
+    const response = await api.signUp(m_formSignUp.eInputEmail.value, m_formSignUp.eInputPassword.value);
+
+    return response;
+}
 
