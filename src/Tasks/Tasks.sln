@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks", "Tasks\Tasks.csproj", "{87A7FAF8-C81C-498E-931D-EAF221B731C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Other", "Other\Other.csproj", "{38F4FD61-34DD-4C79-BD1A-ECB7D93F2D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Other", "Other\Other.csproj", "{38F4FD61-34DD-4C79-BD1A-ECB7D93F2D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Email", "Tasks.Email\Tasks.Email.csproj", "{CB3128C3-3AB6-4243-8479-49D8F06D6B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{38F4FD61-34DD-4C79-BD1A-ECB7D93F2D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F4FD61-34DD-4C79-BD1A-ECB7D93F2D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F4FD61-34DD-4C79-BD1A-ECB7D93F2D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3128C3-3AB6-4243-8479-49D8F06D6B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3128C3-3AB6-4243-8479-49D8F06D6B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3128C3-3AB6-4243-8479-49D8F06D6B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3128C3-3AB6-4243-8479-49D8F06D6B88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
