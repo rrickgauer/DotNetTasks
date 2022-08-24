@@ -76,16 +76,26 @@ async function sendLoginRequest() {
 
 //#endregion
 
-
+/**
+ * Sign up the user
+ */
 async function signUpUser() 
 {
     m_formSignUp.spinnerBtn.showSpinner();
 
     const response = await sendSignupRequest();
 
-    console.log(await response.text());
-
     m_formSignUp.spinnerBtn.reset();
+
+    if (response.ok)
+    {
+        window.location.href = '/app';
+    }
+    else
+    {
+        alert('Error creating your account. Check console.');
+        console.error(await response.json());
+    }
 }
 
 /**

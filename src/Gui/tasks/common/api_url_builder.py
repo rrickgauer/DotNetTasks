@@ -31,3 +31,11 @@ class ApiUrlBuilder:
 
     def password(self) -> str:
         return f'{self.api_url}/password'
+
+        
+    def user(self) -> str:
+        return f'{self.api_url}/user'
+
+    def user_sign_up(self) -> str:
+        return f'{self.user()}/signup'
+        

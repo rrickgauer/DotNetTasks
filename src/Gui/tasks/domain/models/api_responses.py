@@ -39,3 +39,19 @@ class EventApiResponse:
     recurrenceMonth : int            = None
 
 
+
+@dataclass
+class UserSignUpApiResponseUser:
+    id         : UUID     = None
+    email      : str      = None
+    password   : str      = None
+    createdOn : datetime = None
+
+@dataclass
+class UserSignUpApiResponse:
+    successful: bool = None
+    user: UserSignUpApiResponseUser = None
+    error: str = None
+
+
+
