@@ -1,0 +1,14 @@
+@import "variables";
+
+.btn.btn-standard {
+    background-color: $custom-color-gray-lightest;
+    border: 1px solid $custom-color-gray;
+    transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: rgba(27, 31, 36, 0.04) 0px 1px 0px 0px;
+
+    &:hover,
+    &:active,
+    &:focus {
+        filter: brightness(95%);
+    }
+}
