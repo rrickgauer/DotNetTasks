@@ -14,7 +14,6 @@ namespace Tasks.Services.Implementations
         private readonly IUserRepository _userRepository;
         #endregion
 
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -36,9 +35,27 @@ namespace Tasks.Services.Implementations
             return result >= 0;
         }
 
-        public Task<User?> CreateUserAsync(SignUpRequest signUpRequest)
+
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        /// <param name="signUpRequest"></param>
+        /// <returns></returns>
+        public async Task<User?> CreateUserAsync(SignUpRequest signUpRequest)
         {
-            throw new NotImplementedException();
+            // setup a new User object with the email/password values given in the argument
+            User user = new()
+            {
+                Id = Guid.NewGuid(),
+                Email = signUpRequest.Email,
+                Password = signUpRequest.Password,
+                CreatedOn = DateTime.Now,
+            };
+
+            // send it to the repository
+            int numRecords = await _userRepository.InsertUserAsync(user);
+
+            return numRecords < 0 ? null : user;
         }
 
         #region Validate new user
@@ -101,7 +118,11 @@ namespace Tasks.Services.Implementations
             return user != null;
         }
 
-
+        /// <summary>
+        /// Get the appropriate SignupRequestResponse object for an invalid sign up attempt
+        /// </summary>
+        /// <param name="validateUserResult"></param>
+        /// <returns></returns>
         public SignupRequestResponse GetInvalidSignUpRequestResponse(ValidateUserResult validateUserResult)
         {
             SignupRequestResponse result = new()
@@ -113,6 +134,11 @@ namespace Tasks.Services.Implementations
             return result;
         }
 
+        /// <summary>
+        /// Get the appropriate error message for the specified ValidateUserResult
+        /// </summary>
+        /// <param name="validateUserResult"></param>
+        /// <returns></returns>
         private string GetInvalidNewUserRequestErrorMessage(ValidateUserResult validateUserResult)
         {
             string errorMessage = string.Empty;

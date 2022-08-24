@@ -7,5 +7,6 @@ namespace Tasks.Repositories.Interfaces
         public Task<User?> GetUserAsync(string email, string password);
         public Task<User?> GetUserAsync(string email);
         public Task<int> UpdateUserPasswordAsync(Guid userId, string password);
+        public Task<int> InsertUserAsync(User user);
     }
 }

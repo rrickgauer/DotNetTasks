@@ -44,11 +44,7 @@ namespace Tasks.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult<SignupRequestResponse>> SignUp([FromForm] SignUpRequest signUpRequest)
         {
-            SignupRequestResponse result = new()
-            {
-                Successful = true,
-            };
-
+            // validate the user info before inserting it into the database
             var validationResult = await _userServices.ValidateNewUserAsync(signUpRequest);
             
             if (validationResult != Domain.Enums.ValidateUserResult.Valid)
@@ -56,7 +52,16 @@ namespace Tasks.Controllers
                 return BadRequest(_userServices.GetInvalidSignUpRequestResponse(validationResult));
             }
 
-            return Ok(result);
+            // insert it
+            User? newUser = await _userServices.CreateUserAsync(signUpRequest);
+
+            SignupRequestResponse result = new()
+            {
+                Successful = true,
+                User = newUser,
+            };
+
+            return Created("/user", result);
         }
 
     }

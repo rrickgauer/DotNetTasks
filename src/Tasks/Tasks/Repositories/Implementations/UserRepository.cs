@@ -47,6 +47,14 @@ namespace Tasks.Repositories.Implementations
                 WHERE
                     id = @id";
 
+            public const string MODIFY = @"
+                INSERT INTO
+                    Users (id, email, password, created_on)
+                VALUES
+                    (@id, @email, @password, @created_on) AS new_values ON DUPLICATE KEY
+                UPDATE
+                    email = new_values.email,
+                    password = new_values.password";
         }
         #endregion
 
@@ -97,7 +105,9 @@ namespace Tasks.Repositories.Implementations
             
             cmd.Parameters.Add(new("@email", email));
 
-            return await GetUserFromCommandAsync(cmd);
+            User? result = await GetUserFromCommandAsync(cmd);
+
+            return result;
         }
 
         /// <summary>
@@ -136,6 +146,24 @@ namespace Tasks.Repositories.Implementations
             return numRecords;
         }
 
- 
+
+        /// <summary>
+        /// Insert the user into the database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<int> InsertUserAsync(User user)
+        {
+            MySqlCommand command = new(SqlStatements.MODIFY);
+
+            command.Parameters.Add(new("@id", user.Id));
+            command.Parameters.Add(new("@email", user.Email));
+            command.Parameters.Add(new("@password", user.Password));
+            command.Parameters.Add(new("@created_on", user.CreatedOn));
+
+            int numRecords = await _dbConnection.ModifyAsync(command);
+
+            return numRecords;
+        }
     }
 }
