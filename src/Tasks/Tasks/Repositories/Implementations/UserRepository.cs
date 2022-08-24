@@ -26,6 +26,19 @@ namespace Tasks.Repositories.Implementations
                 LIMIT 1";
 
 
+            public const string SELECT_FROM_EMAIL = @"
+                SELECT 
+                    u.id AS id,
+                    u.email AS email,
+                    u.password AS password,
+                    u.created_on AS created_on
+                FROM
+                    Users u
+                WHERE 
+                    u.email = @email
+                LIMIT 1";
+
+
             public const string UPDATE_PASSWORD = @"
                 UPDATE
                     Users
@@ -37,8 +50,11 @@ namespace Tasks.Repositories.Implementations
         }
         #endregion
 
+        #region Private members
         private readonly IConfigs _configs;
         private readonly DbConnection _dbConnection;
+        #endregion
+
 
         /// <summary>
         /// Constructor
@@ -48,7 +64,9 @@ namespace Tasks.Repositories.Implementations
         {
             _configs = configs;
             _dbConnection = new DbConnection(_configs);
-        }   
+        }
+
+        #region Get user
 
         /// <summary>
         /// Get the user from the email/password combination.
@@ -59,8 +77,36 @@ namespace Tasks.Repositories.Implementations
         public async Task<User?> GetUserAsync(string email, string password)
         {
             // setup a new sql command
-            MySqlCommand cmd = GetMySqlCommandForGetUserWithEmailPassword(email, password);
+            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL_PASSWORD);
 
+            cmd.Parameters.Add(new("@email", email));
+            cmd.Parameters.Add(new("@password", password));
+
+            return await GetUserFromCommandAsync(cmd);
+        }
+
+        /// <summary>
+        /// Get the user from the datbase that has the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(string email)
+        {
+            // setup a new sql command
+            MySqlCommand cmd = new MySqlCommand(SqlStatements.SELECT_FROM_EMAIL);
+            
+            cmd.Parameters.Add(new("@email", email));
+
+            return await GetUserFromCommandAsync(cmd);
+        }
+
+        /// <summary>
+        /// Fetch the user from the given MySqlCommand
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        private async Task<User?> GetUserFromCommandAsync(MySqlCommand cmd)
+        {
             // fetch the record from the database
             DataRow? record = await _dbConnection.FetchAsync(cmd);
 
@@ -70,24 +116,7 @@ namespace Tasks.Repositories.Implementations
             return user;
         }
 
-
-
-        /// <summary>
-        /// Get a MySqlCommand for the GetUser method.
-        /// Adds the named parms to the command.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        private MySqlCommand GetMySqlCommandForGetUserWithEmailPassword(string email, string password)
-        {
-            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL_PASSWORD);
-
-            cmd.Parameters.Add(new("@email", email));
-            cmd.Parameters.Add(new("@password", password));
-
-            return cmd;
-        }
+        #endregion
 
         /// <summary>
         /// Update the user password
@@ -105,7 +134,8 @@ namespace Tasks.Repositories.Implementations
             int numRecords = await _dbConnection.ModifyAsync(cmd);
 
             return numRecords;
-
         }
+
+ 
     }
 }

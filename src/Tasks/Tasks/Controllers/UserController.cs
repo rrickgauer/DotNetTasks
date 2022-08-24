@@ -47,8 +47,14 @@ namespace Tasks.Controllers
             SignupRequestResponse result = new()
             {
                 Successful = true,
-                User = new(),
             };
+
+            var validationResult = await _userServices.ValidateNewUserAsync(signUpRequest);
+            
+            if (validationResult != Domain.Enums.ValidateUserResult.Valid)
+            {
+                return BadRequest(_userServices.GetInvalidSignUpRequestResponse(validationResult));
+            }
 
             return Ok(result);
         }
