@@ -1,10 +1,10 @@
-﻿namespace Tasks.Email
+﻿
+
+
+string[] cliArgs = args;
+
+
+foreach (var x in args)
 {
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
-    }
+    Console.WriteLine(x);
 }
