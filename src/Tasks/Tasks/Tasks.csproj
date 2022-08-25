@@ -21,4 +21,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tasks.Configurations\Tasks.Configurations.csproj" />
+    <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
+    <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
+    <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
+    <ProjectReference Include="..\Tasks.Services\Tasks.Services.csproj" />
+  </ItemGroup>
+
 </Project>

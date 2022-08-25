@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Tasks.CustomAttributes;
 using Tasks.Domain.Enums;
-using Tasks.Mappers;
 
 namespace Tasks.Domain.Models
 {

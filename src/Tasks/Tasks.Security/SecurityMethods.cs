@@ -1,4 +1,6 @@
-﻿namespace Tasks.Security
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Tasks.Security
 {
     public class SecurityMethods
     {
