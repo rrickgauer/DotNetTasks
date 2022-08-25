@@ -7,5 +7,5 @@ git pull
 
 cd /var/www/DotNetTasks/scripts/vps
 
-./deploy-api.sh
-./deploy-gui.sh
+./.deploy-api.sh
+./.deploy-gui.sh
