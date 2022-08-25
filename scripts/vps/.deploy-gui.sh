@@ -1,11 +1,13 @@
+#!/bin/bash
+
 # Install any new python dependencies
 cd /var/www/DotNetTasks/src/Gui
 /var/www/DotNetTasks/src/Gui/.venv/bin/pip install -r requirements.txt
 
 # Compile sass
 cd /var/www/DotNetTasks/src/Gui/tasks/static/css
-sass custom/style.scss dist/custom/style.css
-sass custom/custom-bootstrap.scss dist/custom/bootstrap.css
+sass --quiet --no-source-map custom/style.scss dist/custom/style.css
+sass --quiet --no-source-map custom/custom-bootstrap.scss dist/custom/bootstrap.css
 
 # Compile js
 cd /var/www/DotNetTasks/src/Gui/tasks/static/js
