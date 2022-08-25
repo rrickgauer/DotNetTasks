@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `Tasks` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `Tasks`;
+CREATE DATABASE  IF NOT EXISTS `Tasks_Dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `Tasks_Dev`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
@@ -18,35 +18,54 @@ USE `Tasks`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Event_Cancelations`
+-- Table structure for table `Event_Action_Types`
 --
 
-DROP TABLE IF EXISTS `Event_Cancelations`;
+DROP TABLE IF EXISTS `Event_Action_Types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Event_Cancelations` (
-  `event_id` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `recorded_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `uc_event_completetions` (`event_id`,`date`),
-  CONSTRAINT `Event_Cancelations_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+CREATE TABLE `Event_Action_Types` (
+  `id` smallint unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Event_Completions`
+-- Table structure for table `Event_Actions`
 --
 
-DROP TABLE IF EXISTS `Event_Completions`;
+DROP TABLE IF EXISTS `Event_Actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Event_Completions` (
+CREATE TABLE `Event_Actions` (
   `event_id` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `marked_completed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `uc_event_completetions` (`event_id`,`date`),
-  CONSTRAINT `Event_Completetions_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+  `on_date` date NOT NULL,
+  `event_action_type_id` smallint unsigned NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`event_id`,`on_date`,`event_action_type_id`),
+  KEY `event_action_type_id` (`event_action_type_id`),
+  CONSTRAINT `Event_Actions_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Event_Actions_ibfk_2` FOREIGN KEY (`event_action_type_id`) REFERENCES `Event_Action_Types` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Event_Frequencies`
+--
+
+DROP TABLE IF EXISTS `Event_Frequencies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Event_Frequencies` (
+  `id` smallint unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +105,7 @@ CREATE TABLE `Events` (
   `ends_on` date DEFAULT NULL,
   `starts_at` time DEFAULT NULL,
   `ends_at` time DEFAULT NULL,
-  `frequency` enum('ONCE','DAILY','WEEKLY','MONTHLY','YEARLY') CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'ONCE',
+  `frequency` smallint unsigned NOT NULL,
   `separation` int unsigned DEFAULT '1',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `recurrence_day` int DEFAULT NULL,
@@ -95,8 +114,30 @@ CREATE TABLE `Events` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
+  KEY `Events_fk_frequencies_idx` (`frequency`),
+  CONSTRAINT `Events_fk_frequencies` FOREIGN KEY (`frequency`) REFERENCES `Event_Frequencies` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `Events_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `User_Email_Verifications`
+--
+
+DROP TABLE IF EXISTS `User_Email_Verifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `User_Email_Verifications` (
+  `id` char(36) NOT NULL,
+  `user_id` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `email` char(100) NOT NULL,
+  `confirmed_on` datetime DEFAULT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `User_Email_Verifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,6 +207,54 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'Tasks_Dev'
 --
+/*!50003 DROP FUNCTION IF EXISTS `event_has_action_occurence` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` FUNCTION `event_has_action_occurence`(
+    in_event_id CHAR(36),
+    in_occurence_date DATE,
+    in_event_action_type SMALLINT UNSIGNED 
+) RETURNS tinyint(1)
+    READS SQL DATA
+BEGIN
+    -- This method checks if an event has a specified event action type on a date.
+    -- Example: check if an event has a completion recorded on July 15th, 2022.
+    
+    DECLARE num_records INT;
+    DECLARE result BOOLEAN;
+    
+    SELECT 
+        COUNT(event_id) c
+    INTO 
+        num_records 
+    FROM 
+        Event_Actions ea
+    WHERE 
+        ea.event_id = in_event_id 
+        AND ea.on_date = in_occurence_date
+        AND ea.event_action_type_id = in_event_action_type;
+    
+    IF num_records > 0 THEN
+        SET result = TRUE;
+    ELSE
+        SET result = FALSE;
+    END IF;
+    
+    RETURN (result);
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `format_date_display` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -473,6 +562,43 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `get_random_date` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` FUNCTION `get_random_date`(
+    in_num_days_out INT
+) RETURNS date
+    DETERMINISTIC
+BEGIN
+    DECLARE random_num_days INT;
+    DECLARE result DATE;
+    DECLARE num_days_out INT DEFAULT ABS(in_num_days_out);
+    
+    -- generate a random number between 0 and the in_num_days_out argument
+    SET random_num_days = FLOOR(RAND() * num_days_out);
+    
+    -- if argument is positive, generate a random day in the future
+    -- otherwise get a random day in the past
+    IF SIGN(in_num_days_out) = 1 THEN
+        SET result = CURRENT_DATE + INTERVAL random_num_days DAY;       -- future
+    ELSE
+        SET result = CURRENT_DATE - INTERVAL random_num_days DAY;       -- past
+    END IF;
+    
+	RETURN (result);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `get_start_date_daily` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -656,6 +782,41 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `is_event_cancelled` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` FUNCTION `is_event_cancelled`(
+    in_event_id CHAR(36),
+	in_occurence_date DATE
+) RETURNS tinyint(1)
+    READS SQL DATA
+BEGIN
+
+    -- Check if the specified event is cancelled on the specified date
+    
+    DECLARE result BOOLEAN;
+    DECLARE event_action_type SMALLINT DEFAULT 2;
+    
+    SELECT 
+        event_has_action_occurence(in_event_id, in_occurence_date, event_action_type) as is_cancelled
+    INTO
+        result;
+    
+    RETURN (result);
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `is_event_completed` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -668,20 +829,19 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`main`@`%` FUNCTION `is_event_completed`(
     in_event_id CHAR(36),
-	in_completed_date DATE
+	in_occurence_date DATE
 ) RETURNS tinyint(1)
-    DETERMINISTIC
+    READS SQL DATA
 BEGIN
-    DECLARE num_records INT;
+    -- Check if the specified event is completed on the specified date
     DECLARE result BOOLEAN;
-	SELECT COUNT(event_id) INTO num_records FROM Event_Completions WHERE event_id = in_event_id AND date = in_completed_date;
+    DECLARE event_action_type SMALLINT DEFAULT 1;
     
-	IF num_records > 0 THEN
-		SET result = TRUE;
-	ELSE
-		SET result = FALSE;
-	END IF;
-	
+    SELECT 
+        event_has_action_occurence(in_event_id, in_occurence_date, event_action_type)
+    INTO
+        result;
+    
     RETURN (result);
 
 END ;;
@@ -711,12 +871,19 @@ SP: BEGIN
     This procedure generates all of the dates an event will occur on 
     between the given range_start and range_end days. 
     *************************************************************************/
+    
+    -- event frequency symbolic constants
+	DECLARE C_FREQUENCY_ONCE SMALLINT UNSIGNED DEFAULT 1;
+    DECLARE C_FREQUENCY_DAILY SMALLINT UNSIGNED DEFAULT 2;
+    DECLARE C_FREQUENCY_WEEKLY SMALLINT UNSIGNED DEFAULT 3;
+    DECLARE C_FREQUENCY_MONTHLY SMALLINT UNSIGNED DEFAULT 4;
+    DECLARE C_FREQUENCY_YEARLY SMALLINT UNSIGNED DEFAULT 5;
 
 	-- Event row fields
     DECLARE event_starts_on DATE;
     DECLARE event_ends_on DATE;
     DECLARE event_separation INT;
-    DECLARE event_frequency ENUM('ONCE','DAILY','WEEKLY','MONTHLY','YEARLY');
+    DECLARE event_frequency SMALLINT UNSIGNED;    
     DECLARE event_recurrence_day INT;
     DECLARE event_recurrence_week INT;
     DECLARE event_recurrence_month INT;
@@ -742,25 +909,26 @@ SP: BEGIN
 		LEAVE SP;
 	ELSEIF range_end < event_starts_on THEN
 		LEAVE SP;
-	ELSEIF event_frequency = 'ONCE' AND event_starts_on < range_start THEN
+	ELSEIF event_frequency = C_FREQUENCY_ONCE AND event_starts_on < range_start THEN
 		LEAVE SP;
 	END IF;
     
-	SET first_date = range_start;	-- initialize the first_date to the start of the range
+    -- initialize the first_date to the start of the range
+	SET first_date = range_start;	
     
     -- need to get the first date the event can occur on between the ranges following the event_separation
-    IF event_frequency = 'WEEKLY' THEN
+    IF event_frequency = C_FREQUENCY_WEEKLY THEN
 		SET first_date = GET_START_DATE_WEEKLY(range_start, event_starts_on, event_separation, event_recurrence_day);
-	ELSEIF event_frequency = 'DAILY' THEN
+	ELSEIF event_frequency = C_FREQUENCY_DAILY THEN
 		SET first_date = GET_START_DATE_DAILY(range_start, event_starts_on, event_separation);
-	ELSEIF event_frequency = 'MONTHLY' THEN
+	ELSEIF event_frequency = C_FREQUENCY_MONTHLY THEN
 		IF event_recurrence_week IS NULL 
         AND event_recurrence_day IS NOT NULL THEN
 			SET first_date = GET_FIRST_MONTHDAY_DATE(range_start, event_starts_on, event_separation, event_recurrence_day);
 		ELSE
 			SET first_date = GET_FIRST_MONTHWEEK_DATE(range_start, event_starts_on, event_separation, event_recurrence_week, event_recurrence_day);
 		END IF;
-	ELSEIF event_frequency = 'YEARLY' THEN
+	ELSEIF event_frequency = C_FREQUENCY_YEARLY THEN
 		SET first_date = GET_FIRST_YEARLY_DATE(range_start, event_starts_on, event_separation, event_recurrence_month, event_recurrence_week, event_recurrence_day);
 	ELSE	-- ONCE
 		SET first_date = event_starts_on;
@@ -787,17 +955,17 @@ SP: BEGIN
 		INSERT INTO Temp_Event_Occurrence_Dates VALUES (event_id, next_date);
         
         -- get the next date depending on the event frequency
-        IF event_frequency = 'WEEKLY' THEN
+        IF event_frequency = C_FREQUENCY_WEEKLY THEN
 			SET next_date = DATE_ADD(next_date, INTERVAL num_intervals WEEK);
-		ELSEIF event_frequency = 'DAILY' THEN
+		ELSEIF event_frequency = C_FREQUENCY_DAILY THEN
 			SET next_date = DATE_ADD(next_date, INTERVAL num_intervals DAY);
-        ELSEIF event_frequency = 'MONTHLY' THEN
+        ELSEIF event_frequency = C_FREQUENCY_MONTHLY THEN
 			SET next_date = DATE_ADD(next_date, INTERVAL num_intervals MONTH);
             -- check if the recurrence is one that is a MONTHWEEK
             IF event_recurrence_week IS NOT NULL AND event_recurrence_day IS NOT NULL THEN
 				SET next_date = GET_NEXT_MONTHWEEK_DATE(next_date, event_recurrence_week, event_recurrence_day);
             END IF;
-		ELSEIF event_frequency = 'YEARLY' THEN
+		ELSEIF event_frequency = C_FREQUENCY_YEARLY THEN
             SET next_date = DATE_ADD(next_date, INTERVAL event_separation YEAR);
 			-- check if the recurrence is one that is a MONTHWEEK
             IF event_recurrence_week IS NOT NULL AND event_recurrence_day IS NOT NULL THEN
@@ -816,11 +984,14 @@ SP: BEGIN
             e.name AS name,
 			teod.occurs_on AS occurs_on,
             e.starts_at AS starts_at,
-            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed
+            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
+            IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
 		FROM
 			Temp_Event_Occurrence_Dates teod
 			LEFT JOIN Events e ON teod.event_id = e.id
-		ORDER BY occurs_on ASC;
+		ORDER BY 
+			occurs_on ASC,
+			starts_at ASC;
     
 		DROP TABLE Temp_Event_Occurrence_Dates;
 	END IF;
@@ -898,14 +1069,102 @@ BEGIN
         e.name AS name,
 		teod.occurs_on AS occurs_on,
         e.starts_at AS starts_at,
-        IS_EVENT_COMPLETED(event_id, occurs_on) AS completed
+        IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
+        IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
 	FROM
 		Temp_Event_Occurrence_Dates teod
         LEFT JOIN Events e ON teod.event_id = e.id
-	ORDER BY occurs_on ASC;
+	ORDER BY 
+		occurs_on ASC,
+        starts_at ASC;
     
     DROP TABLE Temp_Event_Occurrence_Dates;
     
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Modify_Event` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` PROCEDURE `Modify_Event`(
+    IN in_id CHAR(36),
+    IN in_user_id CHAR(36),
+    IN in_name VARCHAR(100),
+    IN in_description TEXT,
+    IN in_phone_number CHAR(10),
+    IN in_location CHAR(250),
+    IN in_starts_on DATE,
+    IN in_ends_on DATE,
+    IN in_starts_at TIME,
+    IN in_ends_at TIME,
+    IN in_frequency SMALLINT UNSIGNED,
+    IN in_separation INT UNSIGNED,
+    IN in_recurrence_day INT,
+    IN in_recurrence_week INT,
+    IN in_recurrence_month INT
+)
+BEGIN
+INSERT INTO
+    Events (
+        id,
+        user_id,
+        name,
+        description,
+        phone_number,
+        location,
+        starts_on,
+        ends_on,
+        starts_at,
+        ends_at,
+        frequency,
+        separation,
+        recurrence_day,
+        recurrence_week,
+        recurrence_month
+    )
+VALUES
+    (
+        in_id,
+        in_user_id,
+        in_name,
+        in_description,
+        in_phone_number,
+        in_location,
+        in_starts_on,
+        in_ends_on,
+        in_starts_at,
+        in_ends_at,
+        in_frequency,
+        in_separation,
+        in_recurrence_day,
+        in_recurrence_week,
+        in_recurrence_month
+    ) AS new_values ON DUPLICATE KEY
+UPDATE
+    name = new_values.name,
+    description = new_values.description,
+    phone_number = new_values.phone_number,
+    location = new_values.location,
+    starts_on = new_values.starts_on,
+    ends_on = new_values.ends_on,
+    starts_at = new_values.starts_at,
+    ends_at = new_values.ends_at,
+    frequency = new_values.frequency,
+    separation = new_values.separation,
+    recurrence_day = new_values.recurrence_day,
+    recurrence_week = new_values.recurrence_week,
+    recurrence_month = new_values.recurrence_month;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -958,4 +1217,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-12 11:19:50
+-- Dump completed on 2022-08-25 13:44:12
