@@ -2,9 +2,9 @@
 using Tasks.Domain.Models;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
-using Tasks.Security;
 using Tasks.Services.Interfaces;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Tasks.Security;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8629 // Nullable value type may be null.

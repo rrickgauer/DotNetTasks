@@ -4,7 +4,6 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
-using Tasks.Security;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.   
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.

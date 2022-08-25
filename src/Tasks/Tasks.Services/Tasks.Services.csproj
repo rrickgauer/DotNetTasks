@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
+    <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
+    <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
+  </ItemGroup>
+
+</Project>
