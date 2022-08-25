@@ -1,10 +1,11 @@
-﻿
+﻿using CommandLine;
+using System.Net;
+using System.Net.Mail;
+using Tasks.Configurations;
+using Tasks.Email;
 
 
-string[] cliArgs = args;
+IConfigs configs = new ConfigurationProduction();
 
 
-foreach (var x in args)
-{
-    Console.WriteLine(x);
-}
+
