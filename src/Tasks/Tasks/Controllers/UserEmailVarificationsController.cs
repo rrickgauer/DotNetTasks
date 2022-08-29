@@ -32,9 +32,8 @@ namespace Tasks.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<ActionResult<UserEmailVerification>> Post()
         {
-
             // create the new record
             UserEmailVerification? emailVerification = await _userEmailVerificationServices.CreateNewAsync(CurrentUserId);
 
@@ -45,13 +44,22 @@ namespace Tasks.Controllers
 
 
             // send the email
-            bool emailWasSent = await _userEmailVerificationServices.SendEmail(emailVerification);
+            bool emailWasSent = await _userEmailVerificationServices.SendEmailAsync(emailVerification);
 
             return Created($"/email-verifications/{emailVerification.Id}", emailVerification);
         }
 
+        [HttpPut("{userEmailVerificationId}/confirm")]
+        public async Task<IActionResult> Confirm([FromRoute] Guid userEmailVerificationId)
+        {
+            UserEmailVerification? result = await _userEmailVerificationServices.ConfirmEmailAsync(userEmailVerificationId);
 
+            if (result is null)
+            {
+                return NotFound();
+            }
 
-
+            return Ok(result);
+        }
     }
 }

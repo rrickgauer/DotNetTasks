@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Email;
 using Tasks.Email.Messages;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -82,7 +84,7 @@ namespace Tasks.Services.Implementations
         /// </summary>
         /// <param name="userEmailVerification"></param>
         /// <returns></returns>
-        public async Task<bool> SendEmail(UserEmailVerification userEmailVerification)
+        public async Task<bool> SendEmailAsync(UserEmailVerification userEmailVerification)
         {
             EmailServer server = new(_configs);
             server.Connect();
@@ -95,5 +97,48 @@ namespace Tasks.Services.Implementations
             return true;
         }
 
+        /// <summary>
+        /// Confirm the given UserEmailVerification record 
+        /// </summary>
+        /// <param name="userEmailVerificationId"></param>
+        /// <returns></returns>
+        public async Task<UserEmailVerification?> ConfirmEmailAsync(Guid userEmailVerificationId)
+        {
+            // make sure the id exists and is valid
+            UserEmailVerification? userEmailVerification = await GetUserEmailVerificationAsync(userEmailVerificationId);
+
+            if (userEmailVerification is null) 
+            {
+                return null;
+            }
+
+            // don't do anything if it's already confirmed
+            if (userEmailVerification.IsConfirmed)
+            {
+                return userEmailVerification;
+            }
+
+            userEmailVerification.ConfirmedOn = DateTime.Now;
+
+            await _userEmailVerificationRepository.UpdateAsync(userEmailVerification);
+
+            return userEmailVerification;
+        }
+
+        /// <summary>
+        /// Get the specified UserEmailVerification record
+        /// </summary>
+        /// <param name="userEmailVerificationId"></param>
+        /// <returns></returns>
+        public async Task<UserEmailVerification?> GetUserEmailVerificationAsync(Guid userEmailVerificationId)
+        {
+            DataRow? dataRow = await _userEmailVerificationRepository.GetAsync(userEmailVerificationId);
+
+            if (dataRow is null) return null;
+
+            var model = UserEmailVerificationMapper.ToModel(dataRow);
+
+            return model;
+        }
     }
 }
