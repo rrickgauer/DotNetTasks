@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using Tasks.Auth;
 using Tasks.Configurations;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
-using Tasks.Security;
 using Tasks.Services.Implementations;
 using Tasks.Services.Interfaces;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,5 +71,8 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     .AddScoped<IEventRepository, EventRepository>()
     .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
     .AddScoped<IEventActionRepository, EventActionRepository>()
-    .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>();
+    .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
+    
+    // custom filters
+    .AddScoped<CustomHeaderFilter>();
 }

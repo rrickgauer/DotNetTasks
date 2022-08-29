@@ -8,8 +8,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Interfaces;
+using Tasks.Security;
 
-namespace Tasks.Security
+namespace Tasks.Auth
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
@@ -30,7 +31,7 @@ namespace Tasks.Security
             {
                 return AuthenticateResult.NoResult();
             }
-            
+
             // make sure the request contains the Authorization header
             if (!Request.Headers.ContainsKey("Authorization"))
             {
@@ -45,10 +46,10 @@ namespace Tasks.Security
                 var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
                 var username = credentials[0];
                 var password = credentials[1];
-                
+
                 user = await _userRepository.GetUserAsync(username, password);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string errorMessage = ex.Message;
                 return AuthenticateResult.Fail("Invalid Authorization Header");
@@ -58,11 +59,11 @@ namespace Tasks.Security
             {
                 return AuthenticateResult.Fail("Invalid Username or Password");
             }
-                
+
             var claims = new[] { new Claim("userId", user.Id.ToString()) };
-            var identity  = new ClaimsIdentity(claims, Scheme.Name);
+            var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
-            var ticket    = new AuthenticationTicket(principal, Scheme.Name);
+            var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
             bool added = Request.HttpContext.Items.TryAdd(RequestStorageKeys.CLIENT_USER_ID, user.Id);
 

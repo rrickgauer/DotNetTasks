@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tasks.Auth;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Security;
@@ -49,6 +50,8 @@ namespace Tasks.Controllers
             return Created($"/email-verifications/{emailVerification.Id}", emailVerification);
         }
 
+
+        [ServiceFilter(typeof(CustomHeaderFilter))]
         [AllowAnonymous]
         [HttpPut("{userEmailVerificationId}/confirm")]
         public async Task<IActionResult> Confirm([FromRoute] Guid userEmailVerificationId)
