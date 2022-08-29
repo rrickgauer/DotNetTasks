@@ -10,5 +10,6 @@ namespace Tasks.Services.Interfaces
     public interface IUserEmailVerificationServices
     {
         Task<UserEmailVerification?> CreateNewAsync(Guid userId);
+        Task<bool> SendEmail(UserEmailVerification userEmailVerification);
     }
 }

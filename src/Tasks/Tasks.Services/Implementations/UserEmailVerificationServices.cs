@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Configurations;
 using Tasks.Domain.Models;
+using Tasks.Email;
+using Tasks.Email.Messages;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
+
+#pragma warning disable CS8601 // Possible null reference assignment.
 
 namespace Tasks.Services.Implementations
 {
@@ -14,16 +19,18 @@ namespace Tasks.Services.Implementations
         #region Private members
         private readonly IUserServices _userServices;
         private readonly IUserEmailVerificationRepository _userEmailVerificationRepository;
+        private readonly IConfigs _configs;
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="userServices"></param>
-        public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository)
+        public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository, IConfigs configs)
         {
             _userServices = userServices;
             _userEmailVerificationRepository = userEmailVerificationRepository;
+            _configs = configs;
         }
 
         /// <summary>
@@ -69,5 +76,24 @@ namespace Tasks.Services.Implementations
 
             return emailVerification;
         }
+
+        /// <summary>
+        /// Send the email confirmation message
+        /// </summary>
+        /// <param name="userEmailVerification"></param>
+        /// <returns></returns>
+        public async Task<bool> SendEmail(UserEmailVerification userEmailVerification)
+        {
+            EmailServer server = new(_configs);
+            server.Connect();
+
+            UserEmailVerificationMessage message = new(userEmailVerification, _configs);
+            await server.SendMessageAsync(message);
+
+            server.CloseConnection();
+
+            return true;
+        }
+
     }
 }

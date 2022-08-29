@@ -44,11 +44,10 @@ namespace Tasks.Controllers
             }
 
 
-            return Created($"/email-verifications/{emailVerification.Id}", emailVerification);
-            
             // send the email
+            bool emailWasSent = await _userEmailVerificationServices.SendEmail(emailVerification);
 
-
+            return Created($"/email-verifications/{emailVerification.Id}", emailVerification);
         }
 
 

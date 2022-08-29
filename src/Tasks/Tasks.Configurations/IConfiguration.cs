@@ -11,5 +11,7 @@
         public string EMAIL_SMTP_CLIENT { get; }
         public string EMAIL_USERNAME { get; }
         public string EMAIL_PASSWORD { get; }
+
+        public string URL_GUI { get; } 
     }
 }

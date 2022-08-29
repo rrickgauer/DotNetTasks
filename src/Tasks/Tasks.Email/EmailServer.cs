@@ -39,11 +39,12 @@ namespace Tasks.Email
         /// </summary>
         public void Connect()
         {
+            _smtpClient.Host = _configs.EMAIL_SMTP_CLIENT;
             _smtpClient.Port = SMTP_PORT;
             _smtpClient.EnableSsl = true;
             _smtpClient.UseDefaultCredentials = false;
             _smtpClient.Credentials = _credentials;
-
+            
             _isConnected = true;
         }
 
@@ -51,11 +52,36 @@ namespace Tasks.Email
         /// Send an email message
         /// </summary>
         /// <param name="content"></param>
-        public void SendMessage(EmailContent content)
+        private void SendMessage(EmailContent content)
         {
             EnsureConnected();
 
             _smtpClient.Send(_configs.EMAIL_ADDRESS, content.Recipient, content.Subject, content.Body);
+        }
+
+
+        /// <summary>
+        /// Send message async
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(IEmailMessage emailMessage)
+        {
+            EmailContent content = emailMessage.GetEmailContent();
+
+            await SendMessageAsync(content);
+        }
+
+        /// <summary>
+        /// Send message async
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(EmailContent content)
+        {
+            EnsureConnected();
+
+            await _smtpClient.SendMailAsync(_configs.EMAIL_ADDRESS, content.Recipient, content.Subject, content.Body);
         }
 
         /// <summary>
