@@ -11,5 +11,6 @@ namespace Tasks.Services.Interfaces
         Task<User?> CreateUserAsync(SignUpRequest signUpRequest);
         Task<ValidateUserResult> ValidateNewUserAsync(SignUpRequest signUpRequest);
         SignupRequestResponse GetInvalidSignUpRequestResponse(ValidateUserResult validateUserResult);
+        Task<User?> GetUserAsync(Guid userId);
     }
 }

@@ -163,5 +163,18 @@ namespace Tasks.Services.Implementations
 
         #endregion
 
+
+        /// <summary>
+        /// Get a user from the repository by their user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(Guid userId)
+        {
+            User? user = await _userRepository.GetUserAsync(userId);
+
+            return user;
+        }
+
     }
 }

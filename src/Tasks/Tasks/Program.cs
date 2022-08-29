@@ -54,8 +54,8 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     }
     else
     {
-        //builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
-        builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
+        builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
+        //builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
     }
 
     
@@ -65,10 +65,12 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     .AddScoped<IRecurrenceServices, RecurrenceServices>()
     .AddScoped<IEventActionServices, EventActionServices>()
     .AddScoped<IUserServices, UserServices>()
+    .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
 
     // repositories
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IEventRepository, EventRepository>()
     .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
-    .AddScoped<IEventActionRepository, EventActionRepository>();
+    .AddScoped<IEventActionRepository, EventActionRepository>()
+    .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>();
 }

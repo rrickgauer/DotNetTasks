@@ -39,6 +39,16 @@ namespace Tasks.Repositories.Implementations
                 LIMIT 1";
 
 
+            public const string SELECT_FROM_ID = @"
+                SELECT 
+                    *
+                FROM
+                    View_Users u
+                WHERE 
+                    u.id = @id
+                LIMIT 1";
+
+
             public const string UPDATE_PASSWORD = @"
                 UPDATE
                     Users
@@ -110,6 +120,24 @@ namespace Tasks.Repositories.Implementations
             return result;
         }
 
+
+        /// <summary>
+        /// Get a user from the database by their id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(Guid userId)
+        {
+            // setup a new sql command
+            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_ID);
+
+            cmd.Parameters.Add(new("@id", userId));
+
+            User? user = await GetUserFromCommandAsync(cmd);
+
+            return user;
+        }
+
         /// <summary>
         /// Fetch the user from the given MySqlCommand
         /// </summary>
@@ -165,5 +193,7 @@ namespace Tasks.Repositories.Implementations
 
             return numRecords;
         }
+
+
     }
 }
