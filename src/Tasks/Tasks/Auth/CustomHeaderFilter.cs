@@ -1,7 +1,6 @@
 ﻿/***********************************************************************
  
-This class is responsible for ensuring that the incoming request has the 
-custom header key/value combination.
+This class is responsible for ensuring that the incoming request has the custom header key/value combination.
 
 This is to ensure that the request is coming only from the gui and not from a 3rd party.
 
