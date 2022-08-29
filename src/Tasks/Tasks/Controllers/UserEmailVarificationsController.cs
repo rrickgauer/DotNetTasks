@@ -49,6 +49,7 @@ namespace Tasks.Controllers
             return Created($"/email-verifications/{emailVerification.Id}", emailVerification);
         }
 
+        [AllowAnonymous]
         [HttpPut("{userEmailVerificationId}/confirm")]
         public async Task<IActionResult> Confirm([FromRoute] Guid userEmailVerificationId)
         {

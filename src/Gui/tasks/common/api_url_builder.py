@@ -38,4 +38,7 @@ class ApiUrlBuilder:
 
     def user_sign_up(self) -> str:
         return f'{self.user()}/signup'
+
+    def email_verifications_confirmation(self, email_verification_id) -> str:
+        return f'{self.api_url}/email-verifications/{email_verification_id}/confirm'
         
