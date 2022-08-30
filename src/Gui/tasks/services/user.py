@@ -25,11 +25,30 @@ def _send_signup_api_request() -> requests.Response:
     url_builder = ApiUrlBuilder()
     url = url_builder.user_sign_up()
 
+    custom_header = security.get_custom_request_header()
+
     response = requests.post(
-        url    = url,
-        data   = flask.request.form,
-        verify = False,
+        url     = url,
+        data    = flask.request.form,
+        verify  = False,
+        headers = custom_header,
     )
 
     return response
 
+
+
+def get_user_info() -> requests.Response:
+    url_builder = ApiUrlBuilder()
+    url = url_builder.user()
+
+    custom_header = security.get_custom_request_header()
+
+    response = requests.get(
+        url     = url,
+        verify  = False,
+        headers = custom_header,
+        auth    = security.get_user_session_tuple(),
+    )
+
+    return response

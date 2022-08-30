@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using Tasks.Auth;
 using Tasks.Configurations;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
-using Tasks.Security;
 using Tasks.Services.Implementations;
 using Tasks.Services.Interfaces;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +29,6 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-}
-
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -54,8 +48,7 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     }
     else
     {
-        //builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
-        builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
+        builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
     }
 
     
@@ -65,10 +58,15 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     .AddScoped<IRecurrenceServices, RecurrenceServices>()
     .AddScoped<IEventActionServices, EventActionServices>()
     .AddScoped<IUserServices, UserServices>()
+    .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
 
     // repositories
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IEventRepository, EventRepository>()
     .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
-    .AddScoped<IEventActionRepository, EventActionRepository>();
+    .AddScoped<IEventActionRepository, EventActionRepository>()
+    .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
+    
+    // custom filters
+    .AddScoped<CustomHeaderFilter>();
 }

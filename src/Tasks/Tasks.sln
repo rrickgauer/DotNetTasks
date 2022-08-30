@@ -5,25 +5,27 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks", "Tasks\Tasks.csproj", "{87A7FAF8-C81C-498E-931D-EAF221B731C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Domain", "Tasks.Domain\Tasks.Domain.csproj", "{79A7F763-C073-45FE-8B3B-C87785FEBA76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Domain", "Tasks.Domain\Tasks.Domain.csproj", "{79A7F763-C073-45FE-8B3B-C87785FEBA76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.CustomAttributes", "Tasks.CustomAttributes\Tasks.CustomAttributes.csproj", "{192D6004-857B-4289-8A47-F2103D5C257A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.CustomAttributes", "Tasks.CustomAttributes\Tasks.CustomAttributes.csproj", "{192D6004-857B-4289-8A47-F2103D5C257A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Validation", "Tasks.Validation\Tasks.Validation.csproj", "{8DA5BB15-F845-4B13-BC04-60612DBA8188}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Validation", "Tasks.Validation\Tasks.Validation.csproj", "{8DA5BB15-F845-4B13-BC04-60612DBA8188}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Security", "Tasks.Security\Tasks.Security.csproj", "{8076FE24-5E0D-4923-8BB0-265FFF4D9950}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Security", "Tasks.Security\Tasks.Security.csproj", "{8076FE24-5E0D-4923-8BB0-265FFF4D9950}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Repositories", "Tasks.Repositories\Tasks.Repositories.csproj", "{C0966145-02E4-4BAD-A41B-0AFE4BEE9034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Repositories", "Tasks.Repositories\Tasks.Repositories.csproj", "{C0966145-02E4-4BAD-A41B-0AFE4BEE9034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Services", "Tasks.Services\Tasks.Services.csproj", "{DA39B392-BF53-4895-8C84-8529D333B249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Services", "Tasks.Services\Tasks.Services.csproj", "{DA39B392-BF53-4895-8C84-8529D333B249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Configurations", "Tasks.Configurations\Tasks.Configurations.csproj", "{F0818322-3050-4A6F-9CD4-B99C14645658}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Configurations", "Tasks.Configurations\Tasks.Configurations.csproj", "{F0818322-3050-4A6F-9CD4-B99C14645658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Mappers", "Tasks.Mappers\Tasks.Mappers.csproj", "{A2E171AB-C228-48D4-92F3-DF867D8F39E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Mappers", "Tasks.Mappers\Tasks.Mappers.csproj", "{A2E171AB-C228-48D4-92F3-DF867D8F39E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.SQL", "Tasks.SQL\Tasks.SQL.csproj", "{8DD27C08-CA1B-4FD7-AAFD-DFB62987EA1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.SQL", "Tasks.SQL\Tasks.SQL.csproj", "{8DD27C08-CA1B-4FD7-AAFD-DFB62987EA1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Email", "Tasks.Email\Tasks.Email.csproj", "{F15CD525-0BAD-4DDF-B9DA-F12AF5BCE4AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Email", "Tasks.Email\Tasks.Email.csproj", "{F15CD525-0BAD-4DDF-B9DA-F12AF5BCE4AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Auth", "Tasks.Auth\Tasks.Auth.csproj", "{C122CC21-7700-4C28-8E8C-1DA643980DD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{F15CD525-0BAD-4DDF-B9DA-F12AF5BCE4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F15CD525-0BAD-4DDF-B9DA-F12AF5BCE4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F15CD525-0BAD-4DDF-B9DA-F12AF5BCE4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C122CC21-7700-4C28-8E8C-1DA643980DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C122CC21-7700-4C28-8E8C-1DA643980DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C122CC21-7700-4C28-8E8C-1DA643980DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C122CC21-7700-4C28-8E8C-1DA643980DD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

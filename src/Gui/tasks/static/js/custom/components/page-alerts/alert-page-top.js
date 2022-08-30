@@ -1,6 +1,9 @@
 import { AlertTypes } from "./alert-types";
 
 
+
+//#region Base class
+
 export class AlertPageTopBase
 {
     /**
@@ -51,6 +54,7 @@ AlertPageTopBase.Html =
     CONTAINER: 'alerts-page-top',
 }
 
+//#endregion
 
 
 export class AlertPageTopSuccess extends AlertPageTopBase
@@ -62,6 +66,19 @@ export class AlertPageTopSuccess extends AlertPageTopBase
     constructor(message)
     {
         super(message, AlertTypes.SUCCESS);
+    }
+}
+
+
+export class AlertPageTopDanger extends AlertPageTopBase
+{
+    /**
+     * Display a danger (red) alert.
+     * @param {string} message the message to display
+     */
+    constructor(message)
+    {
+        super(message, AlertTypes.DANGER);
     }
 }
 

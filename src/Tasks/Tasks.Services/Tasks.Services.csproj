@@ -6,8 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;8602;8670</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;8602;8670</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
+    <ProjectReference Include="..\Tasks.Email\Tasks.Email.csproj" />
     <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
     <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
   </ItemGroup>

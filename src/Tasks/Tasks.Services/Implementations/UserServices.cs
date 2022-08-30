@@ -1,8 +1,10 @@
-﻿using Tasks.Domain.Constants;
+﻿using System.Data;
+using Tasks.Domain.Constants;
 using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -23,6 +25,8 @@ namespace Tasks.Services.Implementations
             _userRepository = userRepository;
         }
 
+        #region Update password
+
         /// <summary>
         /// Update the user password
         /// </summary>
@@ -35,6 +39,9 @@ namespace Tasks.Services.Implementations
             return result >= 0;
         }
 
+        #endregion
+
+        #region Create user
 
         /// <summary>
         /// Create a new user
@@ -113,9 +120,9 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         private async Task<bool> IsEmailTaken(string email)
         {
-            User? user = await _userRepository.GetUserAsync(email);
+            DataRow? dataRow = await _userRepository.GetUserAsync(email);
 
-            return user != null;
+            return dataRow != null;
         }
 
         /// <summary>
@@ -163,5 +170,61 @@ namespace Tasks.Services.Implementations
 
         #endregion
 
+
+        #endregion
+
+        #region Get user
+
+        /// <summary>
+        /// Get a user from the repository by their user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(Guid userId)
+        {
+            DataRow? dataRow = await _userRepository.GetUserAsync(userId);
+
+            if (dataRow is null) return null;
+
+            return UserMapper.ToModel(dataRow);
+        }
+
+        /// <summary>
+        /// Get the user with the email/password combination.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(string email, string password)
+        {
+            DataRow? dataRow = await _userRepository.GetUserAsync(email, password);
+
+            if (dataRow is null) return null;
+
+            return UserMapper.ToModel(dataRow);
+        }
+
+        #endregion
+
+
+        #region Get user view
+
+        /// <summary>
+        /// Get the specified user view
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<GetUserResponse?> GetUserViewAsync(Guid userId)
+        {
+            DataRow? dataRow = await _userRepository.GetUserViewAsync(userId);
+
+            if (dataRow is null) return null;
+
+            GetUserResponse model = GetUserResponseMapper.ToModel(dataRow);
+
+            return model;
+        }
+
+        #endregion
     }
 }

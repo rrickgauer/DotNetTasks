@@ -5,15 +5,18 @@ import { SpinnerButton } from "../../helpers/spinner-button";
 import { UpdatePasswordFormElements } from "./update-password-form-elements";
 import { UpdatePasswordFormSelectors } from "./update-password-form-selectors";
 
-
-
 export class UpdatePasswordFormController
 {
     constructor()
     {
+        /** @type {UpdatePasswordFormElements} */
         this.elements = new UpdatePasswordFormElements();
 
-        this.spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
+        /** @type {SpinnerButton} */
+        this._spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
+
+        /** @type {ApiPassword} */
+        this._api = new ApiPassword();
     }
 
     /**
@@ -32,7 +35,8 @@ export class UpdatePasswordFormController
      */
     _listenForSubmitEvent = () =>
     {
-        this.elements.eForm.addEventListener('submit', (e) => {
+        this.elements.eForm.addEventListener('submit', (e) => 
+        {
             this._handleFormSubmission(e);
         });
     }
@@ -48,8 +52,7 @@ export class UpdatePasswordFormController
         this._setFormToLoading();
 
         const formValues = this._getFormValues();
-        const api = new ApiPassword();
-        const response = await api.post(formValues);
+        const response = await this._api.post(formValues);
 
         if (response.ok)
         {
@@ -57,7 +60,8 @@ export class UpdatePasswordFormController
         }
         else
         {
-            this._handleInvalidUpdate(await response.json());
+            const apiResponseData = await response.json();
+            this._handleInvalidUpdate(apiResponseData);
         }
 
         this._removeFormLoading();
@@ -85,7 +89,7 @@ export class UpdatePasswordFormController
      */
     _setFormToLoading = () =>
     {
-        this.spinnerButton.showSpinner();
+        this._spinnerButton.showSpinner();
 
         this.elements.formGroupCurrent.eInput.disabled = true;
         this.elements.formGroupNew.eInput.disabled     = true;
@@ -97,7 +101,7 @@ export class UpdatePasswordFormController
      */
     _removeFormLoading = () =>
     {
-        this.spinnerButton.reset();
+        this._spinnerButton.reset();
 
         this.elements.formGroupCurrent.eInput.disabled = false;
         this.elements.formGroupNew.eInput.disabled     = false;
@@ -131,6 +135,9 @@ export class UpdatePasswordFormController
 
     //#region Password input changes
 
+    /**
+     * Remove all the invalid css classes from the form input elements whenever there is a keystroke
+     */
     _listenForInputChange = () =>
     {
         const inputs = document.getElementsByClassName(UpdatePasswordFormSelectors.INPUTS_CLASS);

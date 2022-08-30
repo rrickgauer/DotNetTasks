@@ -5,6 +5,7 @@ from .test import bp_test as bp_test
 from .auth import bp_auth as bp_auth
 from .home import bp_home as bp_home
 from .account import bp_account as bp_account
+from .email_verifications import bp_email_verifications as bp_email_verifications
 
 # api
 from .api_login import bp_api_login as bp_api_login
@@ -13,3 +14,4 @@ from .api_recurrences import bp_api_recurrences as bp_api_recurrences
 from .api_completions import bp_api_completions as bp_api_completions
 from .api_password import bp_api_password as bp_api_password
 from .api_user import bp_api_user as bp_api_user
+from .api_email_verifications import bp_api_email_verifications as bp_api_email_verifications
