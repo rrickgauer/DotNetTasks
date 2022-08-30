@@ -1,8 +1,10 @@
-﻿using Tasks.Domain.Constants;
+﻿using System.Data;
+using Tasks.Domain.Constants;
 using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -113,9 +115,9 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         private async Task<bool> IsEmailTaken(string email)
         {
-            User? user = await _userRepository.GetUserAsync(email);
+            DataRow? dataRow = await _userRepository.GetUserAsync(email);
 
-            return user != null;
+            return dataRow != null;
         }
 
         /// <summary>
@@ -171,10 +173,28 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         public async Task<User?> GetUserAsync(Guid userId)
         {
-            User? user = await _userRepository.GetUserAsync(userId);
+            DataRow? dataRow = await _userRepository.GetUserAsync(userId);
 
-            return user;
+            if (dataRow is null) return null;
+
+            return UserMapper.ToModel(dataRow);
         }
 
+        /// <summary>
+        /// Get the user with the email/password combination.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(string email, string password)
+        {
+            DataRow? dataRow = await _userRepository.GetUserAsync(email, password);
+
+            if (dataRow is null) return null;
+
+            return UserMapper.ToModel(dataRow);
+        }
+
+        
     }
 }

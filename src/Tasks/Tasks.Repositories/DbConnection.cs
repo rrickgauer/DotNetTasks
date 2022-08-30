@@ -23,17 +23,17 @@ namespace Tasks.Repositories
         /// <summary>
         /// Fetch the first row from a data table (one result).
         /// </summary>
-        /// <param name="cmd"></param>
+        /// <param name="command"></param>
         /// <returns></returns>
-        public async Task<DataRow?> FetchAsync(MySqlCommand cmd)
+        public async Task<DataRow?> FetchAsync(MySqlCommand command)
         {
-            var results = await FetchAllAsync(cmd);
+            var rows = await FetchAllAsync(command);
 
             DataRow? row = null;
 
-            if (results.Rows.Count > 0)
+            if (rows.Rows.Count > 0)
             {
-                row = results.Rows[0];
+                row = rows.Rows[0];
             }
 
             return row;
@@ -43,17 +43,17 @@ namespace Tasks.Repositories
         /// <summary>
         /// Retrieve all the data rows for the specified sql command
         /// </summary>
-        /// <param name="cmd"></param>
+        /// <param name="command"></param>
         /// <returns></returns>
-        public async Task<DataTable> FetchAllAsync(MySqlCommand cmd)
+        public async Task<DataTable> FetchAllAsync(MySqlCommand command)
         {
             // setup a new database connection object
             using MySqlConnection conn = GetNewConnection();
             await conn.OpenAsync();
-            cmd.Connection = conn;
+            command.Connection = conn;
 
             // fill the datatable with the command results
-            DataTable results = await RepositoryUtils.LoadDataTableAsync(cmd);
+            DataTable results = await RepositoryUtils.LoadDataTableAsync(command);
 
             // close the connection
             await CloseConnectionAsync(conn);
@@ -61,16 +61,20 @@ namespace Tasks.Repositories
             return results;
         }
 
-
-        public async Task<int> ModifyAsync(MySqlCommand cmd)
+        /// <summary>
+        /// Exeucte the specified sql command that modifies (insert, update, delete) data.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public async Task<int> ModifyAsync(MySqlCommand command)
         {
             // setup a new database connection object
             using MySqlConnection conn = GetNewConnection();
             await conn.OpenAsync();
-            cmd.Connection = conn;
+            command.Connection = conn;
 
             // execute the non query command
-            int numRowsAffected = await cmd.ExecuteNonQueryAsync();
+            int numRowsAffected = await command.ExecuteNonQueryAsync();
 
             // close the connection
             await CloseConnectionAsync(conn);

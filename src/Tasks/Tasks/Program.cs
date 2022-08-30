@@ -29,11 +29,6 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-}
-
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -54,7 +49,6 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     else
     {
         builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
-        //builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
     }
 
     

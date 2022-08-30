@@ -10,6 +10,7 @@ To skip authentication for a specific endpoint, add this attribute: [AllowAnonym
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
@@ -19,23 +20,26 @@ using System.Text.Encodings.Web;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Interfaces;
 using Tasks.Security;
+using Tasks.Services.Interfaces;
 
 namespace Tasks.Auth
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
+        #region Private members
         private sealed class DecodedAuthCredentials
         { 
             public string? Username { get; set; }
             public string? Password { get; set; } 
         }
 
+        private readonly IUserServices _userServices;
 
-        private readonly IUserRepository _userRepository;
+        #endregion
 
-        public BasicAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IUserRepository userRepository) : base(options, logger, encoder, clock)
+        public BasicAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IUserServices userServices) : base(options, logger, encoder, clock)
         {
-            _userRepository = userRepository;
+            _userServices = userServices;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -80,6 +84,9 @@ namespace Tasks.Auth
             return AuthenticateResult.Success(ticket);
         }
 
+
+        #region Helper methods
+
         /// <summary>
         /// Checks if the requested endpoint has the [AllowAnonymous] attribute.
         /// This signals that we should not authenticate this request.
@@ -106,7 +113,7 @@ namespace Tasks.Auth
         {
             var credentials = GetDecodedAuthCredentials();
 
-            var user = await _userRepository.GetUserAsync(credentials.Username, credentials.Password);
+            var user = await _userServices.GetUserAsync(credentials.Username, credentials.Password);
 
             return user;
         }
@@ -146,8 +153,7 @@ namespace Tasks.Auth
             return ticket;
         }
 
-
-
+        #endregion
     }
 
 }

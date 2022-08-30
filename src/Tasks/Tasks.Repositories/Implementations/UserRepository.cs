@@ -92,15 +92,15 @@ namespace Tasks.Repositories.Implementations
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<User?> GetUserAsync(string email, string password)
+        public async Task<DataRow?> GetUserAsync(string email, string password)
         {
             // setup a new sql command
             MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL_PASSWORD);
 
-            cmd.Parameters.Add(new("@email", email));
-            cmd.Parameters.Add(new("@password", password));
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@password", password);
 
-            return await GetUserFromCommandAsync(cmd);
+            return await _dbConnection.FetchAsync(cmd);
         }
 
         /// <summary>
@@ -108,16 +108,14 @@ namespace Tasks.Repositories.Implementations
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public async Task<User?> GetUserAsync(string email)
+        public async Task<DataRow?> GetUserAsync(string email)
         {
             // setup a new sql command
-            MySqlCommand cmd = new MySqlCommand(SqlStatements.SELECT_FROM_EMAIL);
+            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL);
             
-            cmd.Parameters.Add(new("@email", email));
+            cmd.Parameters.AddWithValue("@email", email);
 
-            User? result = await GetUserFromCommandAsync(cmd);
-
-            return result;
+            return await _dbConnection.FetchAsync(cmd);
         }
 
 
@@ -126,16 +124,14 @@ namespace Tasks.Repositories.Implementations
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<User?> GetUserAsync(Guid userId)
+        public async Task<DataRow?> GetUserAsync(Guid userId)
         {
             // setup a new sql command
             MySqlCommand cmd = new(SqlStatements.SELECT_FROM_ID);
 
             cmd.Parameters.Add(new("@id", userId));
 
-            User? user = await GetUserFromCommandAsync(cmd);
-
-            return user;
+            return await _dbConnection.FetchAsync(cmd);
         }
 
         /// <summary>

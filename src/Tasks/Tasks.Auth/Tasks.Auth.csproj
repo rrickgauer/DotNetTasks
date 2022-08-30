@@ -11,14 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Tasks.Configurations\Tasks.Configurations.csproj" />
     <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
-    <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
+    <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
+    <ProjectReference Include="..\Tasks.Services\Tasks.Services.csproj" />
   </ItemGroup>
 
 </Project>
