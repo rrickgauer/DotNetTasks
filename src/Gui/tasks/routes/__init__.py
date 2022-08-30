@@ -14,3 +14,4 @@ from .api_recurrences import bp_api_recurrences as bp_api_recurrences
 from .api_completions import bp_api_completions as bp_api_completions
 from .api_password import bp_api_password as bp_api_password
 from .api_user import bp_api_user as bp_api_user
+from .api_email_verifications import bp_api_email_verifications as bp_api_email_verifications
