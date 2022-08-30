@@ -40,7 +40,7 @@ namespace Tasks.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Event>>> GetEventsAsync()
         {
-            var userEvents = await _eventServices.GetUserEventsAsync();
+            var userEvents = await _eventServices.GetUserEventsAsync(CurrentUserId);
 
             return Ok(userEvents);
         }
@@ -54,7 +54,7 @@ namespace Tasks.Controllers
         [HttpGet("{eventId}")]
         public async Task<ActionResult<Event>> GetEventAsync(Guid eventId)
         {
-            var e = await _eventServices.GetUserEventAsync(eventId);
+            var e = await _eventServices.GetEventAsync(eventId, CurrentUserId);
 
             if (e == null)
             {
@@ -73,7 +73,7 @@ namespace Tasks.Controllers
         public async Task<IActionResult> DeleteEventAsync(Guid eventId)
         {
             // make sure the user owns this event
-            var userEvent = await _eventServices.GetUserEventAsync(eventId);
+            var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
 
             if (userEvent == null)
             {
@@ -111,9 +111,11 @@ namespace Tasks.Controllers
 
             // set the event to the id in the url and save it
             eventBody.Id = eventId;
+            eventBody.UserId = CurrentUserId;
+
             await _eventServices.UpdateEventAsync(eventBody);
 
-            var updatedEvent = await _eventServices.GetUserEventAsync(eventId);
+            var updatedEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
 
             if (existingEvent == null)
             {
@@ -133,7 +135,8 @@ namespace Tasks.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> CreateEventAsync([FromForm] Event eventFromBody)
         {
-            Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody);
+
+            Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody, CurrentUserId);
 
             // return it
             return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event

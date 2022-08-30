@@ -45,7 +45,7 @@ namespace Tasks.Controllers
         public async Task<ActionResult<EventAction>> CreateCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
             if (!clientOwnsEvent)
             {
                 return NotFound();
@@ -65,7 +65,7 @@ namespace Tasks.Controllers
         public async Task<IActionResult> DeleteCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
             if (!clientOwnsEvent)
             {
                 return NotFound();
@@ -91,7 +91,8 @@ namespace Tasks.Controllers
         public async Task<ActionResult<EventAction>> GetCompletionAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
+
             if (!clientOwnsEvent)
             {
                 return NotFound();

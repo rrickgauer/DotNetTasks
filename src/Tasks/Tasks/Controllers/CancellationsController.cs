@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
+using Tasks.Security;
 using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers
@@ -19,7 +20,7 @@ namespace Tasks.Controllers
         private readonly IConfigs _configuration;
         private readonly IEventActionServices _eventCompletionServices;
         private readonly IEventServices _eventServices;
-        //private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
+        private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
         #endregion
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace Tasks.Controllers
         public async Task<ActionResult<EventAction>> CreateCancellationAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
         {
             // make sure user owns the event before marking it complete
-            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId);
+            var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
 
             if (!clientOwnsEvent)
             {

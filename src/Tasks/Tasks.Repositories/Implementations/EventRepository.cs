@@ -56,7 +56,11 @@ namespace Tasks.Repositories.Implementations
             _configs = configs;
         }
 
-
+        /// <summary>
+        /// Get the specified user's events
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<DataTable> GetUserEventsAsync(Guid userId)
         {
             DbConnection connection = new(_configs);
@@ -65,8 +69,6 @@ namespace Tasks.Repositories.Implementations
 
             return results;
         }
-
-
 
         /// <summary>
         /// Build the MySqlCommand object for GetEvents
@@ -82,7 +84,11 @@ namespace Tasks.Repositories.Implementations
             return cmd;
         }
 
-
+        /// <summary>
+        /// Delete the specified event from the database
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public async Task<int> DeleteEventAsync(Guid eventId)
         {
             MySqlCommand command = new(SqlStatements.DELETE);
@@ -95,7 +101,11 @@ namespace Tasks.Repositories.Implementations
             return result;
         }
 
-
+        /// <summary>
+        /// Modify the specified event (insert/update)
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public async Task<int> ModifyEventAsync(Event e)
         {
             // make a new connection
@@ -147,9 +157,6 @@ namespace Tasks.Repositories.Implementations
 
             return result;
         }
-
-
-
 
     }
 }
