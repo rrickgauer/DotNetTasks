@@ -14,11 +14,15 @@ import requests
 
 def confirm_email_verification(email_verification_id: UUID) -> requests.Response:
     
-    url = ApiUrlBuilder().email_verifications_confirmation(email_verification_id)
+    url_builder = ApiUrlBuilder()
+    url = url_builder.email_verifications_confirmation(email_verification_id)
+    
+    custom_header = security.get_custom_request_header()
 
     respone = requests.put(
         url    = url,
-        verify = False
+        verify = False,
+        headers = custom_header,
     )
 
     return respone

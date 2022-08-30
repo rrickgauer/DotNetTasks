@@ -25,7 +25,7 @@ def confirm_email(email_verification_id: UUID):
     response = services.email_verifications.confirm_email_verification(email_verification_id)
 
     if not response.ok:
-        return (flask.jsonify(response.json()), response.status_code)
+        return (response.text, response.status_code)
 
     return flask.render_template('pages/email-verifications/index.html')
     

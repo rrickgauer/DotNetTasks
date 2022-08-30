@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tasks.Auth;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
@@ -41,6 +42,7 @@ namespace Tasks.Controllers
         /// <param name="signUpRequest"></param>
         /// <returns></returns>
         [AllowAnonymous]
+        [ServiceFilter(typeof(CustomHeaderFilter))]
         [HttpPost("signup")]
         public async Task<ActionResult<SignupRequestResponse>> SignUp([FromForm] SignUpRequest signUpRequest)
         {

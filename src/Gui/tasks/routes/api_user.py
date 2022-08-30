@@ -23,8 +23,6 @@ bp_api_user = flask.Blueprint('api_user', __name__)
 #------------------------------------------------------
 @bp_api_user.post('signup')
 def sign_up():
-
-    # respo
     result = services.user.send_signup_request()
 
     if not result.successful:

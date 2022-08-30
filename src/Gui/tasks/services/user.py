@@ -25,10 +25,13 @@ def _send_signup_api_request() -> requests.Response:
     url_builder = ApiUrlBuilder()
     url = url_builder.user_sign_up()
 
+    custom_header = security.get_custom_request_header()
+
     response = requests.post(
-        url    = url,
-        data   = flask.request.form,
-        verify = False,
+        url     = url,
+        data    = flask.request.form,
+        verify  = False,
+        headers = custom_header,
     )
 
     return response

@@ -11,6 +11,7 @@ from functools import wraps
 import flask
 from . import utilities as util
 from tasks.domain import models
+from tasks.config.routines import get_config
 
 #------------------------------------------------------
 # Session key names for the session
@@ -76,3 +77,11 @@ def get_user_session() -> models.UserSession:
     )
 
     return usersession
+
+
+def get_custom_request_header() -> dict:
+    config = get_config()
+
+    result = {config.SECURITY_HEADER_KEY: config.SECURITY_HEADER_VALUE}
+
+    return result
