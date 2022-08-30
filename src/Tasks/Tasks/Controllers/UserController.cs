@@ -65,6 +65,21 @@ namespace Tasks.Controllers
 
             return Created("/user", result);
         }
+        
+        /// <summary>
+        /// GET: /user
+        /// </summary>
+        /// <returns></returns>
+        [ServiceFilter(typeof(CustomHeaderFilter))]
+        [HttpGet]
+        public async Task<ActionResult<GetUserResponse>> GetUser()
+        {
+            GetUserResponse? response = await _userServices.GetUserViewAsync(CurrentUserId);
+
+            if (response is null) return NotFound();
+
+            return Ok(response);
+        }
 
     }
 }

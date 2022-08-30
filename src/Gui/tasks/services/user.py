@@ -36,3 +36,19 @@ def _send_signup_api_request() -> requests.Response:
 
     return response
 
+
+
+def get_user_info() -> requests.Response:
+    url_builder = ApiUrlBuilder()
+    url = url_builder.user()
+
+    custom_header = security.get_custom_request_header()
+
+    response = requests.get(
+        url     = url,
+        verify  = False,
+        headers = custom_header,
+        auth    = security.get_user_session_tuple(),
+    )
+
+    return response

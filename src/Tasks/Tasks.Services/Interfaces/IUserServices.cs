@@ -13,5 +13,6 @@ namespace Tasks.Services.Interfaces
         SignupRequestResponse GetInvalidSignUpRequestResponse(ValidateUserResult validateUserResult);
         Task<User?> GetUserAsync(Guid userId);
         Task<User?> GetUserAsync(string email, string password);
+        Task<GetUserResponse?> GetUserViewAsync(Guid userId);
     }
 }

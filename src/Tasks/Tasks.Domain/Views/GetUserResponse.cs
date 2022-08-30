@@ -1,27 +1,27 @@
 ﻿using System.Text.Json.Serialization;
 using Tasks.CustomAttributes;
 
-namespace Tasks.Domain.Models
+namespace Tasks.Domain.Views
 {
-    public class UserEmailVerification
+    public class GetUserResponse
     {
-        [JsonIgnore]
         [SqlColumn("id")]
         public Guid? Id { get; set; }
-
-        [SqlColumn("user_id")]
-        public Guid? UserId { get; set; }
 
         [SqlColumn("email")]
         public string? Email { get; set; }
 
-        [SqlColumn("confirmed_on")]
-        public DateTime? ConfirmedOn { get; set; }
+        [JsonIgnore]
+        [SqlColumn("password")]
+        public string? Password { get; set; }
 
         [SqlColumn("created_on")]
         public DateTime? CreatedOn { get; set; }
 
+        [SqlColumn("email_confirmed_on")]
+        public DateTime? EmailConfirmedOn { get; set; }
+
         [JsonIgnore]
-        public bool IsConfirmed => ConfirmedOn != null;
+        public bool IsConfirmed => EmailConfirmedOn != null;
     }
 }

@@ -10,7 +10,7 @@ namespace Tasks.Repositories.Implementations
     public class UserRepository : IUserRepository
     {
         #region Sql Statements
-        private class SqlStatements
+        private sealed class SqlStatements
         {
             public const string SELECT_FROM_EMAIL_PASSWORD = @"  
                 SELECT 
@@ -65,6 +65,17 @@ namespace Tasks.Repositories.Implementations
                 UPDATE
                     email = new_values.email,
                     password = new_values.password";
+
+
+            public const string SELECT_FROM_VIEW = @"
+                SELECT
+                    *
+                FROM
+                    View_Users u
+                WHERE
+                    u.id = @id
+                LIMIT
+                    1";
         }
         #endregion
 
@@ -129,25 +140,9 @@ namespace Tasks.Repositories.Implementations
             // setup a new sql command
             MySqlCommand cmd = new(SqlStatements.SELECT_FROM_ID);
 
-            cmd.Parameters.Add(new("@id", userId));
+            cmd.Parameters.AddWithValue("@id", userId);
 
             return await _dbConnection.FetchAsync(cmd);
-        }
-
-        /// <summary>
-        /// Fetch the user from the given MySqlCommand
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        private async Task<User?> GetUserFromCommandAsync(MySqlCommand cmd)
-        {
-            // fetch the record from the database
-            DataRow? record = await _dbConnection.FetchAsync(cmd);
-
-            // map the user to the record's values if the datarow is not null
-            User? user = record != null ? UserMapper.ToModel(record) : null;
-
-            return user;
         }
 
         #endregion
@@ -162,8 +157,8 @@ namespace Tasks.Repositories.Implementations
         {
             MySqlCommand cmd = new(SqlStatements.UPDATE_PASSWORD);
 
-            cmd.Parameters.Add(new("@password", password));
-            cmd.Parameters.Add(new("@id", userId));
+            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@id", userId);
 
             int numRecords = await _dbConnection.ModifyAsync(cmd);
 
@@ -180,10 +175,10 @@ namespace Tasks.Repositories.Implementations
         {
             MySqlCommand command = new(SqlStatements.MODIFY);
 
-            command.Parameters.Add(new("@id", user.Id));
-            command.Parameters.Add(new("@email", user.Email));
-            command.Parameters.Add(new("@password", user.Password));
-            command.Parameters.Add(new("@created_on", user.CreatedOn));
+            command.Parameters.AddWithValue("@id", user.Id);
+            command.Parameters.AddWithValue("@email", user.Email);
+            command.Parameters.AddWithValue("@password", user.Password);
+            command.Parameters.AddWithValue("@created_on", user.CreatedOn);
 
             int numRecords = await _dbConnection.ModifyAsync(command);
 
@@ -191,5 +186,13 @@ namespace Tasks.Repositories.Implementations
         }
 
 
+        public async Task<DataRow?> GetUserViewAsync(Guid userId)
+        {
+            MySqlCommand command = new(SqlStatements.SELECT_FROM_VIEW);
+
+            command.Parameters.AddWithValue("@id", userId);
+
+            return await _dbConnection.FetchAsync(command);
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace Tasks.Services.Implementations
             _userRepository = userRepository;
         }
 
+        #region Update password
+
         /// <summary>
         /// Update the user password
         /// </summary>
@@ -37,6 +39,9 @@ namespace Tasks.Services.Implementations
             return result >= 0;
         }
 
+        #endregion
+
+        #region Create user
 
         /// <summary>
         /// Create a new user
@@ -166,6 +171,10 @@ namespace Tasks.Services.Implementations
         #endregion
 
 
+        #endregion
+
+        #region Get user
+
         /// <summary>
         /// Get a user from the repository by their user id
         /// </summary>
@@ -195,6 +204,27 @@ namespace Tasks.Services.Implementations
             return UserMapper.ToModel(dataRow);
         }
 
-        
+        #endregion
+
+
+        #region Get user view
+
+        /// <summary>
+        /// Get the specified user view
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<GetUserResponse?> GetUserViewAsync(Guid userId)
+        {
+            DataRow? dataRow = await _userRepository.GetUserViewAsync(userId);
+
+            if (dataRow is null) return null;
+
+            GetUserResponse model = GetUserResponseMapper.ToModel(dataRow);
+
+            return model;
+        }
+
+        #endregion
     }
 }
