@@ -26,6 +26,7 @@ namespace Tasks.Controllers
         private readonly IConfigs _configuration;
         private readonly IRecurrenceServices _recurrenceServices;
         private readonly IEventServices _eventServices;
+        private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
         #endregion
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace Tasks.Controllers
             }
 
             // make sure the user owns the requested event
-            var userEvent = await _eventServices.GetUserEventAsync(eventId);
+            var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
 
             if (userEvent == null)
             {
