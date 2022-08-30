@@ -14,9 +14,9 @@ import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DatePicker } from "../../helpers/custom-datepicker";
 import { EventModalDeleteForm } from "./event-modal-delete-form";
-import { EventDeletionOptions } from "../../domain/enums/event-deletion-options";
 
-export class EventModal {
+export class EventModal 
+{
     
     /**
      * Constructor for the event modal
