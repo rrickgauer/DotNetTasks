@@ -2,88 +2,18 @@
 using System.Data;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
-using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
+using Tasks.SQL.Commands;
 
 namespace Tasks.Repositories.Implementations
 {
     public class UserRepository : IUserRepository
     {
-        #region Sql Statements
-        private sealed class SqlStatements
-        {
-            public const string SELECT_FROM_EMAIL_PASSWORD = @"  
-                SELECT 
-                    u.id AS id,
-                    u.email AS email,
-                    u.password AS password,
-                    u.created_on AS created_on
-                FROM
-                    Users u
-                WHERE 
-                    u.email = @email
-                    AND u.password = @password
-                LIMIT 1";
-
-
-            public const string SELECT_FROM_EMAIL = @"
-                SELECT 
-                    u.id AS id,
-                    u.email AS email,
-                    u.password AS password,
-                    u.created_on AS created_on
-                FROM
-                    Users u
-                WHERE 
-                    u.email = @email
-                LIMIT 1";
-
-
-            public const string SELECT_FROM_ID = @"
-                SELECT 
-                    *
-                FROM
-                    View_Users u
-                WHERE 
-                    u.id = @id
-                LIMIT 1";
-
-
-            public const string UPDATE_PASSWORD = @"
-                UPDATE
-                    Users
-                SET
-                    password = @password
-                WHERE
-                    id = @id";
-
-            public const string MODIFY = @"
-                INSERT INTO
-                    Users (id, email, password, created_on)
-                VALUES
-                    (@id, @email, @password, @created_on) AS new_values ON DUPLICATE KEY
-                UPDATE
-                    email = new_values.email,
-                    password = new_values.password";
-
-
-            public const string SELECT_FROM_VIEW = @"
-                SELECT
-                    *
-                FROM
-                    View_Users u
-                WHERE
-                    u.id = @id
-                LIMIT
-                    1";
-        }
-        #endregion
 
         #region Private members
         private readonly IConfigs _configs;
         private readonly DbConnection _dbConnection;
         #endregion
-
 
         /// <summary>
         /// Constructor
@@ -106,7 +36,7 @@ namespace Tasks.Repositories.Implementations
         public async Task<DataRow?> GetUserAsync(string email, string password)
         {
             // setup a new sql command
-            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL_PASSWORD);
+            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL_PASSWORD);
 
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@password", password);
@@ -122,7 +52,7 @@ namespace Tasks.Repositories.Implementations
         public async Task<DataRow?> GetUserAsync(string email)
         {
             // setup a new sql command
-            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_EMAIL);
+            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL);
             
             cmd.Parameters.AddWithValue("@email", email);
 
@@ -138,7 +68,7 @@ namespace Tasks.Repositories.Implementations
         public async Task<DataRow?> GetUserAsync(Guid userId)
         {
             // setup a new sql command
-            MySqlCommand cmd = new(SqlStatements.SELECT_FROM_ID);
+            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_ID);
 
             cmd.Parameters.AddWithValue("@id", userId);
 
@@ -155,7 +85,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
         {
-            MySqlCommand cmd = new(SqlStatements.UPDATE_PASSWORD);
+            MySqlCommand cmd = new(UserRepositorySql.UPDATE_PASSWORD);
 
             cmd.Parameters.AddWithValue("@password", password);
             cmd.Parameters.AddWithValue("@id", userId);
@@ -173,7 +103,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         public async Task<int> InsertUserAsync(User user)
         {
-            MySqlCommand command = new(SqlStatements.MODIFY);
+            MySqlCommand command = new(UserRepositorySql.MODIFY);
 
             command.Parameters.AddWithValue("@id", user.Id);
             command.Parameters.AddWithValue("@email", user.Email);
@@ -188,7 +118,7 @@ namespace Tasks.Repositories.Implementations
 
         public async Task<DataRow?> GetUserViewAsync(Guid userId)
         {
-            MySqlCommand command = new(SqlStatements.SELECT_FROM_VIEW);
+            MySqlCommand command = new(UserRepositorySql.SELECT_FROM_VIEW);
 
             command.Parameters.AddWithValue("@id", userId);
 

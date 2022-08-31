@@ -4,18 +4,12 @@ using Tasks.Configurations;
 using Tasks.Domain.Parms;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
+using Tasks.SQL.Commands;
 
 namespace Tasks.Repositories.Implementations
 {
     public class RecurrenceRepository : IRecurrenceRepository
     {
-        #region Sql statements
-        private class SqlStatements
-        {
-            public const string GET_RECURRENCES = "Get_Recurrences";
-            public const string GET_EVENT_RECURRENCES = "Get_Event_Recurrences";
-        }
-        #endregion
 
         #region Private memebers
         private readonly IConfigs _configs;
@@ -41,7 +35,7 @@ namespace Tasks.Repositories.Implementations
         public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
         {
             // setup a new stored procedure command 
-            MySqlCommand command = new(SqlStatements.GET_RECURRENCES)
+            MySqlCommand command = new(RecurrenceRepositorySql.GET_RECURRENCES)
             {
                 CommandType = CommandType.StoredProcedure,
             };
@@ -61,7 +55,7 @@ namespace Tasks.Repositories.Implementations
         public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
             // setup a new stored procedure command 
-            MySqlCommand command = new(SqlStatements.GET_EVENT_RECURRENCES)
+            MySqlCommand command = new(RecurrenceRepositorySql.GET_EVENT_RECURRENCES)
             {
                 CommandType = CommandType.StoredProcedure,
             };

@@ -4,46 +4,12 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.   
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+using Tasks.SQL.Commands;
 
 namespace Tasks.Repositories.Implementations
 {
-    public class EventRepository : IEventRepository
+    public partial class EventRepository : IEventRepository
     {
-        #region Sql Statements
-        private class SqlStatements
-        {
-            public const string SELECT_ALL_USERS_EVENTS = @"
-                SELECT
-                    *
-                FROM
-                    Events e
-                WHERE
-                    e.user_id = @userId";
-
-
-            public const string DELETE = @"
-                DELETE FROM
-                    Events e
-                WHERE
-                    e.id = @id";
-
-            public const string SELECT_BY_ID = @"
-                SELECT 
-                    * 
-                FROM 
-                    Events e 
-                WHERE
-                    e.id = @id
-                LIMIT 1";
-
-            public const string MODIFY_EVENT_PROCEDURE = "Modify_Event";
-
-        }
-        #endregion
-
         private readonly IConfigs _configs;
 
         /// <summary>
@@ -76,7 +42,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         private MySqlCommand BuildCommandForGetUserEvents(Guid userId)
         {
-            MySqlCommand cmd = new(SqlStatements.SELECT_ALL_USERS_EVENTS);
+            MySqlCommand cmd = new(EventRepositorySql.SELECT_ALL_USERS_EVENTS);
 
             //var userId = GetCurrentUserId();
             cmd.Parameters.Add(new("@userId", userId));
@@ -91,7 +57,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         public async Task<int> DeleteEventAsync(Guid eventId)
         {
-            MySqlCommand command = new(SqlStatements.DELETE);
+            MySqlCommand command = new(EventRepositorySql.DELETE);
             command.Parameters.Add(new("@id", eventId));
 
             DbConnection connection = new(_configs);
@@ -129,7 +95,7 @@ namespace Tasks.Repositories.Implementations
         private MySqlCommand SetupModifyEventMySqlCommand(Event e)
         {
             // setup a new stored procedure command 
-            MySqlCommand command = new(SqlStatements.MODIFY_EVENT_PROCEDURE)
+            MySqlCommand command = new(EventRepositorySql.MODIFY_EVENT_PROCEDURE)
             {
                 CommandType = CommandType.StoredProcedure,
             };
@@ -150,7 +116,7 @@ namespace Tasks.Repositories.Implementations
         {
             DbConnection connection = new(_configs);
             
-            MySqlCommand command = new(SqlStatements.SELECT_BY_ID);
+            MySqlCommand command = new(EventRepositorySql.SELECT_BY_ID);
             command.Parameters.AddWithValue("@id", eventId);
 
             var result = await connection.FetchAsync(command);

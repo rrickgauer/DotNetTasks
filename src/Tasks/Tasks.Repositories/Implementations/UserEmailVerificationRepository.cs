@@ -8,38 +8,12 @@ using System.Threading.Tasks;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Interfaces;
+using Tasks.SQL.Commands;
 
 namespace Tasks.Repositories.Implementations
 {
     public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     {
-        #region SQL Statements
-        private sealed class SqlStatements
-        {
-            public const string MODIFY = @"
-                INSERT INTO
-                    User_Email_Verifications (id, user_id, email, confirmed_on, created_on)
-                VALUES
-                    (@id, @user_id, @email, @confirmed_on, @created_on) AS new_values ON DUPLICATE KEY
-                UPDATE
-                    confirmed_on = new_values.confirmed_on";
-
-            public const string SELECT = @"
-                SELECT
-                    ev.id AS id,
-                    ev.user_id AS user_id,
-                    ev.email AS email,
-                    ev.confirmed_on AS confirmed_on,
-                    ev.created_on AS created_on
-                FROM
-                    User_Email_Verifications ev
-                WHERE
-                    ev.id = @id
-                LIMIT
-                    1";
-        }
-
-        #endregion
 
         #region Private members
         private readonly IConfigs _configs;
@@ -98,7 +72,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         private static MySqlCommand GetModifySqlCommand(UserEmailVerification userEmailVerification)
         {
-            MySqlCommand command = new(SqlStatements.MODIFY);
+            MySqlCommand command = new(UserEmailVerificationRepositorySql.MODIFY);
 
             command.Parameters.AddWithValue("@id", userEmailVerification.Id);
             command.Parameters.AddWithValue("@user_id", userEmailVerification.UserId);
@@ -116,7 +90,7 @@ namespace Tasks.Repositories.Implementations
         /// <returns></returns>
         public async Task<DataRow?> GetAsync(Guid id)
         {
-            MySqlCommand command = new(SqlStatements.SELECT);
+            MySqlCommand command = new(UserEmailVerificationRepositorySql.SELECT);
 
             command.Parameters.AddWithValue("@id", id);
 
