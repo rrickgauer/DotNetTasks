@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Tasks.Reminders": {
+      "commandName": "Project",
+      "commandLineArgs": "-d"
+    }
+  }
+}
