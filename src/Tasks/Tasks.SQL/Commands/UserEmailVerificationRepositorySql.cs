@@ -2,7 +2,7 @@
 
 public sealed class UserEmailVerificationRepositorySql
 {
-    public const string MODIFY = @"
+    public const string Modify = @"
         INSERT INTO
             User_Email_Verifications (id, user_id, email, confirmed_on, created_on)
         VALUES
@@ -10,7 +10,7 @@ public sealed class UserEmailVerificationRepositorySql
         UPDATE
             confirmed_on = new_values.confirmed_on";
 
-    public const string SELECT = @"
+    public const string Select = @"
         SELECT
             ev.id AS id,
             ev.user_id AS user_id,

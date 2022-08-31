@@ -35,7 +35,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(string email, string password)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL_PASSWORD);
+        MySqlCommand cmd = new(UserRepositorySql.SelectFromEmailPassword);
 
         cmd.Parameters.AddWithValue("@email", email);
         cmd.Parameters.AddWithValue("@password", password);
@@ -51,7 +51,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(string email)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL);
+        MySqlCommand cmd = new(UserRepositorySql.SelectFromEmail);
         
         cmd.Parameters.AddWithValue("@email", email);
 
@@ -67,7 +67,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(Guid userId)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_ID);
+        MySqlCommand cmd = new(UserRepositorySql.SelectFromId);
 
         cmd.Parameters.AddWithValue("@id", userId);
 
@@ -84,7 +84,7 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
     {
-        MySqlCommand cmd = new(UserRepositorySql.UPDATE_PASSWORD);
+        MySqlCommand cmd = new(UserRepositorySql.UpdatePassword);
 
         cmd.Parameters.AddWithValue("@password", password);
         cmd.Parameters.AddWithValue("@id", userId);
@@ -102,7 +102,7 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<int> InsertUserAsync(User user)
     {
-        MySqlCommand command = new(UserRepositorySql.MODIFY);
+        MySqlCommand command = new(UserRepositorySql.Modify);
 
         command.Parameters.AddWithValue("@id", user.Id);
         command.Parameters.AddWithValue("@email", user.Email);
@@ -117,7 +117,7 @@ public class UserRepository : IUserRepository
 
     public async Task<DataRow?> GetUserViewAsync(Guid userId)
     {
-        MySqlCommand command = new(UserRepositorySql.SELECT_FROM_VIEW);
+        MySqlCommand command = new(UserRepositorySql.SelectFromView);
 
         command.Parameters.AddWithValue("@id", userId);
 

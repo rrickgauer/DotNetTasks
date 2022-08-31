@@ -3,7 +3,7 @@ namespace Tasks.SQL.Commands;
 
 public class EventRepositorySql
 {
-    public const string SELECT_ALL_USERS_EVENTS = @"
+    public const string SelectAllUsersEvents = @"
         SELECT
             *
         FROM
@@ -12,13 +12,13 @@ public class EventRepositorySql
             e.user_id = @userId";
 
 
-    public const string DELETE = @"
+    public const string Delete = @"
         DELETE FROM
             Events e
         WHERE
             e.id = @id";
 
-    public const string SELECT_BY_ID = @"
+    public const string SelectById = @"
         SELECT 
             * 
         FROM 
@@ -28,5 +28,5 @@ public class EventRepositorySql
         LIMIT 1";
 
 
-    public const string MODIFY_EVENT_PROCEDURE = "Modify_Event";
+    public const string ModifyEventProcedure = "Modify_Event";
 }

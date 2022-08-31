@@ -42,7 +42,7 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     private MySqlCommand BuildCommandForGetUserEvents(Guid userId)
     {
-        MySqlCommand cmd = new(EventRepositorySql.SELECT_ALL_USERS_EVENTS);
+        MySqlCommand cmd = new(EventRepositorySql.SelectAllUsersEvents);
 
         //var userId = GetCurrentUserId();
         cmd.Parameters.Add(new("@userId", userId));
@@ -57,7 +57,7 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     public async Task<int> DeleteEventAsync(Guid eventId)
     {
-        MySqlCommand command = new(EventRepositorySql.DELETE);
+        MySqlCommand command = new(EventRepositorySql.Delete);
         command.Parameters.Add(new("@id", eventId));
 
         DbConnection connection = new(_configs);
@@ -95,7 +95,7 @@ public partial class EventRepository : IEventRepository
     private MySqlCommand SetupModifyEventMySqlCommand(Event e)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(EventRepositorySql.MODIFY_EVENT_PROCEDURE)
+        MySqlCommand command = new(EventRepositorySql.ModifyEventProcedure)
         {
             CommandType = CommandType.StoredProcedure,
         };
@@ -116,7 +116,7 @@ public partial class EventRepository : IEventRepository
     {
         DbConnection connection = new(_configs);
         
-        MySqlCommand command = new(EventRepositorySql.SELECT_BY_ID);
+        MySqlCommand command = new(EventRepositorySql.SelectById);
         command.Parameters.AddWithValue("@id", eventId);
 
         var result = await connection.FetchAsync(command);

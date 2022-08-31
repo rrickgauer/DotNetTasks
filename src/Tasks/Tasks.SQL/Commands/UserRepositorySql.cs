@@ -2,7 +2,7 @@
 
 public sealed class UserRepositorySql
 {
-    public const string SELECT_FROM_EMAIL_PASSWORD = @"  
+    public const string SelectFromEmailPassword = @"  
         SELECT 
             u.id AS id,
             u.email AS email,
@@ -16,7 +16,7 @@ public sealed class UserRepositorySql
         LIMIT 1";
 
 
-    public const string SELECT_FROM_EMAIL = @"
+    public const string SelectFromEmail = @"
         SELECT 
             u.id AS id,
             u.email AS email,
@@ -29,7 +29,7 @@ public sealed class UserRepositorySql
         LIMIT 1";
 
 
-    public const string SELECT_FROM_ID = @"
+    public const string SelectFromId = @"
         SELECT 
             *
         FROM
@@ -39,7 +39,7 @@ public sealed class UserRepositorySql
         LIMIT 1";
 
 
-    public const string UPDATE_PASSWORD = @"
+    public const string UpdatePassword = @"
         UPDATE
             Users
         SET
@@ -48,7 +48,7 @@ public sealed class UserRepositorySql
             id = @id";
 
 
-    public const string MODIFY = @"
+    public const string Modify = @"
         INSERT INTO
             Users (id, email, password, created_on)
         VALUES
@@ -58,7 +58,7 @@ public sealed class UserRepositorySql
             password = new_values.password";
 
 
-    public const string SELECT_FROM_VIEW = @"
+    public const string SelectFromView = @"
         SELECT
             *
         FROM

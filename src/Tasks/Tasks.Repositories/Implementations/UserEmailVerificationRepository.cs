@@ -72,7 +72,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// <returns></returns>
     private static MySqlCommand GetModifySqlCommand(UserEmailVerification userEmailVerification)
     {
-        MySqlCommand command = new(UserEmailVerificationRepositorySql.MODIFY);
+        MySqlCommand command = new(UserEmailVerificationRepositorySql.Modify);
 
         command.Parameters.AddWithValue("@id", userEmailVerification.Id);
         command.Parameters.AddWithValue("@user_id", userEmailVerification.UserId);
@@ -90,7 +90,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// <returns></returns>
     public async Task<DataRow?> GetAsync(Guid id)
     {
-        MySqlCommand command = new(UserEmailVerificationRepositorySql.SELECT);
+        MySqlCommand command = new(UserEmailVerificationRepositorySql.Select);
 
         command.Parameters.AddWithValue("@id", id);
 

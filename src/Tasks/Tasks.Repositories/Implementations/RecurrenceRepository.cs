@@ -35,7 +35,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(RecurrenceRepositorySql.GET_RECURRENCES)
+        MySqlCommand command = new(RecurrenceRepositorySql.GetRecurrences)
         {
             CommandType = CommandType.StoredProcedure,
         };
@@ -55,7 +55,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(RecurrenceRepositorySql.GET_EVENT_RECURRENCES)
+        MySqlCommand command = new(RecurrenceRepositorySql.GetEventRecurrences)
         {
             CommandType = CommandType.StoredProcedure,
         };

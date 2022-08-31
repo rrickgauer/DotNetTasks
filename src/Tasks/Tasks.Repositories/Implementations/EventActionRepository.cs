@@ -29,7 +29,7 @@ public class EventActionRepository : IEventActionRepository
     public async Task<int> ModifyEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.MODIFY);
+        MySqlCommand command = new(EventActionRepositorySql.Modify);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.AddParmsToCommand(command);
@@ -41,7 +41,7 @@ public class EventActionRepository : IEventActionRepository
     public async Task<int> DeleteEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.DELETE);
+        MySqlCommand command = new(EventActionRepositorySql.Delete);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.Parms.Remove("@created_on");
@@ -54,7 +54,7 @@ public class EventActionRepository : IEventActionRepository
     public async Task<DataRow?> GetEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.SELECT);
+        MySqlCommand command = new(EventActionRepositorySql.Select);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.Parms.Remove("@created_on");
