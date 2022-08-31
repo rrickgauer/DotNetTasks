@@ -5,124 +5,122 @@ using Tasks.Domain.Models;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
 
-namespace Tasks.Repositories.Implementations
+namespace Tasks.Repositories.Implementations;
+
+public class UserRepository : IUserRepository
 {
-    public class UserRepository : IUserRepository
+    #region Private members
+    private readonly IConfigs _configs;
+    private readonly DbConnection _dbConnection;
+    #endregion
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="configs"></param>
+    public UserRepository(IConfigs configs)
     {
+        _configs = configs;
+        _dbConnection = new DbConnection(_configs);
+    }
 
-        #region Private members
-        private readonly IConfigs _configs;
-        private readonly DbConnection _dbConnection;
-        #endregion
+    #region Get user
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configs"></param>
-        public UserRepository(IConfigs configs)
-        {
-            _configs = configs;
-            _dbConnection = new DbConnection(_configs);
-        }
+    /// <summary>
+    /// Get the user from the email/password combination.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public async Task<DataRow?> GetUserAsync(string email, string password)
+    {
+        // setup a new sql command
+        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL_PASSWORD);
 
-        #region Get user
+        cmd.Parameters.AddWithValue("@email", email);
+        cmd.Parameters.AddWithValue("@password", password);
 
-        /// <summary>
-        /// Get the user from the email/password combination.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public async Task<DataRow?> GetUserAsync(string email, string password)
-        {
-            // setup a new sql command
-            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL_PASSWORD);
+        return await _dbConnection.FetchAsync(cmd);
+    }
 
-            cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@password", password);
+    /// <summary>
+    /// Get the user from the datbase that has the given email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public async Task<DataRow?> GetUserAsync(string email)
+    {
+        // setup a new sql command
+        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL);
+        
+        cmd.Parameters.AddWithValue("@email", email);
 
-            return await _dbConnection.FetchAsync(cmd);
-        }
-
-        /// <summary>
-        /// Get the user from the datbase that has the given email
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public async Task<DataRow?> GetUserAsync(string email)
-        {
-            // setup a new sql command
-            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_EMAIL);
-            
-            cmd.Parameters.AddWithValue("@email", email);
-
-            return await _dbConnection.FetchAsync(cmd);
-        }
+        return await _dbConnection.FetchAsync(cmd);
+    }
 
 
-        /// <summary>
-        /// Get a user from the database by their id
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public async Task<DataRow?> GetUserAsync(Guid userId)
-        {
-            // setup a new sql command
-            MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_ID);
+    /// <summary>
+    /// Get a user from the database by their id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<DataRow?> GetUserAsync(Guid userId)
+    {
+        // setup a new sql command
+        MySqlCommand cmd = new(UserRepositorySql.SELECT_FROM_ID);
 
-            cmd.Parameters.AddWithValue("@id", userId);
+        cmd.Parameters.AddWithValue("@id", userId);
 
-            return await _dbConnection.FetchAsync(cmd);
-        }
+        return await _dbConnection.FetchAsync(cmd);
+    }
 
-        #endregion
+    #endregion
 
-        /// <summary>
-        /// Update the user password
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
-        {
-            MySqlCommand cmd = new(UserRepositorySql.UPDATE_PASSWORD);
+    /// <summary>
+    /// Update the user password
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
+    {
+        MySqlCommand cmd = new(UserRepositorySql.UPDATE_PASSWORD);
 
-            cmd.Parameters.AddWithValue("@password", password);
-            cmd.Parameters.AddWithValue("@id", userId);
+        cmd.Parameters.AddWithValue("@password", password);
+        cmd.Parameters.AddWithValue("@id", userId);
 
-            int numRecords = await _dbConnection.ModifyAsync(cmd);
+        int numRecords = await _dbConnection.ModifyAsync(cmd);
 
-            return numRecords;
-        }
-
-
-        /// <summary>
-        /// Insert the user into the database
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public async Task<int> InsertUserAsync(User user)
-        {
-            MySqlCommand command = new(UserRepositorySql.MODIFY);
-
-            command.Parameters.AddWithValue("@id", user.Id);
-            command.Parameters.AddWithValue("@email", user.Email);
-            command.Parameters.AddWithValue("@password", user.Password);
-            command.Parameters.AddWithValue("@created_on", user.CreatedOn);
-
-            int numRecords = await _dbConnection.ModifyAsync(command);
-
-            return numRecords;
-        }
+        return numRecords;
+    }
 
 
-        public async Task<DataRow?> GetUserViewAsync(Guid userId)
-        {
-            MySqlCommand command = new(UserRepositorySql.SELECT_FROM_VIEW);
+    /// <summary>
+    /// Insert the user into the database
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public async Task<int> InsertUserAsync(User user)
+    {
+        MySqlCommand command = new(UserRepositorySql.MODIFY);
 
-            command.Parameters.AddWithValue("@id", userId);
+        command.Parameters.AddWithValue("@id", user.Id);
+        command.Parameters.AddWithValue("@email", user.Email);
+        command.Parameters.AddWithValue("@password", user.Password);
+        command.Parameters.AddWithValue("@created_on", user.CreatedOn);
 
-            return await _dbConnection.FetchAsync(command);
-        }
+        int numRecords = await _dbConnection.ModifyAsync(command);
+
+        return numRecords;
+    }
+
+
+    public async Task<DataRow?> GetUserViewAsync(Guid userId)
+    {
+        MySqlCommand command = new(UserRepositorySql.SELECT_FROM_VIEW);
+
+        command.Parameters.AddWithValue("@id", userId);
+
+        return await _dbConnection.FetchAsync(command);
     }
 }

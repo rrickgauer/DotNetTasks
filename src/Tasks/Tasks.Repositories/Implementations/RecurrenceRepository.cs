@@ -6,65 +6,64 @@ using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
 
-namespace Tasks.Repositories.Implementations
+namespace Tasks.Repositories.Implementations;
+
+public class RecurrenceRepository : IRecurrenceRepository
 {
-    public class RecurrenceRepository : IRecurrenceRepository
+
+    #region Private memebers
+    private readonly IConfigs _configs;
+    private readonly DbConnection _dbConnection;
+    #endregion
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="configs"></param>
+    public RecurrenceRepository(IConfigs configs)
     {
+        _configs = configs;
+        _dbConnection = new(configs);
+    }
 
-        #region Private memebers
-        private readonly IConfigs _configs;
-        private readonly DbConnection _dbConnection;
-        #endregion
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configs"></param>
-        public RecurrenceRepository(IConfigs configs)
+    /// <summary>
+    /// Get the recurrences from the database
+    /// </summary>
+    /// <param name="recurrenceRetrieval"></param>
+    /// <returns></returns>
+    public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
+    {
+        // setup a new stored procedure command 
+        MySqlCommand command = new(RecurrenceRepositorySql.GET_RECURRENCES)
         {
-            _configs = configs;
-            _dbConnection = new(configs);
-        }
+            CommandType = CommandType.StoredProcedure,
+        };
 
+        var map = RecurrenceMapper.ToSqlCommandParmsMap(recurrenceRetrieval);
+        map.AddParmsToCommand(command);
 
-        /// <summary>
-        /// Get the recurrences from the database
-        /// </summary>
-        /// <param name="recurrenceRetrieval"></param>
-        /// <returns></returns>
-        public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
+        var result = await _dbConnection.FetchAllAsync(command);
+        return result;
+    }
+
+    /// <summary>
+    /// Get the recurrences for a single event from the database
+    /// </summary>
+    /// <param name="eventRecurrenceRetrieval"></param>
+    /// <returns></returns>
+    public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+    {
+        // setup a new stored procedure command 
+        MySqlCommand command = new(RecurrenceRepositorySql.GET_EVENT_RECURRENCES)
         {
-            // setup a new stored procedure command 
-            MySqlCommand command = new(RecurrenceRepositorySql.GET_RECURRENCES)
-            {
-                CommandType = CommandType.StoredProcedure,
-            };
+            CommandType = CommandType.StoredProcedure,
+        };
 
-            var map = RecurrenceMapper.ToSqlCommandParmsMap(recurrenceRetrieval);
-            map.AddParmsToCommand(command);
+        var map = RecurrenceMapper.ToSqlCommandParmsMap(eventRecurrenceRetrieval);
+        map.AddParmsToCommand(command);
 
-            var result = await _dbConnection.FetchAllAsync(command);
-            return result;
-        }
-
-        /// <summary>
-        /// Get the recurrences for a single event from the database
-        /// </summary>
-        /// <param name="eventRecurrenceRetrieval"></param>
-        /// <returns></returns>
-        public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
-        {
-            // setup a new stored procedure command 
-            MySqlCommand command = new(RecurrenceRepositorySql.GET_EVENT_RECURRENCES)
-            {
-                CommandType = CommandType.StoredProcedure,
-            };
-
-            var map = RecurrenceMapper.ToSqlCommandParmsMap(eventRecurrenceRetrieval);
-            map.AddParmsToCommand(command);
-
-            var result = await _dbConnection.FetchAllAsync(command);
-            return result;
-        }
+        var result = await _dbConnection.FetchAllAsync(command);
+        return result;
     }
 }
