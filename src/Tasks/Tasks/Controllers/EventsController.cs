@@ -65,7 +65,7 @@ namespace Tasks.Controllers
         }
 
         /// <summary>
-        /// DELETE: /events/:eventId
+        /// Delete: /events/:eventId
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tasks.Configurations\Tasks.Configurations.csproj" />
     <ProjectReference Include="..\Tasks.Mappers\Tasks.Mappers.csproj" />
+    <ProjectReference Include="..\Tasks.SQL\Tasks.SQL.csproj" />
   </ItemGroup>
 
 </Project>
