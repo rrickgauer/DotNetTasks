@@ -1,0 +1,29 @@
+{#
+
+    Incoming data:
+        - id
+        - email
+        - createdOn
+        - emailConfirmedOn
+        - deliverReminders
+#}
+
+
+<div class="container mt-5">
+
+    <h3>Email preferences</h3>
+
+    <form id="email-preferences-form">
+        <fieldset {% if emailConfirmedOn == None %}disabled{% endif %}>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="daily-reminders-checkbox" {% if data.deliverReminders %}checked{% endif %}>
+                    Receive daily event reminders.
+                </label>
+                <p><small class="form-text text-muted">We'll send you an email every morning with all your tasks for the day.</small></p>
+            </div>
+        </fieldset>
+
+    </form>
+
+</div>
