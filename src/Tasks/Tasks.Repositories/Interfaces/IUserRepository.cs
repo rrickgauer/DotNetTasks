@@ -10,7 +10,7 @@ namespace Tasks.Repositories.Interfaces
         public Task<DataRow?> GetUserAsync(Guid userId);
         public Task<int> UpdateUserPasswordAsync(Guid userId, string password);
         public Task<int> InsertUserAsync(User user);
-
-        public Task<DataRow?> GetUserViewAsync(Guid userId);
+        public Task<DataRow?> SelectUserViewAsync(Guid userId);
+        public Task<DataTable> SelectUsersWithRemindersAsync();
     }
 }

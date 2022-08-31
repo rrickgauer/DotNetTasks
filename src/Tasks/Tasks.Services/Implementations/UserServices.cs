@@ -216,7 +216,7 @@ namespace Tasks.Services.Implementations
         /// <returns></returns>
         public async Task<GetUserResponse?> GetUserViewAsync(Guid userId)
         {
-            DataRow? dataRow = await _userRepository.GetUserViewAsync(userId);
+            DataRow? dataRow = await _userRepository.SelectUserViewAsync(userId);
 
             if (dataRow is null) return null;
 
@@ -226,5 +226,17 @@ namespace Tasks.Services.Implementations
         }
 
         #endregion
+
+
+        public async Task<IEnumerable<User>> GetUsersWithRemindersAsync()
+        {
+            DataTable dataTable = await _userRepository.SelectUsersWithRemindersAsync();
+
+            var users = 
+                from dataRow in dataTable.AsEnumerable() 
+                select UserMapper.ToModel(dataRow);
+
+            return users;
+        }
     }
 }

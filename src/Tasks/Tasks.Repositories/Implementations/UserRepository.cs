@@ -115,12 +115,22 @@ public class UserRepository : IUserRepository
     }
 
 
-    public async Task<DataRow?> GetUserViewAsync(Guid userId)
+    public async Task<DataRow?> SelectUserViewAsync(Guid userId)
     {
         MySqlCommand command = new(UserRepositorySql.SelectFromView);
 
         command.Parameters.AddWithValue("@id", userId);
 
         return await _dbConnection.FetchAsync(command);
+    }
+
+
+    public async Task<DataTable> SelectUsersWithRemindersAsync()
+    {
+        MySqlCommand command = new(UserRepositorySql.SelectUsersWithReminders);
+
+        DataTable dataTable = await _dbConnection.FetchAllAsync(command);
+
+        return dataTable;
     }
 }

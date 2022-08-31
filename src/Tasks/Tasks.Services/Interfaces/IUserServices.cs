@@ -14,5 +14,6 @@ namespace Tasks.Services.Interfaces
         Task<User?> GetUserAsync(Guid userId);
         Task<User?> GetUserAsync(string email, string password);
         Task<GetUserResponse?> GetUserViewAsync(Guid userId);
+        Task<IEnumerable<User>> GetUsersWithRemindersAsync();
     }
 }
