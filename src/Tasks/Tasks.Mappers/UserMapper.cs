@@ -18,6 +18,7 @@ namespace Tasks.Mappers
                 Email = dataRow.Field<string?>("email"),
                 Password = dataRow.Field<string?>("password"),
                 CreatedOn = dataRow.Field<DateTime?>("created_on"),
+                DeliverReminders = dataRow.Field<bool?>("deliver_reminders"),
             };
 
             return user;

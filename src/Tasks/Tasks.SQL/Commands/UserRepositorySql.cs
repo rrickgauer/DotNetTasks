@@ -7,7 +7,8 @@ public sealed class UserRepositorySql
             u.id AS id,
             u.email AS email,
             u.password AS password,
-            u.created_on AS created_on
+            u.created_on AS created_on,
+            u.deliver_reminders AS deliver_reminders 
         FROM
             Users u
         WHERE 
@@ -21,7 +22,8 @@ public sealed class UserRepositorySql
             u.id AS id,
             u.email AS email,
             u.password AS password,
-            u.created_on AS created_on
+            u.created_on AS created_on,
+            u.deliver_reminders AS deliver_reminders
         FROM
             Users u
         WHERE 

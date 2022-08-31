@@ -21,6 +21,9 @@ namespace Tasks.Domain.Views
         [SqlColumn("email_confirmed_on")]
         public DateTime? EmailConfirmedOn { get; set; }
 
+        [SqlColumn("deliver_reminders")]
+        public bool? DeliverReminders { get; set; }
+
         [JsonIgnore]
         public bool IsConfirmed => EmailConfirmedOn != null;
     }
