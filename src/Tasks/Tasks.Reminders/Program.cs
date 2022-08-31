@@ -12,28 +12,26 @@ using Tasks.Validation;
 TasksRemindersCliArgs cliArgs = Parser.Default.ParseArguments<TasksRemindersCliArgs>(args).Value;
 
 RemindersController controller = new(cliArgs);
+
 ServiceProvider serviceProvider = controller.GetServiceProvider();
 
 var userServices = serviceProvider.GetService<IUserServices>();
 var reminderServices = serviceProvider.GetService<IRemiderServices>();
 
+ValidDateRange validDateRange = new()
+{
+    StartsOn = DateTime.Now,
+    EndsOn = DateTime.Now,
+};
+
 // get a list of all the users whose email's are confirmed and they elected to receive daily reminders
 var users = (await userServices.GetUsersWithRemindersAsync());
-
-ValidDateRange validDateRange = new();
 
 // get the recurrences for each of the users
 var recurrencesForUsers = await reminderServices.GetRecurrencesForUsersAsync(users, validDateRange);
 
-
-int x = 10;
-
-
-
-
-
-
-
-
-
-
+// send each user an email of their recurrences
+foreach (var userRecurrences in recurrencesForUsers)
+{
+    // send email to user
+}
