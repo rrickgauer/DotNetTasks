@@ -18,12 +18,15 @@ var userServices = serviceProvider.GetService<IUserServices>();
 var reminderServices = serviceProvider.GetService<IRemiderServices>();
 
 // get a list of all the users whose email's are confirmed and they elected to receive daily reminders
-var users = (await userServices.GetUsersWithRemindersAsync()).ToList();
+var users = (await userServices.GetUsersWithRemindersAsync());
 
 ValidDateRange validDateRange = new();
 
 // get the recurrences for each of the users
 var recurrencesForUsers = await reminderServices.GetRecurrencesForUsersAsync(users, validDateRange);
+
+
+int x = 10;
 
 
 

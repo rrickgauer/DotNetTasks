@@ -23,27 +23,35 @@ public class ReminderServices : IRemiderServices
         _recurrenceServices = recurrenceServices;
     }
 
-    public async Task<IEnumerable<RecurrencesForUser>> GetRecurrencesForUsersAsync(List<User> users, IValidDateRange validDateRange)
+    public async Task<IEnumerable<RecurrencesForUser>> GetRecurrencesForUsersAsync(IEnumerable<User> users, IValidDateRange validDateRange)
     {
-        RecurrenceRetrieval recurrenceRetrieval = new()
-        {
-            StartsOn = validDateRange.StartsOn,
-            EndsOn = validDateRange.EndsOn,
-        };
-
-
-        List<RecurrencesForUser> recurrencesForUsers = new();
+        // put all the users into a dictionary to access their user ids
+        Dictionary<Guid, RecurrencesForUser> resultDict = new();
 
         foreach (var user in users)
         {
-            recurrenceRetrieval.UserId = user.Id.Value;
-
-            List<Recurrence> recurrences = await _recurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
-
-            recurrencesForUsers.Add(new(user, recurrences));
+            resultDict.TryAdd(user.Id.Value, new(user));
         }
 
-        return recurrencesForUsers;
+        // add all the resources to to the users dict
+        IEnumerable<Recurrence> recurrences = await _recurrenceServices.GetRecurrencesForRemindersAsync(validDateRange);
+
+        foreach (var recurrence in recurrences)
+        {
+            if (resultDict.TryGetValue(recurrence.UserId.Value, out RecurrencesForUser? userRecurrences))
+            {
+                userRecurrences.Recurrences.Add(recurrence);
+            }
+        }
+
+        // filter out the results to users that have recurrences
+        var filteredUsers = 
+            from userRecurrences in resultDict.Values
+            where userRecurrences.Recurrences is not null
+            && userRecurrences.Recurrences.Count > 0
+            select userRecurrences;
+
+        return filteredUsers;
     }
 
 

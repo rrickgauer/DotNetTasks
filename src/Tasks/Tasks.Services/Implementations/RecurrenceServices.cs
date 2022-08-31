@@ -4,6 +4,7 @@ using Tasks.Domain.Parms;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
+using Tasks.Validation;
 
 namespace Tasks.Services.Implementations
 {
@@ -42,6 +43,14 @@ namespace Tasks.Services.Implementations
         public async Task<List<Recurrence>> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
             DataTable recurrencesTable = await _recurrenceRepository.GetEventRecurrencesAsync(eventRecurrenceRetrieval);
+
+            return RecurrenceMapper.ToModels(recurrencesTable);
+        }
+
+
+        public async Task<IEnumerable<Recurrence>> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange)
+        {
+            DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesForRemindersAsync(validDateRange);
 
             return RecurrenceMapper.ToModels(recurrencesTable);
         }

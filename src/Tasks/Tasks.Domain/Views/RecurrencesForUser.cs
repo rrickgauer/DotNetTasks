@@ -10,7 +10,12 @@ namespace Tasks.Domain.Views
     public class RecurrencesForUser
     {
         public User User { get; set; }
-        public List<Recurrence> Recurrences { get; set; }
+        public List<Recurrence> Recurrences { get; set; } = new();
+
+        public RecurrencesForUser(User user)
+        {
+            User = user;
+        }
 
         public RecurrencesForUser(User user, List<Recurrence> recurrences)
         {
