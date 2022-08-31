@@ -23,10 +23,10 @@ public class ReminderServices : IRemiderServices
         _recurrenceServices = recurrenceServices;
     }
 
-    public async Task<IEnumerable<RecurrencesForUser>> GetRecurrencesForUsersAsync(IEnumerable<User> users, IValidDateRange validDateRange)
+    public async Task<IEnumerable<UserRecurrences>> GetRecurrencesForUsersAsync(IEnumerable<User> users, IValidDateRange validDateRange)
     {
         // put all the users into a dictionary to access their user ids
-        Dictionary<Guid, RecurrencesForUser> resultDict = new();
+        Dictionary<Guid, UserRecurrences> resultDict = new();
 
         foreach (var user in users)
         {
@@ -38,7 +38,7 @@ public class ReminderServices : IRemiderServices
 
         foreach (var recurrence in recurrences)
         {
-            if (resultDict.TryGetValue(recurrence.UserId.Value, out RecurrencesForUser? userRecurrences))
+            if (resultDict.TryGetValue(recurrence.UserId.Value, out UserRecurrences? userRecurrences))
             {
                 userRecurrences.Recurrences.Add(recurrence);
             }

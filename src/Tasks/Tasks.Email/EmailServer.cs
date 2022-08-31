@@ -48,17 +48,6 @@ namespace Tasks.Email
             _isConnected = true;
         }
 
-        /// <summary>
-        /// Send an email message
-        /// </summary>
-        /// <param name="content"></param>
-        private void SendMessage(EmailContent content)
-        {
-            EnsureConnected();
-
-            _smtpClient.Send(_configs.EMAIL_ADDRESS, content.Recipient, content.Subject, content.Body);
-        }
-
 
         /// <summary>
         /// Send message async

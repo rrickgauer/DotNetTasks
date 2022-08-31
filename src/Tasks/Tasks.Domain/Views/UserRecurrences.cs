@@ -7,17 +7,17 @@ using Tasks.Domain.Models;
 
 namespace Tasks.Domain.Views
 {
-    public class RecurrencesForUser
+    public class UserRecurrences
     {
         public User User { get; set; }
         public List<Recurrence> Recurrences { get; set; } = new();
 
-        public RecurrencesForUser(User user)
+        public UserRecurrences(User user)
         {
             User = user;
         }
 
-        public RecurrencesForUser(User user, List<Recurrence> recurrences)
+        public UserRecurrences(User user, List<Recurrence> recurrences)
         {
             User = user;
             Recurrences = recurrences;

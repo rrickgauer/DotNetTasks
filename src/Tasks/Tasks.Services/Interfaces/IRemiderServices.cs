@@ -11,6 +11,6 @@ namespace Tasks.Services.Interfaces
 {
     public interface IRemiderServices
     {
-        public Task<IEnumerable<RecurrencesForUser>> GetRecurrencesForUsersAsync(IEnumerable<User> users, IValidDateRange validDateRange);
+        public Task<IEnumerable<UserRecurrences>> GetRecurrencesForUsersAsync(IEnumerable<User> users, IValidDateRange validDateRange);
     }
 }
