@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `Tasks_Dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `Tasks_Dev`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
@@ -866,6 +868,57 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `user_gets_reminders` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` FUNCTION `user_gets_reminders`(
+	in_user_id CHAR(36)
+) RETURNS tinyint(1)
+    READS SQL DATA
+BEGIN
+
+	DECLARE user_count INT;
+	DECLARE result BOOL;
+
+	SELECT
+		count(*) AS count INTO user_count
+	FROM
+		Users u
+	WHERE
+		u.id = in_user_id
+		AND u.deliver_reminders = TRUE
+		AND EXISTS (
+			SELECT
+				1
+			FROM
+				User_Email_Verifications e
+			WHERE
+				e.confirmed_on IS NOT NULL
+				AND e.email = u.email
+				AND e.user_id = u.id
+		);
+
+	IF user_count = 1 THEN
+		SET result = TRUE;
+	ELSE
+		SET result = FALSE;
+	END IF;
+
+	RETURN (result);
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Get_Event_Recurrences` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -993,23 +1046,9 @@ SP: BEGIN
     END WHILE;
 	
 	-- if the caller wants to return the results,
-    -- then we need to make the temp table to return the event's occurnce dates
+    -- then we need to make the temp table to return the event's occurence dates
     IF return_results = TRUE THEN
-		SELECT 
-			teod.event_id AS event_id, 
-            e.name AS name,
-			teod.occurs_on AS occurs_on,
-            e.starts_at AS starts_at,
-            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
-            IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
-		FROM
-			Temp_Event_Occurrence_Dates teod
-			LEFT JOIN Events e ON teod.event_id = e.id
-		ORDER BY 
-			occurs_on ASC,
-			starts_at ASC;
-    
-		DROP TABLE Temp_Event_Occurrence_Dates;
+		CALL Select_Temp_Event_Occurrence_Dates();
 	END IF;
 
 END ;;
@@ -1029,49 +1068,49 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`main`@`%` PROCEDURE `Get_Recurrences`(
-	IN user_id CHAR(36),
+    IN user_id CHAR(36),
     IN range_start DATE,
-    IN range_end DATE
+    IN range_end DATE,
+    IN return_results BOOL
 )
 BEGIN
-	
+    
     /*************************************************************
     This procedure generates the occurences of all events 
     between the given range_start and range_end.
     **************************************************************/
-	
+    
     DECLARE finished INT DEFAULT 0;
     DECLARE eventID CHAR(36);
     
     -- cursor for fetching all the event ids
-	DECLARE cursor_events CURSOR 
+    DECLARE cursor_events CURSOR 
     FOR SELECT e.id 
     FROM Events e 
     WHERE e.user_id = user_id;
     
-	-- declare NOT FOUND handler
-	DECLARE CONTINUE HANDLER 
-	FOR NOT FOUND SET finished = 1;
+    -- declare NOT FOUND handler
+    DECLARE CONTINUE HANDLER 
+    FOR NOT FOUND SET finished = 1;
     
     -- this will hold all the event ids and their occurences
-    CREATE TEMPORARY TABLE Temp_Event_Occurrence_Dates (
-		event_id CHAR(36) NOT NULL,
+    CREATE TEMPORARY TABLE IF NOT EXISTS Temp_Event_Occurrence_Dates (
+        event_id CHAR(36) NOT NULL,
         occurs_on DATE NOT NULL
-	);
-    
+    );
     
     OPEN cursor_events;
     
     -- for every event id, generate the event's occurrence dates
     LOOP_PROCESS_EVENTS: LOOP
-		-- get the next event_id
+        -- get the next event_id
         FETCH cursor_events INTO eventID;
         
         -- if no more events exit the loop
         IF finished = 1 THEN
-			LEAVE LOOP_PROCESS_EVENTS;
-		END IF;
-		
+            LEAVE LOOP_PROCESS_EVENTS;
+        END IF;
+        
         CALL Get_Event_Recurrences(eventID, range_start, range_end, FALSE);
     
     END LOOP LOOP_PROCESS_EVENTS;
@@ -1080,21 +1119,80 @@ BEGIN
     
     -- now all the event occurences are in the Temp_Event_Occurrence_Dates table
     -- select all those events and match them to the Events meta data
-    SELECT 
-		teod.event_id AS event_id, 
-        e.name AS name,
-		teod.occurs_on AS occurs_on,
-        e.starts_at AS starts_at,
-        IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
-        IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
-	FROM
-		Temp_Event_Occurrence_Dates teod
-        LEFT JOIN Events e ON teod.event_id = e.id
-	ORDER BY 
-		occurs_on ASC,
-        starts_at ASC;
+    IF return_results THEN
+        CALL Select_Temp_Event_Occurrence_Dates();
+    END IF;
     
-    DROP TABLE Temp_Event_Occurrence_Dates;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Get_Recurrences_For_Reminders` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` PROCEDURE `Get_Recurrences_For_Reminders`(
+    IN range_start DATE,
+    IN range_end DATE
+)
+BEGIN
+    
+    DECLARE finished INT DEFAULT 0;
+    DECLARE userId CHAR(36);
+    
+    -- cursor for fetching all the event ids
+    DECLARE cursor_users CURSOR FOR 
+    SELECT u.id
+    FROM Users u
+    WHERE
+        u.deliver_reminders = TRUE
+        AND EXISTS (
+            SELECT 1
+            FROM User_Email_Verifications e
+            WHERE
+                e.confirmed_on IS NOT NULL
+                AND e.email = u.email
+                AND e.user_id = u.id
+        );
+    
+    -- declare NOT FOUND handler
+    DECLARE CONTINUE HANDLER 
+    FOR NOT FOUND SET finished = 1;
+    
+    -- this will hold all the event ids and their occurences
+    CREATE TEMPORARY TABLE Temp_Event_Occurrence_Dates (
+        event_id CHAR(36) NOT NULL,
+        occurs_on DATE NOT NULL
+    );
+    
+    OPEN cursor_users;
+    
+    LOOP_PROCESS_USERS: LOOP
+        -- get the next user id
+        FETCH cursor_users INTO userId;
+        
+        -- if no more events exit the loop
+        IF finished = 1 THEN
+            LEAVE LOOP_PROCESS_USERS;
+        END IF;
+        
+        CALL Get_Recurrences(userId, range_start, range_end, FALSE);
+    
+    END LOOP LOOP_PROCESS_USERS;
+    
+    CLOSE cursor_users;
+    
+    -- now all the event occurences are in the Temp_Event_Occurrence_Dates table
+    -- select all those events and match them to the Events meta data
+    CALL Select_Temp_Event_Occurrence_Dates();
     
 END ;;
 DELIMITER ;
@@ -1187,6 +1285,49 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Select_Temp_Event_Occurrence_Dates` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` PROCEDURE `Select_Temp_Event_Occurrence_Dates`()
+BEGIN
+    
+    /*************************************************************
+    This procedure generates the occurences of all events 
+    between the given range_start and range_end.
+    **************************************************************/
+    
+    -- now all the event occurences are in the Temp_Event_Occurrence_Dates table
+    -- select all those events and match them to the Events meta data
+    SELECT 
+        teod.event_id AS event_id, 
+        e.name AS name,
+        e.user_id AS user_id,
+        teod.occurs_on AS occurs_on,
+        e.starts_at AS starts_at,
+        IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
+        IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
+    FROM
+        Temp_Event_Occurrence_Dates teod
+        LEFT JOIN Events e ON teod.event_id = e.id
+    ORDER BY 
+        occurs_on ASC,
+        starts_at ASC;
+    
+    DROP TABLE Temp_Event_Occurrence_Dates;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `View_Events`
@@ -1251,4 +1392,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-30 19:49:50
+-- Dump completed on 2022-08-31  7:36:19
