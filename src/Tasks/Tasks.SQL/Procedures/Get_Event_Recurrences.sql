@@ -116,23 +116,9 @@ SP: BEGIN
     END WHILE;
     
     -- if the caller wants to return the results,
-    -- then we need to make the temp table to return the event's occurnce dates
+    -- then we need to make the temp table to return the event's occurence dates
     IF return_results = TRUE THEN
-        SELECT 
-            teod.event_id AS event_id, 
-            e.name AS name,
-            teod.occurs_on AS occurs_on,
-            e.starts_at AS starts_at,
-            IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
-            IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
-        FROM
-            Temp_Event_Occurrence_Dates teod
-            LEFT JOIN Events e ON teod.event_id = e.id
-        ORDER BY 
-            occurs_on ASC,
-            starts_at ASC;
-    
-        DROP TABLE Temp_Event_Occurrence_Dates;
+        CALL Select_Temp_Event_Occurrence_Dates();
     END IF;
 
 END$$

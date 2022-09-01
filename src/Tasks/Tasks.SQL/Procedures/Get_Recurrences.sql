@@ -2,7 +2,8 @@ DELIMITER $$
 CREATE DEFINER=`main`@`%` PROCEDURE `Get_Recurrences`(
     IN user_id CHAR(36),
     IN range_start DATE,
-    IN range_end DATE
+    IN range_end DATE,
+    IN return_results BOOL
 )
 BEGIN
     
@@ -25,11 +26,10 @@ BEGIN
     FOR NOT FOUND SET finished = 1;
     
     -- this will hold all the event ids and their occurences
-    CREATE TEMPORARY TABLE Temp_Event_Occurrence_Dates (
+    CREATE TEMPORARY TABLE IF NOT EXISTS Temp_Event_Occurrence_Dates (
         event_id CHAR(36) NOT NULL,
         occurs_on DATE NOT NULL
     );
-    
     
     OPEN cursor_events;
     
@@ -51,21 +51,9 @@ BEGIN
     
     -- now all the event occurences are in the Temp_Event_Occurrence_Dates table
     -- select all those events and match them to the Events meta data
-    SELECT 
-        teod.event_id AS event_id, 
-        e.name AS name,
-        teod.occurs_on AS occurs_on,
-        e.starts_at AS starts_at,
-        IS_EVENT_COMPLETED(event_id, occurs_on) AS completed,
-        IS_EVENT_CANCELLED(event_id, occurs_on) AS cancelled
-    FROM
-        Temp_Event_Occurrence_Dates teod
-        LEFT JOIN Events e ON teod.event_id = e.id
-    ORDER BY 
-        occurs_on ASC,
-        starts_at ASC;
-    
-    DROP TABLE Temp_Event_Occurrence_Dates;
+    IF return_results THEN
+        CALL Select_Temp_Event_Occurrence_Dates();
+    END IF;
     
 END$$
 DELIMITER ;

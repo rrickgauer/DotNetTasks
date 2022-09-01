@@ -6,7 +6,7 @@ import { HttpRequestMapper } from "../mappers/http-request-mapper";
 export class ApiUser
 {
     /**
-     * Send a sign up request to the api
+     * Send a sign up request to the api (POST)
      * @param {String} email email value
      * @param {String} password password value
      * @returns {Promise<Response>}
@@ -23,6 +23,22 @@ export class ApiUser
         return await fetch(url, {
             body: data,
             method: HttpMethods.POST,
+        });
+    }
+
+    /**
+     * Send a put request to update the user
+     * @param {Object} formData the request body to send
+     * @returns {Promise<Response>}
+     */
+    put = async (formData) =>
+    {
+        const data = HttpRequestMapper.toFormData(formData);
+        const url = `${ApiEndpoints.USER}`;
+
+        return await fetch(url, {
+            method: HttpMethods.PUT,
+            body: data,
         });
     }
 }

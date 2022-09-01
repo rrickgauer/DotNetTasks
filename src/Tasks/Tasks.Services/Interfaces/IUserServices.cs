@@ -13,6 +13,9 @@ namespace Tasks.Services.Interfaces
         SignupRequestResponse GetInvalidSignUpRequestResponse(ValidateUserResult validateUserResult);
         Task<User?> GetUserAsync(Guid userId);
         Task<User?> GetUserAsync(string email, string password);
+        Task<User?> GetUserAsync(string email);
         Task<GetUserResponse?> GetUserViewAsync(Guid userId);
+        Task<IEnumerable<User>> GetUsersWithRemindersAsync();
+        Task<bool> UpdateUserAsync(Guid userId, UpdateUserRequestForm updateUserRequestForm);
     }
 }

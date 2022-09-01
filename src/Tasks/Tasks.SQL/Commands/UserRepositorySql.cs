@@ -7,7 +7,8 @@ public sealed class UserRepositorySql
             u.id AS id,
             u.email AS email,
             u.password AS password,
-            u.created_on AS created_on
+            u.created_on AS created_on,
+            u.deliver_reminders AS deliver_reminders 
         FROM
             Users u
         WHERE 
@@ -21,7 +22,8 @@ public sealed class UserRepositorySql
             u.id AS id,
             u.email AS email,
             u.password AS password,
-            u.created_on AS created_on
+            u.created_on AS created_on,
+            u.deliver_reminders AS deliver_reminders
         FROM
             Users u
         WHERE 
@@ -38,6 +40,13 @@ public sealed class UserRepositorySql
             u.id = @id
         LIMIT 1";
 
+    public const string SelectUsersWithReminders = @"
+        SELECT
+            *
+        FROM
+            Users u
+        WHERE
+            user_gets_reminders(u.id) = TRUE";
 
     public const string UpdatePassword = @"
         UPDATE
@@ -50,12 +59,12 @@ public sealed class UserRepositorySql
 
     public const string Modify = @"
         INSERT INTO
-            Users (id, email, password, created_on)
+            Users (id, email, password, created_on, deliver_reminders)
         VALUES
-            (@id, @email, @password, @created_on) AS new_values ON DUPLICATE KEY
+            (@id, @email, @password, @created_on, @deliver_reminders) AS new_values ON DUPLICATE KEY
         UPDATE
             email = new_values.email,
-            password = new_values.password";
+            deliver_reminders = new_values.deliver_reminders";
 
 
     public const string SelectFromView = @"

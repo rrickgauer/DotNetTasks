@@ -5,6 +5,7 @@ using Tasks.Domain.Parms;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
+using Tasks.Validation;
 
 namespace Tasks.Repositories.Implementations;
 
@@ -65,5 +66,24 @@ public class RecurrenceRepository : IRecurrenceRepository
 
         var result = await _dbConnection.FetchAllAsync(command);
         return result;
+    }
+
+
+    public async Task<DataTable> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange)
+    {
+        // setup a new stored procedure command 
+        MySqlCommand command = new(RecurrenceRepositorySql.GetRecurrencesForReminders)
+        {
+            CommandType = CommandType.StoredProcedure,
+        };
+
+        // add the parms
+        command.Parameters.AddWithValue("@range_start", validDateRange.StartsOn);
+        command.Parameters.AddWithValue("@range_end", validDateRange.EndsOn);
+
+        // call the stored proc
+        DataTable dataTable = await _dbConnection.FetchAllAsync(command);
+        
+        return dataTable;
     }
 }

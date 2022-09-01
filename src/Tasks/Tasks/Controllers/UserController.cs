@@ -6,6 +6,7 @@ using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
+using Tasks.Errors;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 
@@ -79,6 +80,39 @@ namespace Tasks.Controllers
             if (response is null) return NotFound();
 
             return Ok(response);
+        }
+
+
+        /// <summary>
+        /// PUT: /user
+        /// These requests must come from GUI and not a third party.
+        /// </summary>
+        /// <returns></returns>
+        [ServiceFilter(typeof(CustomHeaderFilter))]
+        [HttpPut]
+        public async Task<ActionResult<GetUserResponse>> Put([FromForm] UpdateUserRequestForm requestForm)
+        {
+            bool successfulUpdate = false;
+
+            try
+            {
+                successfulUpdate = await _userServices.UpdateUserAsync(CurrentUserId, requestForm);
+            }
+            catch(TasksException tasksException)
+            {
+                return BadRequest(tasksException.Message);
+            }
+            
+            if (!successfulUpdate)
+            {
+                return BadRequest("There was an error updating the user.");
+            }
+
+            GetUserResponse? getUserResponse = await _userServices.GetUserViewAsync(CurrentUserId);
+
+            if (getUserResponse is null) return NotFound();
+
+            return Ok(getUserResponse);
         }
 
     }

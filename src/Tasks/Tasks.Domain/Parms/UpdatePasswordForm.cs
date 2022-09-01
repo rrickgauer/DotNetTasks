@@ -5,6 +5,6 @@ namespace Tasks.Domain.Parms
     public class UpdatePasswordForm
     {
         [BindRequired]
-        public string? Password { get; set; }
+        public string Password { get; set; }
     }
 }

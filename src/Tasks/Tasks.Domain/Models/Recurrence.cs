@@ -1,4 +1,5 @@
-﻿using Tasks.CustomAttributes;
+﻿using System.Text.Json.Serialization;
+using Tasks.CustomAttributes;
 
 namespace Tasks.Domain.Models
 {
@@ -12,6 +13,10 @@ namespace Tasks.Domain.Models
 
         [SqlColumn("name")]
         public string? Name { get; set; }
+
+        [JsonIgnore]
+        [SqlColumn("user_id")]
+        public Guid? UserId{ get; set; }
 
         [SqlColumn("occurs_on")]
         public DateTime? OccursOn { get; set; }

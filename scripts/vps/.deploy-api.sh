@@ -1,13 +1,25 @@
 
 printf "\n\n\n"
 echo "------------------------------------------------"
-echo "Compiling DotNet solution..."
+echo "Compiling Tasks api project..."
 echo "------------------------------------------------"
 printf "\n\n\n"
 
-# Compile the code
+# Compile Tasks project
 cd /var/www/DotNetTasks/src/Tasks
 dotnet publish Tasks -r linux-x64 --self-contained false -c Release
+
+
+printf "\n\n\n"
+echo "------------------------------------------------"
+echo "Compiling Tasks.Reminders project..."
+echo "------------------------------------------------"
+printf "\n\n\n"
+
+# compile Tasks.Reminders project
+cd /var/www/DotNetTasks/src/Tasks
+dotnet publish Tasks.Reminders -r linux-x64 --self-contained false -c Release
+
 
 printf "\n\n\n"
 echo "------------------------------------------------"

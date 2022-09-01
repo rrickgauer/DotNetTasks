@@ -15,17 +15,25 @@ namespace Tasks.Email.Messages
         #region Private members
         private readonly UserEmailVerification _userEmailVerification;
         private readonly IConfigs _configs;
-
-        private string _confirmationUrl => $"{_configs.URL_GUI}/email-verifications/{_userEmailVerification.Id}";
         #endregion
 
+        private string _confirmationUrl => $"{_configs.URL_GUI}/email-verifications/{_userEmailVerification.Id}";
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userEmailVerification"></param>
+        /// <param name="configs"></param>
         public UserEmailVerificationMessage(UserEmailVerification userEmailVerification, IConfigs configs)
         {
             _userEmailVerification = userEmailVerification;
             _configs = configs; 
         }
-
-
+        
+        /// <summary>
+        /// Get the email content
+        /// </summary>
+        /// <returns></returns>
         public EmailContent GetEmailContent()
         {
             EmailContent emailContent = new()
@@ -41,9 +49,7 @@ namespace Tasks.Email.Messages
 
         private string GetBody()
         {
-            string body = string.Empty;
-
-            body = $"{_confirmationUrl}";
+            string body = $"{_confirmationUrl}";
 
             return body;
         }

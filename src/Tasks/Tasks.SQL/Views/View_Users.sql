@@ -4,6 +4,7 @@ SELECT
     u.email AS email,
     u.password AS password,
     u.created_on AS created_on,
+    u.deliver_reminders AS deliver_reminders,
     v.confirmed_on AS email_confirmed_on
 FROM
     Users u
