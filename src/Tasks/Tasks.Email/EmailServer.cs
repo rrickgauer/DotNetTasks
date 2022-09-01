@@ -58,19 +58,10 @@ namespace Tasks.Email
         {
             EmailContent content = emailMessage.GetEmailContent();
 
-            await SendMessageAsync(content);
-        }
-
-        /// <summary>
-        /// Send message async
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public async Task SendMessageAsync(EmailContent content)
-        {
             EnsureConnected();
 
             await _smtpClient.SendMailAsync(_configs.EMAIL_ADDRESS, content.Recipient, content.Subject, content.Body);
+
         }
 
         /// <summary>

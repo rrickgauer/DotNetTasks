@@ -1,0 +1,5 @@
+# Run reminders console application every day at 6am
+0 6 * * * /var/www/DotNetTasks/scripts/jobs/daily-reminders/send-daily-reminders.sh >> /var/www/DotNetTasks/scripts/jobs/daily-reminders/send-daily-reminders-output.log 2>&1
+
+
+ 

@@ -441,3 +441,5 @@ ConfigurationProduction.cs
 
 # INCLUDE THIS DIRECTORY!!!
 !**/tasks/static/js/lib/
+
+send-daily-reminders-output.log
