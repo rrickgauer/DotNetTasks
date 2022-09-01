@@ -11,11 +11,19 @@ export class HttpRequestMapper {
         const formData = new FormData();
 
         for (const key in data) {
-            const val = data[key];
+            let value = data[key];
 
-            if (!Utililties.isNullOrEmpty(val)) {
-                formData.append(key, val);
+            if (Utililties.isNullOrEmpty(value)) 
+            {
+                continue;    
             }
+            
+            if (Utililties.isTypeOf(value, false))
+            {
+                value = value ? 'true' : 'false';
+            }
+
+            formData.append(key, value);
         }
 
         return formData;

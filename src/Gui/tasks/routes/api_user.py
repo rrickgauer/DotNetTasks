@@ -40,9 +40,6 @@ def sign_up():
 @bp_api_user.put('')
 @security.login_required
 def update_user():
-
-    ss = flask.request
-
     update_result = services.user.update_user(flask.request.form.to_dict())
 
     if not update_result.successful:

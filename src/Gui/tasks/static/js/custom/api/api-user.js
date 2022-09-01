@@ -34,14 +34,6 @@ export class ApiUser
     put = async (formData) =>
     {
         const data = HttpRequestMapper.toFormData(formData);
-
-
-        console.log(data);
-
-        const sssss = Array.from(data.entries());
-        console.log(sssss);
-
-
         const url = `${ApiEndpoints.USER}`;
 
         return await fetch(url, {

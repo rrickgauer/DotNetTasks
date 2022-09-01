@@ -21,22 +21,36 @@ export class Utililties
     }
 
     
-    static isNullOrEmpty(val) {
-        if (val == undefined) {
+    static isNullOrEmpty(val) 
+    {
+
+        if (val === undefined) 
+        {
             return true;
         }
-        else if (val == null) {
+        else if (val === null) 
+        {
             return true;
         }
-        else if (val == "") {
+        else if (val === "") 
+        {
             return true;
         }
-        else if (val.length == 0) {
+        else if (val.length === 0) 
+        {
             return true;
         }
-        else {
-            return false;
-        }
+        
+        return false;
+    }
+
+    static isTypeOf(value, type)
+    {
+        const valueType = typeof value;
+
+        const typeType = typeof type;
+
+        return valueType === typeType;
     }
 
 }
