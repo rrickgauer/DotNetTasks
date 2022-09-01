@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using Tasks.Configurations;
+using Tasks.Domain.Constants;
 using Tasks.Domain.Models;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
@@ -102,12 +103,33 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<int> InsertUserAsync(User user)
     {
+        return await ModifyUserAsync(user);
+    }
+
+    /// <summary>
+    /// Update the given user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public async Task<int> UpdateUserAsync(User user)
+    {
+        return await ModifyUserAsync(user);
+    }
+
+    /// <summary>
+    /// Modify (update/insert) the specified user record in the database
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    private async Task<int> ModifyUserAsync(User user)
+    {
         MySqlCommand command = new(UserRepositorySql.Modify);
 
         command.Parameters.AddWithValue("@id", user.Id);
         command.Parameters.AddWithValue("@email", user.Email);
         command.Parameters.AddWithValue("@password", user.Password);
         command.Parameters.AddWithValue("@created_on", user.CreatedOn);
+        command.Parameters.AddWithValue("@deliver_reminders", user.DeliverReminders);
 
         int numRecords = await _dbConnection.ModifyAsync(command);
 
@@ -133,4 +155,7 @@ public class UserRepository : IUserRepository
 
         return dataTable;
     }
+
+
+
 }

@@ -4,6 +4,7 @@ using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
+using Tasks.Errors;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
@@ -41,7 +42,7 @@ namespace Tasks.Services.Implementations
 
         #endregion
 
-        #region Create user
+        #region Create / Update user
 
         /// <summary>
         /// Create a new user
@@ -57,6 +58,7 @@ namespace Tasks.Services.Implementations
                 Email = signUpRequest.Email,
                 Password = signUpRequest.Password,
                 CreatedOn = DateTime.Now,
+                DeliverReminders = false,
             };
 
             // send it to the repository
@@ -64,6 +66,7 @@ namespace Tasks.Services.Implementations
 
             return numRecords < 0 ? null : user;
         }
+
 
         #region Validate new user
 
@@ -170,8 +173,8 @@ namespace Tasks.Services.Implementations
 
         #endregion
 
-
         #endregion
+
 
         #region Get user
 
@@ -204,6 +207,21 @@ namespace Tasks.Services.Implementations
             return UserMapper.ToModel(dataRow);
         }
 
+        /// <summary>
+        /// Get the user with the email/password combination.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<User?> GetUserAsync(string email)
+        {
+            DataRow? dataRow = await _userRepository.GetUserAsync(email);
+
+            if (dataRow is null) return null;
+
+            return UserMapper.ToModel(dataRow);
+        }
+
         #endregion
 
 
@@ -227,7 +245,12 @@ namespace Tasks.Services.Implementations
 
         #endregion
 
+        #region Get users with reminders
 
+        /// <summary>
+        /// Get collection of users that want daily reminder emails
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<User>> GetUsersWithRemindersAsync()
         {
             DataTable dataTable = await _userRepository.SelectUsersWithRemindersAsync();
@@ -238,5 +261,45 @@ namespace Tasks.Services.Implementations
 
             return users;
         }
+
+        #endregion
+
+
+        #region Update user
+
+        /// <summary>
+        /// Update some of a User's info with the values provided in the UpdateUserRequestForm object
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="updateUserRequestForm"></param>
+        /// <returns></returns>
+        /// <exception cref="TasksException"></exception>
+        public async Task<bool> UpdateUserAsync(Guid userId, UpdateUserRequestForm updateUserRequestForm)
+        {
+            // check if the email is taken by another user
+            User? userWithNewEmail = await GetUserAsync(updateUserRequestForm.Email);
+
+            if (userWithNewEmail != null && userWithNewEmail.Id != userId)
+            {
+                throw new TasksException("Email is already taken");
+            }
+
+            // copy over the new fields from the UpdateUserRequestForm into the user object
+            User user = new()
+            {
+                Id = userId,
+                Email = updateUserRequestForm.Email,
+                DeliverReminders = updateUserRequestForm.DeliverReminders,
+                Password = string.Empty,    // repo is not updating it, however it still needs a value to run the sql command
+            };
+
+            // send it to the repository
+            int numRecords = await _userRepository.UpdateUserAsync(user);
+
+            return numRecords >= 0;
+        }
+
+
+        #endregion
     }
 }

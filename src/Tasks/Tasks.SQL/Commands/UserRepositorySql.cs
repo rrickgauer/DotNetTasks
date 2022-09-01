@@ -59,12 +59,12 @@ public sealed class UserRepositorySql
 
     public const string Modify = @"
         INSERT INTO
-            Users (id, email, password, created_on)
+            Users (id, email, password, created_on, deliver_reminders)
         VALUES
-            (@id, @email, @password, @created_on) AS new_values ON DUPLICATE KEY
+            (@id, @email, @password, @created_on, @deliver_reminders) AS new_values ON DUPLICATE KEY
         UPDATE
             email = new_values.email,
-            password = new_values.password";
+            deliver_reminders = new_values.deliver_reminders";
 
 
     public const string SelectFromView = @"

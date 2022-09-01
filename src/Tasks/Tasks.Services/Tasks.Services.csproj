@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
     <ProjectReference Include="..\Tasks.Email\Tasks.Email.csproj" />
+    <ProjectReference Include="..\Tasks.Errors\Tasks.Errors.csproj" />
     <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
     <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
   </ItemGroup>

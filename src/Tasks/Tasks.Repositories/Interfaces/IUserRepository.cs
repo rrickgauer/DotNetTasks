@@ -12,5 +12,6 @@ namespace Tasks.Repositories.Interfaces
         public Task<int> InsertUserAsync(User user);
         public Task<DataRow?> SelectUserViewAsync(Guid userId);
         public Task<DataTable> SelectUsersWithRemindersAsync();
+        public Task<int> UpdateUserAsync(User user);
     }
 }

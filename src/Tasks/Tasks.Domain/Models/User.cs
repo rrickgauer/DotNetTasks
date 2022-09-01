@@ -18,8 +18,8 @@ public class User
     public string? Password { get; set; }
 
     [SqlColumn("created_on")]
-    public DateTime? CreatedOn { get; set; }
+    public DateTime? CreatedOn { get; set; } = DateTime.Now;
 
     [SqlColumn("deliver_reminders")]
-    public bool? DeliverReminders { get; set; }
+    public bool? DeliverReminders { get; set; } = false;
 }

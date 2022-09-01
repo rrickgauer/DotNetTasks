@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Email", "Tasks.Email\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Auth", "Tasks.Auth\Tasks.Auth.csproj", "{C122CC21-7700-4C28-8E8C-1DA643980DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Reminders", "Tasks.Reminders\Tasks.Reminders.csproj", "{F5EBB2B6-0907-41E4-A117-64B834728847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Reminders", "Tasks.Reminders\Tasks.Reminders.csproj", "{F5EBB2B6-0907-41E4-A117-64B834728847}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Errors", "Tasks.Errors\Tasks.Errors.csproj", "{3FA0F2CF-D21F-4D39-BD0A-A711CAA687CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{F5EBB2B6-0907-41E4-A117-64B834728847}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5EBB2B6-0907-41E4-A117-64B834728847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5EBB2B6-0907-41E4-A117-64B834728847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FA0F2CF-D21F-4D39-BD0A-A711CAA687CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FA0F2CF-D21F-4D39-BD0A-A711CAA687CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FA0F2CF-D21F-4D39-BD0A-A711CAA687CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FA0F2CF-D21F-4D39-BD0A-A711CAA687CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
