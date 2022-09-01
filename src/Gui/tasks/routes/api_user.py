@@ -32,3 +32,21 @@ def sign_up():
     security.set_session_values(result.user.email, result.user.password)
 
     return flask_responses.get()
+
+
+#------------------------------------------------------
+# PUT: /api/user
+#------------------------------------------------------
+@bp_api_user.put('')
+@security.login_required
+def update_user():
+
+    ss = flask.request
+
+    update_result = services.user.update_user(flask.request.form.to_dict())
+
+    if not update_result.successful:
+        return (str(update_result.error), HTTPStatus.BAD_REQUEST)
+
+    return (update_result.data.text, update_result.data.status_code)
+

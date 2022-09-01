@@ -21,7 +21,7 @@ bp_account = flask.Blueprint('account', __name__)
 @security.login_required
 def account_page():
 
-    response = services.user.get_user_info()
+    response = services.user.request_user_info()
 
     if not response.ok:
         return (response.text, response.status_code)
