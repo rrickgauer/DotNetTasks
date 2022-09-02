@@ -21,5 +21,14 @@ namespace Tasks.SQL.Commands
                 l.user_id = @user_id
             ORDER BY
                 l.name ASC";
+
+        public const string Modify = @"
+            INSERT INTO
+                Labels (id, user_id, name, color, created_on)
+            VALUES
+                (@id, @user_id, @name, @color, @created_on) AS new_values ON DUPLICATE KEY
+            UPDATE
+                name = new_values.name,
+                color = new_values.color";
     }
 }

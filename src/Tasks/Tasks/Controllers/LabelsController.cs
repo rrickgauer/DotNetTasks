@@ -38,9 +38,14 @@ public class LabelsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Label>>> GetAll()
     {
-        var getLabelsResponse = await _labelServices.GetLabelsAsync(CurrentUserId);
+        var result = await _labelServices.GetLabelsAsync(CurrentUserId);
 
-        return Ok(getLabelsResponse);
+        if (!result.Successful)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
     }
 
 
