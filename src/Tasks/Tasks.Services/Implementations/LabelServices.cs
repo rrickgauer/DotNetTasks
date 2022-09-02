@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tasks.Domain.Models;
+﻿using System.Data;
 using Tasks.Domain.Responses;
-using Tasks.Domain.Responses.ServicesResponses;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
@@ -30,6 +23,35 @@ public class LabelServices : ILabelServices
         _labelRepository = labelRepository;
     }
 
+
+    /// <summary>
+    /// Get the specified label that belongs to the given user.
+    /// </summary>
+    /// <param name="labelId">Label id</param>
+    /// <param name="userId">User id</param>
+    /// <returns></returns>
+    public async Task<GetLabelResponse> GetLabelAsync(Guid labelId, Guid userId)
+    {
+        GetLabelResponse result = new() { Successful = true };
+
+        // get all the user's labels
+        var getLabelsResponse = await GetLabelsAsync(userId);
+
+        if (!getLabelsResponse.Successful || getLabelsResponse.Data is null)
+        {
+            ResponseUtilities.TransferResponseData(getLabelsResponse, result);
+            return result;
+        }
+        
+        // get the label out of the collection whose Id matches the given labelId
+        // otherwise set the data to null
+        result.Data = getLabelsResponse.Data.Where(l => l.Id == labelId).FirstOrDefault();
+
+        return result;
+    }
+
+
+
     /// <summary>
     /// Get a collection of all the specified user's labels
     /// </summary>
@@ -43,7 +65,7 @@ public class LabelServices : ILabelServices
         };
 
         // fetch a DataTable from the repository
-        var repoResult = await _labelRepository.SelectLabels(userId);
+        var repoResult = await _labelRepository.SelectLabelsAsync(userId);
 
         if (!result.Successful)
         {
@@ -59,4 +81,8 @@ public class LabelServices : ILabelServices
 
         return result;
     }
+
+
+
+
 }

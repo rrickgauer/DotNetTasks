@@ -12,5 +12,6 @@ namespace Tasks.Services.Interfaces;
 public interface ILabelServices
 {
     public Task<GetLabelsResponse> GetLabelsAsync(Guid userId);
-    //public Task<IBaseResponse<IEnumerable<Label>>> GetLabelsAsync(Guid userId);
+    public Task<GetLabelResponse> GetLabelAsync(Guid labelId, Guid userId);
+
 }

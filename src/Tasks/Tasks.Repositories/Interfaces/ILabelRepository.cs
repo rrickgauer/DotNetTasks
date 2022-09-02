@@ -9,5 +9,6 @@ namespace Tasks.Repositories.Interfaces;
 
 public interface ILabelRepository
 {
-    public Task<SelectAllResponse> SelectLabels(Guid userId);
+    public Task<SelectAllResponse> SelectLabelsAsync(Guid userId);
+    //public Task<SelectResponse> SelectLabelAsync(Guid labelId, Guid userId);
 }

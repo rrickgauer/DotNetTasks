@@ -44,6 +44,29 @@ public class LabelsController : ControllerBase
     }
 
 
+    /// <summary>
+    /// GET: /labels/:labelId
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("{labelId}")]
+    public async Task<ActionResult<Label>> Get([FromRoute] Guid labelId)
+    {
+        var result = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+
+        if (!result.Successful)
+        {
+            return BadRequest(result);
+        }
+
+        if (result.Data is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+
 
 
 }

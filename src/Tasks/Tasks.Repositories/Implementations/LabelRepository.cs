@@ -31,14 +31,13 @@ public class LabelRepository : ILabelRepository
         _dbConnection = new(_configs);
     }
 
-
     /// <summary>
     /// Get all the labels for a user
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<SelectAllResponse> SelectLabels(Guid userId)
+    public async Task<SelectAllResponse> SelectLabelsAsync(Guid userId)
     {
         SelectAllResponse result = new()
         {
