@@ -54,4 +54,10 @@ class UserSignUpApiResponse:
     error: str = None
 
 
-
+@dataclass
+class LabelResponse:
+    id        : UUID     = None
+    userId    : UUID     = None
+    name      : str      = None
+    color     : str      = None
+    createdOn : datetime = None

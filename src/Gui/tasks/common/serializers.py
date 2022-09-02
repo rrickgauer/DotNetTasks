@@ -149,3 +149,18 @@ class UserSignUpApiResponseSerializer(SerializerBase):
             signup_response.user = UserSignUpApiResponseUserSerializer(signup_response.user).serialize()
 
         return signup_response
+
+
+
+class LabelResponseSerializer(SerializerBase):
+    DomainModel = api_responses.LabelResponse
+
+
+    def serialize(self) -> api_responses.LabelResponse:
+        result: api_responses.LabelResponse = super().serialize()
+
+        result.createdOn = parseIsoDatetime(datetime.datetime, result.createdOn)
+        result.id = UUID(result.id)
+        result.userId = UUID(result.userId)
+    
+        return result

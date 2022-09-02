@@ -23,6 +23,7 @@ const configs = [
     new RollupConfig('custom/pages/auth/index.js', 'dist/auth.bundle.js'),
     new RollupConfig('custom/pages/home/index.js', 'dist/home.bundle.js'),
     new RollupConfig('custom/pages/account/index.js', 'dist/account.bundle.js'),
+    new RollupConfig('custom/pages/labels/index.js', 'dist/labels.bundle.js'),
 ];
 
 

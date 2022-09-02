@@ -1,0 +1,11 @@
+{% macro get_labels_board(labels) -%}
+
+<div class="container labels-board-container">
+    <ul>
+        {% for label in labels %}
+            <li>{{ label.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{%- endmacro %}

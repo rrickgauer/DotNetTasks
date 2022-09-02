@@ -7,3 +7,4 @@ from . import cancellations as cancellations
 from . import update_password as update_password
 from . import user as user
 from . import email_verifications as email_verifications
+from . import labels as labels
