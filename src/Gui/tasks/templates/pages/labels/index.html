@@ -9,36 +9,28 @@
 </div>
 
 
+<div class="container my-5">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#labels-form-modal-edit">Edit</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#labels-form-modal-new">New</button>
+</div>
 
 
-<!-- existing labels section -->
-
-
+{# existing labels section #}
 <div id="labels-wrapper">
-
 
     <div id="labels-wrapper-spinner">
         {% include 'includes/spinner-center.html' %}
     </div>
 
 
-
-    <div id="labels-content">
-
-        
-
-    </div>
-
-
-
+    {# Labels go here #}
+    <div id="labels-content"></div>
 </div>
 
 
-
-
-
-
-
+{# Form modals #}
+{% include 'pages/labels/forms/edit-label-form.html' %}
+{% include 'pages/labels/forms/new-label-form.html' %}
 
 {% endblock %}
 
