@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Domain.Models;
+using Tasks.Domain.Responses;
 using Tasks.Domain.Responses.ServicesResponses;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 using static Tasks.Domain.Responses.ServicesResponses.LabelServicesResponses;
@@ -26,32 +30,32 @@ public class LabelServices : ILabelServices
         _labelRepository = labelRepository;
     }
 
+    /// <summary>
+    /// Get a collection of all the specified user's labels
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public async Task<GetLabelsResponse> GetLabelsAsync(Guid userId)
     {
         GetLabelsResponse result = new()
         {
-            Success = true,
+            Successful = true,
         };
 
-        
+        // fetch a DataTable from the repository
+        var repoResult = await _labelRepository.SelectLabels(userId);
 
-        try
+        if (!result.Successful)
         {
-
-
-
-        }
-        catch(Exception ex)
-        {
-            result.Exception = ex;
-            result.Success = false;
+            ResponseUtilities.TransferResponseData(repoResult, result);
+            return result;
         }
 
 
-        
+        // map out the records to models
+        DataTable dataTable = repoResult.Data ?? (new());
 
-
-
+        result.Data = LabelMapper.ToModels(dataTable);
 
         return result;
     }

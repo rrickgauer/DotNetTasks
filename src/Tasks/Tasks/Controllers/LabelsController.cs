@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Security;
+using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers;
 
@@ -15,7 +16,7 @@ public class LabelsController : ControllerBase
 {
     #region Private members
     private readonly IConfigs _configs;
-    //private readonly IEventServices _eventServices;
+    private readonly ILabelServices _labelServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
 
@@ -23,9 +24,10 @@ public class LabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public LabelsController(IConfigs configuration)
+    public LabelsController(IConfigs configuration, ILabelServices labelServices)
     {
         _configs = configuration;
+        _labelServices = labelServices;
     }
 
 
@@ -36,7 +38,9 @@ public class LabelsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Label>>> GetAll()
     {
-        return Ok("Get labels");
+        var getLabelsResponse = await _labelServices.GetLabelsAsync(CurrentUserId);
+
+        return Ok(getLabelsResponse);
     }
 
 

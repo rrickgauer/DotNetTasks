@@ -11,7 +11,7 @@ public class RepositoryResponses
 {
     public class SelectAllResponse : BaseResponse<DataTable>
     {
-        public override DataTable? Data { get; set; }
+        public override DataTable? Data { get; set; } = new();
     }
 
     public class SelectResponse : BaseResponse<DataRow>
@@ -23,6 +23,4 @@ public class RepositoryResponses
     {
         public override int Data { get; set; }
     }
-
-
 }
