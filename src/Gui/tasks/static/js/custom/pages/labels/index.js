@@ -1,35 +1,19 @@
-import { ApiLabels } from "../../api/api-labels";
+import { EditLabelPageFormController } from "./label-form/edit-label-form-controller";
+import { NewLabelPageFormController } from "./label-form/new-label-form-controller";
+import { LabelsPageController } from "./page-actions/labels-page-controller";
+
+
+const m_newLabelFormController = new NewLabelPageFormController();
+const m_editLabelFormController = new EditLabelPageFormController();
+const m_pageController = new LabelsPageController();
 
 
 /**
  * Main logic
  */
-$(document).ready(function() {
-    // alert('labels');
-
-    addListeners();
-
-
-    getLabelsHtml();
+$(document).ready(function() 
+{
+    
+    m_pageController.renderLabelsHtml();
 
 });
-
-
-function addListeners()
-{
-
-}
-
-
-
-async function getLabelsHtml()
-{
-    const api = new ApiLabels();
-    const response = await api.get();
-    const data = await response.text();
-
-
-    document.getElementById('labels-wrapper-spinner').classList.add('d-none');
-
-    $('#labels-content').html(data);
-}
