@@ -7,6 +7,7 @@ Service methods for labels
 """
 
 from __future__ import annotations
+import re
 import flask
 from dataclasses import dataclass
 from uuid import UUID
@@ -97,7 +98,7 @@ def get_label(label_id: UUID) -> requests.Response:
     return response
 
 
-def update_label(label_id: UUID, data: dict):
+def update_label(label_id: UUID, data: dict) -> requests.Response:
     url_builder = ApiUrlBuilder()
     url = url_builder.label(label_id)
 
@@ -106,6 +107,19 @@ def update_label(label_id: UUID, data: dict):
         auth   = security.get_user_session_tuple(),
         verify = False,
         data = data
+    )
+
+    return response
+
+
+def delete_label(label_id: UUID) -> requests.Response:
+    url_builder = ApiUrlBuilder()
+    url = url_builder.label(label_id)
+
+    response = requests.delete(
+        url    = url,
+        auth   = security.get_user_session_tuple(),
+        verify = False,
     )
 
     return response

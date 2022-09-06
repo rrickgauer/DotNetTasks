@@ -97,6 +97,29 @@ public class LabelsController : ControllerBase
     }
 
 
+    /// <summary>
+    /// DELETE: /labels/:labelId
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete("{labelId}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid labelId)
+    {
+        var deleteLabelResult = await _labelServices.DeleteLabelAsync(labelId, CurrentUserId);
+
+        if (!deleteLabelResult.Successful)
+        {
+            return BadRequest(deleteLabelResult);
+        }
+
+        if (deleteLabelResult.Data is null)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+
+
 
 
 }

@@ -44,5 +44,20 @@ export class ApiLabels
             body: data,
         });
     }
+
+
+    /**
+     * Delete the specified label
+     * @param {String} labelId the label id
+     * @returns {Promise<Response>}
+     */
+    delete = async (labelId) =>
+    {
+        const url = `${ApiEndpoints.LABELS}/${labelId}`;
+
+        return await fetch(url, {
+            method: HttpMethods.DELETE,
+        });
+    }
 }
 

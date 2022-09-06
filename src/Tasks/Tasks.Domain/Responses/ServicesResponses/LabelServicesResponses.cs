@@ -32,6 +32,14 @@ public class LabelServicesResponses
     {
         public override Label? Data { get; set; }
     }
+
+
+    public class DeleteLabelResponse : BaseResponse<int?>
+    {
+        public override int? Data { get; set; }
+    }
+
+
 }
 
 

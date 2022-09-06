@@ -44,5 +44,13 @@ namespace Tasks.SQL.Commands
             ON DUPLICATE KEY UPDATE
                 name = new_values.name,
                 color = new_values.color";
+
+
+        public const string DeleteByIdAndUserId = @"
+            DELETE FROM 
+                Labels
+            WHERE 
+                id = @id
+                AND user_id = @user_id";
     }
 }

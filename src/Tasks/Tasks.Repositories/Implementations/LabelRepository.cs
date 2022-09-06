@@ -96,4 +96,21 @@ public class LabelRepository : ILabelRepository
         return result;
 
     }
+
+    public async Task<ModifyResponse> DeleteLabelAsync(Label label)
+    {
+        ModifyResponse result = new()
+        {
+            Successful = true,
+        };
+
+        MySqlCommand command = new(LabelRepositorySql.DeleteByIdAndUserId);
+
+        command.Parameters.AddWithValue("@id", label.Id);
+        command.Parameters.AddWithValue("@user_id", label.UserId);
+
+        result.Data = await _dbConnection.ModifyAsync(command);
+
+        return result;
+    }
 }

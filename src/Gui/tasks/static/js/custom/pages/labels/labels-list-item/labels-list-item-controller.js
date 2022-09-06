@@ -47,15 +47,16 @@ export class LabelsListItemController
         switch(dropdownActionValue)
         {
             case LabelsListItemElements.DropdownBtnAttrs.EDIT:
-                this._editLabel(labelsListItem);
+                await this._editLabel(labelsListItem);
                 break;
             
             case LabelsListItemElements.DropdownBtnAttrs.DELETE:
-                // delete
+                await this._deleteLabel(labelsListItem);
                 break;
         }
     }
 
+    //#region Edit label
 
     /**
      * Edit the given LabelsListItemElements object
@@ -97,4 +98,29 @@ export class LabelsListItemController
 
         return label;
     }
+
+    //#endregion
+
+    //#region Delete label
+
+    /**
+     * Delete the label
+     * @param {LabelsListItemElements} labelsListItem the list item to delete
+     */
+    _deleteLabel = async (labelsListItem) =>
+    {
+        if (!confirm('Are you sure? This cannot be undone.'))
+        {
+            return;
+        }
+
+        const labelId = labelsListItem.id;
+        
+        this.api.delete(labelId);
+
+        labelsListItem.eContainer.remove();
+    }
+
+    //#endregion
+
 }

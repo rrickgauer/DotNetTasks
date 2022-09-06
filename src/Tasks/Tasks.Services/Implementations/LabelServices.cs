@@ -5,6 +5,7 @@ using Tasks.Domain.Responses;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
+using static Tasks.Domain.Responses.RepositoryResponses;
 using static Tasks.Domain.Responses.ServicesResponses.LabelServicesResponses;
 
 namespace Tasks.Services.Implementations;
@@ -163,4 +164,48 @@ public class LabelServices : ILabelServices
         return result;
     }
 
+    /// <summary>
+    /// Delete the label
+    /// </summary>
+    /// <param name="labelId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<DeleteLabelResponse> DeleteLabelAsync(Guid labelId, Guid userId)
+    {
+        DeleteLabelResponse result = new()
+        {
+            Successful = true,
+        };
+
+        // verify that the label exists in the database
+        var selectResult = await _labelRepository.SelectLabelAsync(labelId);
+
+        if (!selectResult.Successful || selectResult.Data is null)
+        {
+            ResponseUtilities.TransferResponseData(selectResult, result);
+            return result;
+        }
+
+        // make sure the user owns the label
+        Label label = LabelMapper.ToModel(selectResult.Data);
+
+        if (label.UserId != userId)
+        {
+            result.Data = null;
+            return result;
+        }
+
+        // delete the label from the database
+        ModifyResponse deleteResult = await _labelRepository.DeleteLabelAsync(label);
+
+        if (!selectResult.Successful || selectResult.Data is null)
+        {
+            ResponseUtilities.TransferResponseData(selectResult, result);
+            return result;
+        }
+
+        result.Data = deleteResult.Data;
+
+        return result;
+    }
 }

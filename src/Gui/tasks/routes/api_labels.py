@@ -48,3 +48,13 @@ def get_label(label_id: UUID):
 def put_label(label_id: UUID):
     response = services.labels.update_label(label_id, flask.request.form.to_dict())
     return (response.text, response.status_code)
+
+
+#------------------------------------------------------
+# DELETE: /api/labels/:label_id
+#------------------------------------------------------
+@bp_api_labels.delete('<uuid:label_id>')
+@security.login_required
+def delete_label(label_id: UUID):
+    response = services.labels.delete_label(label_id)
+    return (response.text, response.status_code)
