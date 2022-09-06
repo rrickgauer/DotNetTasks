@@ -7,7 +7,6 @@ import { LabelsPageController } from "./page-actions/labels-page-controller";
 const m_newLabelFormController = new NewLabelPageFormController();
 const m_editLabelFormController = new EditLabelPageFormController();
 const m_pageController = new LabelsPageController();
-
 const m_listItemController = new LabelsListItemController();
 
 
@@ -17,6 +16,13 @@ const m_listItemController = new LabelsListItemController();
 $(document).ready(function() 
 {
     m_pageController.renderLabelsHtml();
+    addPageListeners();
+});
+
+
+function addPageListeners()
+{
     m_listItemController.addListeners();
     m_editLabelFormController.addListeners();
-});
+    m_newLabelFormController.addListeners();
+}
