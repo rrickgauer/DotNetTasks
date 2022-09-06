@@ -22,6 +22,20 @@ namespace Tasks.SQL.Commands
             ORDER BY
                 l.name ASC";
 
+
+        public const string SelectById = @"
+            SELECT
+                *
+            FROM
+                View_Labels l
+            WHERE
+                l.id = @id
+            LIMIT 
+                1";
+
+        /// <summary>
+        /// Modify a label
+        /// </summary>
         public const string Modify = @"
             INSERT INTO
                 Labels (id, user_id, name, color, created_on)

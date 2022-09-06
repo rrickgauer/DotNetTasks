@@ -74,4 +74,26 @@ public class LabelRepository : ILabelRepository
 
         return result;
     }
+
+    /// <summary>
+    /// Get the a the label data row that has the given id
+    /// </summary>
+    /// <param name="labelId"></param>
+    /// <returns></returns>
+    public async Task<SelectResponse> SelectLabelAsync(Guid labelId)
+    {
+        SelectResponse result = new()
+        {
+            Successful = true,
+        };
+
+        MySqlCommand command = new(LabelRepositorySql.SelectById);
+
+        command.Parameters.AddWithValue("@id", labelId);
+
+        result.Data = await _dbConnection.FetchAsync(command);
+
+        return result;
+
+    }
 }

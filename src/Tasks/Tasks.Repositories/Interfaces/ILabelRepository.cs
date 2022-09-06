@@ -12,5 +12,5 @@ public interface ILabelRepository
 {
     public Task<SelectAllResponse> SelectLabelsAsync(Guid userId);
     public Task<ModifyResponse> ModifyLabelAsync(Label label);
-
+    public Task<SelectResponse> SelectLabelAsync(Guid labelId);
 }

@@ -35,25 +35,26 @@ public class LabelServices : ILabelServices
     /// <returns></returns>
     public async Task<ModifyLabelResponse> UpdateLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
     {
-        ModifyLabelResponse result = new() { Successful = true };
-
-        // get the existing label if it exists
-        var getLabelResponse = await GetLabelAsync(labelId, userId);
-
-        if (!getLabelResponse.Successful || getLabelResponse.Data is null)
+        ModifyLabelResponse result = new()
         {
-            ResponseUtilities.TransferResponseData(getLabelResponse, result);
+            Successful = true,
+        };
+
+        // verify that the user can update the label
+        DataRow? dataRow = (await _labelRepository.SelectLabelAsync(labelId)).Data;
+
+        if (!UserCanUpdateLabel(dataRow, labelId, userId, out Label? label))
+        {
+            result.Data = null;
             return result;
         }
 
-        // now move the UpdateLabelForm data into the existing label object
-        Label existingLabel = getLabelResponse.Data;
-
-        existingLabel.Name = updateLabelForm.Name;
-        existingLabel.Color = updateLabelForm.Color;
+        // copy over the existing (or new) label's data into the one we are going to send to the repo
+        label.Name = updateLabelForm.Name;
+        label.Color = updateLabelForm.Color;
 
         // have the repository update it in the database
-        var repoResponse = await _labelRepository.ModifyLabelAsync(existingLabel);
+        var repoResponse = await _labelRepository.ModifyLabelAsync(label);
 
         if (!repoResponse.Successful)
         {
@@ -61,10 +62,49 @@ public class LabelServices : ILabelServices
             return result;
         }
 
-        result.Data = existingLabel;
+        result.Data = label;
 
         return result;
     }
+
+
+    /// <summary>
+    /// Checks if the user can update the given label
+    /// </summary>
+    /// <param name="dataRow"></param>
+    /// <param name="labelId"></param>
+    /// <param name="userId"></param>
+    /// <param name="label"></param>
+    /// <returns></returns>
+    private bool UserCanUpdateLabel(DataRow? dataRow, Guid labelId, Guid userId, out Label? label)
+    {
+        // label DNE, so we just need to create a new one
+        if (dataRow is null)
+        {
+            // we need to create a new label object
+            label = new()
+            {
+                Id = labelId,
+                UserId = userId,
+                CreatedOn = DateTime.Now,
+            };
+
+            return true;
+        }
+
+        // label exists, so make sure the user owns it 
+        label = LabelMapper.ToModel(dataRow);
+
+        if (label.UserId != userId)
+        {
+            label = null;
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     /// <summary>
     /// Get the specified label that belongs to the given user.

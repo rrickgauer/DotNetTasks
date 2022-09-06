@@ -15,7 +15,6 @@ export class EditLabelPageFormController
         this.api = new ApiLabels();
         this.spinnerBtn = new SpinnerButton(this.elements.eSubmitBtn);
         this.pageController = new LabelsPageController();
-
         this.successfulAlert = new AlertPageTopSuccess('Label was updated!');
         this.badAlert = new AlertPageTopDanger('Label was not updated. Check console.');
     }

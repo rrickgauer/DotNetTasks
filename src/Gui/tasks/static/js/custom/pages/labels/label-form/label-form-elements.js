@@ -1,3 +1,4 @@
+import { ModifyLabelForm } from "../../../domain/forms/modify-label-form";
 
 export class LabelPageFormElements
 {
@@ -44,6 +45,19 @@ export class LabelPageFormElements
     hideLoading = () => this.eModal.classList.remove(LabelPageFormElements.LOADING_CLASS);
     //#endregion
 
+
+    /**
+     * Get the current values of the form.
+     * @returns {ModifyLabelForm}
+     */
+    getFormValues = () =>
+    {
+        const result = new ModifyLabelForm();
+        result.color = this.eInputColor.value;
+        result.name = this.eInputName.value;
+
+        return result;
+    }
     
 }
 
