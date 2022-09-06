@@ -22,4 +22,24 @@ export class EditLabelPageFormController
         this.elements.eInputName.value = label.name;
         this.elements.setLabelIdAttr(label.id);
     }
+
+
+    addListeners = () => 
+    {
+        this._listenForFormSubmission();
+    }
+
+
+    _listenForFormSubmission = () =>
+    {
+        this.elements.eForm.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            this._handleFormSubmission();
+        });
+    }
+
+    _handleFormSubmission = () =>
+    {
+        alert('edit label');
+    }
 }

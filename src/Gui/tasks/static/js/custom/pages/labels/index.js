@@ -18,4 +18,5 @@ $(document).ready(function()
 {
     m_pageController.renderLabelsHtml();
     m_listItemController.addListeners();
+    m_editLabelFormController.addListeners();
 });
