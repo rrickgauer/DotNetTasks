@@ -8,4 +8,6 @@ export class EditLabelPageFormController
         this.modalId = LabelPageFormElements.ModalsIds.EDIT;
         this.elements = new LabelPageFormElements(this.modalId);
     }
+
+    showModal = () => $(this.elements.eModal).modal('show');
 }
