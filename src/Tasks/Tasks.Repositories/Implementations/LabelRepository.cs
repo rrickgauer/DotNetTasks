@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Configurations;
+using Tasks.Domain.Models;
 using Tasks.Domain.Responses;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
@@ -49,6 +50,27 @@ public class LabelRepository : ILabelRepository
         command.Parameters.AddWithValue("@user_id", userId);
 
         result.Data = await _dbConnection.FetchAllAsync(command);
+
+        return result;
+    }
+
+
+    public async Task<ModifyResponse> ModifyLabelAsync(Label label)
+    {
+        ModifyResponse result = new()
+        {
+            Successful = true,
+        };
+
+        MySqlCommand command = new(LabelRepositorySql.Modify);
+
+        command.Parameters.AddWithValue("@id", label.Id);
+        command.Parameters.AddWithValue("@user_id", label.UserId);
+        command.Parameters.AddWithValue("@name", label.Name);
+        command.Parameters.AddWithValue("@color", label.Color);
+        command.Parameters.AddWithValue("@created_on", label.CreatedOn);
+
+        result.Data = await _dbConnection.ModifyAsync(command);
 
         return result;
     }

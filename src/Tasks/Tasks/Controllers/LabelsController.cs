@@ -81,22 +81,19 @@ public class LabelsController : ControllerBase
     [HttpPut("{labelId}")]
     public async Task<ActionResult<Label>> Put([FromRoute] Guid labelId, [FromForm] UpdateLabelForm form)
     {
+        var updatedLabel = await _labelServices.UpdateLabelAsync(labelId, CurrentUserId, form);
 
-        return Ok("updated");
+        if (!updatedLabel.Successful)
+        {
+            return BadRequest(updatedLabel);
+        }
 
-        //var result = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+        if (updatedLabel.Data is null)
+        {
+            return NotFound();
+        }
 
-        //if (!result.Successful)
-        //{
-        //    return BadRequest(result);
-        //}
-
-        //if (result.Data is null)
-        //{
-        //    return NotFound();
-        //}
-
-        //return Ok(result);
+        return Ok(updatedLabel);
     }
 
 

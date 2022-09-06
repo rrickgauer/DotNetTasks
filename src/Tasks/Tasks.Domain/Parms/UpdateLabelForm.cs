@@ -3,7 +3,7 @@
 namespace Tasks.Domain.Parms;
 
 /// <summary>
-/// required fields that must be provided in a request to modify a label
+/// Required fields that must be provided in a request to modify a label
 /// </summary>
 public class UpdateLabelForm
 {
@@ -12,5 +12,4 @@ public class UpdateLabelForm
 
     [BindRequired]
     public string Color { get; set; }
-
 }

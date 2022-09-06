@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
 using Tasks.Domain.Responses;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
@@ -25,6 +27,46 @@ public class LabelServices : ILabelServices
 
 
     /// <summary>
+    /// Update the label with the specified id to the new values given in the UpdateLabelForm
+    /// </summary>
+    /// <param name="labelId"></param>
+    /// <param name="userId"></param>
+    /// <param name="updateLabelForm"></param>
+    /// <returns></returns>
+    public async Task<ModifyLabelResponse> UpdateLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
+    {
+        ModifyLabelResponse result = new() { Successful = true };
+
+        // get the existing label if it exists
+        var getLabelResponse = await GetLabelAsync(labelId, userId);
+
+        if (!getLabelResponse.Successful || getLabelResponse.Data is null)
+        {
+            ResponseUtilities.TransferResponseData(getLabelResponse, result);
+            return result;
+        }
+
+        // now move the UpdateLabelForm data into the existing label object
+        Label existingLabel = getLabelResponse.Data;
+
+        existingLabel.Name = updateLabelForm.Name;
+        existingLabel.Color = updateLabelForm.Color;
+
+        // have the repository update it in the database
+        var repoResponse = await _labelRepository.ModifyLabelAsync(existingLabel);
+
+        if (!repoResponse.Successful)
+        {
+            ResponseUtilities.TransferResponseData(repoResponse, result);
+            return result;
+        }
+
+        result.Data = existingLabel;
+
+        return result;
+    }
+
+    /// <summary>
     /// Get the specified label that belongs to the given user.
     /// </summary>
     /// <param name="labelId">Label id</param>
@@ -49,7 +91,6 @@ public class LabelServices : ILabelServices
 
         return result;
     }
-
 
 
     /// <summary>
@@ -81,8 +122,5 @@ public class LabelServices : ILabelServices
 
         return result;
     }
-
-
-
 
 }
