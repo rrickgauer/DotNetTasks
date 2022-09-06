@@ -75,8 +75,6 @@ def _serialize_label(label: dict) -> LabelResponse:
     return model
 
 
-
-
 def get_labels_html(labels: list[LabelResponse]) -> str:
 
     labels_macro = flask.get_template_attribute('macros/labels.html', 'get_labels_board')
@@ -84,3 +82,17 @@ def get_labels_html(labels: list[LabelResponse]) -> str:
     html = labels_macro(labels)
 
     return html
+
+
+
+def get_label(label_id: UUID):
+    url_builder = ApiUrlBuilder()
+    url = url_builder.label(label_id)
+
+    response = requests.get(
+        url    = url,
+        auth   = security.get_user_session_tuple(),
+        verify = False,
+    )
+
+    return response

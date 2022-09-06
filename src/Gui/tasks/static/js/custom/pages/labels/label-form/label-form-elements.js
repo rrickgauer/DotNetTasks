@@ -25,22 +25,30 @@ export class LabelPageFormElements
         this.eSubmitBtn = this.eModal.querySelector(`.${LabelPageFormElements.SUBMIT_BTN}`);
     }
 
+    /**
+     * Set the 'data-js-label-id' attribute value
+     * @param {String} labelId the label id
+     */
+    setLabelIdAttr = (labelId) => this.eModal.setAttribute(LabelPageFormElements.LABEL_ID_ATTR, labelId);
+
+    showLoading = () => this.eModal.classList.add(LabelPageFormElements.LOADING_CLASS);
+    hideLoading = () => this.eModal.classList.remove(LabelPageFormElements.LOADING_CLASS);
+
 }
 
 
 
 LabelPageFormElements.MODAL = 'labels-form-modal';
 LabelPageFormElements.LABEL_ID_ATTR = 'data-js-label-id';
-
 LabelPageFormElements.FORM = 'labels-form';
+LabelPageFormElements.LOADING_CLASS = 'loading';
+LabelPageFormElements.SPINNER = 'labels-form-spinner';
+LabelPageFormElements.SUBMIT_BTN = 'labels-form-submit-btn';
 
 LabelPageFormElements.Inputs = {
     NAME: 'label-name',
     COLOR: 'label-color',
 }
-
-LabelPageFormElements.SUBMIT_BTN = 'labels-form-submit-btn';
-
 
 LabelPageFormElements.ModalsIds = {
     NEW: 'labels-form-modal-new',

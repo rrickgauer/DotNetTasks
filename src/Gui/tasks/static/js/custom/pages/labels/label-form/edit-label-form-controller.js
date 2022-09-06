@@ -1,3 +1,4 @@
+import { Label } from "../../../domain/models/label";
 import { LabelPageFormElements } from "./label-form-elements";
 
 
@@ -10,4 +11,15 @@ export class EditLabelPageFormController
     }
 
     showModal = () => $(this.elements.eModal).modal('show');
+
+    /**
+     * Set the form values  
+     * @param {Label} label the label
+     */
+    setFormValues = (label) =>
+    {
+        this.elements.eInputColor.value = label.color;
+        this.elements.eInputName.value = label.name;
+        this.elements.setLabelIdAttr(label.id);
+    }
 }

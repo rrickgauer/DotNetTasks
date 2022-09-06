@@ -1,3 +1,5 @@
+import { ApiLabels } from "../../../api/api-labels";
+import { Label } from "../../../domain/models/label";
 import { EditLabelPageFormController } from "../label-form/edit-label-form-controller";
 import { LabelsListItemElements } from "./labels-list-item-elements";
 
@@ -7,6 +9,7 @@ export class LabelsListItemController
     constructor()
     {
         this.editLabelFormController = new EditLabelPageFormController();
+        this.api = new ApiLabels();
     }
 
 
@@ -34,7 +37,7 @@ export class LabelsListItemController
      * 
      * @param {HTMLButtonElement} eClickedDropdownBtn the clicked dropdown button
      */
-    _handleDropdownMenuItemClick = (eClickedDropdownBtn) =>
+    _handleDropdownMenuItemClick = async (eClickedDropdownBtn) =>
     {
         const dropdownActionValue = eClickedDropdownBtn.getAttribute(LabelsListItemElements.DROPDOWN_BTN_ATTR);
 
@@ -61,14 +64,37 @@ export class LabelsListItemController
      */
     _editLabel = async (labelsListItem) =>
     {
-        console.log(labelsListItem);
-
+        // show the form in loading mode
+        this.editLabelFormController.elements.showLoading();
         this.editLabelFormController.showModal();
+
+        // fetch the data from the api
+        const labelData = await this._getLabelFromApi(labelsListItem.id);
+        
+        // show the data in the form inputs
+        this.editLabelFormController.setFormValues(labelData);
+        this.editLabelFormController.elements.hideLoading();
     }
 
 
-    
+    /**
+     * Get the specified label from the api
+     * @param {String} labelId the label id
+     * @returns {Promise<Label>}
+     */
+    _getLabelFromApi = async (labelId) =>
+    {
+        const response = await this.api.get(labelId);
+        const data = await response.json();
 
+        const label = new Label();
 
+        label.color     = data.data.color;
+        label.createdOn = data.data.createdOn;
+        label.id        = data.data.id;
+        label.name      = data.data.name;
+        label.userId    = data.data.userId;
 
+        return label;
+    }
 }

@@ -10,9 +10,21 @@ export class ApiLabels
      * Get the labels html
      * @returns {Promise<Response>}
      */
-    get = async () => 
+    getAll = async () => 
     {
         return await fetch(ApiEndpoints.LABELS);
+    }
+
+    /**
+     * Get a label from the api
+     * @param {String} labelId the label id
+     * @returns {Promise<Response>}
+     */
+    get = async (labelId) =>
+    {
+        const url = `${ApiEndpoints.LABELS}/${labelId}`;
+
+        return await fetch(url);
     }
 }
 

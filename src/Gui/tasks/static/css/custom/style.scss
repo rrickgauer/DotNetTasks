@@ -119,3 +119,20 @@ textarea {
         margin-bottom: 0.5rem;
     }
 }
+
+
+
+
+.labels-form-modal {
+
+    & {
+        .labels-form-spinner {display: none;}
+        .labels-form {display: block;}
+    }
+
+    &.loading {
+        .labels-form-spinner {display: block;}
+        .labels-form {display: none;}
+    }
+
+}

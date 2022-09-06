@@ -16,7 +16,7 @@ export class LabelsPageController
     renderLabelsHtml = async () =>
     {
         const api = new ApiLabels();
-        const response = await api.get();
+        const response = await api.getAll();
         const data = await response.text();
 
         this.hideSpinner();
