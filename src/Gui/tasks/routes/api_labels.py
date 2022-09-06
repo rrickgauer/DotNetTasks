@@ -31,10 +31,20 @@ def get_labels_html():
     return labels_html
 
 #------------------------------------------------------
-# GET: /api/labels
+# GET: /api/labels/:label_id
 #------------------------------------------------------
 @bp_api_labels.get('<uuid:label_id>')
 @security.login_required
 def get_label(label_id: UUID):
     response = services.labels.get_label(label_id)
+    return (response.text, response.status_code)
+
+
+#------------------------------------------------------
+# PUT: /api/labels/:label_id
+#------------------------------------------------------
+@bp_api_labels.put('<uuid:label_id>')
+@security.login_required
+def put_label(label_id: UUID):
+    response = services.labels.update_label(label_id, flask.request.form.to_dict())
     return (response.text, response.status_code)

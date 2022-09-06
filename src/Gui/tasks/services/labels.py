@@ -9,7 +9,6 @@ Service methods for labels
 from __future__ import annotations
 import flask
 from dataclasses import dataclass
-from datetime import date
 from uuid import UUID
 import requests
 from tasks.common import serializers
@@ -85,7 +84,7 @@ def get_labels_html(labels: list[LabelResponse]) -> str:
 
 
 
-def get_label(label_id: UUID):
+def get_label(label_id: UUID) -> requests.Response:
     url_builder = ApiUrlBuilder()
     url = url_builder.label(label_id)
 
@@ -93,6 +92,20 @@ def get_label(label_id: UUID):
         url    = url,
         auth   = security.get_user_session_tuple(),
         verify = False,
+    )
+
+    return response
+
+
+def update_label(label_id: UUID, data: dict):
+    url_builder = ApiUrlBuilder()
+    url = url_builder.label(label_id)
+
+    response = requests.put(
+        url    = url,
+        auth   = security.get_user_session_tuple(),
+        verify = False,
+        data = data
     )
 
     return response

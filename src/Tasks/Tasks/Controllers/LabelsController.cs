@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 
@@ -69,6 +70,33 @@ public class LabelsController : ControllerBase
         }
 
         return Ok(result);
+    }
+
+
+
+    /// <summary>
+    /// PUT: /labels/:labelId
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("{labelId}")]
+    public async Task<ActionResult<Label>> Put([FromRoute] Guid labelId, [FromForm] UpdateLabelForm form)
+    {
+
+        return Ok("updated");
+
+        //var result = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+
+        //if (!result.Successful)
+        //{
+        //    return BadRequest(result);
+        //}
+
+        //if (result.Data is null)
+        //{
+        //    return NotFound();
+        //}
+
+        //return Ok(result);
     }
 
 

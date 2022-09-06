@@ -25,15 +25,28 @@ export class LabelPageFormElements
         this.eSubmitBtn = this.eModal.querySelector(`.${LabelPageFormElements.SUBMIT_BTN}`);
     }
 
+
+    //#region Get/Set Label ID attribute
     /**
      * Set the 'data-js-label-id' attribute value
      * @param {String} labelId the label id
      */
     setLabelIdAttr = (labelId) => this.eModal.setAttribute(LabelPageFormElements.LABEL_ID_ATTR, labelId);
 
+    /**
+     * Get the current data attribute id value for the label
+     * @returns {String}
+     */
+    getLabelIdAttr = () => this.eModal.getAttribute(LabelPageFormElements.LABEL_ID_ATTR);
+
+    //#endregion
+
+    //#region Toggle loading
     showLoading = () => this.eModal.classList.add(LabelPageFormElements.LOADING_CLASS);
     hideLoading = () => this.eModal.classList.remove(LabelPageFormElements.LOADING_CLASS);
+    //#endregion
 
+    
 }
 
 

@@ -1,6 +1,7 @@
 import { ApiEndpoints } from "./api-base";
 import { HttpMethods } from "./api-base";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
+import { ModifyLabelForm } from "../domain/forms/modify-label-form";
 
 
 export class ApiLabels
@@ -23,8 +24,25 @@ export class ApiLabels
     get = async (labelId) =>
     {
         const url = `${ApiEndpoints.LABELS}/${labelId}`;
-
         return await fetch(url);
+    }
+
+
+    /**
+     * Send a put request
+     * @param {String} labelId the label id
+     * @param {ModifyLabelForm} formValues the label form values
+     * @returns {Promise<Response>}
+     */
+    put = async (labelId, formValues) =>
+    {
+        const url = `${ApiEndpoints.LABELS}/${labelId}`;
+        const data = HttpRequestMapper.toFormData(formValues);
+
+        return await fetch(url, {
+            method: HttpMethods.PUT,
+            body: data,
+        });
     }
 }
 
