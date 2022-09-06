@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
 
@@ -45,6 +42,19 @@ public class EventLabelServices : IEventLabelServices
         }
 
         return eventLabel;
+    }
+
+    /// <summary>
+    /// Get all the labels that have been assigned to the given event
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<Label>> GetEventLabelsAsync(Guid eventId, Guid userId)
+    {
+        DataTable dataTable = await _eventLabelRepository.SelectAllAsync(eventId, userId);
+
+        return LabelMapper.ToModels(dataTable);   
     }
 
     /// <summary>

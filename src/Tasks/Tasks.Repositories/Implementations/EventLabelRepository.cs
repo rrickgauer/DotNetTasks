@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,5 +47,18 @@ public class EventLabelRepository : IEventLabelRepository
         int numRecords = await _dbConnection.ModifyAsync(command);
 
         return numRecords;
+    }
+
+
+    public async Task<DataTable> SelectAllAsync(Guid eventId, Guid userId)
+    {
+        MySqlCommand command = new(EventLabelRepositorySql.SelectAllByIdAndUserId);
+
+        command.Parameters.AddWithValue("@event_id", eventId);
+        command.Parameters.AddWithValue("@user_id", userId);
+
+        DataTable records = await _dbConnection.FetchAllAsync(command);
+
+        return records;        
     }
 }

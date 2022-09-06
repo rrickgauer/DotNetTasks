@@ -39,4 +39,30 @@ public class EventLabelRepositorySql
                     l.id = @label_id
                     AND l.user_id = @user_id
             )";
+
+
+    /// <summary>
+    /// Fetch all the assigned labels to a User's event
+    /// 
+    /// Parms:
+    /// @event_id
+    /// @user_id
+    /// </summary>
+    public const string SelectAllByIdAndUserId = @"
+        SELECT
+            l.*
+        FROM
+            Event_Labels el
+            LEFT JOIN Labels l ON l.id = el.label_id
+        WHERE
+            el.event_id = @event_id
+            AND EXISTS (
+                SELECT
+                    1
+                FROM
+                    Events e
+                WHERE
+                    e.id = el.event_id
+                    AND e.user_id = @user_id
+            )";
 }
