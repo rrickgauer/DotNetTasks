@@ -42,7 +42,16 @@ public class EventLabelsController : ControllerBase
     [HttpPut("{eventId}/labels/{labelId}")]
     public async Task<ActionResult<EventLabel>> Put([FromRoute] EventLabelRequestParms eventLabelRequest)
     {
-        return Ok(eventLabelRequest);
+        EventLabel? newEventLabel = await _eventLabelServices.CreateAsync(eventLabelRequest, CurrentUserId);
+        
+        if (newEventLabel is null)
+        {
+            return NotFound();
+        }
+
+        string url = _eventLabelServices.GetUrl(newEventLabel); 
+
+        return Created(url, newEventLabel);
     }
 
 }

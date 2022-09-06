@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Domain.Models;
 
 namespace Tasks.Domain.Parms;
 
@@ -14,5 +15,7 @@ public class EventLabelRequestParms
 
     [BindRequired]
     public Guid LabelId { get; set; }
+
+    public static explicit operator EventLabel(EventLabelRequestParms eventLabelRequest) => new() { EventId=eventLabelRequest.EventId, LabelId=eventLabelRequest.LabelId };
 
 }
