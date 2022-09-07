@@ -40,6 +40,7 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_api_user, url_prefix='/api/user')
     flask_app.register_blueprint(routes.bp_api_email_verifications, url_prefix='/api/email-verifications')
     flask_app.register_blueprint(routes.bp_api_labels, url_prefix='/api/labels')
+    flask_app.register_blueprint(routes.bp_api_event_labels, url_prefix='/api/events/<uuid:event_id>/labels')
 
     flask_app.register_blueprint(routes.bp_home, url_prefix='/')
 

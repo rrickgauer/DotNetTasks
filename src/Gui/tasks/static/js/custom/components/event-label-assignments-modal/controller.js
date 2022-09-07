@@ -1,0 +1,10 @@
+
+
+
+export class EventLabelAssignmentsController
+{
+    constructor()
+    {
+        
+    }
+}

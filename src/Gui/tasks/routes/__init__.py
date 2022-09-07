@@ -17,3 +17,4 @@ from .api_password import bp_api_password as bp_api_password
 from .api_user import bp_api_user as bp_api_user
 from .api_email_verifications import bp_api_email_verifications as bp_api_email_verifications
 from .api_labels import bp_api_labels as bp_api_labels
+from .api_event_labels import bp_api_event_labels as bp_api_event_labels
