@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
+using Tasks.Repositories.Helpers;
 using Tasks.Repositories.Interfaces;
 using Tasks.SQL.Commands;
 
@@ -49,7 +51,6 @@ public class EventLabelRepository : IEventLabelRepository
         return numRecords;
     }
 
-
     public async Task<DataTable> SelectAllAsync(Guid eventId, Guid userId)
     {
         MySqlCommand command = new(EventLabelRepositorySql.SelectAllByIdAndUserId);
@@ -60,5 +61,25 @@ public class EventLabelRepository : IEventLabelRepository
         DataTable records = await _dbConnection.FetchAllAsync(command);
 
         return records;        
+    }
+
+    public async Task<int> InsertBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest)
+    {
+        MySqlCommand deleteCommand = new(EventLabelRepositorySql.DeleteAllByEvent);
+        deleteCommand.Parameters.AddWithValue("@event_id", eventLabelsBatchRequest.EventId);
+
+        // don't need to run the insert command because there are no labels to add
+        // so just delete all the existing ones
+        if (eventLabelsBatchRequest.LabelIds.ToList().Count == 0)
+        {
+            return await _dbConnection.ModifyAsync(deleteCommand);
+        }
+
+        EventLabelsBatchInsertSqlGenerator commandGenerator = new(eventLabelsBatchRequest);
+        MySqlCommand insertCommand = commandGenerator.GetMySqlCommand();
+
+        var result = await _dbConnection.ModifyWithTransactionAsync(deleteCommand, insertCommand);
+
+        return 0;
     }
 }

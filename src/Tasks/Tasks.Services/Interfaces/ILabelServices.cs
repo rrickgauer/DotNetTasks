@@ -12,5 +12,5 @@ public interface ILabelServices
     public Task<GetLabelResponse> GetLabelAsync(Guid labelId, Guid userId);
     public Task<ModifyLabelResponse> UpdateLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm);
     public Task<DeleteLabelResponse> DeleteLabelAsync(Guid labelId, Guid userId);
-
+    public Task<bool> ClientOwnsLabelsAsync(Guid userId, IEnumerable<Guid> labelIds);
 }

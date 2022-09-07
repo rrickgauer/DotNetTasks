@@ -77,7 +77,7 @@ public class LabelServices : ILabelServices
     /// <param name="userId"></param>
     /// <param name="label"></param>
     /// <returns></returns>
-    private bool UserCanUpdateLabel(DataRow? dataRow, Guid labelId, Guid userId, out Label? label)
+    private static bool UserCanUpdateLabel(DataRow? dataRow, Guid labelId, Guid userId, out Label? label)
     {
         // label DNE, so we just need to create a new one
         if (dataRow is null)
@@ -207,5 +207,38 @@ public class LabelServices : ILabelServices
         result.Data = deleteResult.Data;
 
         return result;
+    }
+
+
+    /// <summary>
+    /// Checks if the specified user owns all the of given label ids.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="labelIds"></param>
+    /// <returns></returns>
+    public async Task<bool> ClientOwnsLabelsAsync(Guid userId, IEnumerable<Guid> labelIds)
+    {
+        // get all the user's current labels
+        GetLabelsResponse getLabelsResponse = await GetLabelsAsync(userId);
+
+        if (!getLabelsResponse.Successful && getLabelsResponse.Exception != null)
+        {
+            throw getLabelsResponse.Exception;
+        }
+
+        // extract the LabelId's from each of the user's Label objects
+        var userLabelIds = from label in getLabelsResponse.Data select label.Id;
+
+        // ensure that all of the specified label ids are within the user's label id list
+        foreach(var labelId in labelIds)
+        {
+            if (!userLabelIds.Contains(labelId))
+            {
+                return false;
+            }
+        }
+
+        return true;
+
     }
 }

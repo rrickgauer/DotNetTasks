@@ -9,6 +9,8 @@ using Tasks.Services.Interfaces;
 
 namespace Tasks.Controllers;
 
+using LabelsCollection = ActionResult<IEnumerable<Label>>;
+
 /// <summary>
 /// Url Prefix: /event/event:
 /// </summary>
@@ -21,6 +23,7 @@ public class EventLabelsController : ControllerBase
     private readonly IConfigs _configuration;
     private readonly IEventLabelServices _eventLabelServices;
     private readonly IEventServices _eventServices;
+    private readonly ILabelServices _labelServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
 
@@ -29,11 +32,12 @@ public class EventLabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public EventLabelsController(IConfigs configuration, IEventLabelServices eventLabelServices, IEventServices eventServices)
+    public EventLabelsController(IConfigs configuration, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
     {
         _configuration = configuration;
         _eventLabelServices = eventLabelServices;
         _eventServices = eventServices;
+        _labelServices = labelServices;
     }
 
     /// <summary>
@@ -42,7 +46,7 @@ public class EventLabelsController : ControllerBase
     /// <param name="eventLabelRequest">Url parms</param>
     /// <returns></returns>
     [HttpPut("{eventId}/labels/{labelId}")]
-    public async Task<ActionResult<EventLabel>> Put([FromRoute] EventLabelRequestParms eventLabelRequest)
+    public async Task<ActionResult<EventLabel>> PutAsync([FromRoute] EventLabelRequestParms eventLabelRequest)
     {
         EventLabel? newEventLabel = await _eventLabelServices.CreateAsync(eventLabelRequest, CurrentUserId);
         
@@ -51,7 +55,7 @@ public class EventLabelsController : ControllerBase
             return NotFound();
         }
 
-        string url = _eventLabelServices.GetUrl(newEventLabel); 
+        string url = _eventLabelServices.GetUri(newEventLabel); 
 
         return Created(url, newEventLabel);
     }
@@ -62,7 +66,7 @@ public class EventLabelsController : ControllerBase
     /// <param name="eventId"></param>
     /// <returns></returns>
     [HttpGet("{eventId}/labels")]
-    public async Task<IActionResult> Get([FromRoute] Guid eventId)
+    public async Task<LabelsCollection> GetAsync([FromRoute] Guid eventId)
     {
         // make sure the client owns the event
         var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
@@ -77,6 +81,43 @@ public class EventLabelsController : ControllerBase
 
         return Ok(labels);
     }
+
+
+    /// <summary>
+    /// PUT: /events/:eventId/labels
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="labelIds"></param>
+    /// <returns></returns>
+    [HttpPut("{eventId}/labels")]
+    public async Task<LabelsCollection> BatchPutAsync([FromRoute] Guid eventId, [FromBody] IEnumerable<Guid> labelIds)
+    {
+        // make sure the client owns the event
+        var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
+
+        if (!clientOwnsEvent)
+        {
+            return NotFound();
+        }
+
+        // make sure the client owns all of the given label ids
+        var labelsAreValid = await _labelServices.ClientOwnsLabelsAsync(CurrentUserId, labelIds);
+
+        if (!labelsAreValid)
+        {
+            return BadRequest("Unknown label id given.");
+        }
+
+        // insert the labels into the database
+        EventLabelsBatchRequest eventLabelsBatchRequest = new(eventId, CurrentUserId, labelIds);
+        var insertResult = await _eventLabelServices.CreateBatchAsync(eventLabelsBatchRequest);
+
+        // now, fetch the newly assigned labels
+        var labels = await _eventLabelServices.GetEventLabelsAsync(eventId, CurrentUserId);
+
+        return Ok(labels);
+    }
+
 
 
 }

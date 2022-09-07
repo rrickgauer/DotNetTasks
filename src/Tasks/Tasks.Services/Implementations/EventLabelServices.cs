@@ -44,6 +44,14 @@ public class EventLabelServices : IEventLabelServices
         return eventLabel;
     }
 
+
+    public async Task<int> CreateBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest)
+    {
+        return await _eventLabelRepository.InsertBatchAsync(eventLabelsBatchRequest);
+    }
+
+
+
     /// <summary>
     /// Get all the labels that have been assigned to the given event
     /// </summary>
@@ -62,7 +70,7 @@ public class EventLabelServices : IEventLabelServices
     /// </summary>
     /// <param name="eventLabel"></param>
     /// <returns></returns>
-    public string GetUrl(EventLabel eventLabel)
+    public string GetUri(EventLabel eventLabel)
     {
         string url = $"/events/{eventLabel.EventId}/labels/{eventLabel.LabelId}";
         return url;

@@ -65,4 +65,25 @@ public class EventLabelRepositorySql
                     e.id = el.event_id
                     AND e.user_id = @user_id
             )";
+
+
+    public const string BatchInsertTemplate = @"
+        REPLACE INTO
+            Event_Labels (event_id, label_id)
+        SELECT
+            @event_id,
+            l.id
+        FROM
+            Labels l
+        WHERE
+            l.id IN ({0}) 
+            AND l.user_id = @user_id";
+
+
+    public const string DeleteAllByEvent = @"
+        DELETE FROM
+            Event_Labels el
+        WHERE
+            el.event_id = @event_id;";
+
 }
