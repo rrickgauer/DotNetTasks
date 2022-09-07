@@ -3,7 +3,6 @@ import { Label } from "../../domain/models/label";
 import { EventLabelAssignmentsElements } from "./elements";
 
 
-
 export class EventLabelAssignmentsController
 {
     constructor()
@@ -16,8 +15,11 @@ export class EventLabelAssignmentsController
     addListeners = () =>
     {
         this._listenForModalClose();
+        this._listenForCheckboxCheckedChange();
     }
 
+
+    //#region Reset modal
 
     _listenForModalClose = () =>
     {
@@ -29,20 +31,33 @@ export class EventLabelAssignmentsController
 
     _resetModal = () =>
     {
-        this._showLoading();
-        
-        const checkboxes = this.elements.eForm.querySelectorAll(`input[type="checkbox"]`);
+        this._showLoading(); 
+        this._disableSubmitButton();
 
-        for (const checkbox of checkboxes)
+        for (const checkbox of this.elements.eCheckboxes)
         {
             checkbox.checked = false;
+        }
+    }
+
+    //#endregion
+
+
+    _listenForCheckboxCheckedChange = () =>
+    {
+        for(const checkbox of this.elements.eCheckboxes)
+        {
+            checkbox.addEventListener('change', (e) => 
+            {
+                this._enableSubmitButton();
+            });
         }
     }
 
 
     //#region Show event labels
 
-    
+
     showEventLabels = async (eventId) =>
     {
         this._showLoading();
@@ -88,4 +103,7 @@ export class EventLabelAssignmentsController
 
     _showLoading = () => this.elements.eModal.classList.add('loading')
     _hideLoading = () => this.elements.eModal.classList.remove('loading');
+
+    _disableSubmitButton = () => this.elements.eSubmitBtn.disabled = true;
+    _enableSubmitButton = () => this.elements.eSubmitBtn.disabled = false;
 }

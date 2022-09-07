@@ -14,6 +14,12 @@ export class EventLabelAssignmentsElements
 
         /** @type {HTMLFormElement} */
         this.eForm = document.getElementById(EventLabelAssignmentsElements.FORM);
+
+        /** @type {NodeListOf<HTMLInputElement>} */
+        this.eCheckboxes = this.eForm.querySelectorAll(`input[type="checkbox"]`);
+
+        /** @type {HTMLButtonElement} */
+        this.eSubmitBtn = this.eForm.querySelector(`button[type="submit"]`);
     }
 
 }
