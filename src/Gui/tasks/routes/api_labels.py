@@ -25,10 +25,12 @@ bp_api_labels = flask.Blueprint('api_labels', __name__)
 def get_labels_html():
     # get labels data from api
     labels = services.labels.get_labels()
-
     labels_html = services.labels.get_labels_html(labels.data)
 
     return labels_html
+
+
+
 
 #------------------------------------------------------
 # GET: /api/labels/:label_id

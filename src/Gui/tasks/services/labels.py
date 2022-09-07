@@ -7,7 +7,6 @@ Service methods for labels
 """
 
 from __future__ import annotations
-import re
 import flask
 from dataclasses import dataclass
 from uuid import UUID

@@ -48,4 +48,7 @@ class ApiUrlBuilder:
 
     def label(self, label_id) -> str:
         return f'{self.api_url}/labels/{label_id}'
+
+    def event_labels(self, event_id) -> str:
+        return f'{self.events(event_id)}/labels'
         

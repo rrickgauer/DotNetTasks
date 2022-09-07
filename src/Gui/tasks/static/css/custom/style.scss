@@ -134,5 +134,18 @@ textarea {
         .labels-form-spinner {display: block;}
         .labels-form {display: none;}
     }
+}
 
+
+
+#event-label-assignments-modal {
+    & {
+        .section-spinner {display: none;}
+        .section-display {display: block;}
+    }
+
+    &.loading {
+        .section-spinner {display: block;}
+        .section-display {display: none;}
+    }
 }

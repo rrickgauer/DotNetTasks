@@ -1,7 +1,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="event-label-assignments-modal" tabindex="-1">
+<div class="modal" id="event-label-assignments-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -18,14 +18,28 @@
                     {% include 'includes/spinner-center.html' %}
                 </div>
                 
-
                 <div class="section-display">
-                    {# Call the api to get the html here #}
+                    <div class="section-labels-form">
+                        <form id="event-label-assignment-form">
+                            
+                            {% for label in data.labels %}
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="labels" value="{{ label.id }}">
+                                        
+                                        <div class="d-flex">
+                                            <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
+                                            <div class="mr-2">{{ label.name }}</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            
+                            <button type="button" class="btn btn-sm btn-success mt-3">Save labels</button>
+                        </form>
+                    </div>
+
                 </div>
-
-
-
-
 
             </div>
       
