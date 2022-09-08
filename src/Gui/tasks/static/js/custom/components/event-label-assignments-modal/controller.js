@@ -1,5 +1,6 @@
 import { ApiEventLabels } from "../../api/api-event-labels";
 import { Label } from "../../domain/models/label";
+import { SpinnerButton } from "../../helpers/spinner-button";
 import { EventLabelAssignmentsElements } from "./elements";
 
 
@@ -10,12 +11,14 @@ export class EventLabelAssignmentsController
         /** @type {EventLabelAssignmentsElements} */
         this.elements = new EventLabelAssignmentsElements();
         this.api = new ApiEventLabels();
+        this.spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
     }
 
     addListeners = () =>
     {
         this._listenForModalClose();
         this._listenForCheckboxCheckedChange();
+        this._listenForFormSubmission();
     }
 
 
@@ -60,6 +63,9 @@ export class EventLabelAssignmentsController
 
     showEventLabels = async (eventId) =>
     {
+
+        this.elements.setEventIdAttr(eventId);
+
         this._showLoading();
         this._showModal();
 
@@ -98,6 +104,53 @@ export class EventLabelAssignmentsController
     //#endregion
 
 
+    /**
+     * Listen for the form submission
+     */
+    _listenForFormSubmission = () =>
+    {
+        this.elements.eForm.addEventListener('submit', (e) =>
+        {
+            e.preventDefault();
+            this._submitForm();
+        });
+    }
+
+    _submitForm = async () =>
+    {
+        this.spinnerButton.showSpinner();
+
+        const labels = [];
+        const checkedBoxes = this.elements.eForm.querySelectorAll(EventLabelAssignmentsElements.SELECTOR_CHECKED_CHECKBOXES);
+
+        for (const checkbox of checkedBoxes)
+        {
+            const labelId = checkbox.value;
+            labels.push(labelId);
+        }
+
+
+        
+
+
+        const eventId = this.elements.getEventIdAttr();
+
+
+        console.log([eventId, labels]);
+
+        const response = await this.api.putBatch(eventId, labels);
+
+
+        console.log(await response.json());
+
+
+        this.spinnerButton.reset();
+    }
+
+
+
+    //#region Togglers
+
     _showModal = () => $(this.elements.eModal).modal('show');
     _hideModal = () => $(this.elements.eModal).modal('hide');
 
@@ -106,4 +159,6 @@ export class EventLabelAssignmentsController
 
     _disableSubmitButton = () => this.elements.eSubmitBtn.disabled = true;
     _enableSubmitButton = () => this.elements.eSubmitBtn.disabled = false;
+
+    //#endregion
 }
