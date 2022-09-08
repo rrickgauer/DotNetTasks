@@ -53,4 +53,17 @@ export class Utililties
         return valueType === typeType;
     }
 
+
+    static printObjectProperties(o)
+    {
+        console.log("\n\n");
+
+        for(const key in o)
+        {
+            console.log(`${key}: ${o[key]}`);
+        }
+
+        console.log("\n\n");
+    }
+
 }

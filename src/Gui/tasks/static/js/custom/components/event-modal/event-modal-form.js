@@ -6,6 +6,7 @@ import { Event as EventModel } from "../../domain/models/event";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DatePicker } from "../../helpers/custom-datepicker";
 import { DateTime } from "../../../lib/luxon";
+import { Utililties } from "../../helpers/utilities";
 
 /**
  * This class represents all the inputs for the event modal form
@@ -108,16 +109,18 @@ export class EventModalForm
      */
     setStartsOnValue = (newValue) =>
     {
-        
-        console.log(this);
+
+        Utililties.printObjectProperties(this);
+
+
         const flatPicker = new DatePicker(this.inputStartsOn);
 
-        console.log(flatPicker);
+        Utililties.printObjectProperties(flatPicker);
 
 
         // rmr - this is where its getting fucked up!!!!
 
-        console.log(newValue);
+        Utililties.printObjectProperties(newValue);
 
         try
         {
