@@ -116,5 +116,31 @@ namespace Tasks.Controllers
         }
 
 
+
+
+        /// <summary>
+        /// GET: /recurrences
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("test-all")]
+        public async Task<IActionResult> GetRecurrencesAsyncTestNew([FromQuery] RecurrenceRetrieval retrieval)
+        {
+            try
+            {
+                ValidateRetrievalRange(retrieval);
+            }
+            catch (ValidationException err)
+            {
+                return BadRequest(err.Message);
+            }
+
+            retrieval.UserId = CurrentUserId;
+
+            var result = await _recurrenceServices.GetRecurrencesAsync_NEW(retrieval);
+
+            return Ok(result);
+
+        }
+
     }
 }

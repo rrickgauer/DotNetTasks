@@ -15,5 +15,4 @@ namespace Tasks.Domain.Parms
 
         public bool IsValid() => EndsOn >= StartsOn;
     }
-
 }

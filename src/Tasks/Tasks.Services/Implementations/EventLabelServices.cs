@@ -75,4 +75,20 @@ public class EventLabelServices : IEventLabelServices
         string url = $"/events/{eventLabel.EventId}/labels/{eventLabel.LabelId}";
         return url;
     }
+
+
+
+    /// <summary>
+    /// Get all the event label assignments for the specified user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId)
+    { 
+        DataTable dataTable = await _eventLabelRepository.SelectAllAsync(userId);
+
+        var eventLabels = EventLabelMapper.ToModels(dataTable);
+
+        return eventLabels;        
+    }
 }

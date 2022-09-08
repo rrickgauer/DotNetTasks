@@ -67,6 +67,16 @@ public class EventLabelRepositorySql
             )";
 
 
+    public const string SelectAllByUser = @"
+        SELECT
+            el.*
+        FROM
+            Events e
+            INNER JOIN Event_Labels el ON el.event_id = e.id
+        WHERE
+            e.user_id = @user_id";
+
+
     public const string BatchInsertTemplate = @"
         REPLACE INTO
             Event_Labels (event_id, label_id)
