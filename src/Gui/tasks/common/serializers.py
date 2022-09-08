@@ -77,22 +77,20 @@ class ApiResponseRecurrenceSerializer(SerializerBase):
 
     def serialize(self) -> models.api_responses.Recurrence:
         data: models.api_responses.Recurrence = super().serialize()
-
         data.occursOn = parseIsoDatetime(datetime.datetime, data.occursOn).date()
-        data.startsAt = parseIsoDatetime(datetime.time, data.startsAt)
-    
+
         return data
 
     def to_model(self) -> models.EventRecurrence:
         api_model = self.serialize()
 
         model = models.EventRecurrence(
-            event_id  = api_model.eventId,
-            name      = api_model.name,
+            
+            event     = api_model.event,
             occurs_on = api_model.occursOn,
-            starts_at = api_model.startsAt,
             completed = api_model.completed,
             cancelled = api_model.cancelled,
+            labels    = api_model.labels,
         )
 
         return model
@@ -123,11 +121,8 @@ class EventApiResponseSerializer(SerializerBase):
         event_model.startsAt = parseIsoDatetime(datetime.time, event_model.startsAt)
         event_model.endsAt = parseIsoDatetime(datetime.time, event_model.endsAt)
 
-
-
 class UpdatePasswordArgsSerializer(SerializerBase):
     DomainModel = models.UpdatePasswordArgs
-
 
 class UserSignUpApiResponseUserSerializer(SerializerBase):
     DomainModel = api_responses.UserSignUpApiResponseUser
@@ -137,7 +132,6 @@ class UserSignUpApiResponseUserSerializer(SerializerBase):
         user.createdOn = parseIsoDatetime(datetime.datetime, user.createdOn)
 
         return user
-
 
 class UserSignUpApiResponseSerializer(SerializerBase):
     DomainModel = api_responses.UserSignUpApiResponse
@@ -149,8 +143,6 @@ class UserSignUpApiResponseSerializer(SerializerBase):
             signup_response.user = UserSignUpApiResponseUserSerializer(signup_response.user).serialize()
 
         return signup_response
-
-
 
 class LabelResponseSerializer(SerializerBase):
     DomainModel = api_responses.LabelResponse
