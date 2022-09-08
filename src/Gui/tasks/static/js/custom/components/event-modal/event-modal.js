@@ -158,6 +158,15 @@ export class EventModal
         
         const eventModel = await this._getEventData(eventId);
         console.log('1-7');
+        
+        console.log('\n\n');
+        for(const key in eventModel)
+        {
+            console.log(`${key}: ${eventModel[key]}`);
+        }
+        console.log('\n\n');
+        
+        
         this.eventModalForm.setFormValues(eventModel);
         console.log('1-8');
 
