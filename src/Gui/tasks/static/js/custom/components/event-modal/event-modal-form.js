@@ -118,11 +118,16 @@ export class EventModalForm
      */
     setStartsOnValue = (newValue) =>
     {
+        console.log('4-1');
         const flatPicker = new DatePicker(this.inputStartsOn);
+        console.log('4-2');
         flatPicker.setValueFromDateTime(newValue);
+        console.log('4-3');
 
         const endsOnFlatpicker = new DatePicker(this.inputEndsOn);
+        console.log('4-4');
         endsOnFlatpicker.setMinimumDate(newValue);
+        console.log('4-5');
     }
 
     /**
