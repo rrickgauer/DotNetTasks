@@ -11,9 +11,9 @@ namespace Tasks.Services.Implementations
 {
     public class RecurrenceServices : IRecurrenceServices
     {
+
         #region Private members
         private readonly IRecurrenceRepository _recurrenceRepository;
-
         private readonly IEventLabelServices _eventLabelServices;
         private readonly IEventServices _eventServices;
         private readonly ILabelServices _labelServices;
@@ -32,31 +32,13 @@ namespace Tasks.Services.Implementations
             _labelServices = labelServices;
         }
 
-        /// <summary>
-        /// Get the recurrences 
-        /// </summary>
-        /// <param name="recurrenceRetrieval"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Recurrence>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
-        {
-            DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(recurrenceRetrieval);
-
-            return RecurrenceMapper.ToModels(recurrencesTable);
-        }
+        #region Get recurrences for email
 
         /// <summary>
-        /// Get the event recurrences
+        /// Get the recurrences for reminders
         /// </summary>
-        /// <param name="eventRecurrenceRetrieval"></param>
+        /// <param name="validDateRange"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Recurrence>> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
-        {
-            DataTable recurrencesTable = await _recurrenceRepository.GetEventRecurrencesAsync(eventRecurrenceRetrieval);
-
-            return RecurrenceMapper.ToModels(recurrencesTable);
-        }
-
-
         public async Task<IEnumerable<Recurrence>> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange)
         {
             DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesForRemindersAsync(validDateRange);
@@ -64,23 +46,69 @@ namespace Tasks.Services.Implementations
             return RecurrenceMapper.ToModels(recurrencesTable);
         }
 
+        #endregion
 
-        #region New stuff
+        #region Get Recurrences
 
-        public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync_NEW(RecurrenceRetrieval recurrenceRetrieval)
+        public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
         {
             // get the user's events, labels, and EventLabels from each of the services
-            var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
-            var events = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
-            var labels = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
-            var recurrences = await GetRecurrencesAsync(recurrenceRetrieval);
-
-            // 
+            IEnumerable<EventLabel> eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
+            List<Event> events = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
+            IEnumerable<Label> labels = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
+            IEnumerable<Recurrence>? recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval);
+            
             List<GetRecurrencesResponse> responses = new();
 
             foreach (Recurrence recurrence in recurrences)
             {
-                var recurrenceResponse = BuildRecurrenceResponse(eventLabels, events, labels, recurrence);
+                Event? e = events.FirstOrDefault(e => e.Id == recurrence.EventId);
+
+                var recurrenceResponse = BuildRecurrenceResponse(eventLabels, labels, e, recurrence);
+
+                responses.Add(recurrenceResponse);
+            }
+
+            return responses;
+        }
+
+        /// <summary>
+        /// Get the recurrences 
+        /// </summary>
+        /// <param name="recurrenceRetrieval"></param>
+        /// <returns></returns>
+        private async Task<IEnumerable<Recurrence>> GetRecurrecesFromDbAsync(RecurrenceRetrieval recurrenceRetrieval)
+        {
+            DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(recurrenceRetrieval);
+
+            return RecurrenceMapper.ToModels(recurrencesTable);
+        }
+
+        #endregion
+
+
+        #region Get Event Recurrences
+
+        /// <summary>
+        /// Get all the recurrences for an event
+        /// </summary>
+        /// <param name="recurrenceRetrieval"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(EventRecurrenceRetrieval recurrenceRetrieval)
+        {
+            // get the user's events, labels, and EventLabels from each of the services
+            var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
+            var labels = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
+            var recurrences = await GetEventRecurrencesFromDbAsync(recurrenceRetrieval);
+
+            Event? e = await _eventServices.GetEventAsync(recurrenceRetrieval.EventId);
+
+            List<GetRecurrencesResponse> responses = new();
+
+            foreach (Recurrence recurrence in recurrences)
+            {
+                var recurrenceResponse = BuildRecurrenceResponse(eventLabels, labels, e, recurrence);
+
                 responses.Add(recurrenceResponse);
             }
 
@@ -88,12 +116,34 @@ namespace Tasks.Services.Implementations
         }
 
 
-        private GetRecurrencesResponse BuildRecurrenceResponse(IEnumerable<EventLabel> eventLabels, IEnumerable<Event> events, IEnumerable<Label> labels, Recurrence recurrence)
+        /// <summary>
+        /// Get the event recurrences
+        /// </summary>
+        /// <param name="eventRecurrenceRetrieval"></param>
+        /// <returns></returns>
+        private async Task<IEnumerable<Recurrence>> GetEventRecurrencesFromDbAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
         {
-            // extract the event model with the matching event id from the collection of Events
-            Event? e = events.FirstOrDefault(e => e.Id == recurrence.EventId);
+            DataTable recurrencesTable = await _recurrenceRepository.GetEventRecurrencesAsync(eventRecurrenceRetrieval);
+
+            return RecurrenceMapper.ToModels(recurrencesTable);
+        }
 
 
+        #endregion
+
+
+        #region Build Recurrence Response
+
+        /// <summary>
+        /// Build a new GetRecurrencesResponse
+        /// </summary>
+        /// <param name="eventLabels"></param>
+        /// <param name="labels"></param>
+        /// <param name="e"></param>
+        /// <param name="recurrence"></param>
+        /// <returns></returns>
+        private GetRecurrencesResponse BuildRecurrenceResponse(IEnumerable<EventLabel> eventLabels, IEnumerable<Label> labels, Event e, Recurrence recurrence)
+        {
             // get list of all the label ids from the EventLabels where the event id equal the the current event id
             // need to get a list of all the label ids that need to be included in the Event.Labels collection
             var labelIds =
@@ -122,7 +172,6 @@ namespace Tasks.Services.Implementations
 
             return result;
         }
-
 
         #endregion
     }

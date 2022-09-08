@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Domain.Views;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 using Tasks.Validation;
@@ -47,7 +48,7 @@ namespace Tasks.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Recurrence>>> GetRecurrencesAsync([FromQuery] RecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetRecurrencesAsync([FromQuery] RecurrenceRetrieval retrieval)
         {
             try
             {
@@ -64,8 +65,49 @@ namespace Tasks.Controllers
             // get the recurrences
             var recurrences = await _recurrenceServices.GetRecurrencesAsync(retrieval);
 
+
             return Ok(recurrences);
         }
+
+
+        //IEnumerable<GetRecurrencesResponse>
+
+        ///// <summary>
+        ///// GET: /recurrences/:eventId
+        ///// </summary>
+        ///// <param name="eventId"></param>
+        ///// <returns></returns>
+        //[HttpGet("{eventId}")]
+        //public async Task<ActionResult<List<Recurrence>>> GetEventRecurrencesAsync(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
+        //{
+        //    try
+        //    {
+        //        ValidateRetrievalRange(retrieval);
+        //    }
+        //    catch (ValidationException err)
+        //    {
+        //        return BadRequest(err.Message);
+        //    }
+
+        //    // make sure the user owns the requested event
+        //    var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
+
+        //    if (userEvent == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // fill out the remaining EventRecurrenceRetrieval property values
+        //    retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
+        //    retrieval.EventId = eventId;
+
+        //    // get the recurrences
+        //    var recurrences = await _recurrenceServices.GetEventRecurrencesAsync(retrieval);
+
+        //    return Ok(recurrences);
+        //}
+
+
 
         /// <summary>
         /// GET: /recurrences/:eventId
@@ -73,7 +115,7 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public async Task<ActionResult<List<Recurrence>>> GetEventRecurrencesAsync(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetEventRecurrencesAsync(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
         {
             try
             {
@@ -97,7 +139,7 @@ namespace Tasks.Controllers
             retrieval.EventId = eventId;
 
             // get the recurrences
-            var recurrences = await _recurrenceServices.GetEventRecurrencesAsync(retrieval);
+            var recurrences = await _recurrenceServices.GetRecurrencesAsync(retrieval);
 
             return Ok(recurrences);
         }
@@ -113,33 +155,6 @@ namespace Tasks.Controllers
             {
                 throw new ValidationException("EndsOn must be greater than or equal to StartsOn");
             }
-        }
-
-
-
-
-        /// <summary>
-        /// GET: /recurrences
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("test-all")]
-        public async Task<IActionResult> GetRecurrencesAsyncTestNew([FromQuery] RecurrenceRetrieval retrieval)
-        {
-            try
-            {
-                ValidateRetrievalRange(retrieval);
-            }
-            catch (ValidationException err)
-            {
-                return BadRequest(err.Message);
-            }
-
-            retrieval.UserId = CurrentUserId;
-
-            var result = await _recurrenceServices.GetRecurrencesAsync_NEW(retrieval);
-
-            return Ok(result);
-
         }
 
     }
