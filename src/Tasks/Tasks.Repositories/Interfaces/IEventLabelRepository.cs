@@ -15,4 +15,6 @@ public interface IEventLabelRepository
     public Task<DataTable> SelectAllAsync(Guid eventId, Guid userId);
     public Task<int> InsertBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest);
 
+    public Task<DataTable> SelectAllAsync(Guid userId);
+
 }

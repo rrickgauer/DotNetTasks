@@ -4,9 +4,9 @@ using Tasks.Domain.Enums;
 
 namespace Tasks.Domain.Models
 {
-	/// <summary>
-	/// Event domain model
-	/// </summary>
+    /// <summary>
+    /// Event domain model
+    /// </summary>
     public class Event
     {
 		[SqlColumn("id")] 
@@ -57,5 +57,6 @@ namespace Tasks.Domain.Models
 		[SqlColumn("recurrence_month")] 
 		public int? RecurrenceMonth { get; set; }
 
-	}
+    }
+
 }

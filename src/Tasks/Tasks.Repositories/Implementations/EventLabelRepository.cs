@@ -82,4 +82,15 @@ public class EventLabelRepository : IEventLabelRepository
 
         return 0;
     }
+
+    public async Task<DataTable> SelectAllAsync(Guid userId)
+    {
+        MySqlCommand command = new(EventLabelRepositorySql.SelectAllByUser);
+
+        command.Parameters.AddWithValue("@user_id", userId);
+
+        DataTable records = await _dbConnection.FetchAllAsync(command);
+
+        return records;
+    }
 }
