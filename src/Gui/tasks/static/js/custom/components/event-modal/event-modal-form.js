@@ -102,6 +102,7 @@ export class EventModalForm
 
         console.log('3-2');
 
+
         this.setStartsOnValue(DateTimeUtil.toDateTime(newEvent.startsOn));
 
         console.log('3-3');
@@ -121,7 +122,28 @@ export class EventModalForm
         console.log('4-1');
         const flatPicker = new DatePicker(this.inputStartsOn);
         console.log('4-2');
-        flatPicker.setValueFromDateTime(newValue);
+
+
+
+
+        // rmr - this is where its getting fucked up!!!!
+
+
+        console.log(newValue);
+
+        try
+        {
+            flatPicker.setValueFromDateTime(newValue);
+        }
+        catch(error)
+        {
+            console.error(error);
+        }
+        
+
+
+
+
         console.log('4-3');
 
         const endsOnFlatpicker = new DatePicker(this.inputEndsOn);
