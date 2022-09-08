@@ -43,8 +43,6 @@ def update_event_labels(event_id: UUID):
     except Exception as ex:
         return (str(ex), 400)
 
-    print(flask.json.dumps(labels, indent=4))
-
     response = services.event_labels.update_event_labels(event_id, labels)
 
     return (response.text, response.status_code)
