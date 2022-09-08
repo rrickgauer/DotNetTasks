@@ -138,40 +138,20 @@ export class EventModal
      * @param {string} eventId the event id to view
      * @param {DateTime} occurenceDate the occurence date
      */
-    viewEvent = async (eventId, occurenceDate) => {
-
-        console.log('1-1');
-
-
+    viewEvent = async (eventId, occurenceDate) => 
+    {
         this._showLoadingSpinner();
 
-        console.log('1-2');
-
         EventModalActions.resetForm();
-        console.log('1-3');
+
         EventModalActions.setEventIdAttr(eventId);
-        console.log('1-4');
         EventModalActions.setOccurenceDateAttr(occurenceDate);
-        console.log('1-5');
         EventModalActions.showModal();
-        console.log('1-6');
         
-        const eventModel = await this._getEventData(eventId);
-        console.log('1-7');
-        
-        console.log('\n\n');
-        for(const key in eventModel)
-        {
-            console.log(`${key}: ${eventModel[key]}`);
-        }
-        console.log('\n\n');
-        
-        
+        const eventModel = await this._getEventData(eventId);        
         this.eventModalForm.setFormValues(eventModel);
-        console.log('1-8');
 
         this._removeLoadingSpinner();
-        console.log('1-9');
     }
     
 

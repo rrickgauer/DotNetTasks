@@ -85,9 +85,6 @@ export class EventModalForm
      */
     setFormValues = (newEvent) =>
     {
-
-        console.log('3-1');
-
         this.inputName.value            = newEvent.name;
         this.inputPhone.value           = newEvent.phoneNumber;
         this.inputLocation.value        = newEvent.location;
@@ -99,18 +96,10 @@ export class EventModalForm
         this.inputRecurrenceWeek.value  = newEvent.recurrenceWeek;
         this.inputRecurrenceMonth.value = newEvent.recurrenceMonth;
 
-
-        console.log('3-2');
-
-
         this.setStartsOnValue(DateTimeUtil.toDateTime(newEvent.startsOn));
-
-        console.log('3-3');
         this.setEndsOnValue(DateTimeUtil.toDateTime(newEvent.endsOn));
-        console.log('3-4');
 
         this.fireInputChangeEvents();
-        console.log('3-5');
     }
 
     /**
@@ -119,15 +108,14 @@ export class EventModalForm
      */
     setStartsOnValue = (newValue) =>
     {
-        console.log('4-1');
+        
+        console.log(this);
         const flatPicker = new DatePicker(this.inputStartsOn);
-        console.log('4-2');
 
-
+        console.log(flatPicker);
 
 
         // rmr - this is where its getting fucked up!!!!
-
 
         console.log(newValue);
 
@@ -141,15 +129,8 @@ export class EventModalForm
         }
         
 
-
-
-
-        console.log('4-3');
-
         const endsOnFlatpicker = new DatePicker(this.inputEndsOn);
-        console.log('4-4');
         endsOnFlatpicker.setMinimumDate(newValue);
-        console.log('4-5');
     }
 
     /**
