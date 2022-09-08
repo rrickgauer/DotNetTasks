@@ -1,5 +1,7 @@
 import { ApiEventLabels } from "../../api/api-event-labels";
 import { Label } from "../../domain/models/label";
+import { SpinnerButton } from "../../helpers/spinner-button";
+import { AlertPageTopDanger, AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { EventLabelAssignmentsElements } from "./elements";
 
 
@@ -10,12 +12,14 @@ export class EventLabelAssignmentsController
         /** @type {EventLabelAssignmentsElements} */
         this.elements = new EventLabelAssignmentsElements();
         this.api = new ApiEventLabels();
+        this.spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
     }
 
     addListeners = () =>
     {
         this._listenForModalClose();
         this._listenForCheckboxCheckedChange();
+        this._listenForFormSubmission();
     }
 
 
@@ -42,6 +46,7 @@ export class EventLabelAssignmentsController
 
     //#endregion
 
+    //#region Listen for checkbox changes
 
     _listenForCheckboxCheckedChange = () =>
     {
@@ -54,12 +59,14 @@ export class EventLabelAssignmentsController
         }
     }
 
+    //#endregion
 
     //#region Show event labels
 
-
     showEventLabels = async (eventId) =>
     {
+        this.elements.setEventIdAttr(eventId);
+
         this._showLoading();
         this._showModal();
 
@@ -72,7 +79,7 @@ export class EventLabelAssignmentsController
     }
 
     /**
-     * 
+     * Mark the checkboxes as 'checked' for all the checkboxes that are within the specified list of labels.
      * @param {Array<Label>} assignedLabels 
      */
     _checkAssignedLabelCheckboxes = (assignedLabels) =>
@@ -97,6 +104,80 @@ export class EventLabelAssignmentsController
 
     //#endregion
 
+    //#region Update assigned labels
+
+    /**
+     * Listen for the form submission
+     */
+    _listenForFormSubmission = () =>
+    {
+        this.elements.eForm.addEventListener('submit', (e) =>
+        {
+            e.preventDefault();
+            this._submitForm();
+        });
+    }
+
+    /**
+     * Submit the api request
+     */
+    _submitForm = async () =>
+    {
+        this.spinnerButton.showSpinner();
+
+        const labels = this._getCheckedLabelIds();
+        const eventId = this.elements.getEventIdAttr();
+        
+        const response = await this.api.putBatch(eventId, labels);
+
+        this._handleBatchPutApiResponse(response);
+
+        this.spinnerButton.reset();
+        this._hideModal();
+    }
+
+
+    /**
+     * Get the ids of all the checked checkboxes in the form
+     * @returns {Array<String>}
+     */
+    _getCheckedLabelIds = () =>
+    {
+        const labels = [];
+        const checkedBoxes = this.elements.eForm.querySelectorAll(EventLabelAssignmentsElements.SELECTOR_CHECKED_CHECKBOXES);
+
+        for (const checkbox of checkedBoxes)
+        {
+            const labelId = checkbox.value;
+            labels.push(labelId);
+        }
+
+        return labels;
+    }
+
+    /**
+     * Handle the api response to the batch put request for labels
+     * @param {Promise<Response>} response the api response
+     */
+    _handleBatchPutApiResponse = async (response) =>
+    {
+        let alertTop = new AlertPageTopSuccess('Saved!');
+
+        if (!response.ok)
+        {
+            const errorMessage = await response.text();
+            console.error(errorMessage);
+
+            alertTop = new AlertPageTopDanger('There was an error saving. Check console.');
+        }
+ 
+        alertTop.show();
+    }
+
+    //#endregion
+
+
+    //#region Togglers
 
     _showModal = () => $(this.elements.eModal).modal('show');
     _hideModal = () => $(this.elements.eModal).modal('hide');
@@ -106,4 +187,6 @@ export class EventLabelAssignmentsController
 
     _disableSubmitButton = () => this.elements.eSubmitBtn.disabled = true;
     _enableSubmitButton = () => this.elements.eSubmitBtn.disabled = false;
+
+    //#endregion
 }

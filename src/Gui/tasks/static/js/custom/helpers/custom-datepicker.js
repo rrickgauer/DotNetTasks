@@ -1,3 +1,4 @@
+// import { Datepicker } from "vanillajs-datepicker";
 import { DateTime } from "../../lib/luxon";
 
 
@@ -6,17 +7,24 @@ import { DateTime } from "../../lib/luxon";
  */
 export function initCustomDatePickers()
 {
-    flatpickr(`.${DatePicker.CSS_CLASS}`, DatePicker.STANDARD_CONFIG);
+    // flatpickr(`.${DatePicker.CSS_CLASS}`, DatePicker.STANDARD_CONFIG);
+
+    const elements = document.getElementsByClassName(CustomDatepicker.CSS_CLASS);
+
+    for (const e of elements)
+    {
+        // const sdasda = new Datepicker(e);
+    }
 }
 
-export class DatePicker
+export class CustomDatepicker
 {
     constructor(eInput)
     {
         /** @type {HTMLInputElement} */
         this.eInput = eInput;
 
-        this._flatpickr = this.eInput._flatpickr;
+        // this._flatpickr = this.eInput._flatpickr;
     }
 
 
@@ -26,7 +34,7 @@ export class DatePicker
      */
     setValueFromDateTime = (newValue) =>
     {
-        this._flatpickr.setDate(newValue.toISODate(), true);
+        this.eInput.value = newValue.toISODate();
     }
 
     /**
@@ -35,17 +43,19 @@ export class DatePicker
      */
     setMinimumDate = (minDate) =>
     {
-        this._flatpickr.set('minDate', minDate.toISODate(), true);
+        // this._flatpickr.set('minDate', minDate.toISODate(), true);
+        this.eInput.min = minDate.toISODate();
     }
 }
 
 
-DatePicker.CSS_CLASS = 'custom-datepicker';
+CustomDatepicker.CSS_CLASS = 'custom-datepicker';
 
-DatePicker.STANDARD_CONFIG = {
+CustomDatepicker.STANDARD_CONFIG = {
     altInput: true,
     altFormat: "F j, Y",
     dateFormat: "Y-m-d",
+    static: true,
 };
 
 

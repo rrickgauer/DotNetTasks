@@ -12,7 +12,7 @@ import { DateTime } from "../../../lib/luxon";
 import { EventModalInputToggle } from "./event-modal-input-toggle";
 import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
-import { DatePicker } from "../../helpers/custom-datepicker";
+import { CustomDatepicker } from "../../helpers/custom-datepicker";
 import { EventModalDeleteForm } from "./event-modal-delete-form";
 
 export class EventModal 
@@ -85,8 +85,8 @@ export class EventModal
         {
             const startsOnValue = DateTimeUtil.toDateTime(this.eventModalForm.inputStartsOn.value);
 
-            const flatpick = new DatePicker(this.eventModalForm.inputEndsOn);
-            flatpick.setMinimumDate(startsOnValue);
+            const dt = new CustomDatepicker(this.eventModalForm.inputEndsOn);
+            dt.setMinimumDate(startsOnValue);
         });
     }
 
@@ -138,15 +138,17 @@ export class EventModal
      * @param {string} eventId the event id to view
      * @param {DateTime} occurenceDate the occurence date
      */
-    viewEvent = async (eventId, occurenceDate) => {
+    viewEvent = async (eventId, occurenceDate) => 
+    {
         this._showLoadingSpinner();
 
         EventModalActions.resetForm();
+
         EventModalActions.setEventIdAttr(eventId);
         EventModalActions.setOccurenceDateAttr(occurenceDate);
         EventModalActions.showModal();
         
-        const eventModel = await this._getEventData(eventId);
+        const eventModel = await this._getEventData(eventId);        
         this.eventModalForm.setFormValues(eventModel);
 
         this._removeLoadingSpinner();
@@ -158,10 +160,13 @@ export class EventModal
      * @param {string} eventId the event id
      * @returns {Promise<Event>}
      */
-    _getEventData = async (eventId) => {
+    _getEventData = async (eventId) => 
+    {
         const response = await this.apiEvents.get(eventId);
 
         if (!response.ok) {
+
+            console.log('2-bad response');
             return null;
         }
 
