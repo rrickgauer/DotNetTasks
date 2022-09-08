@@ -12,7 +12,7 @@ import { DateTime } from "../../../lib/luxon";
 import { EventModalInputToggle } from "./event-modal-input-toggle";
 import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { DateTimeUtil } from "../../helpers/datetime";
-import { DatePicker } from "../../helpers/custom-datepicker";
+import { CustomDatepicker } from "../../helpers/custom-datepicker";
 import { EventModalDeleteForm } from "./event-modal-delete-form";
 
 export class EventModal 
@@ -85,8 +85,8 @@ export class EventModal
         {
             const startsOnValue = DateTimeUtil.toDateTime(this.eventModalForm.inputStartsOn.value);
 
-            const flatpick = new DatePicker(this.eventModalForm.inputEndsOn);
-            flatpick.setMinimumDate(startsOnValue);
+            const dt = new CustomDatepicker(this.eventModalForm.inputEndsOn);
+            dt.setMinimumDate(startsOnValue);
         });
     }
 
