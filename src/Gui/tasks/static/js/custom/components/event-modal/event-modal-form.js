@@ -110,7 +110,7 @@ export class EventModalForm
     setStartsOnValue = (newValue) =>
     {
 
-        Utililties.printObjectProperties(this);
+        // Utililties.printObjectProperties(this);
 
 
         const flatPicker = new DatePicker(this.inputStartsOn);
