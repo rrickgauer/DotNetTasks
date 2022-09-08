@@ -5,6 +5,8 @@ import { AlertPageTopDanger, AlertPageTopSuccess } from "../page-alerts/alert-pa
 import { EventLabelAssignmentsElements } from "./elements";
 
 
+import { RecurrencesBoardActionsController } from "../recurrences-board/recurrences-board-controller";
+
 export class EventLabelAssignmentsController
 {
     constructor()
@@ -13,6 +15,8 @@ export class EventLabelAssignmentsController
         this.elements = new EventLabelAssignmentsElements();
         this.api = new ApiEventLabels();
         this.spinnerButton = new SpinnerButton(this.elements.eSubmitBtn);
+
+        this.boardController = new RecurrencesBoardActionsController();
     }
 
     addListeners = () =>
@@ -131,6 +135,9 @@ export class EventLabelAssignmentsController
         const response = await this.api.putBatch(eventId, labels);
 
         this._handleBatchPutApiResponse(response);
+
+        // refresh the board
+        await this.boardController.getWeeklyRecurrences();
 
         this.spinnerButton.reset();
         this._hideModal();

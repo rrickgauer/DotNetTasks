@@ -9,13 +9,11 @@ from tasks.domain.enums import EventFrequency
 #------------------------------------------------------
 @dataclass
 class Recurrence:
-    eventId   : UUID     = None
-    name      : str      = None
-    occursOn  : datetime = None
-    startsAt  : time     = None
-    completed : bool     = None
-    cancelled : bool     = None
-
+    event     : EventApiResponse    = None
+    occursOn  : datetime            = None
+    completed : bool                = None
+    cancelled : bool                = None
+    labels    : list[LabelResponse] = None
 
 #------------------------------------------------------
 # JSON object returned for an event
