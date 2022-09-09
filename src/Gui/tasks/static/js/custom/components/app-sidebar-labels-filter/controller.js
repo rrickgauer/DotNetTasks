@@ -26,7 +26,7 @@ export class AppSidebarLabelsFilterController
         });
     }
 
-    
+
     _submitForm = () =>
     {
         const url = new URL(window.location.href);
@@ -93,4 +93,24 @@ export class AppSidebarLabelsFilterController
 
 
     //#endregion
+
+
+    setCheckedLabelsFromUrlParm = () =>
+    {
+        const url = new URL(window.location.href);
+        
+        if (!url.searchParams.has('labels'))
+        {
+            console.log('no labels');
+            return;
+        }
+
+        const urlParmValues = url.searchParams.get('labels').split(',');
+
+        for(const labelId of urlParmValues)
+        {
+            let checkbox = this.elements.eForm.querySelector(`input[name="labels"][value="${labelId}"]`);
+            checkbox.checked = true;
+        }        
+    }
 }
