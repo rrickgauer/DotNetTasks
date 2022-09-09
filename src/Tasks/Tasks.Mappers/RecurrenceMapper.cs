@@ -49,12 +49,13 @@ public static class RecurrenceMapper
     /// <returns></returns>
     public static SqlCommandParmsMap ToSqlCommandParmsMap(RecurrenceRetrieval recurrenceRetrieval)
     {
-        SqlCommandParmsMap parms = new();
-
-        parms.Add("@user_id", recurrenceRetrieval.UserId);
-        parms.Add("@range_start", recurrenceRetrieval.StartsOn);
-        parms.Add("@range_end", recurrenceRetrieval.EndsOn);
-        parms.Add("@return_results", true);
+        SqlCommandParmsMap parms = new()
+        {
+            { "@user_id", recurrenceRetrieval.UserId },
+            { "@range_start", recurrenceRetrieval.StartsOn },
+            { "@range_end", recurrenceRetrieval.EndsOn },
+            { "@return_results", true }
+        };
 
         return parms;
     }
@@ -64,15 +65,16 @@ public static class RecurrenceMapper
     /// </summary>
     /// <param name="recurrenceRetrieval"></param>
     /// <returns></returns>
-    public static SqlCommandParmsMap ToSqlCommandParmsMap(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+    public static SqlCommandParmsMap ToSqlCommandParmsMap(RecurrenceRetrieval eventRecurrenceRetrieval, Guid eventId)
     {
-        SqlCommandParmsMap parms = new();
-
-        parms.Add("@event_id", eventRecurrenceRetrieval.EventId);
-        parms.Add("@user_id", eventRecurrenceRetrieval.UserId);
-        parms.Add("@range_start", eventRecurrenceRetrieval.StartsOn);
-        parms.Add("@range_end", eventRecurrenceRetrieval.EndsOn);
-        parms.Add("@return_results", true);
+        SqlCommandParmsMap parms = new()
+        {
+            { "@event_id", eventId },
+            { "@user_id", eventRecurrenceRetrieval.UserId },
+            { "@range_start", eventRecurrenceRetrieval.StartsOn },
+            { "@range_end", eventRecurrenceRetrieval.EndsOn },
+            { "@return_results", true }
+        };
 
         return parms;
     }

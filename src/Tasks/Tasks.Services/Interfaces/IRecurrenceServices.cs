@@ -9,6 +9,6 @@ namespace Tasks.Services.Interfaces
     {
         public Task<IEnumerable<Recurrence>> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange);
         public Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval);
-        public Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(EventRecurrenceRetrieval recurrenceRetrieval);
+        public Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval, Guid eventId);
     }
 }

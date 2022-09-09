@@ -24,7 +24,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public RecurrenceRepository(IConfigs configs)
     {
         _configs = configs;
-        _dbConnection = new(configs);
+        _dbConnection = new(_configs);
     }
 
 
@@ -49,11 +49,12 @@ public class RecurrenceRepository : IRecurrenceRepository
     }
 
     /// <summary>
-    /// Get the recurrences for a single event from the database
+    /// Get the recurrences for the specified event
     /// </summary>
-    /// <param name="eventRecurrenceRetrieval"></param>
+    /// <param name="recurrenceRetrieval"></param>
+    /// <param name="eventId"></param>
     /// <returns></returns>
-    public async Task<DataTable> GetEventRecurrencesAsync(EventRecurrenceRetrieval eventRecurrenceRetrieval)
+    public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval, Guid eventId)
     {
         // setup a new stored procedure command 
         MySqlCommand command = new(RecurrenceRepositorySql.GetEventRecurrences)
@@ -61,10 +62,11 @@ public class RecurrenceRepository : IRecurrenceRepository
             CommandType = CommandType.StoredProcedure,
         };
 
-        var map = RecurrenceMapper.ToSqlCommandParmsMap(eventRecurrenceRetrieval);
+        var map = RecurrenceMapper.ToSqlCommandParmsMap(recurrenceRetrieval, eventId);
         map.AddParmsToCommand(command);
 
         var result = await _dbConnection.FetchAllAsync(command);
+
         return result;
     }
 
@@ -86,4 +88,6 @@ public class RecurrenceRepository : IRecurrenceRepository
         
         return dataTable;
     }
+
+
 }
