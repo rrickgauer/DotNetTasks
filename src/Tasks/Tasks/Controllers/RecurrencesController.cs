@@ -48,15 +48,18 @@ namespace Tasks.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetRecurrencesAsync([FromQuery] RecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetRecurrencesAsync([FromQuery] GetRecurrencesQueryParms requestParms)
         {
+            RecurrenceRetrieval retrieval = new(requestParms, CurrentUserId);
+
             try
             {
+                retrieval.ParseLabels();
                 ValidateRetrievalRange(retrieval);
             }
-            catch (ValidationException err)
+            catch(Exception ex)
             {
-                return BadRequest(err.Message);
+                return BadRequest(ex.Message);
             }
 
             // fill out the remaining RecurrenceRetrieval property values
@@ -74,15 +77,18 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetEventRecurrencesAsync([FromRoute] Guid eventId, [FromQuery] RecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetEventRecurrencesAsync([FromRoute] Guid eventId, [FromQuery] GetRecurrencesQueryParms requestParms)
         {
+            RecurrenceRetrieval retrieval = new(requestParms, CurrentUserId);
+
             try
             {
+                retrieval.ParseLabels();
                 ValidateRetrievalRange(retrieval);
             }
-            catch (ValidationException err)
+            catch (Exception ex)
             {
-                return BadRequest(err.Message);
+                return BadRequest(ex.Message);
             }
 
             // make sure the user owns the requested event
