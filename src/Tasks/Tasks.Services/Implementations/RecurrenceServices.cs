@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
@@ -71,9 +72,25 @@ namespace Tasks.Services.Implementations
             {
                 Event? e = events.FirstOrDefault(e => e.Id == recurrence.EventId);
 
-                var recurrenceResponse = BuildRecurrenceResponse(eventLabels, labels, e, recurrence);
+                if (e is null) continue;
 
-                responses.Add(recurrenceResponse);
+                var response = BuildRecurrenceResponse(eventLabels, labels, e, recurrence);
+
+                if (recurrenceRetrieval.LabelIds == null)
+                {
+                    responses.Add(response);
+                    continue;
+                }
+
+                // only add events that are assigned one of the labels requested
+                foreach (var recurrenceRetrievalLabelId in recurrenceRetrieval.LabelIds)
+                {
+                    if (response.Labels.Select(l => l.Id).Contains(recurrenceRetrievalLabelId))
+                    {
+                        responses.Add(response);
+                        continue;
+                    }
+                }
             }
 
             return responses;
