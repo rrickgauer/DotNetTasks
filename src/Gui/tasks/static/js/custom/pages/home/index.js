@@ -72,6 +72,7 @@ async function addListeners()
 
 
     m_sidebarLabelsController.addListeners();
+    m_sidebarLabelsController.setCheckedLabelsFromUrlParm();
 
     listenForWindowResize();
     listenForArrowKeys();
