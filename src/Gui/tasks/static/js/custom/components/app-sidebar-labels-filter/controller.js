@@ -101,7 +101,6 @@ export class AppSidebarLabelsFilterController
         
         if (!url.searchParams.has('labels'))
         {
-            console.log('no labels');
             return;
         }
 

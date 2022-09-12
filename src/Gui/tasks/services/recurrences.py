@@ -19,11 +19,11 @@ class GetRecurrencesResult(BaseReturn):
 #------------------------------------------------------
 # Get the recurrences for the specified WeekRange from the api
 #------------------------------------------------------
-def get_recurrences(week_range: models.WeekRange) -> GetRecurrencesResult:
+def get_recurrences(week_range: models.WeekRange, labels=None) -> GetRecurrencesResult:
     result = GetRecurrencesResult(successful=True)
 
     try:
-        api_response      = _get_recurrences_from_api(week_range)
+        api_response      = _get_recurrences_from_api(week_range, labels)
         event_recurrences = _serialize_api_response(api_response)
         result.data       = _create_date_range_map(event_recurrences, week_range)
     except Exception as ex:
@@ -35,7 +35,7 @@ def get_recurrences(week_range: models.WeekRange) -> GetRecurrencesResult:
 #------------------------------------------------------
 # Send a GET recurrences request to the api
 #------------------------------------------------------
-def _get_recurrences_from_api(week_range: models.WeekRange) -> requests.Response:
+def _get_recurrences_from_api(week_range: models.WeekRange, labels=None) -> requests.Response:
     # setup url
     config = get_config()
     api_url   = f'{config.URL_API}/recurrences'
@@ -45,6 +45,9 @@ def _get_recurrences_from_api(week_range: models.WeekRange) -> requests.Response
         startsOn = week_range.start,
         endsOn = week_range.end,
     )
+
+    if labels != None:
+        parms['labels'] = labels
 
     # setup auth
     auth = security.get_user_session_tuple()

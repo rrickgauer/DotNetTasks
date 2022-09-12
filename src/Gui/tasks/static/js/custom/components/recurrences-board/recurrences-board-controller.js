@@ -23,29 +23,66 @@ export class RecurrencesBoardActionsController
     addListeners = () => 
     {
         // set the current recurrences date to today's value
-        this.actionButtons.todayButton.addEventListener('click', (e) => {
+        this.actionButtons.todayButton.addEventListener('click', (e) => 
+        {
             this._setDateValueToday();
             this._setUrlDateValueToValue();
         });
 
         // listen for recurrences date input value changes
-        this.actionButtons.dateInput.addEventListener('change', (e) => {
+        this.actionButtons.dateInput.addEventListener('change', (e) => 
+        {
             this._setUrlDateValueToValue();
         });
     }
 
+    //#region Set the previous and next week button href values
+
+    /**
+     * Set the previous and next week anchor button href values
+     */
+    setJumpWeekLinkValues = () =>
+    {
+        const labelsUrlParm = new URL(window.location.href).searchParams.get('labels');
+
+        if (labelsUrlParm === null)
+        {
+            return;
+        }
+
+        this._setJumpButtonLinkHref(this.actionButtons.previousButton, labelsUrlParm);
+        this._setJumpButtonLinkHref(this.actionButtons.nextButton, labelsUrlParm);
+    }
+
+    /**
+     * 
+     * @param {HTMLAnchorElement} eButtonAnchor 
+     * @param {String} labelsUrlParm 
+     */
+    _setJumpButtonLinkHref = (eButtonAnchor, labelsUrlParm) =>
+    {
+        const prevButtonUrl = new URL(eButtonAnchor.href);
+        prevButtonUrl.searchParams.set('labels', labelsUrlParm);
+        eButtonAnchor.href = prevButtonUrl.toString();
+    }
+
+    //#endregion
+
+    /**
+     * Set the weekly recurrences board html
+     */
     getWeeklyRecurrences = async () => 
     {
         const dateVal = this.getDateValue();
+        const urlLabelsParm = new URL(window.location.href).searchParams.get('labels');
 
         const api = new ApiRecurrences();
-        const response = await api.get(dateVal);
-
+        const response = await api.get(dateVal, urlLabelsParm);
         const recurrencesHtml = await response.text();
+
         this.hideSpinner();
         this.setBoardHtml(recurrencesHtml);
     }
-
 
     /**
      * Set the curernt value of the date input to today's date

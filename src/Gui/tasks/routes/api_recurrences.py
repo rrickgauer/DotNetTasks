@@ -26,7 +26,9 @@ bp_api_recurrences = flask.Blueprint('api_recurrences', __name__)
 def get_recurrences_in_week(date_val: date):
     # fetch the recurrences from the api
     week_range = get_week_range(date_val)
-    result = services.recurrences.get_recurrences(week_range)
+
+    labels = flask.request.args.get('labels', None)
+    result = services.recurrences.get_recurrences(week_range, labels)
 
     if not result.successful:
         raise result.error
