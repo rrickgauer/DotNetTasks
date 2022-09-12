@@ -61,6 +61,42 @@ namespace Tasks.Repositories
             return results;
         }
 
+
+
+        public async Task<bool> ModifyWithTransactionAsync(params MySqlCommand[] commands)
+        {
+            // setup a new database connection object
+            using MySqlConnection connection = GetNewConnection();
+            await connection.OpenAsync();
+
+            // start up a transaction
+            using MySqlTransaction transaction = await connection.BeginTransactionAsync();
+
+            try
+            {
+                foreach (MySqlCommand command in commands)
+                {
+                    command.Connection = connection;
+                    await command.ExecuteNonQueryAsync();
+                }
+
+                await transaction.CommitAsync();
+
+                await transaction.DisposeAsync();
+                await CloseConnectionAsync(connection);
+            }
+            catch(Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw ex;
+            }
+
+            return true;
+        }
+
+
+
+
         /// <summary>
         /// Exeucte the specified sql command that modifies (insert, update, delete) data.
         /// </summary>
@@ -92,12 +128,18 @@ namespace Tasks.Repositories
         }
 
 
-        private async Task CloseConnectionAsync(MySqlConnection connection)
+
+
+
+        private static async Task CloseConnectionAsync(MySqlConnection connection)
         {
             // close the connection
             await connection.CloseAsync();
             await connection.DisposeAsync();
         }
+
+
+        
 
     }
 }

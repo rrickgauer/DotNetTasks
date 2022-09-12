@@ -59,6 +59,8 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     .AddScoped<IEventActionServices, EventActionServices>()
     .AddScoped<IUserServices, UserServices>()
     .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
+    .AddScoped<ILabelServices, LabelServices>()
+    .AddScoped<IEventLabelServices, EventLabelServices>()
 
     // repositories
     .AddScoped<IUserRepository, UserRepository>()
@@ -66,7 +68,9 @@ static void ConifigureDependencies(WebApplicationBuilder builder)
     .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
     .AddScoped<IEventActionRepository, EventActionRepository>()
     .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
-    
+    .AddScoped<ILabelRepository, LabelRepository>()
+    .AddScoped<IEventLabelRepository, EventLabelRepository>()
+
     // custom filters
     .AddScoped<CustomHeaderFilter>();
 }

@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.Common;
 using Tasks.Configurations;
 
 namespace Tasks.Repositories
@@ -22,7 +23,7 @@ namespace Tasks.Repositories
         {
             DataTable dataTable = new();
 
-            var reader = await command.ExecuteReaderAsync();
+            DbDataReader reader = await command.ExecuteReaderAsync();
             dataTable.Load(reader);
 
             return dataTable;

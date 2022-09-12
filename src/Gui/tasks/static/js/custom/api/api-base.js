@@ -9,6 +9,8 @@ export const ApiEndpoints = {
     USER               : `${URL_PREFIX}/user`,
     PASSWORD           : `${URL_PREFIX}/password`,
     EMAIL_VERIFICATIONS: `${URL_PREFIX}/email-verifications`,
+    LABELS             : `${URL_PREFIX}/labels`,
+    EVENT_LABELS       : `${URL_PREFIX}/events`,
 }
 
 export const HttpMethods = {

@@ -1,0 +1,38 @@
+
+{# 
+
+    - id: UUID    
+    - userId: UUID    
+    - name: str     
+    - color: str     
+    - createdOn: datetime
+#}
+
+{% macro get_labels_board(labels) -%}
+
+<div class="container labels-board-container">
+    <ul class="list-group labels-list">
+        {% for label in labels %}
+        
+            <li class="list-group-item labels-list-item" data-js-id="{{ label.id }}">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
+                        <div class="mr-2">{{ label.name }}</div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-xs" type="button" data-toggle="dropdown"><span>&#8943;</span></button>
+                        <div class="dropdown-menu">
+                            <button class="dropdown-item labels-list-item-dropdown-btn" data-js-dropdown-action="edit" type="button">Edit label</button>
+                            <button class="dropdown-item labels-list-item-dropdown-btn" data-js-dropdown-action="delete" type="button">Delete label</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        {% endfor %}
+    </ul>
+</div>
+
+{%- endmacro %}

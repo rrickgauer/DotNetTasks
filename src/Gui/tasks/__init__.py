@@ -30,6 +30,7 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_auth, url_prefix='/auth')
     flask_app.register_blueprint(routes.bp_account, url_prefix='/account')
     flask_app.register_blueprint(routes.bp_email_verifications, url_prefix='/email-verifications')
+    flask_app.register_blueprint(routes.bp_labels, url_prefix='/labels')
 
     flask_app.register_blueprint(routes.bp_api_login, url_prefix='/api/login')
     flask_app.register_blueprint(routes.bp_api_events, url_prefix='/api/events')
@@ -38,6 +39,8 @@ def _registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.bp_api_password, url_prefix='/api/password')
     flask_app.register_blueprint(routes.bp_api_user, url_prefix='/api/user')
     flask_app.register_blueprint(routes.bp_api_email_verifications, url_prefix='/api/email-verifications')
+    flask_app.register_blueprint(routes.bp_api_labels, url_prefix='/api/labels')
+    flask_app.register_blueprint(routes.bp_api_event_labels, url_prefix='/api/events/<uuid:event_id>/labels')
 
     flask_app.register_blueprint(routes.bp_home, url_prefix='/')
 

@@ -8,7 +8,4 @@ from .models import EventRecurrence
 #   key = date string
 #   value = list of event recurrences
 #------------------------------------------------------
-# event_recurrences_list = typing.List[models.EventRecurrence]
-# DailyRecurrenceMapType = typing.Dict[str, event_recurrences_list]
-
 DailyRecurrenceMapType = typing.Dict[str, typing.List[EventRecurrence]]

@@ -4,7 +4,7 @@ import { EventModalFormValues } from "../../domain/forms/event-modal-form-values
 import { EventModalSelectors } from "./event-modal-selectors";
 import { Event as EventModel } from "../../domain/models/event";
 import { DateTimeUtil } from "../../helpers/datetime";
-import { DatePicker } from "../../helpers/custom-datepicker";
+import { CustomDatepicker } from "../../helpers/custom-datepicker";
 import { DateTime } from "../../../lib/luxon";
 
 /**
@@ -108,11 +108,11 @@ export class EventModalForm
      */
     setStartsOnValue = (newValue) =>
     {
-        const flatPicker = new DatePicker(this.inputStartsOn);
+        const flatPicker = new CustomDatepicker(this.inputStartsOn);
         flatPicker.setValueFromDateTime(newValue);
 
-        const endsOnFlatpicker = new DatePicker(this.inputEndsOn);
-        endsOnFlatpicker.setMinimumDate(newValue);
+        const endsOn = new CustomDatepicker(this.inputEndsOn);
+        endsOn.setMinimumDate(newValue);
     }
 
     /**
@@ -121,7 +121,7 @@ export class EventModalForm
      */
     setEndsOnValue = (newValue) =>
     {
-        const flatPicker = new DatePicker(this.inputEndsOn);
+        const flatPicker = new CustomDatepicker(this.inputEndsOn);
         flatPicker.setValueFromDateTime(newValue);
     }
 

@@ -5,6 +5,7 @@ import { ApiCompletions } from "../../api/api-completion";
 import { ApiEvents } from "../../api/api-events";
 import { DailyRecurrencesListItemDropdownBtnActions } from "../../domain/enums/daily-recurrences-list-item-dropdown-actions";
 import { DailyRecurrenceCard } from "../daily-recurrences-card/daily-recurrences-card-element";
+import { EventLabelAssignmentsController } from "../event-label-assignments-modal/controller";
 import { EventModal } from "../event-modal/event-modal";
 import { AlertPageTopSuccess } from "../page-alerts/alert-page-top";
 import { RecurrencesBoardActionsController } from "../recurrences-board/recurrences-board-controller";
@@ -21,6 +22,7 @@ export class DailyRecurrencesListItemController
         this.eventModal = new EventModal();
         this.apiEvents = new ApiEvents();
         this.boardController = new RecurrencesBoardActionsController();
+        this.labelsModalController = new EventLabelAssignmentsController();
     }
 
 
@@ -143,6 +145,10 @@ export class DailyRecurrencesListItemController
 
             case DailyRecurrencesListItemDropdownBtnActions.DELETE_THIS_AND_FOLLOWING_EVENTS:
                 this._deleteThisEventAndFollowing(listItem);
+                break;
+            
+            case DailyRecurrencesListItemDropdownBtnActions.LABELS:
+                this.labelsModalController.showEventLabels(listItem.eventId);
                 break;
         }
     }

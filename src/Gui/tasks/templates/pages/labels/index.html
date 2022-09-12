@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Your labels{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Labels</h1>
+        <button type="button" class="btn btn-standard" data-toggle="modal" data-target="#labels-form-modal-new">New</button>
+    </div>
+</div>
+
+
+
+{# existing labels section #}
+<div id="labels-wrapper">
+
+    <div id="labels-wrapper-spinner">
+        {% include 'includes/spinner-center.html' %}
+    </div>
+
+
+    {# Labels go here #}
+    <div id="labels-content"></div>
+</div>
+
+
+{# Form modals #}
+{% include 'pages/labels/forms/edit-label-form.html' %}
+{% include 'pages/labels/forms/new-label-form.html' %}
+
+{% endblock %}
+
+
+{% block footer %}
+    <script src="/static/js/dist/labels.bundle.js"></script>
+{% endblock %}

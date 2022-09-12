@@ -42,25 +42,34 @@ textarea {
 }
 
 
-.daily-recurrences-list-item-name:hover {
-    cursor: pointer;
-}
-
 .event-modal-form-section {
     margin-bottom: 40px;
 }
 
+// daily-recurrences-list-item
 
-.daily-recurrences-list-item.completed {
-    .daily-recurrences-list-item-text-display {
-        text-decoration: line-through;
-        color: darkgray;
-    }
+.daily-recurrences-list-item-name:hover {
+    cursor: pointer;
 }
 
-// hide cancelled items
-.daily-recurrences-list-item.cancelled {
-    display: none;
+.daily-recurrences-list-item {
+    & {
+        // margin: 10px 0px;
+        padding: 10px 0px;
+        border-top: 1px solid lightgray;
+    }
+
+    &.completed {
+        .daily-recurrences-list-item-text-display {
+            text-decoration: line-through;
+            color: darkgray;
+        }
+    }
+    
+    // hide cancelled items
+    &.cancelled {
+        display: none;
+    }
 }
 
 
@@ -117,5 +126,35 @@ textarea {
 
     .form-group-custom-label {
         margin-bottom: 0.5rem;
+    }
+}
+
+
+
+
+.labels-form-modal {
+
+    & {
+        .labels-form-spinner {display: none;}
+        .labels-form {display: block;}
+    }
+
+    &.loading {
+        .labels-form-spinner {display: block;}
+        .labels-form {display: none;}
+    }
+}
+
+
+
+#event-label-assignments-modal {
+    & {
+        .section-spinner {display: none;}
+        .section-display {display: block;}
+    }
+
+    &.loading {
+        .section-spinner {display: block;}
+        .section-display {display: none;}
     }
 }

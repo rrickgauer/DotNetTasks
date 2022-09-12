@@ -11,6 +11,8 @@ import { initCustomDatePickers } from "../../helpers/custom-datepicker";
 import { DateTimeUtil } from "../../helpers/datetime";
 import { DailyRecurrencesListItemController } from "../../components/daily-recurrences-list-item/daily-recurrences-list-item-controller";
 import { AppSidebarController } from "../../components/app-sidebar/app-sidebar-controller";
+import { EventLabelAssignmentsController } from "../../components/event-label-assignments-modal/controller";
+import { AppSidebarLabelsFilterController } from "../../components/app-sidebar-labels-filter/controller";
 
 // module variables
 const m_eventModal = new EventModal();
@@ -18,7 +20,8 @@ const m_boardActionsController = new RecurrencesBoardActionsController();
 const m_recurrenceListController = new DailyRecurrenceListController();
 const m_listItemController = new DailyRecurrencesListItemController();
 const m_sidebarController = new AppSidebarController();
-
+const m_eventLabelModalController = new EventLabelAssignmentsController();
+const m_sidebarLabelsController = new AppSidebarLabelsFilterController();
 
 /**
  * Main logic
@@ -27,6 +30,7 @@ $(document).ready(function()
 {
     initCustomDatePickers();
     addListeners();
+    m_boardActionsController.setJumpWeekLinkValues();
     m_boardActionsController.getWeeklyRecurrences();
     setupBoardActionVisibilities();
 });
@@ -46,6 +50,8 @@ async function addListeners()
     // board actions
     m_boardActionsController.addListeners();
 
+    m_eventLabelModalController.addListeners();
+
     // event modal 
     m_eventModal.listenForFormSubmission();
     m_eventModal.listenForEventDeletion();
@@ -60,7 +66,9 @@ async function addListeners()
 
     m_sidebarController.addEventListeners();
 
+    m_sidebarLabelsController.addListeners();
+    m_sidebarLabelsController.setCheckedLabelsFromUrlParm();
+
     listenForWindowResize();
     listenForArrowKeys();
 }
-

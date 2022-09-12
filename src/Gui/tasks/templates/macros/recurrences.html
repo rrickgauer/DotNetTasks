@@ -21,12 +21,31 @@ data:
     - recurrence_date (date)
     
     - recurrences: dictionary['2022-01-01', recurrences]
-        - event_id  : UUID     
-        - name      : str      
+        - event:
+            - id              : UUID
+            - name            : str
+            - description     : str
+            - phoneNumber     : str
+            - location        : str
+            - startsOn        : date
+            - endsOn          : date
+            - startsAt        : time
+            - endsAt          : time
+            - frequency       : EventFrequency
+            - separation      : int
+            - createdOn       : datetime
+            - recurrenceDay   : int
+            - recurrenceWeek  : int
+            - recurrenceMonth : int
         - occurs_on : datetime 
-        - starts_at : time     
         - completed : bool
         - cancelled : bool
+        - labels 
+            - id        : UUID
+            - userId    : UUID
+            - name      : str
+            - color     : str
+            - createdOn : datetime
 
 #############################################################################################################}
 {% macro recurrences_board(data) -%}
@@ -83,10 +102,18 @@ data:
     
 Create the html for a daily recurrences list item 
 
+
+- labels 
+    - id        : UUID
+    - userId    : UUID
+    - name      : str
+    - color     : str
+    - createdOn : datetime
+
 #############################################################################################################}
 {% macro recurrences_list_item(recurrence) -%}
 
-<div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %} {% if recurrence.cancelled %}cancelled{% endif %}" data-js-event-id="{{ recurrence.event_id }}">
+<div class="daily-recurrences-list-item {% if recurrence.completed %}completed{% endif %} {% if recurrence.cancelled %}cancelled{% endif %}" data-js-event-id="{{ recurrence.event.id }}">
     <div class="d-flex align-items-center justify-content-between">
 
         <div class="d-flex align-items-center">
@@ -100,13 +127,24 @@ Create the html for a daily recurrences list item
 
                 {# Starts on #}
                 <span class="daily-recurrences-list-item-starts-on">
-                    {% if recurrence.starts_at %}
-                        <span class="badge badge-light">{{ recurrence.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
+                    {% if recurrence.event.starts_at %}
+                        <span class="badge badge-light">{{ recurrence.event.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
                     {% endif %} 
                 </span>
 
                 {# Name #}
-                <span class="daily-recurrences-list-item-name">{{ recurrence.name }}</span>
+                <span class="daily-recurrences-list-item-name">{{ recurrence.event.name }}</span>
+            </div>
+
+            <div class="d-flex ml-3 mt-1">
+
+                {% for label in recurrence.labels %}
+                    <div class="d-flex">
+                        <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
+                        {#<div class="mr-2">{{ label.name }}</div>#}
+                    </div>
+                {% endfor %}
+        
             </div>
 
         </div>
@@ -121,12 +159,17 @@ Create the html for a daily recurrences list item
                     <h6 class="dropdown-header">Delete</h6>
                     <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="1" type="button">This event</button>
                     <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="2" type="button">This and following events</button>
+                    
+                    <h6 class="dropdown-header">Labels</h6>
+                    <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="3" type="button">Edit labels</button>
                 </div>
             </div>
 
         </div>
 
     </div>
+
+
 </div>
 
 {%- endmacro %}

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tasks.Domain.Responses
 {
-    interface IBaseResponse<T>
+    public interface IBaseResponse<T>
     {
-        public bool Success { get; set; }
+        public bool Successful { get; set; }
         public Exception? Exception { get; set; }
         public string? Message { get; set; }
         public T? Data { get; set; }

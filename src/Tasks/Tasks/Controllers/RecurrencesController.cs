@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Domain.Views;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 using Tasks.Validation;
@@ -47,15 +48,18 @@ namespace Tasks.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Recurrence>>> GetRecurrencesAsync([FromQuery] RecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetRecurrencesAsync([FromQuery] GetRecurrencesQueryParms requestParms)
         {
+            RecurrenceRetrieval retrieval = new(requestParms, CurrentUserId);
+
             try
             {
+                retrieval.ParseLabels();
                 ValidateRetrievalRange(retrieval);
             }
-            catch (ValidationException err)
+            catch(Exception ex)
             {
-                return BadRequest(err.Message);
+                return BadRequest(ex.Message);
             }
 
             // fill out the remaining RecurrenceRetrieval property values
@@ -73,33 +77,35 @@ namespace Tasks.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpGet("{eventId}")]
-        public async Task<ActionResult<List<Recurrence>>> GetEventRecurrencesAsync(Guid eventId, [FromQuery] EventRecurrenceRetrieval retrieval)
+        public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetEventRecurrencesAsync([FromRoute] Guid eventId, [FromQuery] GetRecurrencesQueryParms requestParms)
         {
+            RecurrenceRetrieval retrieval = new(requestParms, CurrentUserId);
+
             try
             {
+                retrieval.ParseLabels();
                 ValidateRetrievalRange(retrieval);
             }
-            catch (ValidationException err)
+            catch (Exception ex)
             {
-                return BadRequest(err.Message);
+                return BadRequest(ex.Message);
             }
 
             // make sure the user owns the requested event
             var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
 
-            if (userEvent == null)
+            if (userEvent is null)
             {
                 return NotFound();
             }
 
             // fill out the remaining EventRecurrenceRetrieval property values
             retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
-            retrieval.EventId = eventId;
 
             // get the recurrences
-            var recurrences = await _recurrenceServices.GetEventRecurrencesAsync(retrieval);
+            var eventRecurrences = await _recurrenceServices.GetRecurrencesAsync(retrieval, eventId);
 
-            return Ok(recurrences);
+            return Ok(eventRecurrences);
         }
 
         /// <summary>
@@ -114,7 +120,6 @@ namespace Tasks.Controllers
                 throw new ValidationException("EndsOn must be greater than or equal to StartsOn");
             }
         }
-
 
     }
 }
