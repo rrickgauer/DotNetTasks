@@ -140,8 +140,7 @@ Create the html for a daily recurrences list item
 
                 {% for label in recurrence.labels %}
                     <div class="d-flex">
-                        <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
-                        {#<div class="mr-2">{{ label.name }}</div>#}
+                        <div class="mr-2" title="{{ label.name }}"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
                     </div>
                 {% endfor %}
         
@@ -156,12 +155,12 @@ Create the html for a daily recurrences list item
                 <button class="btn btn-xs font-weight-bold" type="button" data-toggle="dropdown">&#8943;</button>
 
                 <div class="dropdown-menu">
+                    <h6 class="dropdown-header">Labels</h6>
+                    <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="3" type="button">Edit labels</button>
+                    
                     <h6 class="dropdown-header">Delete</h6>
                     <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="1" type="button">This event</button>
                     <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="2" type="button">This and following events</button>
-                    
-                    <h6 class="dropdown-header">Labels</h6>
-                    <button class="dropdown-item daily-recurrences-list-item-dropdown-btn" data-js-dropdown-action="3" type="button">Edit labels</button>
                 </div>
             </div>
 
