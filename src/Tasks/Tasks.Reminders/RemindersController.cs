@@ -37,13 +37,17 @@ public class RemindersController
             .AddScoped<IEventActionServices, EventActionServices>()
             .AddScoped<IUserServices, UserServices>()
             .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
+            .AddScoped<ILabelServices, LabelServices>()
+            .AddScoped<IEventLabelServices, EventLabelServices>()
 
             // repositories
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IEventRepository, EventRepository>()
             .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
             .AddScoped<IEventActionRepository, EventActionRepository>()
-            .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>();
+            .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
+            .AddScoped<ILabelRepository, LabelRepository>()
+            .AddScoped<IEventLabelRepository, EventLabelRepository>();
 
         return serviceCollection.BuildServiceProvider();
     }
