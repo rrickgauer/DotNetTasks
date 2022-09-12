@@ -21,8 +21,6 @@ const m_recurrenceListController = new DailyRecurrenceListController();
 const m_listItemController = new DailyRecurrencesListItemController();
 const m_sidebarController = new AppSidebarController();
 const m_eventLabelModalController = new EventLabelAssignmentsController();
-
-
 const m_sidebarLabelsController = new AppSidebarLabelsFilterController();
 
 /**
@@ -32,11 +30,9 @@ $(document).ready(function()
 {
     initCustomDatePickers();
     addListeners();
+    m_boardActionsController.setJumpWeekLinkValues();
     m_boardActionsController.getWeeklyRecurrences();
     setupBoardActionVisibilities();
-
-
-    initLabelsSidebar();
 });
 
 
@@ -70,15 +66,9 @@ async function addListeners()
 
     m_sidebarController.addEventListeners();
 
-
     m_sidebarLabelsController.addListeners();
     m_sidebarLabelsController.setCheckedLabelsFromUrlParm();
 
     listenForWindowResize();
     listenForArrowKeys();
-}
-
-function initLabelsSidebar()
-{
-    console.log(m_sidebarLabelsController);
 }
