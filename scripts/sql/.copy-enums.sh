@@ -15,7 +15,7 @@ mysqldump \
 --result-file $OUTPUT_FILE
 
 # change all occurence of Tasks_Dev to Tasks in the output file
-./replace.sh $OUTPUT_FILE
+./.replace.sh $OUTPUT_FILE
 
 # Copy over the data:
 mysql -u main -p --database=Tasks < $OUTPUT_FILE

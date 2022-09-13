@@ -18,7 +18,7 @@ mysqldump \
 
 
 # Change the out document to be use Tasks instead of Tasks_Dev
-./replace.sh $OUTPUT_FILE
+./.replace.sh $OUTPUT_FILE
 
 # Copy over the data:
 mysql -u main -p < $OUTPUT_FILE
