@@ -1,12 +1,10 @@
-import { AppSidebarLabelsFilterElements } from "./elements";
+import { RecurrencesBoardFilterModalElements } from "./recurrences-board-filter-modal-elements";
 
-
-
-export class AppSidebarLabelsFilterController
+export class RecurrencesBoardFilterModalController
 {
     constructor()
     {
-        this.elements = new AppSidebarLabelsFilterElements();
+        this.elements = new RecurrencesBoardFilterModalElements();
     }
 
 
@@ -17,6 +15,9 @@ export class AppSidebarLabelsFilterController
 
     //#region Form submission
 
+    /**
+     * Event listener for submitting the form
+     */
     _listenForFormSubmission = () =>
     {
         this.elements.eForm.addEventListener('submit', (e) =>
@@ -26,7 +27,9 @@ export class AppSidebarLabelsFilterController
         });
     }
 
-
+    /**
+     * Submit the form
+     */
     _submitForm = () =>
     {
         const url = new URL(window.location.href);
@@ -91,10 +94,12 @@ export class AppSidebarLabelsFilterController
         return searchParmValue;
     }
 
-
     //#endregion
 
-
+    
+    /**
+     * Mark the specified label filter checkboxes as checked if they are present in the current URL search parms.
+     */
     setCheckedLabelsFromUrlParm = () =>
     {
         const url = new URL(window.location.href);
