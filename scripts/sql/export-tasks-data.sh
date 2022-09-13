@@ -5,8 +5,8 @@ mysqldump   \
 --user=main     \
 --column-statistics=FALSE   \
 --password  \
---skip-comments     \
+--skip-comments \
 --replace   \
 --no-create-info \
+--no-create-db \
 --result-file tasks-data-dump.sql 
-
