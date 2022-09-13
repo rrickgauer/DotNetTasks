@@ -443,3 +443,6 @@ ConfigurationProduction.cs
 !**/tasks/static/js/lib/
 
 send-daily-reminders-output.log
+
+**/scripts/sql/*.sql
+
