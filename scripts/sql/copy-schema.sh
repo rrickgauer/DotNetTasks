@@ -19,7 +19,6 @@ mysqldump \
 
 
 # Change the out document to be use Tasks instead of Tasks_Dev
-#sed -i 's/Tasks_Dev/Tasks/g' result.sql
 ./replace.sh $OUTPUT_FILE
 
 # Copy over the data:
