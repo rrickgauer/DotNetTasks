@@ -1,3 +1,8 @@
+-- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
+--
+-- Host: localhost    Database: Tasks_Dev
+-- ------------------------------------------------------
+-- Server version	8.0.28-0ubuntu0.20.04.3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -10,9 +15,18 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
+-- Current Database: `Tasks_Dev`
+--
+
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `Tasks_Dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `Tasks_Dev`;
+
+--
+-- Table structure for table `Event_Action_Types`
+--
+
 DROP TABLE IF EXISTS `Event_Action_Types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -24,6 +38,11 @@ CREATE TABLE `Event_Action_Types` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Event_Actions`
+--
+
 DROP TABLE IF EXISTS `Event_Actions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -38,6 +57,11 @@ CREATE TABLE `Event_Actions` (
   CONSTRAINT `Event_Actions_ibfk_2` FOREIGN KEY (`event_action_type_id`) REFERENCES `Event_Action_Types` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Event_Frequencies`
+--
+
 DROP TABLE IF EXISTS `Event_Frequencies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -49,6 +73,11 @@ CREATE TABLE `Event_Frequencies` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Event_Labels`
+--
+
 DROP TABLE IF EXISTS `Event_Labels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -62,6 +91,11 @@ CREATE TABLE `Event_Labels` (
   CONSTRAINT `Event_Labels_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `Labels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Event_Notes`
+--
+
 DROP TABLE IF EXISTS `Event_Notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -76,6 +110,11 @@ CREATE TABLE `Event_Notes` (
   CONSTRAINT `Event_Notes_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Events`
+--
+
 DROP TABLE IF EXISTS `Events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -104,6 +143,11 @@ CREATE TABLE `Events` (
   CONSTRAINT `Events_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Labels`
+--
+
 DROP TABLE IF EXISTS `Labels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -119,6 +163,11 @@ CREATE TABLE `Labels` (
   CONSTRAINT `Labels_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `User_Email_Verifications`
+--
+
 DROP TABLE IF EXISTS `User_Email_Verifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -134,6 +183,11 @@ CREATE TABLE `User_Email_Verifications` (
   CONSTRAINT `User_Email_Verifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Users`
+--
+
 DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -148,6 +202,11 @@ CREATE TABLE `Users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `View_Events`
+--
+
 DROP TABLE IF EXISTS `View_Events`;
 /*!50001 DROP VIEW IF EXISTS `View_Events`*/;
 SET @saved_cs_client     = @@character_set_client;
@@ -169,6 +228,11 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `recurrence_week`,
  1 AS `recurrence_month`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `View_Frequency_Counts`
+--
+
 DROP TABLE IF EXISTS `View_Frequency_Counts`;
 /*!50001 DROP VIEW IF EXISTS `View_Frequency_Counts`*/;
 SET @saved_cs_client     = @@character_set_client;
@@ -180,6 +244,11 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `count_MONTHLY`,
  1 AS `count_YEARLY`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `View_Labels`
+--
+
 DROP TABLE IF EXISTS `View_Labels`;
 /*!50001 DROP VIEW IF EXISTS `View_Labels`*/;
 SET @saved_cs_client     = @@character_set_client;
@@ -191,6 +260,11 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `color`,
  1 AS `created_on`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `View_Users`
+--
+
 DROP TABLE IF EXISTS `View_Users`;
 /*!50001 DROP VIEW IF EXISTS `View_Users`*/;
 SET @saved_cs_client     = @@character_set_client;
@@ -203,6 +277,14 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `deliver_reminders`,
  1 AS `email_confirmed_on`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'Tasks_Dev'
+--
+
+--
+-- Dumping routines for database 'Tasks_Dev'
+--
 /*!50003 DROP FUNCTION IF EXISTS `event_has_action_occurence` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1307,7 +1389,16 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
+--
+-- Current Database: `Tasks_Dev`
+--
+
 USE `Tasks_Dev`;
+
+--
+-- Final view structure for view `View_Events`
+--
+
 /*!50001 DROP VIEW IF EXISTS `View_Events`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1321,6 +1412,11 @@ USE `Tasks_Dev`;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `View_Frequency_Counts`
+--
+
 /*!50001 DROP VIEW IF EXISTS `View_Frequency_Counts`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1334,6 +1430,11 @@ USE `Tasks_Dev`;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `View_Labels`
+--
+
 /*!50001 DROP VIEW IF EXISTS `View_Labels`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1347,6 +1448,11 @@ USE `Tasks_Dev`;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `View_Users`
+--
+
 /*!50001 DROP VIEW IF EXISTS `View_Users`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1370,3 +1476,4 @@ USE `Tasks_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2022-09-13  3:52:52
