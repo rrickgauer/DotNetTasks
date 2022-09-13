@@ -1,12 +1,10 @@
-import { AppSidebarLabelsFilterElements } from "./elements";
+import { RecurrencesBoardFilterModalElements } from "./recurrences-board-filter-modal-elements";
 
-
-
-export class AppSidebarLabelsFilterController
+export class RecurrencesBoardFilterModalController
 {
     constructor()
     {
-        this.elements = new AppSidebarLabelsFilterElements();
+        this.elements = new RecurrencesBoardFilterModalElements();
     }
 
 
