@@ -10,7 +10,7 @@ mysqldump \
 --column-statistics=FALSE \
 --routines \
 --events \
---triggers\
+--triggers \
 --no-data \
 --password \
 --skip-comments \
