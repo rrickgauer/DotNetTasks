@@ -1,31 +1,15 @@
+{# 
+    
+    Sidebar section
+
+    Incoming data:
+        - current_date
+        - next_week_date
+        - previous_week_date
+        - labels
+#}
+
 <div id="sidebar-container">
     <button type="button" class="btn btn-sm btn-standard btn-block sidebar-container-btn" data-js-action="1">Toggle completed events</button>
-
-
-    <button type="button" class="btn btn-sm btn-standard btn-block sidebar-container-btn" data-toggle="collapse" data-target="#sidebar-container .sidebar-labels">Labels</button>
-
-    <div class="collapse sidebar-labels mt-2">
-
-        <form class="sidebar-container-labels-form">
-
-            <div class="card card-body">
-                {% for label in data.labels %}
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="labels" value="{{ label.id }}">
-
-                            <div class="d-flex">
-                                <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
-                                <div class="mr-2">{{ label.name }}</div>
-                            </div>
-                        </label>
-                    </div>
-                {% endfor %}
-            </div>
-
-
-            <button type="submit" class="btn btn-sm btn-success mt-2">Filter labels</button>
-        </form>
-
-    </div>
+    <button type="button" class="btn btn-sm btn-standard btn-block sidebar-container-btn" data-toggle="modal" data-target="#event-labels-filter-modal">Labels</button>
 </div>

@@ -1,8 +1,13 @@
-<!-- 
+{# 
+    
+    index page for the application
 
-    Incoming data (data):
+    Incoming data:
         - current_date
- -->
+        - next_week_date
+        - previous_week_date
+        - labels
+#}
 
 
 {% extends 'base.html' %}
@@ -46,6 +51,7 @@
 <!-- event modal -->
 {% include 'components/event-modal/container.html' %}
 {% include 'pages/home/event-label-assignments-modal.html' %}
+{% include 'pages/home/event-labels-filter-modal.html' %}
 
 
 {% endblock %}

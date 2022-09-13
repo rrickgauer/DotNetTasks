@@ -6,14 +6,14 @@ export class AppSidebarLabelsFilterElements
     constructor()
     {
         /** @type {HTMLDivElement} */
-        this.eContainer = document.getElementById(AppSidebarLabelsFilterElements.CONTAINER);
+        this.eModal = document.getElementById(AppSidebarLabelsFilterElements.CONTAINER);
 
         /** @type {HTMLFormElement} */
-        this.eForm = this.eContainer.getElementsByClassName(AppSidebarLabelsFilterElements.FORM)[0];
+        this.eForm = this.eModal.getElementsByClassName(AppSidebarLabelsFilterElements.FORM)[0];
     }
 }
 
 
 
-AppSidebarLabelsFilterElements.CONTAINER = 'sidebar-container';
+AppSidebarLabelsFilterElements.CONTAINER = 'event-labels-filter-modal';
 AppSidebarLabelsFilterElements.FORM = 'sidebar-container-labels-form';
