@@ -20,12 +20,17 @@ Account settings
     <h1>Account settings</h1>
 </div>
 
+<div class="account-settings-page-section">
+    {% include 'pages/account/verify-email.html' %}
+</div>
 
-{% include 'pages/account/verify-email.html' %}
-
+<div class="account-settings-page-section">
 {% include 'pages/account/email-preferences.html' %}
+</div>
 
-{% include 'pages/account/update-password-form.html' %}
+<div class="account-settings-page-section">
+    {% include 'pages/account/update-password-form.html' %}
+</div>
 
 
 
