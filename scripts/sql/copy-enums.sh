@@ -4,7 +4,6 @@ OUTPUT_FILE=schemas.sql
 mysqldump Tasks_Dev Event_Frequencies Event_Action_Types \
 --user=main \
 --column-statistics=FALSE \
---no-data \
 --password \
 --skip-comments \
 --replace   \
