@@ -8,21 +8,6 @@
             <label for="event-modal-form-input-name">Name*</label>
             <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-name" maxlength="100" required>
         </div>
-
-        <div class="form-row">
-
-            <!-- phone -->
-            <div class="form-group col-md-4">
-                <label for="event-modal-form-input-phone">Phone number</label>
-                <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-phone" maxlength="10" inputmode="tel">
-            </div>
-
-            <!-- location -->
-            <div class="form-group col-md-8">
-                <label for="event-modal-form-input-location">Location</label>
-                <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-location" maxlength="250">
-            </div>
-        </div>
     </div>
 
     <div class="event-modal-form-section">
@@ -31,32 +16,42 @@
 
         <div class="form-row">
             <!-- starts on -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
                 <label for="event-modal-form-input-starts-on">Starts on*</label>
                 <input type="date" class="form-control event-modal-form-input custom-datepicker" id="event-modal-form-input-starts-on" required>
             </div>
 
+            <!-- ends on -->
+            <div class="form-group col-md">
+                <label for="event-modal-form-input-ends-on">Ends on*</label>
+                <input type="date" class="form-control event-modal-form-input custom-datepicker" id="event-modal-form-input-ends-on" required>
+            </div>
+
             <!-- starts at -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
                 <label for="event-modal-form-input-starts-at">Starts at</label>
                 <input type="time" class="form-control event-modal-form-input custom-timepicker" id="event-modal-form-input-starts-at">
             </div>
         </div>
 
-
         <div class="form-row">
-            <!-- ends on -->
-            <div class="form-group col-md-6">
-                <label for="event-modal-form-input-ends-on">Ends on*</label>
-                <input type="date" class="form-control event-modal-form-input custom-datepicker" id="event-modal-form-input-ends-on" required>
+            <div class="form-group">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" id="event-modal-form-input-all-day">
+                        All day
+                    </label>
+                </div>
             </div>
+        </div>
 
+
+        <div class="form-row d-none">
             <!-- ends at -->
             <div class="form-group col-md-6">
                 <label for="event-modal-form-input-ends-at">Ends at</label>
                 <input type="time" class="form-control event-modal-form-input custom-timepicker" id="event-modal-form-input-ends-at">
             </div>
-
         </div>
 
     </div>
@@ -67,7 +62,7 @@
 
         <div class="form-row">
             <!-- frequency -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
                 <label for="event-modal-form-input-frequency">Frequency*</label>
                 <select class="form-control event-modal-form-input" id="event-modal-form-input-frequency" required>
                     <option value="ONCE">Once</option>
@@ -79,32 +74,51 @@
             </div>
 
             <!-- separation -->
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
                 <label for="event-modal-form-input-separation">Separation*</label>
                 <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-separation" min="1" required>
             </div>
-        </div>
 
-        <div class="form-row">
+
             <!-- recurrence day -->
-            <div class="form-group col-md-4">
-                <label for="event-modal-form-input-recurrence-day">Recurrence day</label>
+            <div class="form-group col-md">
+                <label for="event-modal-form-input-recurrence-day">Day</label>
                 <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-day">
             </div>
 
             <!-- recurrence week -->
-            <div class="form-group col-md-4">
-                <label for="event-modal-form-input-recurrence-week">Recurrence week</label>
+            <div class="form-group col-md">
+                <label for="event-modal-form-input-recurrence-week">Week</label>
                 <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-week">
             </div>
 
             <!-- recurrence month -->
-            <div class="form-group col-md-4">
-                <label for="event-modal-form-input-recurrence-month">Recurrence month</label>
+            <div class="form-group col-md">
+                <label for="event-modal-form-input-recurrence-month">Month</label>
                 <input type="number" class="form-control event-modal-form-input" id="event-modal-form-input-recurrence-month">
             </div>
         </div>
     </div>
+
+    <div class="event-modal-form-section">
+        <h4 class="event-modal-form-section-header">More</h4>
+        
+        <div class="form-row">
+            <!-- phone -->
+            <div class="form-group col-md-4">
+                <label for="event-modal-form-input-phone">Phone number</label>
+                <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-phone" maxlength="10" inputmode="tel">
+            </div>
+    
+            <!-- location -->
+            <div class="form-group col-md-8">
+                <label for="event-modal-form-input-location">Location</label>
+                <input type="text" class="form-control event-modal-form-input" id="event-modal-form-input-location" maxlength="250">
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- save event modal form -->
     <button type="submit" class="btn btn-success" id="event-modal-form-submit-btn">Save changes</button>
