@@ -18,4 +18,4 @@ mysqldump \
 ./replace.sh $OUTPUT_FILE
 
 # Copy over the data:
-mysql -u main -p < $OUTPUT_FILE
+mysql -u main -p --database=Tasks < $OUTPUT_FILE
