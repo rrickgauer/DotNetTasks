@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
 --
--- Host: localhost    Database: Tasks_Dev
+-- Host: localhost    Database: Tasks
 -- ------------------------------------------------------
 -- Server version	8.0.28-0ubuntu0.20.04.3
 
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `Tasks_Dev`
+-- Current Database: `Tasks`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `Tasks_Dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- CREATE DATABASE /*!32312 IF NOT EXISTS*/ `Tasks` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-USE `Tasks_Dev`;
+USE `Tasks`;
 
 --
 -- Table structure for table `Event_Action_Types`
@@ -279,11 +279,11 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping events for database 'Tasks_Dev'
+-- Dumping events for database 'Tasks'
 --
 
 --
--- Dumping routines for database 'Tasks_Dev'
+-- Dumping routines for database 'Tasks'
 --
 /*!50003 DROP FUNCTION IF EXISTS `event_has_action_occurence` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1390,10 +1390,10 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Current Database: `Tasks_Dev`
+-- Current Database: `Tasks`
 --
 
-USE `Tasks_Dev`;
+USE `Tasks`;
 
 --
 -- Final view structure for view `View_Events`
