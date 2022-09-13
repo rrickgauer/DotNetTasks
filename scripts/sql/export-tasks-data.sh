@@ -7,5 +7,6 @@ mysqldump   \
 --password  \
 --skip-comments     \
 --replace   \
+--no-create-info \
 --result-file tasks-data-dump.sql 
 
