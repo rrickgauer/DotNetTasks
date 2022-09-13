@@ -1,7 +1,7 @@
 # https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html
 
 mysqldump   \
---databases Tasks_Dev \
+--databases Tasks \
 --user=main     \
 --column-statistics=FALSE   \
 --password  \
