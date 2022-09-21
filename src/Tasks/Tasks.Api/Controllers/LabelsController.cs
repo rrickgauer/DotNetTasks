@@ -7,7 +7,7 @@ using Tasks.Domain.Parms;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 
-namespace Tasks.Controllers;
+namespace Tasks.Api.Controllers;
 
 
 [Authorize]
