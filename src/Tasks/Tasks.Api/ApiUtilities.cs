@@ -23,12 +23,12 @@ public static class ApiUtilities
 
         builder.Services.AddControllers();
 
-        IConfigs config = new ConfigurationProduction();
+        Configurations.IConfiguration config = new ConfigurationProduction();
 
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            options.KnownProxies.Add(IPAddress.Parse(config.IP_ADDRESS));
+            options.KnownProxies.Add(IPAddress.Parse(config.IpAddressVps));
         });
 
         // setup basic authentication
@@ -52,11 +52,11 @@ public static class ApiUtilities
         // depends if the app is running in development or production
         if (builder.Environment.IsDevelopment())
         {
-            builder.Services.AddSingleton<IConfigs, ConfigurationDev>();
+            builder.Services.AddSingleton<Configurations.IConfiguration, ConfigurationDev>();
         }
         else
         {
-            builder.Services.AddSingleton<IConfigs, ConfigurationProduction>();
+            builder.Services.AddSingleton<Configurations.IConfiguration, ConfigurationProduction>();
         }
 
 

@@ -16,7 +16,7 @@ namespace Tasks.Api.Controllers;
 public class LabelsController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configs;
+    private readonly Configurations.IConfiguration _configs;
     private readonly ILabelServices _labelServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -25,7 +25,7 @@ public class LabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public LabelsController(IConfigs configuration, ILabelServices labelServices)
+    public LabelsController(Configurations.IConfiguration configuration, ILabelServices labelServices)
     {
         _configs = configuration;
         _labelServices = labelServices;

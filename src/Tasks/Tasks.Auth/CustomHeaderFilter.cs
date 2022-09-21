@@ -20,14 +20,14 @@ namespace Tasks.Auth
     public class CustomHeaderFilter : ActionFilterAttribute
     {
         #region Private members
-        private readonly IConfigs _configs;
+        private readonly IConfiguration _configs;
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public CustomHeaderFilter(IConfigs configs)
+        public CustomHeaderFilter(IConfiguration configs)
         {
             _configs = configs;
         }
@@ -38,12 +38,12 @@ namespace Tasks.Auth
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!context.HttpContext.Request.Headers.TryGetValue(_configs.REQUEST_HEADER_KEY, out StringValues value))
+            if (!context.HttpContext.Request.Headers.TryGetValue(_configs.RequestHeaderKey, out StringValues value))
             {
                 context.Result = new UnauthorizedObjectResult("Missing custom request header key.");
             }
 
-            if (!value.Contains(_configs.REQUEST_HEADER_VALUE))
+            if (!value.Contains(_configs.RequestHeaderValue))
             {
                 context.Result = new UnauthorizedObjectResult("Invalid custom request header value.");
             }

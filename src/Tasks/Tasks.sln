@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Errors", "Tasks.Error
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Api", "Tasks.Api\Tasks.Api.csproj", "{2078D37A-95A5-4997-A042-E99843D086C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks", "Tasks\Tasks.csproj", "{16F8747B-AD7F-4F03-9AF5-08E98C8C34AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Wpf", "Tasks.Wpf\Tasks.Wpf.csproj", "{48674FFA-9F58-4FEC-BA26-75E087EFD35A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +97,14 @@ Global
 		{2078D37A-95A5-4997-A042-E99843D086C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2078D37A-95A5-4997-A042-E99843D086C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2078D37A-95A5-4997-A042-E99843D086C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16F8747B-AD7F-4F03-9AF5-08E98C8C34AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16F8747B-AD7F-4F03-9AF5-08E98C8C34AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16F8747B-AD7F-4F03-9AF5-08E98C8C34AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16F8747B-AD7F-4F03-9AF5-08E98C8C34AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48674FFA-9F58-4FEC-BA26-75E087EFD35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48674FFA-9F58-4FEC-BA26-75E087EFD35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48674FFA-9F58-4FEC-BA26-75E087EFD35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48674FFA-9F58-4FEC-BA26-75E087EFD35A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

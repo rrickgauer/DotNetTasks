@@ -6,15 +6,15 @@ namespace Tasks.Repositories
 {
     public class DbConnection
     {
-        private readonly IConfigs _configs;
+        private readonly IConfiguration _configs;
 
-        public string ConnectionString => $"server={_configs.DB_SERVER};user={_configs.DB_USER};database={_configs.DB_DATABASE};password={_configs.DB_PASSWORD}";
+        public string ConnectionString => $"server={_configs.DbServer};user={_configs.DbUser};database={_configs.DbDataBase};password={_configs.DbPassword}";
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public DbConnection(IConfigs configs)
+        public DbConnection(IConfiguration configs)
         {
             _configs = configs;
         }

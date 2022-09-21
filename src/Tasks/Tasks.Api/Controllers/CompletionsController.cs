@@ -19,7 +19,7 @@ namespace Tasks.Api.Controllers;
 public class CompletionsController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
+    private readonly Configurations.IConfiguration _configuration;
     private readonly IEventActionServices _eventCompletionServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -29,7 +29,7 @@ public class CompletionsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public CompletionsController(IConfigs configuration, IEventActionServices eventCompletionServices, IEventServices eventServices)
+    public CompletionsController(Configurations.IConfiguration configuration, IEventActionServices eventCompletionServices, IEventServices eventServices)
     {
         _configuration = configuration;
         _eventCompletionServices = eventCompletionServices;
