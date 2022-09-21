@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Tasks.Wpf.Windows;
 
 namespace Tasks.Wpf
 {
@@ -15,8 +16,9 @@ namespace Tasks.Wpf
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+            ContainerWindow container = new();
+            container.Show();
+
         }
     }
 }
