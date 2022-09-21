@@ -7,7 +7,7 @@ printf "\n\n\n"
 
 # Compile Tasks project
 cd /var/www/DotNetTasks/src/Tasks
-dotnet publish Tasks -r linux-x64 --self-contained false -c Release
+dotnet publish Tasks.Api -r linux-x64 --self-contained false -c Release
 
 
 printf "\n\n\n"
