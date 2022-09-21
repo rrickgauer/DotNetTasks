@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tasks.Wpf.ViewModels;
 
 namespace Tasks.Wpf.Windows
 {
@@ -19,8 +20,13 @@ namespace Tasks.Wpf.Windows
     /// </summary>
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        public LoginWindowViewModel ViewModel { get; set; }
+
+        public LoginWindow(LoginWindowViewModel loginWindowViewModel)
         {
+            ViewModel = loginWindowViewModel;
+            this.DataContext = ViewModel;
+
             InitializeComponent();
         }
     }

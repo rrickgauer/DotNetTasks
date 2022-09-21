@@ -12,9 +12,8 @@
         SizeToContent="Width"
         MaxHeight="300"
         xmlns:viewModels="clr-namespace:Tasks.Wpf.ViewModels"
-        
         >
-    <Grid>
+    <Grid x:Name="loginWindowGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -25,13 +24,28 @@
         
         <StackPanel Grid.Row="0" HorizontalAlignment="Center" Width="500" Margin="20,20,20,20" VerticalAlignment="Center">
 
-            <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Email" Padding="0,0,0,10" />
-            <ui:TextBox Margin="0,0,0,30" />
+            <TextBlock 
+                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" 
+                Text="Email" 
+                Padding="0,0,0,10" 
+                />
+            
+            <ui:TextBox 
+                Margin="0,0,0,30" 
+                Text="{Binding Path=EmailTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                />
 
             <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Password" Padding="0,0,0,10" />
-            <ui:PasswordBox Margin="0,0,0,30"/>
             
-            <ui:Button Content="Log in"/>
+            <ui:PasswordBox 
+                Margin="0,0,0,30"
+                Text="{Binding Path=PasswordTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                />
+            
+            <ui:Button 
+                Content="Log in"
+                IsEnabled="{Binding Path=CanSubmitForm, UpdateSourceTrigger=PropertyChanged}"
+                />
         </StackPanel>
         
     </Grid>

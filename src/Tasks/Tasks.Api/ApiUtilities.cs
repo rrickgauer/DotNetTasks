@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
 using Tasks.Auth;
 using Tasks.Configurations;
+using Tasks.DependenciesInjector;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Implementations;
@@ -36,51 +37,9 @@ public static class ApiUtilities
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
 
-        InjectDependencies(builder);
+        ServicesInjector.InjectDependencies(builder.Services, builder.Environment.IsDevelopment());
 
         return builder;
-    }
-
-
-    /// <summary>
-    /// Inject all the dependencies
-    /// </summary>
-    /// <param name="builder"></param>
-    public static void InjectDependencies(WebApplicationBuilder builder)
-    {
-        // set the appropriate configuration class
-        // depends if the app is running in development or production
-        if (builder.Environment.IsDevelopment())
-        {
-            builder.Services.AddSingleton<Configurations.IConfiguration, ConfigurationDev>();
-        }
-        else
-        {
-            builder.Services.AddSingleton<Configurations.IConfiguration, ConfigurationProduction>();
-        }
-
-
-        builder.Services
-        // services
-        .AddScoped<IEventServices, EventServices>()
-        .AddScoped<IRecurrenceServices, RecurrenceServices>()
-        .AddScoped<IEventActionServices, EventActionServices>()
-        .AddScoped<IUserServices, UserServices>()
-        .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
-        .AddScoped<ILabelServices, LabelServices>()
-        .AddScoped<IEventLabelServices, EventLabelServices>()
-
-        // repositories
-        .AddScoped<IUserRepository, UserRepository>()
-        .AddScoped<IEventRepository, EventRepository>()
-        .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
-        .AddScoped<IEventActionRepository, EventActionRepository>()
-        .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
-        .AddScoped<ILabelRepository, LabelRepository>()
-        .AddScoped<IEventLabelRepository, EventLabelRepository>()
-
-        // custom filters
-        .AddScoped<CustomHeaderFilter>();
     }
 
     /// <summary>

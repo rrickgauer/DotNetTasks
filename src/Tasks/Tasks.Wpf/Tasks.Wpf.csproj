@@ -15,4 +15,9 @@
     <Folder Include="Pages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj" />
+    <ProjectReference Include="..\Tasks.Mappers\Tasks.Mappers.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tasks.Auth\Tasks.Auth.csproj" />
     <ProjectReference Include="..\Tasks.Configurations\Tasks.Configurations.csproj" />
+    <ProjectReference Include="..\Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj" />
     <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
     <ProjectReference Include="..\Tasks.Repositories\Tasks.Repositories.csproj" />
     <ProjectReference Include="..\Tasks.Security\Tasks.Security.csproj" />
