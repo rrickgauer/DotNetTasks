@@ -14,17 +14,17 @@ namespace Tasks.Email.Messages
     {
         #region Private members
         private readonly UserEmailVerification _userEmailVerification;
-        private readonly IConfigs _configs;
+        private readonly IConfiguration _configs;
         #endregion
 
-        private string _confirmationUrl => $"{_configs.URL_GUI}/email-verifications/{_userEmailVerification.Id}";
+        private string _confirmationUrl => $"{_configs.UrlGui}/email-verifications/{_userEmailVerification.Id}";
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="userEmailVerification"></param>
         /// <param name="configs"></param>
-        public UserEmailVerificationMessage(UserEmailVerification userEmailVerification, IConfigs configs)
+        public UserEmailVerificationMessage(UserEmailVerification userEmailVerification, IConfiguration configs)
         {
             _userEmailVerification = userEmailVerification;
             _configs = configs; 

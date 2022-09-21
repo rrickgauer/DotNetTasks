@@ -17,7 +17,7 @@ namespace Tasks.Email
 
         #region Private memebers
         private readonly SmtpClient _smtpClient;
-        private readonly IConfigs _configs;
+        private readonly IConfiguration _configs;
         private readonly NetworkCredential _credentials;
         private bool _isConnected = false;
         #endregion
@@ -27,11 +27,11 @@ namespace Tasks.Email
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public EmailServer(IConfigs configs)
+        public EmailServer(IConfiguration configs)
         {
             _configs = configs;
             _smtpClient = new SmtpClient();
-            _credentials = new NetworkCredential(_configs.EMAIL_USERNAME, _configs.EMAIL_PASSWORD);
+            _credentials = new NetworkCredential(_configs.EmailUsername, _configs.EmailPassword);
         }   
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Tasks.Email
         /// </summary>
         public void Connect()
         {
-            _smtpClient.Host = _configs.EMAIL_SMTP_CLIENT;
+            _smtpClient.Host = _configs.EmailSmtpClient;
             _smtpClient.Port = SMTP_PORT;
             _smtpClient.EnableSsl = true;
             _smtpClient.UseDefaultCredentials = false;
@@ -60,7 +60,7 @@ namespace Tasks.Email
 
             EnsureConnected();
 
-            await _smtpClient.SendMailAsync(_configs.EMAIL_ADDRESS, content.Recipient, content.Subject, content.Body);
+            await _smtpClient.SendMailAsync(_configs.EmailAddress, content.Recipient, content.Subject, content.Body);
 
         }
 

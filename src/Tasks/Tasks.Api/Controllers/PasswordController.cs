@@ -14,7 +14,7 @@ namespace Tasks.Api.Controllers;
 public class PasswordController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
+    private readonly Configurations.IConfiguration _configuration;
     private readonly IUserServices _userServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -24,7 +24,7 @@ public class PasswordController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="eventServices"></param>
-    public PasswordController(IConfigs configuration, IUserServices eventServices)
+    public PasswordController(Configurations.IConfiguration configuration, IUserServices eventServices)
     {
         _configuration = configuration;
         _userServices = eventServices;

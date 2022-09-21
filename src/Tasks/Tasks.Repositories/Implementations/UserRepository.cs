@@ -11,7 +11,7 @@ namespace Tasks.Repositories.Implementations;
 public class UserRepository : IUserRepository
 {
     #region Private members
-    private readonly IConfigs _configs;
+    private readonly IConfiguration _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public UserRepository(IConfigs configs)
+    public UserRepository(IConfiguration configs)
     {
         _configs = configs;
         _dbConnection = new DbConnection(_configs);

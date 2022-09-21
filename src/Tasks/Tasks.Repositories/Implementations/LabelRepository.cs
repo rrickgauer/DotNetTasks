@@ -18,7 +18,7 @@ namespace Tasks.Repositories.Implementations;
 public class LabelRepository : ILabelRepository
 {
     #region Private memebers
-    private readonly IConfigs _configs;
+    private readonly IConfiguration _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -26,7 +26,7 @@ public class LabelRepository : ILabelRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public LabelRepository(IConfigs configs)
+    public LabelRepository(IConfiguration configs)
     {
         _configs = configs;
         _dbConnection = new(_configs);

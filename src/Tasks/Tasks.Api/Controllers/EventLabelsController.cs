@@ -20,7 +20,7 @@ using LabelsCollection = ActionResult<IEnumerable<Label>>;
 public class EventLabelsController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
+    private readonly Configurations.IConfiguration _configuration;
     private readonly IEventLabelServices _eventLabelServices;
     private readonly IEventServices _eventServices;
     private readonly ILabelServices _labelServices;
@@ -32,7 +32,7 @@ public class EventLabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public EventLabelsController(IConfigs configuration, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
+    public EventLabelsController(Configurations.IConfiguration configuration, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
     {
         _configuration = configuration;
         _eventLabelServices = eventLabelServices;

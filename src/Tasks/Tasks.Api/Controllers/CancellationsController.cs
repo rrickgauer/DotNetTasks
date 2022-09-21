@@ -17,7 +17,7 @@ namespace Tasks.Api.Controllers;
 public class CancellationsController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
+    private readonly Configurations.IConfiguration _configuration;
     private readonly IEventActionServices _eventCompletionServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -29,7 +29,7 @@ public class CancellationsController : ControllerBase
     /// <param name="configs"></param>
     /// <param name="eventActionServices"></param>
     /// <param name="eventServices"></param>
-    public CancellationsController(IConfigs configs, IEventActionServices eventActionServices, IEventServices eventServices)
+    public CancellationsController(Configurations.IConfiguration configs, IEventActionServices eventActionServices, IEventServices eventServices)
     {
         _configuration = configs;
         _eventCompletionServices = eventActionServices;

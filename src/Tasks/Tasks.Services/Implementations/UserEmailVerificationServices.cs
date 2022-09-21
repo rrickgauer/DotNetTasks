@@ -21,14 +21,14 @@ namespace Tasks.Services.Implementations
         #region Private members
         private readonly IUserServices _userServices;
         private readonly IUserEmailVerificationRepository _userEmailVerificationRepository;
-        private readonly IConfigs _configs;
+        private readonly IConfiguration _configs;
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="userServices"></param>
-        public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository, IConfigs configs)
+        public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository, IConfiguration configs)
         {
             _userServices = userServices;
             _userEmailVerificationRepository = userEmailVerificationRepository;

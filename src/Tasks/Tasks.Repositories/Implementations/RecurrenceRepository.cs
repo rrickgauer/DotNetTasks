@@ -13,7 +13,7 @@ public class RecurrenceRepository : IRecurrenceRepository
 {
 
     #region Private memebers
-    private readonly IConfigs _configs;
+    private readonly IConfiguration _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -21,7 +21,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public RecurrenceRepository(IConfigs configs)
+    public RecurrenceRepository(IConfiguration configs)
     {
         _configs = configs;
         _dbConnection = new(_configs);

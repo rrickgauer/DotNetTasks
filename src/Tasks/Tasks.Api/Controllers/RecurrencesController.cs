@@ -24,7 +24,7 @@ namespace Tasks.Api.Controllers;
 public class RecurrencesController : ControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
+    private readonly Configurations.IConfiguration _configuration;
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -36,7 +36,7 @@ public class RecurrencesController : ControllerBase
     /// </summary>
     /// <param name="configs"></param>
     /// <param name="recurrenceServices"></param>
-    public RecurrencesController(IConfigs configs, IRecurrenceServices recurrenceServices, IEventServices eventServices)
+    public RecurrencesController(Configurations.IConfiguration configs, IRecurrenceServices recurrenceServices, IEventServices eventServices)
     {
         _configuration = configs;
         _recurrenceServices = recurrenceServices;

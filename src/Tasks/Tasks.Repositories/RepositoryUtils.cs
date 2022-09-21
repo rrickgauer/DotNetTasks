@@ -7,16 +7,16 @@ namespace Tasks.Repositories
 {
     public class RepositoryUtils
     {
-        public static MySqlConnection GetConnection(IConfigs configs)
+        public static MySqlConnection GetConnection(IConfiguration configs)
         {
             string connectionString = GetConnectionString(configs);
             MySqlConnection conn = new(connectionString);
             return conn;
         }
 
-        public static string GetConnectionString(IConfigs configs)
+        public static string GetConnectionString(IConfiguration configs)
         {
-            return $"server={configs.DB_SERVER};user={configs.DB_USER};database={configs.DB_DATABASE};password={configs.DB_PASSWORD}";
+            return $"server={configs.DbServer};user={configs.DbUser};database={configs.DbDataBase};password={configs.DbPassword}";
         }
 
         public static async Task<DataTable> LoadDataTableAsync(MySqlCommand command)

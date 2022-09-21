@@ -17,7 +17,7 @@ namespace Tasks.Repositories.Implementations;
 public class EventLabelRepository : IEventLabelRepository
 {
     #region Private members
-    private readonly IConfigs _configs;
+    private readonly IConfiguration _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -25,7 +25,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// 
     /// </summary>
     /// <param name="configs"></param>
-    public EventLabelRepository(IConfigs configs)
+    public EventLabelRepository(IConfiguration configs)
     {
         _configs = configs;
         _dbConnection = new(_configs);

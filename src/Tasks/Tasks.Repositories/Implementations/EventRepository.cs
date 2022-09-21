@@ -10,14 +10,14 @@ namespace Tasks.Repositories.Implementations;
 
 public partial class EventRepository : IEventRepository
 {
-    private readonly IConfigs _configs;
+    private readonly IConfiguration _configs;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
     /// <param name="httpContextAccessor"></param>
-    public EventRepository(IConfigs configs)
+    public EventRepository(IConfiguration configs)
     {
         _configs = configs;
     }
