@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:Tasks.Wpf.Windows" 
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="Container" Height="450" Width="800"
+        Title="MainWindow" Height="450" Width="800"
         Background="{ui:ThemeResource ApplicationBackgroundBrush}"
         WindowStartupLocation="CenterScreen"
-        
         >
     <Grid>
         

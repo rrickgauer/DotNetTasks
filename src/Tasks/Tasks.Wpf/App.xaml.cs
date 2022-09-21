@@ -14,10 +14,10 @@ namespace Tasks.Wpf
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
-            ContainerWindow container = new();
-            container.Show();
+            LoginWindow window = new();
+            window.Show();
 
         }
     }
