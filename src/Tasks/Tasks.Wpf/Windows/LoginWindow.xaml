@@ -11,6 +11,8 @@
         WindowStartupLocation="CenterScreen"
         SizeToContent="Width"
         MaxHeight="300"
+        xmlns:viewModels="clr-namespace:Tasks.Wpf.ViewModels"
+        
         >
     <Grid>
         <Grid.ColumnDefinitions>
