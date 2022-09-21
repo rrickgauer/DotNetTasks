@@ -7,7 +7,7 @@ using Tasks.Domain.Parms;
 using Tasks.Security;
 using Tasks.Services.Interfaces;
 
-namespace Tasks.Controllers;
+namespace Tasks.Api.Controllers;
 
 using LabelsCollection = ActionResult<IEnumerable<Label>>;
 
@@ -49,13 +49,13 @@ public class EventLabelsController : ControllerBase
     public async Task<ActionResult<EventLabel>> PutAsync([FromRoute] EventLabelRequestParms eventLabelRequest)
     {
         EventLabel? newEventLabel = await _eventLabelServices.CreateAsync(eventLabelRequest, CurrentUserId);
-        
+
         if (newEventLabel is null)
         {
             return NotFound();
         }
 
-        string url = _eventLabelServices.GetUri(newEventLabel); 
+        string url = _eventLabelServices.GetUri(newEventLabel);
 
         return Created(url, newEventLabel);
     }
@@ -70,7 +70,7 @@ public class EventLabelsController : ControllerBase
     {
         // make sure the client owns the event
         var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
-        
+
         if (!clientOwnsEvent)
         {
             return NotFound();
