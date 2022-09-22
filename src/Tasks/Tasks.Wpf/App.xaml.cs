@@ -9,6 +9,7 @@ using System.Windows;
 using Tasks.DependenciesInjector;
 using Tasks.Services.Implementations;
 using Tasks.Services.Interfaces;
+using Tasks.Wpf.Services;
 using Tasks.Wpf.ViewModels;
 using Tasks.Wpf.Windows;
 
@@ -23,8 +24,8 @@ public partial class App : Application
     {
         var builder = BuildServiceProvider();
 
-        var loginWindow = builder.GetRequiredService<LoginWindow>();
-        loginWindow.Show();
+        var windowServices = builder.GetRequiredService<WpfWindowServices>();
+        windowServices.LoginWindow.Show();
     }
 
     /// <summary>
@@ -39,7 +40,8 @@ public partial class App : Application
         services.AddScoped<LoginWindowViewModel>()
         .AddScoped<LoginWindow>()
         .AddScoped<ContainerWindow>()
-        .AddScoped<IWpfApplicationServices, WpfApplicationServices>();
+        .AddScoped<WpfWindowServices>()
+        .AddScoped<WpfApplicationServices>();
 
         var builder = services.BuildServiceProvider();
         

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Domain.Models;
-using Tasks.Services.Interfaces;
 
-namespace Tasks.Services.Implementations;
+namespace Tasks.Wpf.Services;
 
-public class WpfApplicationServices : IWpfApplicationServices
+public class WpfApplicationServices
 {
     public User? User { get; set; }
 }

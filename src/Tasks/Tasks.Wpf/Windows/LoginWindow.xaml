@@ -13,6 +13,7 @@
         Height="300"
         MinHeight="300"
         xmlns:viewModels="clr-namespace:Tasks.Wpf.ViewModels"
+        Closed="Window_Closed"
         >
     <Grid x:Name="loginWindowGrid">
         <Grid.ColumnDefinitions>
@@ -41,9 +42,9 @@
             <ui:PasswordBox 
                 Margin="0,0,0,30"
                 Text="{Binding Path=PasswordTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                />
+            />
             
-            <ui:Button 
+            <Button
                 x:Name="formSubmitButton"
                 Content="Log in"
                 IsEnabled="{Binding Path=CanSubmitForm, UpdateSourceTrigger=PropertyChanged}"

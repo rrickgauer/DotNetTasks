@@ -23,6 +23,8 @@ public partial class LoginWindow : Window
 {
     public LoginWindowViewModel ViewModel { get; set; }
 
+    public event EventHandler LoginAttempted;
+
     public LoginWindow(LoginWindowViewModel loginWindowViewModel)
     {
         ViewModel = loginWindowViewModel;
@@ -33,6 +35,11 @@ public partial class LoginWindow : Window
 
     private void formSubmitButton_Click(object sender, RoutedEventArgs e)
     {
+        LoginAttempted?.Invoke(this, new());
+    }
 
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        Application.Current.Shutdown();
     }
 }
