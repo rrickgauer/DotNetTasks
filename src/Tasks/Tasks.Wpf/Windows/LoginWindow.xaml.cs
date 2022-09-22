@@ -30,4 +30,9 @@ public partial class LoginWindow : Window
 
         InitializeComponent();
     }
+
+    private void formSubmitButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

@@ -11,6 +11,18 @@
         WindowStartupLocation="CenterScreen"
         >
     <Grid>
-        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <TextBlock>Sup bitch</TextBlock>
+        </StackPanel>
+
     </Grid>
 </Window>

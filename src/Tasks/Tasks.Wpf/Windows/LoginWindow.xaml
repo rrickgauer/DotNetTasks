@@ -44,8 +44,10 @@
                 />
             
             <ui:Button 
+                x:Name="formSubmitButton"
                 Content="Log in"
                 IsEnabled="{Binding Path=CanSubmitForm, UpdateSourceTrigger=PropertyChanged}"
+                Click="formSubmitButton_Click"
                 />
         </StackPanel>
         

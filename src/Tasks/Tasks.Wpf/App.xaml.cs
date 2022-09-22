@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Tasks.DependenciesInjector;
+using Tasks.Services.Implementations;
+using Tasks.Services.Interfaces;
 using Tasks.Wpf.ViewModels;
 using Tasks.Wpf.Windows;
 
@@ -34,12 +36,13 @@ public partial class App : Application
         ServiceCollection services = new();
         ServicesInjector.InjectDependencies(services, true);
 
-        services.AddTransient<LoginWindowViewModel>();
-        services.AddTransient<LoginWindow>();
+        services.AddScoped<LoginWindowViewModel>()
+        .AddScoped<LoginWindow>()
+        .AddScoped<ContainerWindow>()
+        .AddScoped<IWpfApplicationServices, WpfApplicationServices>();
 
         var builder = services.BuildServiceProvider();
         
-
         return builder;
     }
 }
