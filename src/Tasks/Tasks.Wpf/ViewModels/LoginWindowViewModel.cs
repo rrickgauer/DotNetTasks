@@ -22,11 +22,11 @@ public class LoginWindowViewModel : ViewModelBase
         }
     }
     private string? emailTextBox;
-    
+
 
     [RaisePropertyChange]
-    public string? PasswordTextBox 
-    { 
+    public string? PasswordTextBox
+    {
         get => passwordTextBox;
         set
         {
@@ -37,7 +37,7 @@ public class LoginWindowViewModel : ViewModelBase
     }
 
     private string? passwordTextBox;
-
+    
 
     [RaisePropertyChange]
     public bool CanSubmitForm

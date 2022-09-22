@@ -39,17 +39,18 @@
 
             <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Password" Padding="0,0,0,10" />
             
-            <ui:PasswordBox 
+            <ui:TextBox
                 Margin="0,0,0,30"
                 Text="{Binding Path=PasswordTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             />
-            
+
             <Button
                 x:Name="formSubmitButton"
                 Content="Log in"
                 IsEnabled="{Binding Path=CanSubmitForm, UpdateSourceTrigger=PropertyChanged}"
                 Click="formSubmitButton_Click"
                 />
+
         </StackPanel>
         
     </Grid>
