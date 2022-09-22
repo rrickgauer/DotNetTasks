@@ -49,9 +49,4 @@ public static class ServicesInjector
         // custom filters
         .AddScoped<CustomHeaderFilter>();
     }
-
-    public static void InjectWpfDependencies(IServiceCollection services)
-    {
-        
-    }
 }

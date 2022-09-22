@@ -13,21 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Tasks.Wpf.ViewModels;
 
-namespace Tasks.Wpf.Windows
+namespace Tasks.Wpf.Windows;
+
+
+/// <summary>
+/// Interaction logic for LoginWindow.xaml
+/// </summary>
+public partial class LoginWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
-    public partial class LoginWindow : Window
+    public LoginWindowViewModel ViewModel { get; set; }
+
+    public LoginWindow(LoginWindowViewModel loginWindowViewModel)
     {
-        public LoginWindowViewModel ViewModel { get; set; }
+        ViewModel = loginWindowViewModel;
+        this.DataContext = ViewModel;
 
-        public LoginWindow(LoginWindowViewModel loginWindowViewModel)
-        {
-            ViewModel = loginWindowViewModel;
-            this.DataContext = ViewModel;
-
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

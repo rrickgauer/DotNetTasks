@@ -10,7 +10,8 @@
         Background="{ui:ThemeResource ApplicationBackgroundBrush}"
         WindowStartupLocation="CenterScreen"
         SizeToContent="Width"
-        MaxHeight="300"
+        Height="300"
+        MinHeight="300"
         xmlns:viewModels="clr-namespace:Tasks.Wpf.ViewModels"
         >
     <Grid x:Name="loginWindowGrid">

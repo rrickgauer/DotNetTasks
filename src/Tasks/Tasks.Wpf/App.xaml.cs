@@ -19,19 +19,27 @@ public partial class App : Application
 {
     protected async override void OnStartup(StartupEventArgs e)
     {
-        //LoginWindow window = new();
-        //window.Show();
+        var builder = BuildServiceProvider();
 
+        var loginWindow = builder.GetRequiredService<LoginWindow>();
+        loginWindow.Show();
+    }
+
+    /// <summary>
+    /// Setup DI for all the services
+    /// </summary>
+    /// <returns></returns>
+    private static ServiceProvider BuildServiceProvider()
+    {
         ServiceCollection services = new();
         ServicesInjector.InjectDependencies(services, true);
 
-        services.AddSingleton<LoginWindowViewModel>();
+        services.AddTransient<LoginWindowViewModel>();
         services.AddTransient<LoginWindow>();
 
         var builder = services.BuildServiceProvider();
-        var loginWindow = builder.GetRequiredService<LoginWindow>();
+        
 
-        loginWindow.Show();
-
+        return builder;
     }
 }
