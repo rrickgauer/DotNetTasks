@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks", "Tasks\Tasks.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Wpf", "Tasks.Wpf\Tasks.Wpf.csproj", "{48674FFA-9F58-4FEC-BA26-75E087EFD35A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.DependenciesInjector", "Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj", "{F2E065C5-7515-415D-AC7A-FD9BBA2051C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.DependenciesInjector", "Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj", "{F2E065C5-7515-415D-AC7A-FD9BBA2051C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

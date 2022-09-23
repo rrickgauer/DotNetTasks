@@ -21,7 +21,7 @@ public class LoginWindowViewModel : ViewModelBase
             RaisePropertyChanges();
         }
     }
-    private string? emailTextBox;
+    private string? emailTextBox = "rrickgauer1@gmail.com";
 
 
     [RaisePropertyChange]
