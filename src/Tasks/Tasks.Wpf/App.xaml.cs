@@ -47,13 +47,14 @@ public partial class App : Application
         .AddScoped<ContainerWindow>()
         .AddScoped<WpfWindowServices>()
         .AddScoped<WpfApplicationServices>()
-        .AddScoped<AccountPage>()
-        .AddScoped<EventsPage>()
-        .AddScoped<HomePage>()
-        .AddScoped<LabelsPage>()
-        .AddScoped<RecurrencesPage>()
+        //.AddScoped<AccountPage>()
+        //.AddScoped<EventsPage>()
+        //.AddScoped<HomePage>()
+        //.AddScoped<LabelsPage>()
+        //.AddScoped<RecurrencesPage>()
         .AddScoped<EventsPageViewModel>()
-        .AddScoped<ContainerWindowViewModel>();
+        .AddScoped<ContainerWindowViewModel>()
+        .AddScoped<RecurrencesPageViewModel>();
 
         var builder = services.BuildServiceProvider();
         

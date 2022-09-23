@@ -9,20 +9,8 @@ namespace Tasks.Wpf.ViewModels;
 
 public class ContainerWindowViewModel
 {
-    public AccountPage AccountPage { get; set; }
-    public EventsPage EventsPage { get; set; }
-    public HomePage HomePage { get; set; }
-    public LabelsPage LabelsPage { get; set; }
-    public RecurrencesPage RecurrencesPage { get; set; }
-
-    public ContainerWindowViewModel(AccountPage accountPage, EventsPage eventsPage, HomePage homePage, LabelsPage labelsPage, RecurrencesPage recurrencesPage)
+    public ContainerWindowViewModel()
     {
-        AccountPage = accountPage;
-        EventsPage = eventsPage;
-        HomePage = homePage;
-        LabelsPage = labelsPage;
-        RecurrencesPage = recurrencesPage;
+
     }
-
-
 }

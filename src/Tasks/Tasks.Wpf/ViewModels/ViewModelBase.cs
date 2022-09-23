@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Tasks.CustomAttributes;
 using Tasks.Mappers;
 
@@ -31,5 +33,14 @@ public class ViewModelBase
     protected void RaisePropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected void SetPropertyChangedValue<T>(T? value, ref T? property) 
+    {
+        if (!EqualityComparer<T>.Default.Equals(property, value))
+        {
+            property = value;
+            RaisePropertyChanges();
+        }
     }
 }

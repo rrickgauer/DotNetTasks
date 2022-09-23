@@ -30,8 +30,8 @@
                 SelectedPageIndex="0">
                 <ui:NavigationStore.Items>
                     <ui:NavigationItem Content="Home" Icon="Home24" PageTag="home" PageType="{x:Type pages:HomePage}" />
-                    <ui:NavigationItem Content="Weekly" Icon="CalendarLtr32" PageType="{x:Type pages:EventsPage}"/>
-                    <ui:NavigationItem Content="Events" Icon="SlideText24" PageType="{x:Type pages:RecurrencesPage}" />
+                    <ui:NavigationItem Content="Weekly" Icon="CalendarLtr32" PageType="{x:Type pages:RecurrencesPage}"/>
+                    <ui:NavigationItem Content="Events" Icon="SlideText24" PageType="{x:Type pages:EventsPage}" />
                     <ui:NavigationItem Content="Labels" Icon="Tag16" PageType="{x:Type pages:LabelsPage}" />
                     <ui:NavigationItem Content="Account" Icon="Settings20" PageType="{x:Type pages:AccountPage}" />
                 </ui:NavigationStore.Items>
