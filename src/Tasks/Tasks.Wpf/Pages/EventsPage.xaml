@@ -13,6 +13,8 @@
 
         <StackPanel>
             <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Events Page" FontSize="24" />
+
+
         </StackPanel>
         
         
