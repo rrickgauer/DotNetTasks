@@ -8,6 +8,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         Title="Tasks" 
         Height="1000" Width="1600"
+        d:DataContext="{d:DesignInstance local:ContainerWindow, IsDesignTimeCreatable=True}"
         Background="{ui:ThemeResource ApplicationBackgroundBrush}"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tasks.Wpf.ViewModels;
 
-namespace Tasks.Wpf.Pages
+namespace Tasks.Wpf.Pages;
+
+/// <summary>
+/// Interaction logic for EventsPage.xaml
+/// </summary>
+public partial class EventsPage : Page
 {
-    /// <summary>
-    /// Interaction logic for EventsPage.xaml
-    /// </summary>
-    public partial class EventsPage : Page
+    public EventsPageViewModel ViewModel { get; set; }
+
+    public EventsPage()
     {
-        public EventsPage()
-        {
-            InitializeComponent();
-        }
+        ViewModel = App.Services.GetRequiredService<EventsPageViewModel>();
+
+        InitializeComponent();
     }
+
 }

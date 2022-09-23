@@ -1,36 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Tasks.Wpf.Services;
+using Tasks.Wpf.ViewModels;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Common;
+using Wpf.Ui.Controls.Interfaces;
+//using Wpf.Ui.Demo.ViewModels;
+using Wpf.Ui.Mvvm.Contracts;
+using Wpf.Ui.TaskBar;
 
-namespace Tasks.Wpf.Windows
+namespace Tasks.Wpf.Windows;
+
+/// <summary>
+/// Interaction logic for Container.xaml
+/// </summary>
+public partial class ContainerWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for Container.xaml
-    /// </summary>
-    public partial class ContainerWindow : Window
+    private readonly WpfApplicationServices _applicationServices;
+
+    public ContainerWindowViewModel ViewModel { get; set; }
+
+    public ContainerWindow(WpfApplicationServices applicationServices, ContainerWindowViewModel viewModel)
     {
-        private readonly WpfApplicationServices _applicationServices;
+        _applicationServices = applicationServices;
+        ViewModel = viewModel;
 
-        public ContainerWindow(WpfApplicationServices applicationServices)
-        {
-            _applicationServices = applicationServices;
-            InitializeComponent();
-        }
+        DataContext = this;
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        InitializeComponent();
+    }
+
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
+    private void NavigationItem_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 }

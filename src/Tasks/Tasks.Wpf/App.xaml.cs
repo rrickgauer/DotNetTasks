@@ -9,6 +9,7 @@ using System.Windows;
 using Tasks.DependenciesInjector;
 using Tasks.Services.Implementations;
 using Tasks.Services.Interfaces;
+using Tasks.Wpf.Pages;
 using Tasks.Wpf.Services;
 using Tasks.Wpf.ViewModels;
 using Tasks.Wpf.Windows;
@@ -20,11 +21,15 @@ namespace Tasks.Wpf;
 /// </summary>
 public partial class App : Application
 {
+
+    public static ServiceProvider Services { get; private set; }
+
+
     protected async override void OnStartup(StartupEventArgs e)
     {
-        var builder = BuildServiceProvider();
+        Services = BuildServiceProvider();
 
-        var windowServices = builder.GetRequiredService<WpfWindowServices>();
+        var windowServices = Services.GetRequiredService<WpfWindowServices>();
         windowServices.LoginWindow.Show();
     }
 
@@ -41,7 +46,14 @@ public partial class App : Application
         .AddScoped<LoginWindow>()
         .AddScoped<ContainerWindow>()
         .AddScoped<WpfWindowServices>()
-        .AddScoped<WpfApplicationServices>();
+        .AddScoped<WpfApplicationServices>()
+        .AddScoped<AccountPage>()
+        .AddScoped<EventsPage>()
+        .AddScoped<HomePage>()
+        .AddScoped<LabelsPage>()
+        .AddScoped<RecurrencesPage>()
+        .AddScoped<EventsPageViewModel>()
+        .AddScoped<ContainerWindowViewModel>();
 
         var builder = services.BuildServiceProvider();
         

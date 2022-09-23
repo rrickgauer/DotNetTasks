@@ -10,6 +10,11 @@
       Title="EventsPage">
 
     <Grid>
-        <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Events Page" FontSize="24" />
+
+        <StackPanel>
+            <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Events Page" FontSize="24" />
+        </StackPanel>
+        
+        
     </Grid>
 </Page>
