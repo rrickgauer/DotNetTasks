@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Tasks.CustomAttributes;
 using Tasks.Domain.Parms;
+using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.Utilities;
 using Tasks.Validation;
@@ -20,7 +21,7 @@ public class RecurrencesPageViewModel : ViewModelBase
     public IRecurrenceServices RecurrenceServices { get; set; }
     public WpfApplicationServices ApplicationServices { get; set; }
 
-    public event EventHandler RecurrencesChanged;
+    public event EventHandler? RecurrencesChanged;
 
     public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices)
     {
@@ -73,12 +74,17 @@ public class RecurrencesPageViewModel : ViewModelBase
         await LoadRecurrences(DateTime.Now);
     }
 
-
     /// <summary>
     /// Load the recurrrences data
     /// </summary>
     /// <returns></returns>
     public async Task LoadRecurrences(DateTime date)
+    {
+        var recurrences = await GetReccurences(date);
+        Recurrences = new(RecurrenceViewModel.FromCollection(recurrences));
+    }
+
+    private async Task<IEnumerable<GetRecurrencesResponse>> GetReccurences(DateTime date)
     {
         ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
 
@@ -89,9 +95,9 @@ public class RecurrencesPageViewModel : ViewModelBase
             UserId = ApplicationServices.User.Id.Value,
         };
 
-        var recurrences = await RecurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
-        //Recurrences = null;
-        Recurrences = new(RecurrenceViewModel.FromCollection(recurrences));
+        IEnumerable<GetRecurrencesResponse> recurrences = await RecurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
+
+        return recurrences;
     }
 
 }

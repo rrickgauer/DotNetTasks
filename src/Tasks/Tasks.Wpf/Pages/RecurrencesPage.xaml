@@ -10,37 +10,48 @@
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"
     Title="RecurrencesPage"
-    d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=True}"
-    >
-    
+    d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=True}">
     <Grid>
-
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0">
             <TextBlock Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" Text="Recurrences Page" FontSize="24" Margin="0,0,0,20" />
 
             <DatePicker 
                 Margin="0,0,0,20" 
                 SelectedDate="{Binding Path=ViewModel.WeekDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
 
-            <ListView 
-                ItemsSource="{Binding Path=ViewModel.Recurrences, Mode=OneWay}">
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
+            <ListView ItemsSource="{Binding Path=ViewModel.Recurrences, Mode=OneWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ui:Card>
-
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox />
                                 <TextBlock
-                                    FontSize="12"
-                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                    Text="{Binding Path=GetRecurrencesResponse.Event.Name}"  />
+                                FontSize="12"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Path=GetRecurrencesResponse.Event.Name}"  />
                             </StackPanel>
                         </ui:Card>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
             </ListView>
-        </StackPanel>
-        
+
+        </ScrollViewer>
         
     </Grid>
 </Page>
