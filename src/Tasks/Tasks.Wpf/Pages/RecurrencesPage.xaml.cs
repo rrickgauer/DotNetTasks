@@ -27,6 +27,7 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
     public RecurrencesPage()
     {
         ViewModel = App.Services.GetRequiredService<RecurrencesPageViewModel>();
+        DataContext = this;
 
         InitializeComponent();
 
@@ -34,13 +35,6 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
     }
 
     private async Task LoadData()
-    {
-        await ViewModel.LoadRecurrences();
-        DataContext = this;
-    }
-
-
-    private async void Button_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.LoadRecurrences();
     }

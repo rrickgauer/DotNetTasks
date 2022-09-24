@@ -20,39 +20,25 @@
 
             <DatePicker 
                 Margin="0,0,0,20" 
-                SelectedDate="{Binding Path=ViewModel.WeekDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                />
-            
-            
-            
+                SelectedDate="{Binding Path=ViewModel.WeekDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-
-            <Button Content="Click me"  Click="Button_Click"/>
-
-            <TextBlock 
-                Text="{Binding Path=ViewModel.Recurrences.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                Margin="0,0,0,20"
-                />
-
-
-            <ListView ItemsSource="{Binding Path=ViewModel.Recurrences, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, IsAsync=True}">
-
+            <ListView 
+                ItemsSource="{Binding Path=ViewModel.Recurrences, Mode=OneWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock 
-                            Text="{Binding Path=Event.Name}" 
-                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                            Margin="0,0,0,20"
-                            />
+                        <ui:Card>
+
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                    Text="{Binding Path=GetRecurrencesResponse.Event.Name}"  />
+                            </StackPanel>
+                        </ui:Card>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                
             </ListView>
-
-
-
-
         </StackPanel>
         
         

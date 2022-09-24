@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj" />
     <ProjectReference Include="..\Tasks.Mappers\Tasks.Mappers.csproj" />
+    <ProjectReference Include="..\Tasks.Utilities\Tasks.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

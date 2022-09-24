@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Tasks.CustomAttributes;
 using Tasks.Mappers;
 
 namespace Tasks.Wpf.ViewModels;
 
-public class ViewModelBase
+public class ViewModelBase : INotifyCollectionChanged
 {
     /// <summary>
     /// Raise the property changed event for all the class's properties that have the RaisePropertyChange attribute
@@ -30,11 +32,12 @@ public class ViewModelBase
     /// Invoke if there is any subscribers
     /// </summary>
     /// <param name="propertyName"></param>
-    protected void RaisePropertyChanged(string propertyName)
+    protected void RaisePropertyChanged([CallerMemberName] string? propertyName=null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    
     protected void SetPropertyChangedValue<T>(T? value, ref T? property) 
     {
         if (!EqualityComparer<T>.Default.Equals(property, value))
@@ -42,5 +45,12 @@ public class ViewModelBase
             property = value;
             RaisePropertyChanges();
         }
+    }
+
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
+    protected void RaiseCollectionChanged(string propertyName)
+    {
+        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, propertyName));
     }
 }
