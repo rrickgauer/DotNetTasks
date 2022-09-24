@@ -20,8 +20,8 @@ public class RecurrencesPageViewModel : ViewModelBase
 {
     public IRecurrenceServices RecurrenceServices { get; set; }
     public WpfApplicationServices ApplicationServices { get; set; }
-
     public event EventHandler? RecurrencesChanged;
+    public event EventHandler? DateChanged;
 
     public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices)
     {
@@ -37,8 +37,11 @@ public class RecurrencesPageViewModel : ViewModelBase
         set
         {
             if (value == weekDate) return;
+            DateChanged?.Invoke(this, new());
             weekDate = value;
             RaisePropertyChanged();
+
+            // refresh the recurrences board
             Task.Run(() => LoadRecurrences(weekDate.Value));
         }
     }
@@ -47,6 +50,7 @@ public class RecurrencesPageViewModel : ViewModelBase
     #endregion
 
     #region Recurrences data
+    [RaisePropertyChange]
     public ObservableCollection<RecurrenceViewModel> Recurrences
     {
         get => _recurrences;
@@ -61,8 +65,20 @@ public class RecurrencesPageViewModel : ViewModelBase
 
     private ObservableCollection<RecurrenceViewModel> _recurrences = new();
 
-
     #endregion
+
+
+    [RaisePropertyChange]
+    public bool SpinnerVisible
+    {
+        get => _spinnerVisible;
+        set
+        {
+            SetPropertyChangedValue(value, ref _spinnerVisible);
+            _spinnerVisible = value;
+        }
+    }
+    private bool _spinnerVisible;
 
 
     /// <summary>

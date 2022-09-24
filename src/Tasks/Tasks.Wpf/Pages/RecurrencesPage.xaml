@@ -25,7 +25,13 @@
 
             <DatePicker 
                 Margin="0,0,0,20" 
-                SelectedDate="{Binding Path=ViewModel.WeekDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                SelectedDate="{Binding Path=ViewModel.WeekDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                />
+
+            <ui:ProgressRing 
+                IsIndeterminate="True" 
+                Visibility="Visible"/>
+
         </StackPanel>
 
 

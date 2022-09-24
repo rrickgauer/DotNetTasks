@@ -31,7 +31,21 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
 
         InitializeComponent();
 
-        LoadData();
+        ViewModel.DateChanged += ViewModel_DateChanged;
+        ViewModel.RecurrencesChanged += ViewModel_RecurrencesChanged;
+        
+        Task.Run(() => LoadData());
+    }
+
+    private void ViewModel_RecurrencesChanged(object? sender, EventArgs e)
+    {
+        //throw new NotImplementedException();
+        //this.spinner.Visibility = Visibility.Hidden;
+    }
+
+    private void ViewModel_DateChanged(object? sender, EventArgs e)
+    {
+        //this.spinner.Visibility = Visibility.Visible;
     }
 
     private async Task LoadData()
