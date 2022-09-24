@@ -30,7 +30,7 @@
 
             <ui:ProgressRing 
                 IsIndeterminate="True" 
-                Visibility="Visible"/>
+                Visibility="{Binding Path=ViewModel.SpinnerVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         </StackPanel>
 

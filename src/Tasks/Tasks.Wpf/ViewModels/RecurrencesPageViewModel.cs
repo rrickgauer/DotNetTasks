@@ -41,6 +41,8 @@ public class RecurrencesPageViewModel : ViewModelBase
             weekDate = value;
             RaisePropertyChanged();
 
+            //ToggleSpinner(true);
+
             // refresh the recurrences board
             Task.Run(() => LoadRecurrences(weekDate.Value));
         }
@@ -60,6 +62,8 @@ public class RecurrencesPageViewModel : ViewModelBase
             _recurrences = value;
             RaisePropertyChanged();
             RecurrencesChanged?.Invoke(this, new());
+
+            ToggleSpinner(true);
         }
     }
 
@@ -68,17 +72,17 @@ public class RecurrencesPageViewModel : ViewModelBase
     #endregion
 
 
-    [RaisePropertyChange]
-    public bool SpinnerVisible
-    {
-        get => _spinnerVisible;
+    public Visibility SpinnerVisibility 
+    { 
+        get => _spinnerVisibility;
         set
         {
-            SetPropertyChangedValue(value, ref _spinnerVisible);
-            _spinnerVisible = value;
+            if (value == _spinnerVisibility) return;
+            _spinnerVisibility = value;
+            RaisePropertyChanged();
         }
     }
-    private bool _spinnerVisible;
+    private Visibility _spinnerVisibility = Visibility.Collapsed;
 
 
     /// <summary>
@@ -114,6 +118,12 @@ public class RecurrencesPageViewModel : ViewModelBase
         IEnumerable<GetRecurrencesResponse> recurrences = await RecurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
 
         return recurrences;
+    }
+
+
+    public void ToggleSpinner(bool showIt)
+    {
+        SpinnerVisibility = showIt ? Visibility.Visible : Visibility.Collapsed;
     }
 
 }

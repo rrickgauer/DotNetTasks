@@ -39,6 +39,8 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
 
     private void ViewModel_RecurrencesChanged(object? sender, EventArgs e)
     {
+        //ViewModel.ToggleSpinner(false);
+
         //throw new NotImplementedException();
         //this.spinner.Visibility = Visibility.Hidden;
     }
@@ -46,6 +48,7 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
     private void ViewModel_DateChanged(object? sender, EventArgs e)
     {
         //this.spinner.Visibility = Visibility.Visible;
+        //ViewModel.ToggleSpinner(true);
     }
 
     private async Task LoadData()
