@@ -27,28 +27,28 @@ public partial class RecurrencesPage : Page, IControlModel<RecurrencesPageViewMo
     public RecurrencesPage()
     {
         ViewModel = App.Services.GetRequiredService<RecurrencesPageViewModel>();
-        DataContext = this;
+        
 
         InitializeComponent();
 
         ViewModel.DateChanged += ViewModel_DateChanged;
         ViewModel.RecurrencesChanged += ViewModel_RecurrencesChanged;
-        
-        Task.Run(() => LoadData());
+
+
+        DataContext = this;
+
+        //Task.Run(() => LoadData());
     }
 
     private void ViewModel_RecurrencesChanged(object? sender, EventArgs e)
     {
-        //ViewModel.ToggleSpinner(false);
 
-        //throw new NotImplementedException();
-        //this.spinner.Visibility = Visibility.Hidden;
+        ViewModel.SpinnerVisibility = false;
     }
 
     private void ViewModel_DateChanged(object? sender, EventArgs e)
     {
-        //this.spinner.Visibility = Visibility.Visible;
-        //ViewModel.ToggleSpinner(true);
+        ViewModel.SpinnerVisibility = true;
     }
 
     private async Task LoadData()

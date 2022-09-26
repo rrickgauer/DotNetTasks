@@ -23,6 +23,9 @@ public class RecurrencesPageViewModel : ViewModelBase
     public event EventHandler? RecurrencesChanged;
     public event EventHandler? DateChanged;
 
+    public event EventHandler? TestEvent;
+
+
     public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices)
     {
         RecurrenceServices = recurrenceServices;
@@ -40,8 +43,7 @@ public class RecurrencesPageViewModel : ViewModelBase
             DateChanged?.Invoke(this, new());
             weekDate = value;
             RaisePropertyChanged();
-
-            //ToggleSpinner(true);
+            //SpinnerVisibility = true;
 
             // refresh the recurrences board
             Task.Run(() => LoadRecurrences(weekDate.Value));
@@ -63,7 +65,7 @@ public class RecurrencesPageViewModel : ViewModelBase
             RaisePropertyChanged();
             RecurrencesChanged?.Invoke(this, new());
 
-            ToggleSpinner(true);
+            //SpinnerVisibility = false;
         }
     }
 
@@ -72,17 +74,31 @@ public class RecurrencesPageViewModel : ViewModelBase
     #endregion
 
 
-    public Visibility SpinnerVisibility 
-    { 
+    //public Visibility SpinnerVisibility 
+    //{ 
+    //    get => _spinnerVisibility;
+    //    set
+    //    {
+    //        if (value == _spinnerVisibility) return;
+    //        _spinnerVisibility = value;
+    //        RaisePropertyChanged();
+    //    }
+    //}
+    //private Visibility _spinnerVisibility = Visibility.Collapsed;
+
+
+    public bool SpinnerVisibility
+    {
         get => _spinnerVisibility;
         set
         {
-            if (value == _spinnerVisibility) return;
+            //if (value == _spinnerVisibility) return;
             _spinnerVisibility = value;
-            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(SpinnerVisibility));
+            TestEvent?.Invoke(this, new());
         }
     }
-    private Visibility _spinnerVisibility = Visibility.Collapsed;
+    private bool _spinnerVisibility = false;
 
 
     /// <summary>
@@ -123,7 +139,7 @@ public class RecurrencesPageViewModel : ViewModelBase
 
     public void ToggleSpinner(bool showIt)
     {
-        SpinnerVisibility = showIt ? Visibility.Visible : Visibility.Collapsed;
+        SpinnerVisibility = showIt;
     }
 
 }
