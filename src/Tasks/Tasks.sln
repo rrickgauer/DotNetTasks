@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Wpf", "Tasks.Wpf\Task
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.DependenciesInjector", "Tasks.DependenciesInjector\Tasks.DependenciesInjector.csproj", "{F2E065C5-7515-415D-AC7A-FD9BBA2051C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Utilities", "Tasks.Utilities\Tasks.Utilities.csproj", "{14C03809-A593-44E3-B183-765484646CCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tasks.Utilities", "Tasks.Utilities\Tasks.Utilities.csproj", "{14C03809-A593-44E3-B183-765484646CCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.WpfUi", "Tasks.WpfUi\Tasks.WpfUi.csproj", "{006C229F-E447-41E0-B515-F0AFDF3E8D47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{14C03809-A593-44E3-B183-765484646CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14C03809-A593-44E3-B183-765484646CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14C03809-A593-44E3-B183-765484646CCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006C229F-E447-41E0-B515-F0AFDF3E8D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006C229F-E447-41E0-B515-F0AFDF3E8D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006C229F-E447-41E0-B515-F0AFDF3E8D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006C229F-E447-41E0-B515-F0AFDF3E8D47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
