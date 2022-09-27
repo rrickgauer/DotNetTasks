@@ -6,7 +6,7 @@ namespace Tasks.Repositories
 {
     public class DbConnection
     {
-        private readonly IConfiguration _configs;
+        private readonly IConfigs _configs;
 
         public string ConnectionString => $"server={_configs.DbServer};user={_configs.DbUser};database={_configs.DbDataBase};password={_configs.DbPassword}";
 
@@ -14,7 +14,7 @@ namespace Tasks.Repositories
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public DbConnection(IConfiguration configs)
+        public DbConnection(IConfigs configs)
         {
             _configs = configs;
         }

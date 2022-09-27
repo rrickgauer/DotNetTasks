@@ -18,7 +18,7 @@ namespace Tasks.Api.Controllers;
 public class UserController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfiguration _configuration;
+    private readonly Configurations.IConfigs _configuration;
     private readonly IUserServices _userServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="userServices"></param>
-    public UserController(Configurations.IConfiguration configuration, IUserServices userServices)
+    public UserController(Configurations.IConfigs configuration, IUserServices userServices)
     {
         _configuration = configuration;
         _userServices = userServices;

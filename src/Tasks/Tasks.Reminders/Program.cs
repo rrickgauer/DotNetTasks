@@ -21,7 +21,7 @@ ServiceProvider serviceProvider = controller.GetServiceProvider();
 
 var userServices = serviceProvider.GetService<IUserServices>();
 var reminderServices = serviceProvider.GetService<IRemiderServices>();
-var configs = serviceProvider.GetService<IConfiguration>();
+var configs = serviceProvider.GetService<IConfigs>();
 
 // need to make a date range to use for the recurrences filter
 ValidDateRange validDateRange = new()

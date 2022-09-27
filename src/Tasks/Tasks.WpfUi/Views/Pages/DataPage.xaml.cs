@@ -5,14 +5,14 @@ namespace Tasks.WpfUi.Views.Pages
     /// <summary>
     /// Interaction logic for DataView.xaml
     /// </summary>
-    public partial class DataPage : INavigableView<ViewModels.DataViewModel>
+    public partial class DataPage : INavigableView<ViewModels.RecurrencesPageViewModel>
     {
-        public ViewModels.DataViewModel ViewModel
+        public ViewModels.RecurrencesPageViewModel ViewModel
         {
             get;
         }
 
-        public DataPage(ViewModels.DataViewModel viewModel)
+        public DataPage(ViewModels.RecurrencesPageViewModel viewModel)
         {
             ViewModel = viewModel;
 

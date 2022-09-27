@@ -11,7 +11,7 @@ namespace Tasks.Repositories.Implementations;
 public class EventActionRepository : IEventActionRepository
 {
     #region Private members
-    private readonly IConfiguration _configs;
+    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -19,7 +19,7 @@ public class EventActionRepository : IEventActionRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public EventActionRepository(IConfiguration configs)
+    public EventActionRepository(IConfigs configs)
     {
         _configs = configs;
         _dbConnection = new(_configs);

@@ -17,7 +17,7 @@ namespace Tasks.Email
 
         #region Private memebers
         private readonly SmtpClient _smtpClient;
-        private readonly IConfiguration _configs;
+        private readonly IConfigs _configs;
         private readonly NetworkCredential _credentials;
         private bool _isConnected = false;
         #endregion
@@ -27,7 +27,7 @@ namespace Tasks.Email
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public EmailServer(IConfiguration configs)
+        public EmailServer(IConfigs configs)
         {
             _configs = configs;
             _smtpClient = new SmtpClient();

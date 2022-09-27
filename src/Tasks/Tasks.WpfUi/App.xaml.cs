@@ -5,6 +5,11 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using Tasks.Configurations;
+using Tasks.Repositories.Implementations;
+using Tasks.Repositories.Interfaces;
+using Tasks.Services.Implementations;
+using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Models;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Mvvm.Contracts;
@@ -50,9 +55,36 @@ namespace Tasks.WpfUi
                 services.AddScoped<Views.Pages.DashboardPage>();
                 services.AddScoped<ViewModels.DashboardViewModel>();
                 services.AddScoped<Views.Pages.DataPage>();
-                services.AddScoped<ViewModels.DataViewModel>();
+                services.AddScoped<ViewModels.RecurrencesPageViewModel>();
                 services.AddScoped<Views.Pages.SettingsPage>();
                 services.AddScoped<ViewModels.SettingsViewModel>();
+
+                services.AddScoped<Views.Pages.RecurrencesPage>();
+                services.AddScoped<ViewModels.RecurrencesPageViewModel>();
+
+
+                services.AddSingleton<IConfigs, ConfigurationDev>();
+
+                services.AddScoped<WpfApplicationServices>();
+
+                services.AddScoped<IEventServices, EventServices>()
+                    .AddScoped<IRecurrenceServices, RecurrenceServices>()
+                    .AddScoped<IEventActionServices, EventActionServices>()
+                    .AddScoped<IUserServices, UserServices>()
+                    .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
+                    .AddScoped<ILabelServices, LabelServices>()
+                    .AddScoped<IEventLabelServices, EventLabelServices>()
+
+                    // repositories
+                    .AddScoped<IUserRepository, UserRepository>()
+                    .AddScoped<IEventRepository, EventRepository>()
+                    .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
+                    .AddScoped<IEventActionRepository, EventActionRepository>()
+                    .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
+                    .AddScoped<ILabelRepository, LabelRepository>()
+                    .AddScoped<IEventLabelRepository, EventLabelRepository>();
+
+
 
                 // Configuration
                 services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

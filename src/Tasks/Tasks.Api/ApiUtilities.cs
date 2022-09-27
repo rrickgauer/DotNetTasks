@@ -24,7 +24,7 @@ public static class ApiUtilities
 
         builder.Services.AddControllers();
 
-        Configurations.IConfiguration config = new ConfigurationProduction();
+        Configurations.IConfigs config = new ConfigurationProduction();
 
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {

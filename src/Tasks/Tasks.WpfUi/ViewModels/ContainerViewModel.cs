@@ -49,8 +49,19 @@ namespace Tasks.WpfUi.ViewModels
                     PageTag = "data",
                     Icon = SymbolRegular.DataHistogram24,
                     PageType = typeof(Views.Pages.DataPage)
+                },
+                new NavigationItem()
+                {
+                    Content = "Recurrences",
+                    PageTag = "recurrences",
+                    Icon = SymbolRegular.CalendarLtr32,
+                    PageType = typeof(Views.Pages.RecurrencesPage)
                 }
             };
+
+
+            //CalendarLtr32
+
 
             NavigationFooter = new ObservableCollection<INavigationControl>
             {
@@ -62,6 +73,8 @@ namespace Tasks.WpfUi.ViewModels
                     PageType = typeof(Views.Pages.SettingsPage)
                 }
             };
+
+
 
             TrayMenuItems = new ObservableCollection<MenuItem>
             {

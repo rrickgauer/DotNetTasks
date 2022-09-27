@@ -19,7 +19,7 @@ namespace Tasks.Email.Messages
         #endregion
 
         #region Private members
-        private readonly IConfiguration _configs;
+        private readonly IConfigs _configs;
         private readonly UserRecurrences _userRecurrences;
         #endregion
 
@@ -32,7 +32,7 @@ namespace Tasks.Email.Messages
         /// </summary>
         /// <param name="configs"></param>
         /// <param name="userRecurrences"></param>
-        public DailyRecurrencesMessage(IConfiguration configs, UserRecurrences userRecurrences)
+        public DailyRecurrencesMessage(IConfigs configs, UserRecurrences userRecurrences)
         {
             _configs = configs;
             _userRecurrences = userRecurrences;

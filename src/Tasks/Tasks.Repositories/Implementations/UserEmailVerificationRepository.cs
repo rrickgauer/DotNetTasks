@@ -16,7 +16,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
 {
 
     #region Private members
-    private readonly IConfiguration _configs;
+    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -24,7 +24,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public UserEmailVerificationRepository(IConfiguration configs)
+    public UserEmailVerificationRepository(IConfigs configs)
     {
         _configs = configs;
         _dbConnection = new(_configs);

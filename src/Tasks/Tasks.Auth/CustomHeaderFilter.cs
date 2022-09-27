@@ -20,14 +20,14 @@ namespace Tasks.Auth
     public class CustomHeaderFilter : ActionFilterAttribute
     {
         #region Private members
-        private readonly IConfiguration _configs;
+        private readonly IConfigs _configs;
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configs"></param>
-        public CustomHeaderFilter(IConfiguration configs)
+        public CustomHeaderFilter(IConfigs configs)
         {
             _configs = configs;
         }

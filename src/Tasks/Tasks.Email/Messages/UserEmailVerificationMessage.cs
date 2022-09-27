@@ -14,7 +14,7 @@ namespace Tasks.Email.Messages
     {
         #region Private members
         private readonly UserEmailVerification _userEmailVerification;
-        private readonly IConfiguration _configs;
+        private readonly IConfigs _configs;
         #endregion
 
         private string _confirmationUrl => $"{_configs.UrlGui}/email-verifications/{_userEmailVerification.Id}";
@@ -24,7 +24,7 @@ namespace Tasks.Email.Messages
         /// </summary>
         /// <param name="userEmailVerification"></param>
         /// <param name="configs"></param>
-        public UserEmailVerificationMessage(UserEmailVerification userEmailVerification, IConfiguration configs)
+        public UserEmailVerificationMessage(UserEmailVerification userEmailVerification, IConfigs configs)
         {
             _userEmailVerification = userEmailVerification;
             _configs = configs; 
