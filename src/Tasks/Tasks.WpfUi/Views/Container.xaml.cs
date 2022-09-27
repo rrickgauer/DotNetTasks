@@ -29,23 +29,17 @@ namespace Tasks.WpfUi.Views
 
         #region INavigationWindow methods
 
-        public Frame GetFrame()
-            => RootFrame;
+        public Frame GetFrame() => RootFrame;
 
-        public INavigation GetNavigation()
-            => RootNavigation;
+        public INavigation GetNavigation() => RootNavigation;
 
-        public bool Navigate(Type pageType)
-            => RootNavigation.Navigate(pageType);
+        public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
 
-        public void SetPageService(IPageService pageService)
-            => RootNavigation.PageService = pageService;
+        public void SetPageService(IPageService pageService) => RootNavigation.PageService = pageService;
 
-        public void ShowWindow()
-            => Show();
+        public void ShowWindow() => Show();
 
-        public void CloseWindow()
-            => Close();
+        public void CloseWindow() => Close();
 
         #endregion INavigationWindow methods
 

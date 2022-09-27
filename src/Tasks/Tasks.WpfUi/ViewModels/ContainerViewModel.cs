@@ -25,9 +25,8 @@ namespace Tasks.WpfUi.ViewModels
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new();
 
-
-
-
+        [ObservableProperty]
+        private bool _isLoggedIn = false;
 
         public ContainerViewModel(INavigationService navigationService)
         {
@@ -39,10 +38,7 @@ namespace Tasks.WpfUi.ViewModels
         {
             ApplicationTitle = "Tasks";
 
-            NavigationItems = new ObservableCollection<INavigationControl>
-            {
-
-            };
+            NavigationItems = new ObservableCollection<INavigationControl>();
 
             NavigationFooter = new ObservableCollection<INavigationControl>
             {
@@ -54,8 +50,6 @@ namespace Tasks.WpfUi.ViewModels
                     PageType = typeof(Views.Pages.SettingsPage)
                 }
             };
-
-
 
             TrayMenuItems = new ObservableCollection<MenuItem>
             {
@@ -99,6 +93,8 @@ namespace Tasks.WpfUi.ViewModels
                     Visibility = System.Windows.Visibility.Visible,
                 }
             };
+
+            IsLoggedIn = true;
         }
 
     }

@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
@@ -60,10 +61,12 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
             return;
         }
 
-
+        // show the sidebar 
         var containerVM = App.GetService<ContainerViewModel>();
-
         containerVM.UserLoggedIn();
+
+        // go to the reccurences page
+        App.GetService<INavigationService>().Navigate(typeof(RecurrencesPage));
     }
 }
 
