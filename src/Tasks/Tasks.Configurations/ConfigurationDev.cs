@@ -1,6 +1,6 @@
 ﻿namespace Tasks.Configurations
 {
-    public class ConfigurationDev : ConfigurationProduction, IConfiguration
+    public class ConfigurationDev : ConfigurationProduction, IConfigs
     {
         public new string DbDataBase => "Tasks_Dev";
 

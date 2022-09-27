@@ -7,14 +7,14 @@ namespace Tasks.Repositories
 {
     public class RepositoryUtils
     {
-        public static MySqlConnection GetConnection(IConfiguration configs)
+        public static MySqlConnection GetConnection(IConfigs configs)
         {
             string connectionString = GetConnectionString(configs);
             MySqlConnection conn = new(connectionString);
             return conn;
         }
 
-        public static string GetConnectionString(IConfiguration configs)
+        public static string GetConnectionString(IConfigs configs)
         {
             return $"server={configs.DbServer};user={configs.DbUser};database={configs.DbDataBase};password={configs.DbPassword}";
         }

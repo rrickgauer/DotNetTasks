@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Tasks.Validation\Tasks.Validation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Other\" />
+  </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ namespace Tasks.Api.Controllers;
 public class UserEmailVarificationsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfiguration _configuration;
+    private readonly Configurations.IConfigs _configuration;
     private readonly IUserEmailVerificationServices _userEmailVerificationServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -26,7 +26,7 @@ public class UserEmailVarificationsController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="userEmailVerificationServices"></param>
-    public UserEmailVarificationsController(Configurations.IConfiguration configuration, IUserEmailVerificationServices userEmailVerificationServices)
+    public UserEmailVarificationsController(Configurations.IConfigs configuration, IUserEmailVerificationServices userEmailVerificationServices)
     {
         _configuration = configuration;
         _userEmailVerificationServices = userEmailVerificationServices;

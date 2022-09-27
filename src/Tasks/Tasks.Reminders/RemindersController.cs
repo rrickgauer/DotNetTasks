@@ -61,11 +61,11 @@ public class RemindersController
     {
         if (_isDevelopment)
         {
-            services.AddSingleton<IConfiguration, ConfigurationDev>();
+            services.AddSingleton<IConfigs, ConfigurationDev>();
         }
         else
         {
-            services.AddSingleton<IConfiguration, ConfigurationProduction>();
+            services.AddSingleton<IConfigs, ConfigurationProduction>();
         }
     }
 

@@ -20,11 +20,11 @@ public static class ServicesInjector
         // depends if the app is running in development or production
         if (isDevlopment)
         {
-            services.AddSingleton<IConfiguration, ConfigurationDev>();
+            services.AddSingleton<IConfigs, ConfigurationDev>();
         }
         else
         {
-            services.AddSingleton<IConfiguration, ConfigurationProduction>();
+            services.AddSingleton<IConfigs, ConfigurationProduction>();
         }
 
 

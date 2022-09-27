@@ -10,9 +10,16 @@ public class RecurrenceRetrieval : IValidDateRange
     public Guid UserId { get; set; }
     public DateTime StartsOn { get; set; }
     public DateTime EndsOn { get; set; }
-    public List<Guid>? LabelIds { get; private set; }
-    public GetRecurrencesQueryParms GetRecurrencesQueryParms { get; private set; }
+    public List<Guid>? LabelIds { get; set; }
+    public GetRecurrencesQueryParms? GetRecurrencesQueryParms { get; set; }
     public bool IsValid() => EndsOn >= StartsOn;
+
+
+    public RecurrenceRetrieval()
+    {
+        
+    }
+
 
     /// <summary>
     /// Constructor
