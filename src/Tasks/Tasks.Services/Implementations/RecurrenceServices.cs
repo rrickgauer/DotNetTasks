@@ -61,10 +61,10 @@ namespace Tasks.Services.Implementations
         public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
         {
             // get the user's events, labels, and EventLabels from each of the services
-            IEnumerable<EventLabel> eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
-            List<Event> events = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
-            IEnumerable<Label> labels = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
-            IEnumerable<Recurrence>? recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval);
+            var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
+            var events      = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
+            var labels      = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
+            var recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval);
             
             List<GetRecurrencesResponse> responses = new();
 
