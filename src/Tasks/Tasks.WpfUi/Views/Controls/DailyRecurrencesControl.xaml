@@ -22,7 +22,7 @@
 
         <TextBlock 
             Grid.Row="0"
-            Text="{Binding ViewModel.Date.Date, Mode=TwoWay}" 
+            Text="{Binding ViewModel.Date.Date, Mode=OneWay}" 
             d:Text="06/05/2022"
             FontSize="16" Margin="0,20,0,20" />
 
