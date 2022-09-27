@@ -17,22 +17,39 @@
             IsExpanded="{Binding ViewModel.IsExpanded}"
             d:IsExpanded="True">
             <ui:CardExpander.Header>
-                <TextBlock 
-                    d:Text="06/22/2022"
-                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
-                    FontSize="18"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock 
+                        d:Text="06/22/2022"
+                        Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
+                        FontSize="18"/>
+
+                    <ui:Button 
+                        Command="{Binding ViewModel.TestMeCommand}"
+                        Content="Test" 
+                        Margin="50,0,0,0"/>
+                </StackPanel>
+                
+
             </ui:CardExpander.Header>
             <ui:CardExpander.Content>
                 <ListView 
+                    x:Name="recurrencesListView"
                     Grid.Row="1"
                     ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
-                    d:ItemsSource="{d:SampleData ItemCount=5}">
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                    SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}">
                     
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ui:Card>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <CheckBox IsChecked="{Binding Completed}" Width="48" MinWidth="0"/>
+                                    <CheckBox 
+                                        Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
+                                        CommandParameter="{Binding}"
+                                        IsChecked="{Binding Completed}" 
+                                        Width="48" 
+                                        MinWidth="0"/>
                                     <TextBlock FontSize="12" Text="{Binding Path=Event.Name}" VerticalAlignment="Center"  />
                                 </StackPanel>
                             </ui:Card>
