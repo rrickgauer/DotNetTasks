@@ -6,14 +6,74 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=False}"
+    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
     Title="Recurrences">
+
+    <ui:UiPage.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </ui:UiPage.Resources>
+
     <Grid>
 
-        <TextBlock Text="{Binding ViewModel.Text}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
+
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="{Binding ViewModel.Text}" />
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="1" Margin="0,30,0,0">
+            <DatePicker Text="{Binding ViewModel.Date, Mode=TwoWay}"/>
+        </StackPanel>
+
+
+        <ui:ProgressRing
+            Grid.Row="2"
+            IsIndeterminate="True" 
+            Progress="50" 
+            Margin="0,50,0,0" 
+            Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <ScrollViewer 
+            Grid.Row="3" 
+            VerticalScrollBarVisibility="Auto" 
+            Margin="0,30,0,30"
+            Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            
+            <ListView 
+                ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
+                d:ItemsSource="{d:SampleData ItemCount=5}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card >
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding Completed}" Width="48" MinWidth="0"/>
+                                <TextBlock FontSize="20" Text="{Binding Path=Event.Name}"  />
+                            </StackPanel>
+                        </ui:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+
+        </ScrollViewer>
 
     </Grid>
 </ui:UiPage>

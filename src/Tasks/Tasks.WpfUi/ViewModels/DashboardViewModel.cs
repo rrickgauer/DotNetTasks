@@ -13,33 +13,31 @@ namespace Tasks.WpfUi.ViewModels;
 public partial class DashboardViewModel : ObservableObject, INavigationAware, INotifyPropertyChanged
 {
     public WpfApplicationServices ApplicationServices { get; set; }
+    public INavigationService NavigationService { get; set; }
 
     public event EventHandler? InvalidLogin;
 
-    public DashboardViewModel(WpfApplicationServices userServices)
+    public DashboardViewModel(WpfApplicationServices applicationServices, INavigationService navigationService)
     {
-        ApplicationServices = userServices;
+        ApplicationServices = applicationServices;
+        NavigationService = navigationService;
     }
 
-    public void OnNavigatedTo()
-    {
-    }
+    #region INavigationAware
+    public void OnNavigatedTo() {}
+    public void OnNavigatedFrom() {}
+    #endregion
 
-    public void OnNavigatedFrom()
-    {
-
-    }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InputsHaveValue))]
-    private string _email = string.Empty;
+    private string _email = "rrickgauer1@gmail.com";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InputsHaveValue))]
     private string _password = string.Empty;
     
     public bool InputsHaveValue => DoInputsHaveValue();
-
     private bool DoInputsHaveValue()
     {
         if (string.IsNullOrEmpty(_email)) return false;
@@ -51,7 +49,7 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
     [RelayCommand]
     public async void Login()
     {
-        var successfulLogin = await ApplicationServices.LogInUser(_email, _password);
+        var successfulLogin = await ApplicationServices.LogInUser(Email, Password);
             
         if (!successfulLogin)
         {
@@ -66,7 +64,7 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
         containerVM.UserLoggedIn();
 
         // go to the reccurences page
-        App.GetService<INavigationService>().Navigate(typeof(RecurrencesPage));
+        NavigationService.Navigate(typeof(RecurrencesPage));
     }
 }
 
