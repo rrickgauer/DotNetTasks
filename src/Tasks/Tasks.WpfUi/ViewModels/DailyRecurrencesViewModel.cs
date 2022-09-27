@@ -16,6 +16,9 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [ObservableProperty]
     private IEnumerable<GetRecurrencesResponse> _recurrences = new List<GetRecurrencesResponse>();
 
+    [ObservableProperty]
+    private bool _isExpanded = true;
+
     public DailyRecurrencesViewModel(DateTime date, IEnumerable<GetRecurrencesResponse> recurrences)
     {
         Date = date;

@@ -9,43 +9,46 @@
     mc:Ignorable="d" 
     d:DesignWidth="800"
     Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-    d:DataContext="{d:DesignInstance local:DailyRecurrencesControl, IsDesignTimeCreatable=False}">
+    d:DataContext="{d:DesignInstance local:DailyRecurrencesControl, IsDesignTimeCreatable=False}"
+    Margin="0,10,0,10"
+    >
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+        <ui:CardExpander 
+            IsExpanded="{Binding ViewModel.IsExpanded}"
+            d:IsExpanded="True">
+            <ui:CardExpander.Header>
+                <TextBlock 
+                    d:Text="06/22/2022"
+                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
+                    FontSize="18"/>
+            </ui:CardExpander.Header>
+            <ui:CardExpander.Content>
+                <ListView 
+                    Grid.Row="1"
+                    ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
+                    d:ItemsSource="{d:SampleData ItemCount=5}">
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ui:Card>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding Completed}" Width="48" MinWidth="0"/>
+                                    <TextBlock FontSize="12" Text="{Binding Path=Event.Name}" VerticalAlignment="Center"  />
+                                </StackPanel>
+                            </ui:Card>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    
+                </ListView>
+            </ui:CardExpander.Content>
+        </ui:CardExpander>
 
-
-        <TextBlock 
-            Grid.Row="0"
-            Text="{Binding ViewModel.Date.Date, Mode=OneWay}" 
-            d:Text="06/05/2022"
-            FontSize="16" Margin="0,20,0,20" />
-
-        <ListView 
-            Grid.Row="1"
-            ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
-            d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ui:Card >
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox IsChecked="{Binding Completed}" Width="48" MinWidth="0"/>
-                            <TextBlock FontSize="20" Text="{Binding Path=Event.Name}"  />
-                        </StackPanel>
-                    </ui:Card>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
 
 
     </Grid>
