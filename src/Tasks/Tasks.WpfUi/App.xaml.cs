@@ -47,6 +47,8 @@ namespace Tasks.WpfUi
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
 
+                services.AddSingleton<ISnackbarService, SnackbarService>();
+
                 // Main window container with navigation
                 services.AddScoped<INavigationWindow, Views.Container>();
                 services.AddScoped<ViewModels.ContainerViewModel>();

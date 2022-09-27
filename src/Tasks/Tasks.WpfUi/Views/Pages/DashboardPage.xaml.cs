@@ -17,6 +17,13 @@ namespace Tasks.WpfUi.Views.Pages
             ViewModel = viewModel;
 
             InitializeComponent();
+
+            ViewModel.InvalidLogin += ViewModel_InvalidLogin;
+        }
+
+        private void ViewModel_InvalidLogin(object? sender, System.EventArgs e)
+        {
+            this.snackBar.Show();
         }
     }
 }

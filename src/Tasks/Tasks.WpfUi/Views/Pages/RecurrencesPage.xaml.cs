@@ -27,6 +27,8 @@ public partial class RecurrencesPage : INavigableView<RecurrencesPageViewModel>
         ViewModel = viewModel;
 
         InitializeComponent();
+
+        
     }
 
     public RecurrencesPageViewModel ViewModel { get; set; }

@@ -28,14 +28,19 @@
 
             <TextBlock TextWrapping="Wrap" Text="Password" Margin="0,30,0,0"/>
             <ui:TextBox 
-                TextWrapping="Wrap" 
                 Text="{Binding ViewModel.Password, Mode=TwoWay}"/>
             
             <ui:Button 
                 Content="Button" 
                 Margin="0,30,0,0"
-                Command="{Binding ViewModel.OnTest, Mode=OneWay}"/>
-
+                Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
+                IsEnabled="{Binding ViewModel.InputsHaveValue}"
+                />
+            
+            <ui:Snackbar 
+                Title="Invalid email/password combo..." 
+                x:Name="snackBar"
+                />
 
 
         </StackPanel>
