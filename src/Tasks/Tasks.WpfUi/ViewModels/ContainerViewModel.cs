@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using Wpf.Ui.Common;
@@ -13,7 +14,7 @@ namespace Tasks.WpfUi.ViewModels
         private bool _isInitialized = false;
 
         [ObservableProperty]
-        private string _applicationTitle = String.Empty;
+        private string _applicationTitle = string.Empty;
 
         [ObservableProperty]
         private ObservableCollection<INavigationControl> _navigationItems = new();
@@ -24,6 +25,10 @@ namespace Tasks.WpfUi.ViewModels
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new();
 
+
+
+
+
         public ContainerViewModel(INavigationService navigationService)
         {
             if (!_isInitialized)
@@ -32,36 +37,12 @@ namespace Tasks.WpfUi.ViewModels
 
         private void InitializeViewModel()
         {
-            ApplicationTitle = "WPF UI - Tasks.WpfUi";
+            ApplicationTitle = "Tasks";
 
             NavigationItems = new ObservableCollection<INavigationControl>
             {
-                new NavigationItem()
-                {
-                    Content = "Home",
-                    PageTag = "dashboard",
-                    Icon = SymbolRegular.Home24,
-                    PageType = typeof(Views.Pages.DashboardPage)
-                },
-                new NavigationItem()
-                {
-                    Content = "Data",
-                    PageTag = "data",
-                    Icon = SymbolRegular.DataHistogram24,
-                    PageType = typeof(Views.Pages.DataPage)
-                },
-                new NavigationItem()
-                {
-                    Content = "Recurrences",
-                    PageTag = "recurrences",
-                    Icon = SymbolRegular.CalendarLtr32,
-                    PageType = typeof(Views.Pages.RecurrencesPage)
-                }
+
             };
-
-
-            //CalendarLtr32
-
 
             NavigationFooter = new ObservableCollection<INavigationControl>
             {
@@ -87,5 +68,38 @@ namespace Tasks.WpfUi.ViewModels
 
             _isInitialized = true;
         }
+
+
+        public void UserLoggedIn()
+        {
+            NavigationItems = new ObservableCollection<INavigationControl>
+            {
+                new NavigationItem()
+                {
+                    Content = "Home",
+                    PageTag = "dashboard",
+                    Icon = SymbolRegular.Home24,
+                    PageType = typeof(Views.Pages.DashboardPage),
+                    Visibility = System.Windows.Visibility.Collapsed,
+                },
+                new NavigationItem()
+                {
+                    Content = "Data",
+                    PageTag = "data",
+                    Icon = SymbolRegular.DataHistogram24,
+                    PageType = typeof(Views.Pages.DataPage),
+                    Visibility = System.Windows.Visibility.Visible,
+                },
+                new NavigationItem()
+                {
+                    Content = "Recurrences",
+                    PageTag = "recurrences",
+                    Icon = SymbolRegular.CalendarLtr32,
+                    PageType = typeof(Views.Pages.RecurrencesPage),
+                    Visibility = System.Windows.Visibility.Visible,
+                }
+            };
+        }
+
     }
 }

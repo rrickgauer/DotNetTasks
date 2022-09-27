@@ -21,6 +21,8 @@
 
         <StackPanel>
 
+            <TextBlock TextWrapping="Wrap" Text="Log in to your account" Margin="0,0,0,0" FontSize="24"/>
+            
             <TextBlock TextWrapping="Wrap" Text="Email" Margin="0,30,0,0"/>
             <ui:TextBox 
                 TextWrapping="Wrap" 
@@ -31,18 +33,15 @@
                 Text="{Binding ViewModel.Password, Mode=TwoWay}"/>
             
             <ui:Button 
-                Content="Button" 
+                Content="Log in" 
                 Margin="0,30,0,0"
                 Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
                 IsEnabled="{Binding ViewModel.InputsHaveValue}"
                 />
-            
+
             <ui:Snackbar 
                 Title="Invalid email/password combo..." 
-                x:Name="snackBar"
-                />
-
-
+                x:Name="snackBar"/>
         </StackPanel>
         
 

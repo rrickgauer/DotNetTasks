@@ -57,12 +57,13 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
             InvalidLogin?.Invoke(this, new());
             Email = string.Empty;
             Password = string.Empty;
+            return;
         }
 
 
-        
+        var containerVM = App.GetService<ContainerViewModel>();
 
-        
+        containerVM.UserLoggedIn();
     }
 }
 
