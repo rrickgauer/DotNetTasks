@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,15 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly WpfApplicationServices _applicationServices;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="recurrenceServices"></param>
+    /// <param name="applicationServices"></param>
     public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices)
     {
         _recurrenceServices = recurrenceServices;
         _applicationServices = applicationServices;
-
-        LoadRecurrences(Date);
     }
 
     [ObservableProperty]
@@ -42,7 +46,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private bool _recurrencesVisible = false;
 
-
     [ObservableProperty]
     private IEnumerable<DailyRecurrencesControl> _recurrences = new List<DailyRecurrencesControl>();
 
@@ -53,13 +56,24 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
 
     [ObservableProperty]
-    private DateTime _date = DateTime.Today;
+    private DateTime _date = DateTime.Now;
 
     async partial void OnDateChanged(DateTime value)
     {
         IsLoading = true;
+
+        DateNextWeek = value.AddDays(7);
+        DatePreviousWeek = value.AddDays(-7);
+
         await LoadRecurrences(value);
     }
+
+    [ObservableProperty]
+    private DateTime _dateNextWeek = DateTime.Now.AddDays(7);
+
+    [ObservableProperty]
+    private DateTime _datePreviousWeek = DateTime.Now.AddDays(-7);
+
 
     #region INavigationAware
     public void OnNavigatedFrom() { }
@@ -123,5 +137,16 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
         return recurrences;
     }
+
+    /// <summary>
+    /// Jump to the specified date
+    /// </summary>
+    /// <param name="newDate"></param>
+    [RelayCommand]
+    public void GotoDifferentDay(object newDate)
+    {
+        Date = (DateTime)newDate;
+    }
+
 
 }

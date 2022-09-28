@@ -8,6 +8,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
     xmlns:controls="clr-namespace:Tasks.WpfUi.Views.Controls"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=False}"
@@ -35,12 +36,39 @@
             <TextBlock Text="{Binding ViewModel.Text}" />
         </StackPanel>
 
-
         <StackPanel Grid.Row="1" Margin="0,30,0,0" Orientation="Horizontal">
-            <ui:Button Content="Today" ToolTip="Go to today's date" VerticalAlignment="Stretch" Margin="0,0,10,0"  />
-            <DatePicker Text="{Binding ViewModel.Date, Mode=TwoWay}" VerticalAlignment="Stretch" Width="300" Margin="0,0,10,0"/>
-            <ui:Button ToolTip="Previous week" Icon="ArrowLeft16" VerticalAlignment="Stretch" Margin="0,0,5,0"  />
-            <ui:Button ToolTip="Next week" Icon="ArrowRight16" VerticalAlignment="Stretch"  />
+            <!--Today button-->
+            <ui:Button 
+                Content="Today" 
+                ToolTip="Go to today's date" 
+                VerticalAlignment="Stretch" 
+                Margin="0,0,10,0" 
+                Command="{Binding ViewModel.GotoDifferentDayCommand}"
+                CommandParameter="{x:Static sys:DateTime.Now}"/>
+
+            <!--Date picker-->
+            <DatePicker 
+                Text="{Binding ViewModel.Date, Mode=TwoWay}" 
+                VerticalAlignment="Stretch" 
+                Width="300" 
+                Margin="0,0,10,0" />
+
+            <!--Previous week button-->
+            <ui:Button 
+                ToolTip="Previous week" 
+                Icon="ArrowLeft16" 
+                VerticalAlignment="Stretch" 
+                Margin="0,0,5,0" 
+                Command="{Binding ViewModel.GotoDifferentDayCommand}"
+                CommandParameter="{Binding ViewModel.DatePreviousWeek}" />
+
+            <!--Next week button-->
+            <ui:Button 
+                ToolTip="Next week" 
+                Icon="ArrowRight16" 
+                VerticalAlignment="Stretch"  
+                Command="{Binding ViewModel.GotoDifferentDayCommand}"
+                CommandParameter="{Binding ViewModel.DateNextWeek}"/>
         </StackPanel>
 
 
