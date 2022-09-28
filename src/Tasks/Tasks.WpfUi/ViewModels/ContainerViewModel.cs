@@ -68,22 +68,14 @@ public partial class ContainerViewModel : ObservableObject
     {
         NavigationItems = new ObservableCollection<INavigationControl>
         {
-            new NavigationItem()
-            {
-                Content = "Home",
-                PageTag = "dashboard",
-                Icon = SymbolRegular.Home24,
-                PageType = typeof(Views.Pages.DashboardPage),
-                Visibility = System.Windows.Visibility.Collapsed,
-            },
-            new NavigationItem()
-            {
-                Content = "Data",
-                PageTag = "data",
-                Icon = SymbolRegular.DataHistogram24,
-                PageType = typeof(Views.Pages.DataPage),
-                Visibility = System.Windows.Visibility.Visible,
-            },
+            //new NavigationItem()
+            //{
+            //    Content = "Data",
+            //    PageTag = "data",
+            //    Icon = SymbolRegular.DataHistogram24,
+            //    PageType = typeof(Views.Pages.DataPage),
+            //    Visibility = System.Windows.Visibility.Visible,
+            //},
             new NavigationItem()
             {
                 Content = "Recurrences",
@@ -91,7 +83,15 @@ public partial class ContainerViewModel : ObservableObject
                 Icon = SymbolRegular.CalendarLtr32,
                 PageType = typeof(Views.Pages.RecurrencesPage),
                 Visibility = System.Windows.Visibility.Visible,
-            }
+            },
+            new NavigationItem()
+            {
+                Content = "Labels",
+                PageTag = "labels",
+                Icon = SymbolRegular.Tag32,
+                PageType = typeof(Views.Pages.LabelsPage),
+                Visibility = System.Windows.Visibility.Visible,
+            },
         };
 
         IsLoggedIn = true;

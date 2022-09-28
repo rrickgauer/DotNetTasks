@@ -56,14 +56,15 @@ namespace Tasks.WpfUi
                 // Views and ViewModels
                 services.AddScoped<Views.Pages.DashboardPage>();
                 services.AddScoped<ViewModels.DashboardViewModel>();
-                services.AddScoped<Views.Pages.DataPage>();
-                services.AddScoped<ViewModels.RecurrencesPageViewModel>();
+                                
                 services.AddScoped<Views.Pages.SettingsPage>();
                 services.AddScoped<ViewModels.SettingsViewModel>();
 
                 services.AddScoped<Views.Pages.RecurrencesPage>();
                 services.AddScoped<ViewModels.RecurrencesPageViewModel>();
 
+                services.AddScoped<Views.Pages.LabelsPage>();
+                services.AddScoped<ViewModels.LabelsPageViewModel>();
 
                 services.AddSingleton<IConfigs, ConfigurationDev>();
 
