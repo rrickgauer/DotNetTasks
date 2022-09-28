@@ -41,38 +41,32 @@
         <ListView 
             Grid.Row="2"
             d:ItemsSource="{d:SampleData ItemCount=5}">
-            
+
             <ListView.ItemTemplate>
                 <DataTemplate>
-
                     <ui:Card>
                         <ui:Card.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Ellipse Height="20" Width="20" Stroke="White" Fill="White" Margin="0,0,10,0" VerticalAlignment="Center" />
                                     <TextBlock Text="Label name" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:Button ToolTip="Edit label"  Icon="Edit28"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                    <ui:Button ToolTip="Edit label" Icon="Edit28" Margin="0,0,5,0"  />
                                     <ui:Button ToolTip="Delete label"  Icon="Delete28"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
                         </ui:Card.Content>
                     </ui:Card>
-
-
                 </DataTemplate>
             </ListView.ItemTemplate>
-            
+
         </ListView>
-        
-
-
-
-
-
-
-
 
     </Grid>
 </ui:UiPage>
