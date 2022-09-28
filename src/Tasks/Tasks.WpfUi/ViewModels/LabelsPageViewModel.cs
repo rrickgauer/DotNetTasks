@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Tasks.Domain.Models;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
@@ -43,6 +45,33 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     private List<Label> _labels = new();
+
+
+    #region New Label Form
+
+    [ObservableProperty]
+    private string? _newLabelName;
+
+    [ObservableProperty]
+    private Color? _newLabelColor;
+
+    [RelayCommand]
+    public void CreateNewLabel()
+    {
+        var name = NewLabelName;
+        var color = NewLabelColor;
+    }
+
+    [ObservableProperty]
+    private bool _newLabelFormVisible = false;
+
+    [RelayCommand]
+    public void ToggleNewLabelForm(bool isVisible)
+    {
+        NewLabelFormVisible = isVisible;
+    }
+
+    #endregion
 
 
     public async void LoadLabelsAsync()
