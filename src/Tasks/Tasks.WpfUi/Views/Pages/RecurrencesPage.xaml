@@ -36,8 +36,11 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Row="1" Margin="0,30,0,0">
-            <DatePicker Text="{Binding ViewModel.Date, Mode=TwoWay}"/>
+        <StackPanel Grid.Row="1" Margin="0,30,0,0" Orientation="Horizontal">
+            <ui:Button Content="Today" ToolTip="Go to today's date" VerticalAlignment="Stretch" Margin="0,0,10,0"  />
+            <DatePicker Text="{Binding ViewModel.Date, Mode=TwoWay}" VerticalAlignment="Stretch" Width="300" Margin="0,0,10,0"/>
+            <ui:Button ToolTip="Previous week" Icon="ArrowLeft16" VerticalAlignment="Stretch" Margin="0,0,5,0"  />
+            <ui:Button ToolTip="Next week" Icon="ArrowRight16" VerticalAlignment="Stretch"  />
         </StackPanel>
 
 
@@ -46,7 +49,8 @@
             IsIndeterminate="True" 
             Progress="50" 
             Margin="0,50,0,0" 
-            Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+            Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
+            d:Visibility="Collapsed"/>
 
         <ScrollViewer 
             Grid.Row="3" 
