@@ -74,7 +74,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private DateTime _datePreviousWeek = DateTime.Now.AddDays(-7);
 
-
     #region INavigationAware
     public void OnNavigatedFrom() { }
     public void OnNavigatedTo() { }

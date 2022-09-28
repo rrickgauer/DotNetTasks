@@ -13,7 +13,8 @@
     d:DesignHeight="450" d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=False}"
     Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-    Title="Recurrences">
+    Title="Recurrences"
+    Scrollable="True">
 
     <ui:UiPage.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -80,23 +81,17 @@
             Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
             d:Visibility="Collapsed"/>
 
-        <ScrollViewer 
-            Grid.Row="3" 
-            VerticalScrollBarVisibility="Auto" 
+        <ListView 
+            Grid.Row="3"
             Margin="0,30,0,30"
-            Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            PreviewMouseWheel="ListView_PreviewMouseWheel"
+            >
 
-            <ListView 
-                ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                d:ItemsSource="{d:SampleData ItemCount=5}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
-
-        </ScrollViewer>
+        </ListView>
 
     </Grid>
+
 </ui:UiPage>
