@@ -38,7 +38,8 @@
                     Grid.Row="1"
                     ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                    SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}">
+                    SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}"
+                    PreviewMouseWheel="recurrencesListView_PreviewMouseWheel">
                     
                     <ListView.ItemTemplate>
                         <DataTemplate>
