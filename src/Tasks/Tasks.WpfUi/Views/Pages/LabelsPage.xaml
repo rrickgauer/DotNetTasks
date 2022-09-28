@@ -19,6 +19,60 @@
     </ui:UiPage.Resources>
     
     <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <ui:Button Content="New"/>
+        </StackPanel>
+
+        <ui:ProgressRing 
+            Grid.Row="1"
+            IsIndeterminate="True" />
+
+
+        <ListView 
+            Grid.Row="2"
+            d:ItemsSource="{d:SampleData ItemCount=5}">
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+
+                    <ui:Card>
+                        <ui:Card.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Height="20" Width="20" Stroke="White" Fill="White" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Label name" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:Button ToolTip="Edit label"  Icon="Edit28"/>
+                                    <ui:Button ToolTip="Delete label"  Icon="Delete28"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ui:Card.Content>
+                    </ui:Card>
+
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
         
+
+
+
+
+
+
+
+
     </Grid>
 </ui:UiPage>
