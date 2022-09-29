@@ -7,9 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
+using Tasks.Utilities;
+using Tasks.WpfUi.Helpers;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -56,11 +59,38 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     private Color? _newLabelColor;
 
     [RelayCommand]
-    public void CreateNewLabel()
+    public async void CreateLabelFromForm()
     {
         var name = NewLabelName;
         var color = NewLabelColor;
+
+        if (string.IsNullOrEmpty(name))
+            return;
+        else if (color is null)
+            return;
+
+        var success = await CreateNewLabel(name, color.Value);
+
+        LoadLabelsAsync();
     }
+
+
+    public async Task<bool> CreateNewLabel(string name, Color color)
+    {
+        UpdateLabelForm newLabelForm = new()
+        {
+            Name = name,
+            Color = color.ToHexString(),
+        };
+
+        var labelId = Guid.NewGuid();
+        var userId = _applicationServices.User.Id.Value;
+
+        var result = await _labelServices.UpdateLabelAsync(labelId, userId, newLabelForm);
+
+        return result.Successful;
+    }
+
 
     [ObservableProperty]
     private bool _newLabelFormVisible = false;
