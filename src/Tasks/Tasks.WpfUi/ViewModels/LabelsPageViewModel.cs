@@ -143,4 +143,10 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         ShowLabels = true;
     }
 
+    [RelayCommand]
+    public void EditLabel(object o)
+    {
+        int x = 10;
+    }
+
 }
