@@ -28,14 +28,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
+        
+        <!--New Label Form-->
         <StackPanel Grid.Row="0" Margin="0,10,0,10">
             <ui:Button 
-                Content="New" 
+                Content="New"
                 Command="{Binding ViewModel.ToggleNewLabelFormCommand}"
-                CommandParameter="{StaticResource TrueValue}"
             />
 
             <Border 
@@ -44,12 +45,15 @@
                 BorderThickness="2" 
                 CornerRadius="5" 
                 Padding="10" 
-                Margin="20">
-                
+                Margin="20"
+            >
+
                 <StackPanel>
+                    <!--Name-->
                     <TextBlock Margin="0,20,0,10" FontSize="14" Text="Name" />
                     <ui:TextBox Text="{Binding ViewModel.NewLabelName, Mode=TwoWay}" />
 
+                    <!--Color-->
                     <TextBlock Text="Color" Margin="0,40,0,10" FontSize="14" />
                     <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" />
 
@@ -59,11 +63,11 @@
                             Command="{Binding ViewModel.CreateNewLabelCommand}"
                             Margin="0,0,5,0"
                         />
-
+                        
+                        <!--Close the form button-->
                         <ui:Button 
-                            
                             Content="Close"
-                            Command="{Binding ViewModel.ToggleNewLabelFormCommand}"
+                            Command="{Binding ViewModel.ShowNewLabelFormCommand}"
                             CommandParameter="{StaticResource FalseValue}"
                         />
 
@@ -72,10 +76,6 @@
 
                 </StackPanel>
             </Border>
-
-            
-            
-            
         </StackPanel>
 
         <ui:ProgressRing
@@ -91,8 +91,8 @@
             Grid.Row="2"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemsSource="{Binding ViewModel.Labels, Mode=TwoWay}"
-            Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
-        >
+            Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:Card>

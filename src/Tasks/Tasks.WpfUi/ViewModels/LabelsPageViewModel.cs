@@ -65,10 +65,26 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private bool _newLabelFormVisible = false;
 
+    /// <summary>
+    /// Change the NewLabelForm's visibility.
+    /// True - show the form
+    /// False - hide the form
+    /// </summary>
+    /// <param name="isVisible"></param>
     [RelayCommand]
-    public void ToggleNewLabelForm(bool isVisible)
+    public void ShowNewLabelForm(bool isVisible)
     {
         NewLabelFormVisible = isVisible;
+    }
+
+    /// <summary>
+    /// Toggle the New Label Form visibility
+    /// Close it if it's open, or vice versa.
+    /// </summary>
+    [RelayCommand]
+    public void ToggleNewLabelForm()
+    {
+        NewLabelFormVisible = !NewLabelFormVisible;
     }
 
     #endregion
