@@ -69,12 +69,22 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         else if (color is null)
             return;
 
-        var success = await CreateNewLabel(name, color.Value);
+        await CreateNewLabel(name, color.Value);
 
         LoadLabelsAsync();
+
+        ShowNewLabelForm(false);
+        NewLabelColor = null;
+        NewLabelName = null;
     }
 
-
+    /// <summary>
+    /// Create the new label.
+    /// Returns whether or not it was successfully created.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="color"></param>
+    /// <returns></returns>
     public async Task<bool> CreateNewLabel(string name, Color color)
     {
         UpdateLabelForm newLabelForm = new()
