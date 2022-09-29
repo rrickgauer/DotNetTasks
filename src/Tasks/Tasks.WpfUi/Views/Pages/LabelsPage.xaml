@@ -19,7 +19,7 @@
         <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
         <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
     </ui:UiPage.Resources>
-    
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -28,16 +28,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        
+
         <!--New Label Form-->
         <StackPanel Grid.Row="0" Margin="0,10,0,10">
-            <ui:Button 
-                Content="New"
-                Command="{Binding ViewModel.ToggleNewLabelFormCommand}"
-            />
+            <ui:Button Content="New" Command="{Binding ViewModel.ToggleNewLabelFormCommand}"/>
 
             <Border 
                 Visibility="{Binding ViewModel.NewLabelFormVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
@@ -45,8 +42,7 @@
                 BorderThickness="2" 
                 CornerRadius="5" 
                 Padding="10" 
-                Margin="20"
-            >
+                Margin="20">
 
                 <StackPanel>
                     <!--Name-->
@@ -61,38 +57,35 @@
                         <ui:Button 
                             Content="Create new label"
                             Command="{Binding ViewModel.CreateLabelFromFormCommand}"
-                            Margin="0,0,5,0"
-                        />
-                        
+                            Margin="0,0,5,0" />
+
                         <!--Close the form button-->
                         <ui:Button 
                             Content="Close"
                             Command="{Binding ViewModel.ShowNewLabelFormCommand}"
-                            CommandParameter="{StaticResource FalseValue}"
-                        />
-
+                            CommandParameter="{StaticResource FalseValue}"/>
 
                     </StackPanel>
-
                 </StackPanel>
             </Border>
         </StackPanel>
 
         <ui:ProgressRing
-            Grid.Row="1"
-            IsIndeterminate="True" 
-            Progress="50" 
-            Margin="0,50,0,0" 
-            Visibility="{Binding ViewModel.ShowProgress, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
-            d:Visibility="Collapsed"
-        />
+                Grid.Row="1"
+                IsIndeterminate="True" 
+                Progress="50" 
+                Margin="0,50,0,0" 
+                Visibility="{Binding ViewModel.ShowProgress, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
+                d:Visibility="Collapsed"
+            />
+
 
         <ListView 
-            Grid.Row="2"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            ItemsSource="{Binding ViewModel.Labels, Mode=TwoWay}"
-            Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}">
-            
+                Grid.Row="2"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                ItemsSource="{Binding ViewModel.Labels, Mode=TwoWay}"
+                MouseWheel="ListView_MouseWheel"
+                Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:Card>
@@ -105,17 +98,13 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Ellipse 
-                                        Height="20" 
-                                        Width="20" 
-                                        Margin="0,0,10,0" 
-                                        VerticalAlignment="Center" 
-                                        Stroke="{Binding Color}" 
-                                        Fill="{Binding Color}"     
-                                    />
-                                    <TextBlock 
-                                        Text="{Binding Name}" 
-                                        VerticalAlignment="Center" 
-                                    />
+                                            Height="20" 
+                                            Width="20" 
+                                            Margin="0,0,10,0" 
+                                            VerticalAlignment="Center" 
+                                            Stroke="{Binding Color}" 
+                                            Fill="{Binding Color}" />
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                                     <ui:Button ToolTip="Edit label" Icon="Edit28" Margin="0,0,5,0"  />
@@ -128,6 +117,12 @@
             </ListView.ItemTemplate>
 
         </ListView>
+
+
+
+
+
+
 
     </Grid>
 </ui:UiPage>
