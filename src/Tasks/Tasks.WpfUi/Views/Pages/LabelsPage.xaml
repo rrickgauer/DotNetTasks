@@ -110,16 +110,27 @@
                                         Fill="{Binding Color}" />
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <StackPanel 
+                                    Orientation="Horizontal" 
+                                    Grid.Column="1"
+                                    >
                                     <ui:Button 
                                         Icon="MoreHorizontal24"
-                                        Click="Button_Click">
+                                        Click="Button_Click"
+                                        Tag="{Binding Path=DataContext.ViewModel, ElementName=recurrencesListView22}"
+                                        
+                                        >
                                         <ui:Button.ContextMenu>
-                                            <ContextMenu>
+                                            <ContextMenu 
+                                                DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                                Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}"
+                                                >
                                                 
                                                 <ui:MenuItem 
                                                     Header="Edit" 
                                                     SymbolIcon="Edit24" 
+                                                    
+                                                    Command="{Binding PlacementTarget.Tag.ViewModel.EditLabelCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                 />
                                                 
                                                 

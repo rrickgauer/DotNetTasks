@@ -62,4 +62,9 @@ public partial class LabelsPage : INavigableView<LabelsPageViewModel>
         var button = (Button)sender;
         button.ContextMenu.IsOpen = true;
     }
+
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        int x = 10;
+    }
 }
