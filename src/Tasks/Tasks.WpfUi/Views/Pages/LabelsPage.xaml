@@ -19,6 +19,7 @@
         <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
         <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </ui:UiPage.Resources>
 
     <Grid>
@@ -116,21 +117,14 @@
                                     >
                                     <ui:Button 
                                         Icon="MoreHorizontal24"
-                                        Click="Button_Click"
-                                        Tag="{Binding Path=DataContext.ViewModel, ElementName=recurrencesListView22}"
-                                        
-                                        >
+                                        Click="DropdownButton_Click">
                                         <ui:Button.ContextMenu>
-                                            <ContextMenu 
-                                                DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
-                                                Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}"
-                                                >
-                                                
+                                            <ContextMenu>
                                                 <ui:MenuItem 
                                                     Header="Edit" 
                                                     SymbolIcon="Edit24" 
-                                                    
-                                                    Command="{Binding PlacementTarget.Tag.ViewModel.EditLabelCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                    Command="{Binding Source={StaticResource Proxy}, Path=Data.ViewModel.EditLabelCommand}"
+                                                    CommandParameter="{Binding Id}"
                                                 />
                                                 
                                                 
