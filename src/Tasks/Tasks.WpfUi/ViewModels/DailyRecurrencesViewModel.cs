@@ -60,13 +60,11 @@ public partial class DailyRecurrencesViewModel : ObservableObject
         if (recurrenceResponse.Completed.HasValue && recurrenceResponse.Completed.Value == true)
         {
             // save the completion
-            //var r = await _eventActionServices.SaveEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
             _eventActionServices.SaveEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
         }
         else
         {
             // remove the completion
-            //var r = await _eventActionServices.DeleteEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
             _eventActionServices.DeleteEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
         }
     }
