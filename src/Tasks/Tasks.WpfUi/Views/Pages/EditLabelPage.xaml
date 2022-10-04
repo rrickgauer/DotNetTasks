@@ -38,7 +38,10 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
                 <ui:Button Content="Save changes" Margin="0,0,15,0" />
-                <ui:Button Content="Cancel" />
+                <ui:Button 
+                    Content="Cancel" 
+                    Command="{Binding ViewModel.GoBackToLabelsPageCommand}"
+                    />
             </StackPanel>
            
         </StackPanel>
