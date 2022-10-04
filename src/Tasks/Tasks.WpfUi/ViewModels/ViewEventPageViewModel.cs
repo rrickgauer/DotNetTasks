@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
@@ -34,6 +38,10 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     private bool _formIsEnabled = true;
+
+
+    [ObservableProperty]
+    private IEnumerable<Frequency> _frequencyOptions = Enum.GetValues(typeof(Frequency)).Cast<Frequency>();
 
 
     /// <summary>
@@ -82,5 +90,20 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
         FormIsEnabled = true;
 
         GoBack();
+    }
+
+
+    public void SetupNewEvent(DateTime date)
+    {
+        Event newEvent = new()
+        {
+            Id = Guid.NewGuid(),
+            UserId = _applicationServices.User.Id.Value,
+            StartsOn = date,
+            EndsOn = date,
+            Frequency = Frequency.ONCE,
+        };
+
+        Event = newEvent;
     }
 }

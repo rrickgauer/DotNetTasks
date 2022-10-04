@@ -12,7 +12,10 @@ using Tasks.Utilities;
 using Tasks.Validation;
 using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Controls;
+using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -20,6 +23,9 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 {
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly WpfApplicationServices _applicationServices;
+
+    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
     /// <summary>
     /// Constructor
@@ -34,9 +40,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
 
     private bool _initalLoad = false;
-
-    [ObservableProperty]
-    private string _text = "Recurrences";
 
     [ObservableProperty]
     private bool _isLoading = true;
@@ -85,6 +88,12 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     #endregion
 
 
+    #region Load recurrences
+
+    /// <summary>
+    /// Display the recurrences within the week of the specified day
+    /// </summary>
+    /// <param name="date"></param>
     public async void DisplayRecurrences(DateTime date)
     {
 
@@ -97,7 +106,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
         await LoadRecurrences(date);
     }
-
 
     /// <summary>
     /// Set the weekly recurrences 
@@ -157,6 +165,8 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         return recurrences;
     }
 
+    #endregion
+
     /// <summary>
     /// Jump to the specified date
     /// </summary>
@@ -167,5 +177,16 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         Date = (DateTime)newDate;
     }
 
+    /// <summary>
+    /// Create a new event and go to the ViewEvent page
+    /// </summary>
+    [RelayCommand]
+    public void CreateNewEvent()
+    {
+        _viewEventPage.ViewModel.SetupNewEvent(DateTime.Now);
+
+        // navidate to the ViewEvent page
+        _navigation.Navigate(_viewEventPage.GetType());
+    }
 
 }
