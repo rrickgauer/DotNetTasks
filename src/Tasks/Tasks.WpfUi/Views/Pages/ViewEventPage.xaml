@@ -35,7 +35,7 @@
             <ui:Button Icon="Dismiss24" ToolTip="Go back" HorizontalAlignment="Right" Command="{Binding ViewModel.GoBackCommand}"/>
         </StackPanel>
         
-        <StackPanel Grid.Row="1" Grid.Column="0">
+        <StackPanel Grid.Row="1" Grid.Column="0" IsEnabled="{Binding ViewModel.FormIsEnabled}">
 
             <!--Name-->
             <StackPanel Style="{StaticResource FormStackPanel}">
@@ -75,7 +75,7 @@
 
             
             <StackPanel Orientation="Horizontal" Style="{StaticResource FormStackPanel}">
-                <ui:Button Content="Save changes" />
+                <ui:Button Content="Save changes" Command="{Binding ViewModel.SaveEventCommand}"/>
             </StackPanel>
 
         </StackPanel>
