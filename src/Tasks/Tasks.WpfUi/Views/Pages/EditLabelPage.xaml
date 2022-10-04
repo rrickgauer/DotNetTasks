@@ -1,0 +1,63 @@
+﻿<ui:UiPage 
+    x:Class="Tasks.WpfUi.Views.Pages.EditLabelPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    d:DesignHeight="450" d:DesignWidth="800"
+    Title="EditLabelPage"
+    d:DataContext="{d:DesignInstance local:EditLabelPage, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+    <ui:UiPage.Resources>
+        <helpers:ColorConverterMore x:Key="ColorConverter" />
+    </ui:UiPage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock FontSize="20">Edit label</TextBlock>
+        </StackPanel>
+        
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Margin="0,30,0,5">Name</TextBlock>
+            <ui:TextBox 
+                Text="{Binding ViewModel.Label.Name}"
+                IsEnabled="{Binding ViewModel.IsEnabled}"
+            />
+            
+            <TextBlock Margin="0,30,0,5">Color</TextBlock>
+
+            <xctk:ColorPicker 
+                SelectedColor="{Binding ViewModel.Label.Color, Mode=TwoWay, Converter={StaticResource ColorConverter}}" 
+                IsEnabled="{Binding ViewModel.IsEnabled}"
+                />
+
+            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                <ui:Button 
+                    Content="Save changes" 
+                    Margin="0,0,15,0" 
+                    Command="{Binding ViewModel.SaveLabelChangesCommand}"
+                    IsEnabled="{Binding ViewModel.IsEnabled}"
+                    />
+                <ui:Button 
+                    Content="Cancel" 
+                    Command="{Binding ViewModel.GoBackToLabelsPageCommand}"
+                    IsEnabled="{Binding ViewModel.IsEnabled}"
+                    />
+            </StackPanel>
+           
+        </StackPanel>
+
+    </Grid>
+</ui:UiPage>

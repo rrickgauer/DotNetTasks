@@ -9,15 +9,19 @@
     xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
     xmlns:controls="clr-namespace:Tasks.WpfUi.Views.Controls"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="800"
+    d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:LabelsPage, IsDesignTimeCreatable=False}"
-    Title="Labels"
-    Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+    
+    Title="Labels">
     <ui:UiPage.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
+        <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </ui:UiPage.Resources>
-    
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -29,8 +33,43 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <ui:Button Content="New"/>
+
+        <!--New Label Form-->
+        <StackPanel Grid.Row="0" Margin="0,10,0,10">
+            <ui:Button Content="New" Command="{Binding ViewModel.ToggleNewLabelFormCommand}"/>
+
+            <Border 
+                Visibility="{Binding ViewModel.NewLabelFormVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
+                BorderBrush="DarkGray" 
+                BorderThickness="2" 
+                CornerRadius="5" 
+                Padding="10" 
+                Margin="20">
+
+                <StackPanel>
+                    <!--Name-->
+                    <TextBlock Margin="0,20,0,10" FontSize="14" Text="Name" />
+                    <ui:TextBox Text="{Binding ViewModel.NewLabelName, Mode=TwoWay}" />
+
+                    <!--Color-->
+                    <TextBlock Text="Color" Margin="0,40,0,10" FontSize="14" />
+                    <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0, 40, 0, 10">
+                        <ui:Button 
+                            Content="Create new label"
+                            Command="{Binding ViewModel.CreateLabelFromFormCommand}"
+                            Margin="0,0,5,0" />
+
+                        <!--Close the form button-->
+                        <ui:Button 
+                            Content="Close"
+                            Command="{Binding ViewModel.ShowNewLabelFormCommand}"
+                            CommandParameter="{StaticResource FalseValue}"/>
+
+                    </StackPanel>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <ui:ProgressRing
@@ -39,15 +78,19 @@
             Progress="50" 
             Margin="0,50,0,0" 
             Visibility="{Binding ViewModel.ShowProgress, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
-            d:Visibility="Collapsed"
-        />
+            d:Visibility="Collapsed" />
 
         <ListView 
             Grid.Row="2"
+            x:Name="recurrencesListView22"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemsSource="{Binding ViewModel.Labels, Mode=TwoWay}"
-            Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
-        >
+            SelectedItem="{Binding ViewModel.SelectedLabel, Mode=TwoWay}"
+            MouseWheel="ListView_MouseWheel"
+            Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            
+            >
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:Card>
@@ -65,16 +108,27 @@
                                         Margin="0,0,10,0" 
                                         VerticalAlignment="Center" 
                                         Stroke="{Binding Color}" 
-                                        Fill="{Binding Color}"     
-                                    />
-                                    <TextBlock 
-                                        Text="{Binding Name}" 
-                                        VerticalAlignment="Center" 
-                                    />
+                                        Fill="{Binding Color}" />
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                    <ui:Button ToolTip="Edit label" Icon="Edit28" Margin="0,0,5,0"  />
-                                    <ui:Button ToolTip="Delete label"  Icon="Delete28"/>
+                                    <ui:Button 
+                                        Icon="MoreHorizontal24"
+                                        Click="DropdownButton_Click">
+                                        <ui:Button.ContextMenu>
+                                            <ContextMenu DataContext="{Binding Source={StaticResource Proxy}}">
+                                                <ui:MenuItem 
+                                                    Header="Edit" 
+                                                    SymbolIcon="Edit24" 
+                                                    Command="{Binding Data.ViewModel.EditCurrentLabelCommand}" />
+                                                
+                                                <ui:MenuItem 
+                                                    Header="Delete" 
+                                                    SymbolIcon="Delete24" 
+                                                    Command="{Binding Data.ViewModel.DeleteCurrentLabelCommand}" />
+                                            </ContextMenu>
+                                        </ui:Button.ContextMenu>
+                                    </ui:Button>
                                 </StackPanel>
                             </Grid>
                         </ui:Card.Content>
@@ -83,6 +137,12 @@
             </ListView.ItemTemplate>
 
         </ListView>
+
+
+
+
+
+
 
     </Grid>
 </ui:UiPage>
