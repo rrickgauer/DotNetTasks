@@ -12,96 +12,104 @@
     Margin="0,10,0,10"
     >
     <Grid>
-        <ui:CardExpander 
-            IsExpanded="{Binding ViewModel.IsExpanded}"
-            d:IsExpanded="True">
-            <ui:CardExpander.Header>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock 
-                        d:Text="06/22/2022"
-                        Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
-                        FontSize="18"/>
 
-                    <ui:Button 
-                        Command="{Binding ViewModel.TestMeCommand}"
-                        Content="Test" 
-                        Margin="50,0,0,0"/>
-                </StackPanel>
-                
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="DarkGray" Margin="0,0,0,10" >
+            <StackPanel Orientation="Horizontal">
 
-            </ui:CardExpander.Header>
-            <ui:CardExpander.Content>
-                <ListView 
-                    x:Name="recurrencesListView"
-                    Grid.Row="1"
-                    ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}"
-                    PreviewMouseWheel="recurrencesListView_PreviewMouseWheel">
-                    
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ui:Card>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock 
+                    d:Text="06/22/2022"
+                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
+                    FontSize="18" Margin="0,0,5,0" />
+
+                <TextBlock Text="·" FontSize="18" Margin="0,0,5,0" />
+
+
+                <TextBlock 
+                    d:Text="Monday"
+                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:dddd}}" 
+                    FontSize="18" Margin="0,0,5,0" />
+
+            </StackPanel>
+        </Border>
+
+        <ListView
+            Grid.Row="1"
+            x:Name="recurrencesListView"
+            ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}"
+            PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ui:Card>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <!--Checkbox-->
+                            <CheckBox 
+                                Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
+                                CommandParameter="{Binding}"
+                                IsChecked="{Binding Completed}" 
+                                Width="48" 
+                                MinWidth="0" />
+
+                            <StackPanel Orientation="Horizontal">
+                                <!--Event name-->
+                                <TextBlock 
+                                    FontSize="12" 
+                                    d:Text="This is the event name"
+                                    Text="{Binding Path=Event.Name}" 
+                                    VerticalAlignment="Center" Margin="0,0,20,0"  />
+
+                                <!--Assigned labels-->
+                                <ListView
+                                    ItemsSource="{Binding Labels, Mode=TwoWay}"
+                                    d:ItemsSource="{d:SampleData ItemCount=3}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Ellipse 
+                                                Height="20" 
+                                                Width="20" 
+                                                Margin="0,0,0,0" 
+                                                VerticalAlignment="Center" 
+                                                Stroke="{Binding Color}" 
+                                                Fill="{Binding Color}" 
+                                                ToolTip="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
                                     
-                                    <!--Checkbox-->
-                                    <CheckBox 
-                                        Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
-                                        CommandParameter="{Binding}"
-                                        IsChecked="{Binding Completed}" 
-                                        Width="48" 
-                                        MinWidth="0"/>
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"></StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                    
+                                </ListView>
 
-                                    <StackPanel Orientation="Horizontal">
-                                        <!--Event name-->
-                                        <TextBlock 
-                                            FontSize="12" 
-                                            d:Text="This is the event name"
-                                            Text="{Binding Path=Event.Name}" 
-                                            VerticalAlignment="Center" Margin="0,0,20,0"  />
+                            </StackPanel>
+                        </StackPanel>
+                    </ui:Card>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-                                        <!--Assigned labels-->
-                                        <ListView
-                                            ItemsSource="{Binding Labels, Mode=TwoWay}"
-                                            d:ItemsSource="{d:SampleData ItemCount=3}"
-                                            >
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Ellipse 
-                                                        Height="20" 
-                                                        Width="20" 
-                                                        Margin="0,0,0,0" 
-                                                        VerticalAlignment="Center" 
-                                                        Stroke="{Binding Color}" 
-                                                        Fill="{Binding Color}" 
-                                                        ToolTip="{Binding Name}"
-                                                        />
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                            <ListView.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"></StackPanel>
-                                                </ItemsPanelTemplate>
-                                            </ListView.ItemsPanel>
-                                        </ListView>
 
-                                    </StackPanel>
-                                </StackPanel>
-                            </ui:Card>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    
-                </ListView>
-            </ui:CardExpander.Content>
-        </ui:CardExpander>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
 
+
+        </ListView>
+        
 
 
     </Grid>
