@@ -12,6 +12,9 @@
     Title="EditLabelPage"
     d:DataContext="{d:DesignInstance local:EditLabelPage, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
+    <ui:UiPage.Resources>
+        <helpers:ColorConverterMore x:Key="ColorConverter" />
+    </ui:UiPage.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -30,17 +33,27 @@
             <TextBlock Margin="0,30,0,5">Name</TextBlock>
             <ui:TextBox 
                 Text="{Binding ViewModel.Label.Name}"
+                IsEnabled="{Binding ViewModel.IsEnabled}"
             />
             
             <TextBlock Margin="0,30,0,5">Color</TextBlock>
-            
-            <xctk:ColorPicker SelectedColor="{Binding ViewModel.Label.Color, Mode=TwoWay}"/>
+
+            <xctk:ColorPicker 
+                SelectedColor="{Binding ViewModel.Label.Color, Mode=TwoWay, Converter={StaticResource ColorConverter}}" 
+                IsEnabled="{Binding ViewModel.IsEnabled}"
+                />
 
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
-                <ui:Button Content="Save changes" Margin="0,0,15,0" />
+                <ui:Button 
+                    Content="Save changes" 
+                    Margin="0,0,15,0" 
+                    Command="{Binding ViewModel.SaveLabelChangesCommand}"
+                    IsEnabled="{Binding ViewModel.IsEnabled}"
+                    />
                 <ui:Button 
                     Content="Cancel" 
                     Command="{Binding ViewModel.GoBackToLabelsPageCommand}"
+                    IsEnabled="{Binding ViewModel.IsEnabled}"
                     />
             </StackPanel>
            
