@@ -69,6 +69,9 @@ namespace Tasks.WpfUi
                 services.AddScoped<Views.Pages.EditLabelPage>();
                 services.AddScoped<ViewModels.EditLabelViewModel>();
 
+                services.AddScoped<Views.Pages.ViewEventPage>();
+                services.AddScoped<ViewModels.ViewEventPageViewModel>();
+
                 services.AddSingleton<IConfigs, ConfigurationDev>();
 
                 services.AddScoped<WpfApplicationServices>();

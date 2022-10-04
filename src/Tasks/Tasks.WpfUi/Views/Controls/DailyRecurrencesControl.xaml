@@ -51,17 +51,22 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:Card>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                        
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
 
-                            <!--Checkbox-->
-                            <CheckBox 
-                                Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
-                                CommandParameter="{Binding}"
-                                IsChecked="{Binding Completed}" 
-                                Width="48" 
-                                MinWidth="0" />
+                                <!--Checkbox-->
+                                <CheckBox 
+                                    Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
+                                    CommandParameter="{Binding}"
+                                    IsChecked="{Binding Completed}" 
+                                    Width="48" 
+                                    MinWidth="0" />
 
-                            <StackPanel Orientation="Horizontal">
                                 <!--Event name-->
                                 <TextBlock 
                                     FontSize="12" 
@@ -85,17 +90,25 @@
                                                 ToolTip="{Binding Name}"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
-                                    
+
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal"></StackPanel>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
-                                    
-                                </ListView>
 
+                                </ListView>
                             </StackPanel>
-                        </StackPanel>
+
+                            <!--View event button-->
+                            <ui:Button 
+                                Grid.Column="1"
+                                Icon="ExpandUpRight24" 
+                                ToolTip="View event" 
+                                Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
+                                CommandParameter="{Binding}"
+                                />
+                        </Grid>
                     </ui:Card>
                 </DataTemplate>
             </ListView.ItemTemplate>

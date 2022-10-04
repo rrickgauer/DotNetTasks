@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
+using Tasks.WpfUi.Views.Pages;
+using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -24,8 +27,9 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [ObservableProperty]
     private GetRecurrencesResponse? _selectedRecurrence;
 
-
     private readonly IEventActionServices _eventActionServices = App.GetService<IEventActionServices>();
+    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
     /// <summary>
     /// Empty constructor
@@ -68,4 +72,12 @@ public partial class DailyRecurrencesViewModel : ObservableObject
             _eventActionServices.DeleteEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
         }
     }
+
+    [RelayCommand]
+    public void ViewEvent(object sender)
+    {
+        _navigation.Navigate(_viewEventPage.GetType());
+    }
+
+
 }
