@@ -49,6 +49,9 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private List<Label> _labels = new();
 
+    [ObservableProperty]
+    private Label? _selectedLabel = null;
+
 
     #region New Label Form
 
@@ -144,7 +147,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     }
 
     [RelayCommand]
-    public void EditLabel(object o)
+    public void EditCurrentLabel()
     {
         int x = 10;
     }

@@ -86,6 +86,7 @@
             x:Name="recurrencesListView22"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemsSource="{Binding ViewModel.Labels, Mode=TwoWay}"
+            SelectedItem="{Binding ViewModel.SelectedLabel, Mode=TwoWay}"
             MouseWheel="ListView_MouseWheel"
             Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}"
             
@@ -111,23 +112,18 @@
                                         Fill="{Binding Color}" />
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <StackPanel 
-                                    Orientation="Horizontal" 
-                                    Grid.Column="1"
-                                    >
+                                <StackPanel Orientation="Horizontal" Grid.Column="1">
                                     <ui:Button 
                                         Icon="MoreHorizontal24"
                                         Click="DropdownButton_Click">
                                         <ui:Button.ContextMenu>
                                             <ContextMenu>
                                                 <ui:MenuItem 
+                                                    DataContext="{Binding Source={StaticResource Proxy}}"
                                                     Header="Edit" 
                                                     SymbolIcon="Edit24" 
-                                                    Command="{Binding Source={StaticResource Proxy}, Path=Data.ViewModel.EditLabelCommand}"
-                                                    CommandParameter="{Binding Id}"
+                                                    Command="{Binding Data.ViewModel.EditCurrentLabelCommand}"
                                                 />
-                                                
-                                                
                                                 <ui:MenuItem Header="Delete" SymbolIcon="Delete24" />
                                             </ContextMenu>
                                         </ui:Button.ContextMenu>
