@@ -32,6 +32,9 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         _applicationServices = applicationServices;
     }
 
+
+    private bool _initalLoad = false;
+
     [ObservableProperty]
     private string _text = "Recurrences";
 
@@ -60,12 +63,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
     async partial void OnDateChanged(DateTime value)
     {
-        IsLoading = true;
-
-        DateNextWeek = value.AddDays(7);
-        DatePreviousWeek = value.AddDays(-7);
-
-        await LoadRecurrences(value);
+        DisplayRecurrences(value);
     }
 
     [ObservableProperty]
@@ -76,8 +74,30 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
     #region INavigationAware
     public void OnNavigatedFrom() { }
-    public void OnNavigatedTo() { }
+    
+    public async void OnNavigatedTo() 
+    {
+        if (_initalLoad)
+        {
+            DisplayRecurrences(Date);
+        }
+    }
     #endregion
+
+
+    public async void DisplayRecurrences(DateTime date)
+    {
+
+        _initalLoad = true;
+
+        IsLoading = true;
+
+        DateNextWeek = date.AddDays(7);
+        DatePreviousWeek = date.AddDays(-7);
+
+        await LoadRecurrences(date);
+    }
+
 
     /// <summary>
     /// Set the weekly recurrences 
