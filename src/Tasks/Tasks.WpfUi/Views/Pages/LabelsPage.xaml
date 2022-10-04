@@ -116,14 +116,16 @@
                                         Icon="MoreHorizontal24"
                                         Click="DropdownButton_Click">
                                         <ui:Button.ContextMenu>
-                                            <ContextMenu>
+                                            <ContextMenu DataContext="{Binding Source={StaticResource Proxy}}">
                                                 <ui:MenuItem 
-                                                    DataContext="{Binding Source={StaticResource Proxy}}"
                                                     Header="Edit" 
                                                     SymbolIcon="Edit24" 
-                                                    Command="{Binding Data.ViewModel.EditCurrentLabelCommand}"
-                                                />
-                                                <ui:MenuItem Header="Delete" SymbolIcon="Delete24" />
+                                                    Command="{Binding Data.ViewModel.EditCurrentLabelCommand}" />
+                                                
+                                                <ui:MenuItem 
+                                                    Header="Delete" 
+                                                    SymbolIcon="Delete24" 
+                                                    Command="{Binding Data.ViewModel.DeleteCurrentLabelCommand}" />
                                             </ContextMenu>
                                         </ui:Button.ContextMenu>
                                     </ui:Button>

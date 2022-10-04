@@ -17,6 +17,7 @@ using Tasks.WpfUi.Views.Windows;
 using Wpf.Ui.Mvvm.Contracts;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Controls.Interfaces;
+using System.Windows;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -138,8 +139,10 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
 
     #endregion
 
-
-    public async void LoadLabelsAsync()
+    /// <summary>
+    /// Load the labels async
+    /// </summary>
+    public async Task LoadLabelsAsync()
     {
         ShowProgress = true;
         ShowLabels = false;
@@ -152,11 +155,35 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         ShowLabels = true;
     }
 
+    /// <summary>
+    /// Navigate to the edit label page
+    /// </summary>
     [RelayCommand]
     public void EditCurrentLabel()
     {
         _editLabelPage.ViewModel.Label = SelectedLabel;
         _navigation.Navigate(_editLabelPage.GetType());
+    }
+
+    /// <summary>
+    /// Delete the currently selected label
+    /// </summary>
+    [RelayCommand]
+    public async Task DeleteCurrentLabel()
+    {
+        MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this label?", "Confirmation",  MessageBoxButton.YesNo);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        ShowProgress = true;
+        ShowLabels = false;
+
+        var response = await _labelServices.DeleteLabelAsync(SelectedLabel.Id.Value, _applicationServices.User.Id.Value);
+
+        await LoadLabelsAsync();
     }
 
 }
