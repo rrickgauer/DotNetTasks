@@ -80,7 +80,6 @@
             Visibility="{Binding ViewModel.ShowProgress, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
             d:Visibility="Collapsed" />
 
-
         <ListView 
             Grid.Row="2"
             x:Name="recurrencesListView22"

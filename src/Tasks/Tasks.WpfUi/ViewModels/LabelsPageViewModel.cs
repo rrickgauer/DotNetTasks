@@ -13,6 +13,10 @@ using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 using Tasks.Utilities;
 using Tasks.WpfUi.Helpers;
+using Tasks.WpfUi.Views.Windows;
+using Wpf.Ui.Mvvm.Contracts;
+using Tasks.WpfUi.Views.Pages;
+using Wpf.Ui.Controls.Interfaces;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -33,6 +37,8 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
 
     private readonly ILabelServices _labelServices;
     private readonly WpfApplicationServices _applicationServices;
+    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly EditLabelPage _editLabelPage = App.GetService<IPageService>().GetPage<EditLabelPage>();
 
     public LabelsPageViewModel(ILabelServices labelServices, WpfApplicationServices applicationServices)
     {
@@ -149,7 +155,8 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     [RelayCommand]
     public void EditCurrentLabel()
     {
-        int x = 10;
+        _editLabelPage.ViewModel.Label = SelectedLabel;
+        _navigation.Navigate(_editLabelPage.GetType());
     }
 
 }
