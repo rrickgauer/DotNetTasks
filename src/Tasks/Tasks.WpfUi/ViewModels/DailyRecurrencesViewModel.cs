@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Domain.Models;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Views.Pages;
@@ -51,12 +52,6 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void TestMe()
-    {
-        int x = 10;
-    }
-
-    [RelayCommand]
     public async void MarkComplete(GetRecurrencesResponse? recurrenceResponse)
     {
         if (recurrenceResponse is null) return;
@@ -74,8 +69,9 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void ViewEvent(object sender)
+    public void ViewEvent(Event event_)
     {
+        _viewEventPage.ViewModel.Event = event_;
         _navigation.Navigate(_viewEventPage.GetType());
     }
 

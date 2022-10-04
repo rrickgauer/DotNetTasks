@@ -106,7 +106,7 @@
                                 Icon="ExpandUpRight24" 
                                 ToolTip="View event" 
                                 Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
-                                CommandParameter="{Binding}"
+                                CommandParameter="{Binding Path=Event}"
                                 />
                         </Grid>
                     </ui:Card>
