@@ -8,9 +8,16 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     mc:Ignorable="d" 
     d:DesignWidth="800"
-    d:DataContext="{d:DesignInstance local:DailyRecurrencesControl, IsDesignTimeCreatable=False}"
-    Margin="0,10,0,10"
-    >
+    d:DataContext="{d:DesignInstance local:DailyRecurrencesControl, IsDesignTimeCreatable=False}" 
+    Margin="0,30,0,30">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0,0,5,0" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -20,32 +27,28 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="DarkGray" Margin="0,0,0,10" >
+        <!--Header-->
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="DarkGray" Margin="0,0,0,20" >
             <StackPanel Orientation="Horizontal">
+                <TextBlock d:Text="06/22/2022" 
+                           Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
+                           Style="{StaticResource HeaderTextStyle}" />
 
-                <TextBlock 
-                    d:Text="06/22/2022"
-                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
-                    FontSize="18" Margin="0,0,5,0" />
+                <TextBlock Text="·" 
+                           Style="{StaticResource HeaderTextStyle}" />
 
-                <TextBlock Text="·" FontSize="18" Margin="0,0,5,0" />
-
-                <TextBlock 
-                    d:Text="Monday"
-                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:dddd}}" 
-                    FontSize="18" Margin="0,0,5,0" />
-
+                <TextBlock d:Text="Monday" 
+                           Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:dddd}}" 
+                           Style="{StaticResource HeaderTextStyle}" />
             </StackPanel>
         </Border>
 
-        <ListView
-            Grid.Row="1"
-            x:Name="recurrencesListView"
-            ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}"
-            PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
+        <ListView Grid.Row="1" 
+                  x:Name="recurrencesListView" 
+                  ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
+                  d:ItemsSource="{d:SampleData ItemCount=5}" 
+                  SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
+                  PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -56,19 +59,20 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                         
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        Grid.Column="0">
 
                                 <!--Checkbox-->
-                                <CheckBox 
-                                    Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}"
-                                    CommandParameter="{Binding}"
-                                    IsChecked="{Binding Completed}" 
-                                    Width="48" 
-                                    MinWidth="0" />
+                                <CheckBox Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
+                                          CommandParameter="{Binding}" 
+                                          IsChecked="{Binding Completed}" 
+                                          Width="48" 
+                                          MinWidth="0" />
 
                                 <!--Event name-->
                                 <TextBlock 
-                                    FontSize="12" 
+                                    FontSize="14" 
                                     d:Text="This is the event name"
                                     Text="{Binding Path=Event.Name}" 
                                     VerticalAlignment="Center" Margin="0,0,20,0"  />
@@ -77,16 +81,16 @@
                                 <ListView
                                     ItemsSource="{Binding Labels, Mode=TwoWay}"
                                     d:ItemsSource="{d:SampleData ItemCount=3}">
+                                    
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Ellipse 
-                                                Height="20" 
-                                                Width="20" 
-                                                Margin="0,0,0,0" 
-                                                VerticalAlignment="Center" 
-                                                Stroke="{Binding Color}" 
-                                                Fill="{Binding Color}" 
-                                                ToolTip="{Binding Name}"/>
+                                            <Ellipse Height="20" 
+                                                     Width="20" 
+                                                     Margin="0,0,0,0" 
+                                                     VerticalAlignment="Center" 
+                                                     Stroke="{Binding Color}" 
+                                                     Fill="{Binding Color}" 
+                                                     ToolTip="{Binding Name}"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
 
@@ -99,14 +103,22 @@
                                 </ListView>
                             </StackPanel>
 
-                            <!--View event button-->
-                            <ui:Button 
-                                Grid.Column="1"
-                                Icon="ExpandUpRight24" 
-                                ToolTip="View event" 
-                                Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
-                                CommandParameter="{Binding Path=Event}"
-                                />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                                <!--Edit label assignments button-->
+                                <ui:Button Icon="Tag24" 
+                                           ToolTip="Edit label assignments" 
+                                           Margin="0,0,5,0" />
+
+                                <!--View event button-->
+                                <ui:Button Icon="Open24" 
+                                           ToolTip="View event" 
+                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
+                                           CommandParameter="{Binding Path=Event}" />
+
+                            </StackPanel>
+                            
+
                         </Grid>
                     </ui:Card>
                 </DataTemplate>
