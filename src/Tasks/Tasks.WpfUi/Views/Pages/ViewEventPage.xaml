@@ -108,7 +108,13 @@
 
 
                 <StackPanel Orientation="Horizontal" Style="{StaticResource FormStackPanel}">
-                    <ui:Button Content="Save changes" Command="{Binding ViewModel.SaveEventCommand}"/>
+                    <ui:Button d:Content="Save changes"
+                               Content="{Binding ViewModel.SaveButtonText}"
+                               Command="{Binding ViewModel.SaveEventCommand}" Margin="0,0,10,0"/>
+                    
+                    <ui:Button Content="Delete event" 
+                               Command="{Binding ViewModel.DeleteEventCommand}"
+                               IsEnabled="{Binding ViewModel.EventExists}" />
                 </StackPanel>
 
             </StackPanel>

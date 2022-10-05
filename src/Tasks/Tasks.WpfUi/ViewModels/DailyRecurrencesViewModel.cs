@@ -71,7 +71,7 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [RelayCommand]
     public void ViewEvent(Event event_)
     {
-        _viewEventPage.ViewModel.Event = event_;
+        _viewEventPage.ViewModel.ViewEvent(event_);
         _navigation.Navigate(_viewEventPage.GetType());
     }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Services.Interfaces;
@@ -19,6 +20,14 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     private readonly WpfApplicationServices _applicationServices;
     private readonly IEventServices _eventServices;
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+
+    private const string DeleteEventConfirmationMessage = "Are you sure you want to delete this event? It cannot be undone.";
+
+    private class SaveButtonTextValues
+    {
+        public const string ExistingEvent = "Save changes";
+        public const string NewEvent = "Create event";
+    }
 
     /// <summary>
     /// Constructor
@@ -39,9 +48,19 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private bool _formIsEnabled = true;
 
-
     [ObservableProperty]
     private IEnumerable<Frequency> _frequencyOptions = Enum.GetValues(typeof(Frequency)).Cast<Frequency>();
+
+    [ObservableProperty]
+    private bool _eventExists = false;
+
+    partial void OnEventExistsChanged(bool value)
+    {
+        SaveButtonText = EventExists ? SaveButtonTextValues.ExistingEvent : SaveButtonTextValues.NewEvent;
+    }
+
+    [ObservableProperty]
+    private string _saveButtonText = SaveButtonTextValues.NewEvent;
 
 
     /// <summary>
@@ -74,6 +93,9 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     }
     #endregion
 
+
+
+    #region Save event
 
     /// <summary>
     /// Save the event changes
@@ -142,6 +164,7 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
         return false;
     }
 
+    #endregion
 
     /// <summary>
     /// Clear the form and set up a new event
@@ -159,5 +182,57 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
         };
 
         Event = newEvent;
+
+        EventExists = false;
     }
+
+    /// <summary>
+    /// Load the form values with the specied event.
+    /// </summary>
+    /// <param name="e"></param>
+    public void ViewEvent(Event e)
+    {
+        Event = e;
+        EventExists = true;
+    }
+
+    /// <summary>
+    /// Delete the event
+    /// </summary>
+    [RelayCommand]
+    public async void DeleteEvent()
+    {
+        if (!ConfirmDeletion())
+        {
+            return;
+        }
+
+        // disable the form
+        FormIsEnabled = false;
+
+        await _eventServices.DeleteEventAsync(Event.Id.Value);
+
+        // enable the form
+        FormIsEnabled = true;
+
+        // go back to the previous page
+        GoBack();
+    }
+
+    /// <summary>
+    /// Have the user confirm that they want to delete the event.
+    /// </summary>
+    /// <returns></returns>
+    private bool ConfirmDeletion()
+    {
+        MessageBoxResult result = MessageBox.Show(DeleteEventConfirmationMessage, "Confirmation", MessageBoxButton.YesNo);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }
