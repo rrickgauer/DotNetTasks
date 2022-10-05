@@ -123,4 +123,23 @@ public class EventLabelServices : IEventLabelServices
         return result.OrderBy(l => l.Label.Name);
     }
 
+
+    /// <summary>
+    /// Delete the assignment of the event label
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="labelId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<bool> DeleteAsync(Guid eventId, Guid labelId)
+    {
+        var numRecords = await _eventLabelRepository.DeleteAsync(eventId, labelId);
+
+        if (numRecords == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

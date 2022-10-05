@@ -55,7 +55,9 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 
-                                <CheckBox IsChecked="{Binding IsAssigned}">
+                                <CheckBox IsChecked="{Binding IsAssigned}"
+                                          Command="{Binding ElementName=labelAssignmentsList, Path=DataContext.ViewModel.ToggleLabelAssignmentCommand}"
+                                          CommandParameter="{Binding}">
                                     <CheckBox.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <Ellipse Height="20" 

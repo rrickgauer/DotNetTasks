@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
@@ -74,7 +75,11 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     }
 
 
-
+    /// <summary>
+    /// View the assigned labels of the specified event
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
     public async Task ViewAssignedEventLabels(Event e)
     {
         Event = e;
@@ -84,6 +89,32 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
 
         IsLoading = false;
         ShowLabels = true;
+    }
+
+    /// <summary>
+    /// Toggle the event label assignment
+    /// </summary>
+    /// <param name="labelAssignment"></param>
+    [RelayCommand]
+    public async void ToggleLabelAssignment(LabelAssignment labelAssignment)
+    {
+        // save the assignment
+        if (labelAssignment.IsAssigned)
+        {
+            EventLabelRequestParms parms = new()
+            {
+                EventId = Event.Id.Value,
+                LabelId = labelAssignment.Label.Id.Value,
+            };
+
+            await _eventLabelServices.CreateAsync(parms, _applicationServices.User.Id.Value);
+        }
+
+        // delete the assignment
+        else
+        {
+            await _eventLabelServices.DeleteAsync(Event.Id.Value, labelAssignment.Label.Id.Value);
+        }
     }
 
 }
