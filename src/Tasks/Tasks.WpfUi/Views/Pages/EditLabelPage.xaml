@@ -15,6 +15,15 @@
     <ui:UiPage.Resources>
         <helpers:ColorConverterMore x:Key="ColorConverter" />
     </ui:UiPage.Resources>
+
+    <ui:UiPage.InputBindings>
+        <!--Submit form-->
+        <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding ViewModel.SaveLabelChangesCommand}" />
+        
+        <!--Exit-->
+        <KeyBinding Key="Esc" Command="{Binding ViewModel.GoBackToLabelsPageCommand}" />
+    </ui:UiPage.InputBindings>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

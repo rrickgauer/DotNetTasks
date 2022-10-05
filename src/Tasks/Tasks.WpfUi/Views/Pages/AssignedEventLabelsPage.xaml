@@ -18,6 +18,11 @@
         <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ui:UiPage.Resources>
 
+    <ui:UiPage.InputBindings>
+        <!--Exit page-->
+        <KeyBinding Key="Esc" Command="{Binding ViewModel.GoBackCommand}" />
+    </ui:UiPage.InputBindings>
+
     <Grid>
         <Border Padding="20">
             <Grid>
