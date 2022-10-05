@@ -16,9 +16,14 @@ namespace Tasks.WpfUi.ViewModels;
 public partial class AssignedEventLabelsViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
-
     private readonly WpfApplicationServices _applicationServices;
     private readonly IEventLabelServices _eventLabelServices;
+
+    /// <summary>
+    /// Flag that sets the spinner's visibility
+    /// </summary>
+    [ObservableProperty]
+    private bool _spinnerIsVisible = true;
 
 
     /// <summary>

@@ -13,8 +13,11 @@
            d:DesignWidth="800"
            d:DataContext="{d:DesignInstance local:AssignedEventLabelsPage, IsDesignTimeCreatable=False}"
            Title="AssignedEventLabelsPage">
-    <Grid>
+    <ui:UiPage.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </ui:UiPage.Resources>
 
+    <Grid>
         <Border Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -22,24 +25,26 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-
+                <!--Close button-->
                 <ui:Button Icon="Dismiss24"
                            Grid.Row="0"
                            ToolTip="Close"
                            HorizontalAlignment="Right"
                            Command="{Binding ViewModel.GoBackCommand}" />
-                
-                
+
+
+                <!--Spinner-->
+                <ui:ProgressRing IsIndeterminate="True"
+                                 Grid.Row="1" 
+                                 Margin="0,20,0,20"
+                                 Visibility="{Binding ViewModel.SpinnerIsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
 
             </Grid>
-            
         </Border>
-        
-
-
-
     </Grid>
 </ui:UiPage>
