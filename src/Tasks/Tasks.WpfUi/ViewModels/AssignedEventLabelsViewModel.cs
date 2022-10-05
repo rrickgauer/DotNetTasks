@@ -10,6 +10,7 @@ using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -19,6 +20,7 @@ namespace Tasks.WpfUi.ViewModels;
 public partial class AssignedEventLabelsViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly LabelsPage _labelsPage = App.GetService<IPageService>().GetPage<LabelsPage>();
     private readonly WpfApplicationServices _applicationServices;
     private readonly IEventLabelServices _eventLabelServices;
 
@@ -115,6 +117,16 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
         {
             await _eventLabelServices.DeleteAsync(Event.Id.Value, labelAssignment.Label.Id.Value);
         }
+    }
+
+
+    /// <summary>
+    /// Navigate to the labels page
+    /// </summary>
+    [RelayCommand]
+    public void GoToLabelsPage()
+    {
+        _navigation.Navigate(_labelsPage.GetType());
     }
 
 }

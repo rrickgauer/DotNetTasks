@@ -42,44 +42,53 @@
                 <ui:ProgressRing IsIndeterminate="True"
                                  Grid.Row="1" 
                                  Margin="0,20,0,20"
+                                 d:Visibility="Collapsed"
                                  Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
 
                 <Border Grid.Row="2"
                         Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                    <ListView x:Name="labelAssignmentsList"
+
+                    <StackPanel>
+                        <ListView x:Name="labelAssignmentsList"
                               ItemsSource="{Binding ViewModel.LabelAssignments, Mode=TwoWay}"
                               d:ItemsSource="{d:SampleData ItemCount=5}">
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                
-                                <CheckBox IsChecked="{Binding IsAssigned}"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsAssigned}"
                                           Command="{Binding ElementName=labelAssignmentsList, Path=DataContext.ViewModel.ToggleLabelAssignmentCommand}"
                                           CommandParameter="{Binding}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Height="20" 
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Height="20" 
                                                      Width="20" 
                                                      Margin="20,0,10,0" 
                                                      VerticalAlignment="Center" 
                                                      Stroke="{Binding Label.Color}" 
                                                      Fill="{Binding Label.Color}" />
 
-                                            <TextBlock Text="{Binding Label.Name}" 
+                                                <TextBlock Text="{Binding Label.Name}" 
                                                        VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
 
-                    </ListView>
-                    
-                    
+                        <ui:Button 
+                            Command="{Binding ViewModel.GoToLabelsPageCommand}"
+                            Content="Edit labels" 
+                            Margin="0,20,0,0"/>
+
+                    </StackPanel>
+
+
+
                 </Border>
                 
 
