@@ -22,7 +22,17 @@
 
         <helpers:TimeSpanToDateTimeConverter x:Key="TimeSpanConverter" />
     </ui:UiPage.Resources>
-    
+
+    <ui:UiPage.InputBindings>
+        
+        <!--Submit form-->
+        <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding ViewModel.SaveEventCommand}" />
+
+        <!--Exit-->
+        <KeyBinding Key="Esc" Command="{Binding ViewModel.GoBackCommand}" />
+        
+    </ui:UiPage.InputBindings>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -45,25 +55,25 @@
                 <!--Name-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Name</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.Name, Mode=TwoWay}" />
+                    <ui:TextBox Text="{Binding ViewModel.Event.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Starts on-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Starts on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay}" />
+                    <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Ends on-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Ends on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay}" />
+                    <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Starts at-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Starts at</Label>
-                    <xctk:TimePicker Value="{Binding ViewModel.Event.StartsAt, Mode=TwoWay, Converter={StaticResource TimeSpanConverter}}" />
+                    <xctk:TimePicker Value="{Binding ViewModel.Event.StartsAt, Mode=TwoWay, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Frequency-->
@@ -76,7 +86,7 @@
                 <!--Separation-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Separation</Label>
-                    <ui:NumberBox Value="{Binding ViewModel.Event.Separation, Mode=TwoWay}" 
+                    <ui:NumberBox Value="{Binding ViewModel.Event.Separation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   IntegersOnly="True"
                                   Min="1"
                                   Step="1"/>
@@ -85,26 +95,26 @@
                 <!--Recurrence day-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Day</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceDay, Mode=TwoWay}" />
+                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Recurrence week-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Week</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceWeek, Mode=TwoWay}" />
+                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceWeek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
 
                 <!--Phone number-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Phone number</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.PhoneNumber, Mode=TwoWay}" />
+                    <ui:TextBox Text="{Binding ViewModel.Event.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Location-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Location</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.Location, Mode=TwoWay}" />
+                    <ui:TextBox Text="{Binding ViewModel.Event.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
 
