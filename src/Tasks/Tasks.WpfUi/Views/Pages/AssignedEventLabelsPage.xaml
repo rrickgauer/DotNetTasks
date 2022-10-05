@@ -15,6 +15,7 @@
            Title="AssignedEventLabelsPage">
     <ui:UiPage.Resources>
         <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ui:UiPage.Resources>
 
     <Grid>
@@ -41,10 +42,11 @@
                 <ui:ProgressRing IsIndeterminate="True"
                                  Grid.Row="1" 
                                  Margin="0,20,0,20"
-                                 Visibility="{Binding ViewModel.SpinnerIsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                 Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
 
-                <Border Grid.Row="2">
+                <Border Grid.Row="2"
+                        Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
                     <ListView x:Name="labelAssignmentsList"
                               ItemsSource="{Binding ViewModel.LabelAssignments, Mode=TwoWay}"

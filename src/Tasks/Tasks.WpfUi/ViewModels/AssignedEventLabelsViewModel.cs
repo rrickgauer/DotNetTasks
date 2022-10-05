@@ -25,7 +25,10 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     /// Flag that sets the spinner's visibility
     /// </summary>
     [ObservableProperty]
-    private bool _spinnerIsVisible = true;
+    private bool _isLoading = true;
+
+    [ObservableProperty]
+    private bool _showLabels = false;
 
 
     [ObservableProperty]
@@ -56,7 +59,8 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     public void OnNavigatedTo()
     {
         _previousNavigationItem = _navigation.Current;  // Record the page from which this page was navigated from
-        SpinnerIsVisible = true;
+        IsLoading = true;
+        ShowLabels = false;
     }
     #endregion
 
@@ -78,7 +82,8 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
         var labelAssignments = await _eventLabelServices.GetUserEventLabelAssignmentsAsync(Event.Id.Value, _applicationServices.User.Id.Value);
         LabelAssignments = labelAssignments;
 
-        SpinnerIsVisible = false;
+        IsLoading = false;
+        ShowLabels = true;
     }
 
 }
