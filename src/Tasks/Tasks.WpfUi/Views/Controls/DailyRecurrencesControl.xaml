@@ -108,6 +108,8 @@
                                 <!--Edit label assignments button-->
                                 <ui:Button Icon="Tag24" 
                                            ToolTip="Edit label assignments" 
+                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewAssignedLabelsCommand}"
+                                           CommandParameter="{Binding Path=Event}"
                                            Margin="0,0,5,0" />
 
                                 <!--View event button-->

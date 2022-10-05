@@ -14,8 +14,15 @@ using Wpf.Ui.Mvvm.Contracts;
 
 namespace Tasks.WpfUi.ViewModels;
 
+#pragma warning disable CS8601 // Possible null reference assignment.
+
 public partial class DailyRecurrencesViewModel : ObservableObject
 {
+    private readonly IEventActionServices _eventActionServices = App.GetService<IEventActionServices>();
+    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
+    private readonly AssignedEventLabelsPage _assignedEventLabelsPage = App.GetService<IPageService>().GetPage<AssignedEventLabelsPage>();
+
     [ObservableProperty]
     private DateTime _date = DateTime.Today;
 
@@ -27,10 +34,6 @@ public partial class DailyRecurrencesViewModel : ObservableObject
 
     [ObservableProperty]
     private GetRecurrencesResponse? _selectedRecurrence;
-
-    private readonly IEventActionServices _eventActionServices = App.GetService<IEventActionServices>();
-    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
-    private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
     /// <summary>
     /// Empty constructor
@@ -73,6 +76,14 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     {
         _viewEventPage.ViewModel.ViewEvent(event_);
         _navigation.Navigate(_viewEventPage.GetType());
+    }
+
+
+    [RelayCommand]
+    public void ViewAssignedLabels(Event event_)
+    {
+        //_viewEventPage.ViewModel.ViewEvent(event_);
+        _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 
 

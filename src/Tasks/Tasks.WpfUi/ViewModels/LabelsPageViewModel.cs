@@ -35,7 +35,6 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     }
     #endregion
 
-
     private readonly ILabelServices _labelServices;
     private readonly WpfApplicationServices _applicationServices;
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();

@@ -9,8 +9,5 @@ public interface IEventLabelServices
     Task<IEnumerable<Label>> GetEventLabelsAsync(Guid eventId, Guid userId);
     string GetUri(EventLabel eventLabel);
     Task<int> CreateBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest);
-
-
-
     Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId);
 }
