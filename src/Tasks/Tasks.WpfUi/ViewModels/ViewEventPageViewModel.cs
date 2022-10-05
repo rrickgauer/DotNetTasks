@@ -9,6 +9,7 @@ using Tasks.Domain.Enums;
 using Tasks.Domain.Models;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -20,6 +21,7 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     private readonly WpfApplicationServices _applicationServices;
     private readonly IEventServices _eventServices;
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly AssignedEventLabelsPage _assignedEventLabelsPage = App.GetService<IPageService>().GetPage<AssignedEventLabelsPage>();
 
     private const string DeleteEventConfirmationMessage = "Are you sure you want to delete this event? It cannot be undone.";
 
@@ -233,6 +235,14 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
         }
 
         return true;
+    }
+
+
+    [RelayCommand]
+    public void GoToLabelAssignmentsPage()
+    {
+        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(Event);
+        _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 
 }

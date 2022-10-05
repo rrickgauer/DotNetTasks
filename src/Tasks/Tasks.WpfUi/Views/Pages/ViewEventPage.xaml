@@ -26,13 +26,14 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border Padding="20,0" Grid.Row="0">
+        <Border Padding="20,0" Grid.Row="0" Grid.ColumnSpan="2">
             <StackPanel>
                 <ui:Button Icon="Dismiss24" ToolTip="Go back" HorizontalAlignment="Right" Command="{Binding ViewModel.GoBackCommand}"/>
             </StackPanel>
@@ -119,9 +120,22 @@
 
             </StackPanel>
 
-
         </Border>
-        
+
+        <Border Grid.Row="1"
+                Padding="20, 0"
+                Grid.Column="1" Margin="0,30,0,0">
+            <StackPanel>
+                <ui:Button Icon="Tag24" 
+                           FontSize="16"
+                           ToolTip="Edit assigned labels"
+                           HorizontalAlignment="Stretch" 
+                           Height="34.62" 
+                           Command="{Binding ViewModel.GoToLabelAssignmentsPageCommand}"
+                           />
+                
+            </StackPanel>
+        </Border>
 
     </Grid>
 </ui:UiPage>
