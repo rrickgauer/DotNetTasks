@@ -1,5 +1,6 @@
 ﻿using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Domain.Views;
 
 namespace Tasks.Services.Interfaces;
 
@@ -10,4 +11,6 @@ public interface IEventLabelServices
     string GetUri(EventLabel eventLabel);
     Task<int> CreateBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest);
     Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId);
+
+    Task<IEnumerable<LabelAssignment>> GetUserEventLabelAssignmentsAsync(Guid eventId, Guid userId);
 }

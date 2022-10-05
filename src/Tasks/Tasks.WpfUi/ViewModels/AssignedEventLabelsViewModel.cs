@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Domain.Models;
+using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
@@ -25,6 +27,12 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     [ObservableProperty]
     private bool _spinnerIsVisible = true;
 
+
+    [ObservableProperty]
+    private Event _event = new();
+
+    [ObservableProperty]
+    private IEnumerable<LabelAssignment> _labelAssignments = new List<LabelAssignment>();
 
     /// <summary>
     /// Contains the previous page from which this page was navigated to
@@ -48,6 +56,7 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     public void OnNavigatedTo()
     {
         _previousNavigationItem = _navigation.Current;  // Record the page from which this page was navigated from
+        SpinnerIsVisible = true;
     }
     #endregion
 
@@ -60,5 +69,16 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
         _navigation.Navigate(_previousNavigationItem.PageTag);
     }
 
+
+
+    public async Task ViewAssignedEventLabels(Event e)
+    {
+        Event = e;
+
+        var labelAssignments = await _eventLabelServices.GetUserEventLabelAssignmentsAsync(Event.Id.Value, _applicationServices.User.Id.Value);
+        LabelAssignments = labelAssignments;
+
+        SpinnerIsVisible = false;
+    }
 
 }

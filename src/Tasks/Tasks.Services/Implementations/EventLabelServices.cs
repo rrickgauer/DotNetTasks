@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
+using Tasks.Domain.Views;
 using Tasks.Mappers;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Interfaces;
@@ -11,6 +12,7 @@ public class EventLabelServices : IEventLabelServices
 {
     #region Private memebers
     private readonly IEventLabelRepository _eventLabelRepository;
+    private readonly ILabelServices _labelServices;
     #endregion
 
 
@@ -18,9 +20,10 @@ public class EventLabelServices : IEventLabelServices
     /// Constructor
     /// </summary>
     /// <param name="eventLabelRepository"></param>
-    public EventLabelServices(IEventLabelRepository eventLabelRepository)
+    public EventLabelServices(IEventLabelRepository eventLabelRepository, ILabelServices eventServices)
     {
         _eventLabelRepository = eventLabelRepository;
+        _labelServices = eventServices;
     }
 
     /// <summary>
@@ -76,19 +79,48 @@ public class EventLabelServices : IEventLabelServices
         return url;
     }
 
-
-
     /// <summary>
     /// Get all the event label assignments for the specified user
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
     public async Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId)
-    { 
+    {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(userId);
 
         var eventLabels = EventLabelMapper.ToModels(dataTable);
 
-        return eventLabels;        
+        return eventLabels;
     }
+
+
+    /// <summary>
+    /// Get a list of all the user's labels, and whether or not the given event has that label assigned to it.
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<LabelAssignment>> GetUserEventLabelAssignmentsAsync(Guid eventId, Guid userId)
+    {
+        var labels = (await _labelServices.GetLabelsAsync(userId)).Data;
+        var eventLabels = await GetEventLabelsAsync(eventId, userId);
+        var result = new List<LabelAssignment>();
+
+        foreach (var label in labels)
+        {
+            var assignment = new LabelAssignment(label);
+
+            var isMatch = eventLabels.Where(el => el.Id == label.Id).FirstOrDefault() != null;
+
+            if (isMatch)
+            {
+                assignment.IsAssigned = true;
+            }
+
+            result.Add(assignment);
+        }
+
+        return result.OrderBy(l => l.Label.Name);
+    }
+
 }

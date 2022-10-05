@@ -80,9 +80,9 @@ public partial class DailyRecurrencesViewModel : ObservableObject
 
 
     [RelayCommand]
-    public void ViewAssignedLabels(Event event_)
+    public async void ViewAssignedLabels(Event event_)
     {
-        //_viewEventPage.ViewModel.ViewEvent(event_);
+        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(event_);
         _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 
