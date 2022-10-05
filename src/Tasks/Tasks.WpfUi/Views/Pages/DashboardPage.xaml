@@ -23,8 +23,7 @@
     <ui:UiPage.InputBindings>
         <KeyBinding Modifiers="Ctrl"
                     Key="Enter" 
-                    Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
-                    />
+                    Command="{Binding ViewModel.LoginCommand, Mode=OneWay}" />
     </ui:UiPage.InputBindings>
 
     <Grid VerticalAlignment="Top">
