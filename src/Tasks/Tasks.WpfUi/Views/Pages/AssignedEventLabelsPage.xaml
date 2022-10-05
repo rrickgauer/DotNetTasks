@@ -44,6 +44,41 @@
                                  Visibility="{Binding ViewModel.SpinnerIsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
 
+                <Border Grid.Row="2">
+
+                    <ListView x:Name="labelAssignmentsList"
+                              ItemsSource="{Binding ViewModel.LabelAssignments, Mode=TwoWay}"
+                              d:ItemsSource="{d:SampleData ItemCount=5}">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                
+                                <CheckBox IsChecked="{Binding IsAssigned}">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Height="20" 
+                                                     Width="20" 
+                                                     Margin="20,0,10,0" 
+                                                     VerticalAlignment="Center" 
+                                                     Stroke="{Binding Label.Color}" 
+                                                     Fill="{Binding Label.Color}" />
+
+                                            <TextBlock Text="{Binding Label.Name}" 
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                                
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+
+                    </ListView>
+                    
+                    
+                </Border>
+                
+
             </Grid>
         </Border>
     </Grid>
