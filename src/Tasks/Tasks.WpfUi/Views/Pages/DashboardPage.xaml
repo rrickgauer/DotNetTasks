@@ -8,40 +8,50 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:DashboardPage, IsDesignTimeCreatable=False}"
-    d:DesignHeight="450"
     d:DesignWidth="800"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
 
+    <ui:UiPage.Resources>
+        <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+            <Setter Property="Margin" Value="0,30,0,10" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+    </ui:UiPage.Resources>
+
+    <ui:UiPage.InputBindings>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="Enter" 
+                    Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
+                    />
+    </ui:UiPage.InputBindings>
+
     <Grid VerticalAlignment="Top">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
         <StackPanel>
-
-            <TextBlock TextWrapping="Wrap" Text="Log in to your account" Margin="0,0,0,0" FontSize="24"/>
             
-            <TextBlock TextWrapping="Wrap" Text="Email" Margin="0,30,0,0"/>
+            <TextBlock TextWrapping="Wrap" 
+                       Text="Log in to your account" 
+                       Margin="0,0,0,0" 
+                       FontSize="24" />
+            
+            <!--Email-->
+            <TextBlock Text="Email" Style="{StaticResource TextBlockStyle}"/>
             <ui:TextBox 
                 TextWrapping="Wrap" 
-                Text="{Binding ViewModel.Email, Mode=TwoWay}"/>
+                Text="{Binding ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock TextWrapping="Wrap" Text="Password" Margin="0,30,0,0"/>
-            <ui:TextBox 
-                Text="{Binding ViewModel.Password, Mode=TwoWay}"/>
-            
+            <!--Passsword-->
+            <TextBlock Text="Password" Style="{StaticResource TextBlockStyle}"/>
+            <ui:TextBox Text="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
             <ui:Button 
                 Content="Log in" 
                 Margin="0,30,0,0"
                 Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
                 IsEnabled="{Binding ViewModel.InputsHaveValue}"
                 />
-
-            <ui:Snackbar 
-                Title="Invalid email/password combo..." 
-                x:Name="snackBar"/>
         </StackPanel>
         
 

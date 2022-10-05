@@ -23,7 +23,7 @@ namespace Tasks.WpfUi.Views.Pages
 
         private void ViewModel_InvalidLogin(object? sender, System.EventArgs e)
         {
-            this.snackBar.Show();
+            //this.snackBar.Show();
         }
     }
 }
