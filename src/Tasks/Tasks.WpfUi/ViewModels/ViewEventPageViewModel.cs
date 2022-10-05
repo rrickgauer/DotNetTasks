@@ -75,11 +75,24 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     #endregion
 
 
+    /// <summary>
+    /// Save the event changes
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="System.Exception"></exception>
     [RelayCommand]
     public async Task SaveEvent()
     {
+        // validate the event changes
+        if (IsEventInvalid())
+        {
+            return;
+        }
+
+        // disable the form
         FormIsEnabled = false;
 
+        // send the update request
         var updateResult = await _eventServices.UpdateEventAsync(Event);
 
         if (updateResult is null)
@@ -87,12 +100,53 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
             throw new System.Exception("Error saving the event!");
         }
 
+        // enable the form
         FormIsEnabled = true;
 
+        // go back to the previous page
         GoBack();
     }
 
 
+    /// <summary>
+    /// Checks if all the required inputs have a value
+    /// </summary>
+    /// <returns></returns>
+    private bool IsEventInvalid()
+    {
+        if (Event is null)
+        {
+            return true;
+        }
+        else if (Event.Id is null)
+        {
+            return true;
+        }
+        else if (string.IsNullOrEmpty(Event.Name))
+        {
+            return true;
+        }
+        else if (Event.Frequency is null)
+        {
+            return true;
+        }
+        else if (Event.StartsOn is null)
+        {
+            return true;
+        }
+        else if (Event.EndsOn is null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /// <summary>
+    /// Clear the form and set up a new event
+    /// </summary>
+    /// <param name="date"></param>
     public void SetupNewEvent(DateTime date)
     {
         Event newEvent = new()
