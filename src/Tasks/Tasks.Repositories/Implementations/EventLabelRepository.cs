@@ -51,6 +51,12 @@ public class EventLabelRepository : IEventLabelRepository
         return numRecords;
     }
 
+    /// <summary>
+    /// Get all event label assignments for the specified event
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public async Task<DataTable> SelectAllAsync(Guid eventId, Guid userId)
     {
         MySqlCommand command = new(EventLabelRepositorySql.SelectAllByIdAndUserId);
@@ -63,6 +69,11 @@ public class EventLabelRepository : IEventLabelRepository
         return records;        
     }
 
+    /// <summary>
+    /// Insert multiple event label assignments
+    /// </summary>
+    /// <param name="eventLabelsBatchRequest"></param>
+    /// <returns></returns>
     public async Task<int> InsertBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest)
     {
         MySqlCommand deleteCommand = new(EventLabelRepositorySql.DeleteAllByEvent);
@@ -83,6 +94,11 @@ public class EventLabelRepository : IEventLabelRepository
         return 0;
     }
 
+    /// <summary>
+    /// Get all event label assignments from the database for the specified user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public async Task<DataTable> SelectAllAsync(Guid userId)
     {
         MySqlCommand command = new(EventLabelRepositorySql.SelectAllByUser);
@@ -92,5 +108,25 @@ public class EventLabelRepository : IEventLabelRepository
         DataTable records = await _dbConnection.FetchAllAsync(command);
 
         return records;
+    }
+
+
+    /// <summary>
+    /// Delete the event label assignment record
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="labelId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<int> DeleteAsync(Guid eventId, Guid labelId)
+    {
+        MySqlCommand command = new(EventLabelRepositorySql.Delete);
+
+        command.Parameters.AddWithValue("@event_id", eventId);
+        command.Parameters.AddWithValue("@label_id", labelId);
+
+        int numRecords = await _dbConnection.ModifyAsync(command);
+
+        return numRecords;
     }
 }

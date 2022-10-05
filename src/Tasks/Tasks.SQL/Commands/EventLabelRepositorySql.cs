@@ -96,4 +96,12 @@ public class EventLabelRepositorySql
         WHERE
             el.event_id = @event_id;";
 
+
+    public const string Delete = @"
+        DELETE FROM
+            Event_Labels
+        WHERE
+            event_id = @event_id
+            AND label_id = @label_id";
+
 }
