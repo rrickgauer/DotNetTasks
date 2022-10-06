@@ -95,8 +95,7 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Ellipse 
-                                        Height="20" 
-                                        Width="20" 
+                                        Style="{StaticResource LabelCircleStyle}"
                                         Margin="0,0,10,0" 
                                         VerticalAlignment="Center" 
                                         Stroke="{Binding Color}" 

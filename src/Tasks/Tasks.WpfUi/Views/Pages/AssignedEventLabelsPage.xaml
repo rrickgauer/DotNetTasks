@@ -63,8 +63,7 @@
                                         
                                         <CheckBox.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <Ellipse Height="20" 
-                                                         Width="20" 
+                                                <Ellipse Style="{StaticResource LabelCircleStyle}"
                                                          Margin="20,0,10,0" 
                                                          VerticalAlignment="Center" 
                                                          Stroke="{Binding Label.Color}" 
