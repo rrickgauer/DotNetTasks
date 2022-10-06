@@ -86,7 +86,9 @@
                 ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                PreviewMouseWheel="ListView_PreviewMouseWheel">
+                PreviewMouseWheel="ListView_PreviewMouseWheel"
+                ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                >
 
             </ListView>
         </Border>
