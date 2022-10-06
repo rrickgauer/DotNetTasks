@@ -127,7 +127,8 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
             // setup a new view model for the daily recurrences control
             DailyRecurrencesViewModel viewModel = new(d, recurrencesToday);
 
-            if (d == date)
+            // highlight the current date
+            if (d.Date == date.Date)
             {
                 viewModel.IsCurrentDate = true;
             }

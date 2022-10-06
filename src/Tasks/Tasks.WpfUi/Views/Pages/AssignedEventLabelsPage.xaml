@@ -52,6 +52,7 @@
 
                     <StackPanel>
                         <ListView x:Name="labelAssignmentsList"
+                                  ItemContainerStyle="{StaticResource ListViewItemStyle}"
                               ItemsSource="{Binding ViewModel.LabelAssignments, Mode=TwoWay}"
                               d:ItemsSource="{d:SampleData ItemCount=5}">
 

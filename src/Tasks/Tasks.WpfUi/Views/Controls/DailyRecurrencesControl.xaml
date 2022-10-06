@@ -25,7 +25,6 @@
                     <Setter Property="BorderThickness" Value="2" />
                 </DataTrigger>
             </Style.Triggers>
-
         </Style>
 
     </UserControl.Resources>
@@ -63,15 +62,15 @@
                 <!--Recurrences list-->
                 <Border Grid.Row="0" 
                         Grid.Column="1" 
-                        Style="{StaticResource ThisCardStyle}"
-                        >
+                        Style="{StaticResource ThisCardStyle}">
 
-                    
+
                     <ListView x:Name="recurrencesListView" 
                               ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
                               d:ItemsSource="{d:SampleData ItemCount=5}" 
                               SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
-                              PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
+                              PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" 
+                              ItemContainerStyle="{StaticResource ListViewItemStyle}" >
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -100,18 +99,19 @@
 
                                                 <!--Assigned labels-->
                                                 <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
-                                                      d:ItemsSource="{d:SampleData ItemCount=3}">
+                                                          ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                                                          d:ItemsSource="{d:SampleData ItemCount=3}">
 
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate>
                                                             <Ellipse Style="{StaticResource LabelCircleStyle}"
-                                                                 Margin="0,0,0,0" 
-                                                                 VerticalAlignment="Center" 
-                                                                 d:Stroke="CadetBlue"
-                                                                 d:Fill="CadetBlue"
-                                                                 Stroke="{Binding Color}" 
-                                                                 Fill="{Binding Color}" 
-                                                                 ToolTip="{Binding Name}"/>
+                                                                     Margin="0,0,5,0" 
+                                                                     VerticalAlignment="Center" 
+                                                                     d:Stroke="CadetBlue"
+                                                                     d:Fill="CadetBlue"
+                                                                     Stroke="{Binding Color}" 
+                                                                     Fill="{Binding Color}" 
+                                                                     ToolTip="{Binding Name}"/>
                                                         </DataTemplate>
                                                     </ListView.ItemTemplate>
 
@@ -151,9 +151,6 @@
 
                                     </Grid>
                                 </Border>
-                                
-                                
-               
 
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -164,22 +161,12 @@
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
 
-                    
                     </ListView>
                 </Border>
-                
-
-                
 
             </Grid>
             
         </Border>
         
-        
-        
-
-        
-
-
     </Grid>
 </UserControl>

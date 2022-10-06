@@ -117,6 +117,19 @@
                 <Setter Property="Width" Value="15" />
             </Style>
 
+            <!--Style for list view items that removes the selection border-->
+            <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <ContentPresenter />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            
+
         </ResourceDictionary>
 
 
