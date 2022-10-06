@@ -111,7 +111,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     public async Task LoadRecurrences(DateTime date)
     {
         // get all the user's recurrences for the week
-        var recurrencesList = await GetRecurrencesAsync(date);
+        var recurrencesList = (await GetRecurrencesAsync(date)).Where(r => r.Cancelled == false);
 
         // get the week's starting/ending date
         ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
