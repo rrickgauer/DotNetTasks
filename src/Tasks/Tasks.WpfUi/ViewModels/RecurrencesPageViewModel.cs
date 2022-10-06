@@ -127,6 +127,11 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
             // setup a new view model for the daily recurrences control
             DailyRecurrencesViewModel viewModel = new(d, recurrencesToday);
 
+            if (d == date)
+            {
+                viewModel.IsCurrentDate = true;
+            }
+
             // add a new control to the collection
             controls.Add(new(viewModel));
         }

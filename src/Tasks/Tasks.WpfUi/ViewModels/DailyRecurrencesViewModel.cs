@@ -33,6 +33,9 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [ObservableProperty]
     private GetRecurrencesResponse? _selectedRecurrence;
 
+    [ObservableProperty]
+    private bool _isCurrentDate = false;
+
     /// <summary>
     /// Empty constructor
     /// </summary>
