@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <!--Button controls-->
-        <StackPanel Grid.Row="0" Margin="0,0,20,30" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
             <!--Today button-->
             <ui:Button 
                 Content="Today" 
