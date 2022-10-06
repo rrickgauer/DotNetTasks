@@ -1,25 +1,19 @@
-﻿<ui:UiPage 
-    x:Class="Tasks.WpfUi.Views.Pages.RecurrencesPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
-    xmlns:controls="clr-namespace:Tasks.WpfUi.Views.Controls"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="800"
-    d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=False}"
-    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-    Title="Recurrences"
-    Scrollable="True">
-
-    <ui:UiPage.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </ui:UiPage.Resources>
-
+﻿<ui:UiPage x:Class="Tasks.WpfUi.Views.Pages.RecurrencesPage"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+           xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
+           xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
+           xmlns:controls="clr-namespace:Tasks.WpfUi.Views.Controls"
+           xmlns:sys="clr-namespace:System;assembly=mscorlib"
+           mc:Ignorable="d" 
+           d:DesignHeight="450" d:DesignWidth="800"
+           d:DataContext="{d:DesignInstance local:RecurrencesPage, IsDesignTimeCreatable=False}"
+           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+           Title="Recurrences"
+           Scrollable="True">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -31,7 +25,8 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,20,30" Orientation="Horizontal" HorizontalAlignment="Right">
+        <!--Button controls-->
+        <StackPanel Grid.Row="0" Margin="0,0,20,0" Orientation="Horizontal" HorizontalAlignment="Right">
             <!--Today button-->
             <ui:Button 
                 Content="Today" 
@@ -76,7 +71,7 @@
 
         </StackPanel>
 
-
+        
         <ui:ProgressRing
             Grid.Row="1"
             IsIndeterminate="True" 
@@ -85,15 +80,18 @@
             Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
             d:Visibility="Collapsed"/>
 
-        <ListView 
-            Grid.Row="2"
-            Margin="0,30,0,30"
-            ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-            PreviewMouseWheel="ListView_PreviewMouseWheel">
 
-        </ListView>
+        <Border Grid.Row="2" Margin="0,30,0,30" Padding="15">
+            <ListView 
+                ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                PreviewMouseWheel="ListView_PreviewMouseWheel">
+
+            </ListView>
+        </Border>
+        
+
 
     </Grid>
 
