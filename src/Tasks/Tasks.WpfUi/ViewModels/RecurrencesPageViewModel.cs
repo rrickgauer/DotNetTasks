@@ -23,7 +23,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 {
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly WpfApplicationServices _applicationServices;
-
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
     private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
@@ -37,7 +36,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         _recurrenceServices = recurrenceServices;
         _applicationServices = applicationServices;
     }
-
 
     private bool _initalLoad = false;
 
@@ -96,9 +94,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// <param name="date"></param>
     public async void DisplayRecurrences(DateTime date)
     {
-
         _initalLoad = true;
-
         IsLoading = true;
 
         DateNextWeek = date.AddDays(7);
@@ -130,11 +126,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
             // setup a new view model for the daily recurrences control
             DailyRecurrencesViewModel viewModel = new(d, recurrencesToday);
-
-            if (recurrencesToday.Count == 0)
-            {
-                viewModel.IsExpanded = false;
-            }
 
             // add a new control to the collection
             controls.Add(new(viewModel));

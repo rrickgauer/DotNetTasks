@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Domain.Models;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
@@ -30,9 +31,6 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     private IEnumerable<GetRecurrencesResponse> _recurrences = new List<GetRecurrencesResponse>();
 
     [ObservableProperty]
-    private bool _isExpanded = true;
-
-    [ObservableProperty]
     private GetRecurrencesResponse? _selectedRecurrence;
 
     /// <summary>
@@ -40,7 +38,7 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     /// </summary>
     public DailyRecurrencesViewModel() 
     {
-        
+
     }
 
     /// <summary>
@@ -84,6 +82,40 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     {
         _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(event_);
         _navigation.Navigate(_assignedEventLabelsPage.GetType());
+    }
+
+    [RelayCommand]
+    public async void CancelRecurrence(GetRecurrencesResponse recurrenceToDelete)
+    {
+        if (!ConfirmCancellation())
+        {
+            return;
+        }
+
+        // set the recurrence cancelled property to true to update the gui
+        var recurrencesList = Recurrences.ToList();
+        var index = recurrencesList.IndexOf(recurrenceToDelete);
+        recurrencesList[index].Cancelled = true;
+        Recurrences = recurrencesList;
+
+        await _eventActionServices.SaveEventCancellationAsync(recurrenceToDelete.Event.Id.Value, recurrenceToDelete.OccursOn.Value);
+    }
+
+
+    /// <summary>
+    /// Have the user confirm that they want to delete the recurrence.
+    /// </summary>
+    /// <returns></returns>
+    private bool ConfirmCancellation()
+    {
+        MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel this event?", "Confirmation", MessageBoxButton.YesNo);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            return false;
+        }
+
+        return true;
     }
 
 

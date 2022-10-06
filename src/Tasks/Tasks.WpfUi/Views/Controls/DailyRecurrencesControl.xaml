@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:Tasks.WpfUi.Views.Controls"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
     mc:Ignorable="d" 
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:DailyRecurrencesControl, IsDesignTimeCreatable=False}" 
@@ -16,6 +17,8 @@
             <Setter Property="FontSize" Value="20" />
             <Setter Property="Margin" Value="0,0,5,0" />
         </Style>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <helpers:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
     </UserControl.Resources>
 
     <Grid>
@@ -28,7 +31,7 @@
         </Grid.RowDefinitions>
 
         <!--Header-->
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="DarkGray" Margin="0,0,0,20" >
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="DarkGray" Margin="0,0,0,20" Padding="0,0,0,5"  >
             <StackPanel Orientation="Horizontal">
                 <TextBlock d:Text="06/22/2022" 
                            Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
@@ -45,14 +48,14 @@
 
         <ListView Grid.Row="1" 
                   x:Name="recurrencesListView" 
-                  ItemsSource="{Binding ViewModel.Recurrences, Mode=OneWay}" 
+                  ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
                   d:ItemsSource="{d:SampleData ItemCount=5}" 
                   SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
                   PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ui:Card>
+                    <ui:Card Visibility="{Binding Cancelled, Converter={StaticResource BoolToVisibilityInverseConverter}, Mode=TwoWay}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -105,6 +108,13 @@
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
 
+                                <!--View event button-->
+                                <ui:Button Icon="Open24" 
+                                           ToolTip="View event" 
+                                           Margin="0,0,5,0"
+                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
+                                           CommandParameter="{Binding Path=Event}" />
+                                
                                 <!--Edit label assignments button-->
                                 <ui:Button Icon="Tag24" 
                                            ToolTip="Edit label assignments" 
@@ -112,11 +122,12 @@
                                            CommandParameter="{Binding Path=Event}"
                                            Margin="0,0,5,0" />
 
-                                <!--View event button-->
-                                <ui:Button Icon="Open24" 
-                                           ToolTip="View event" 
-                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
-                                           CommandParameter="{Binding Path=Event}" />
+                                <!--Edit label assignments button-->
+                                <ui:Button Icon="Delete24" 
+                                           ToolTip="Delete event" 
+                                           Margin="0,0,5,0" 
+                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.CancelRecurrenceCommand}"
+                                           CommandParameter="{Binding}"/>
 
                             </StackPanel>
                             
