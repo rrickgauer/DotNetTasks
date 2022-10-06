@@ -1,24 +1,17 @@
-﻿<ui:UiPage 
-    x:Class="Tasks.WpfUi.Views.Pages.LabelsPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
-    xmlns:controls="clr-namespace:Tasks.WpfUi.Views.Controls"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    mc:Ignorable="d" 
-    d:DesignWidth="800"
-    d:DataContext="{d:DesignInstance local:LabelsPage, IsDesignTimeCreatable=False}"
-    
-    Title="Labels">
+﻿<ui:UiPage x:Class="Tasks.WpfUi.Views.Pages.LabelsPage"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+           xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
+           xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
+           xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+           mc:Ignorable="d" 
+           d:DesignWidth="800"
+           d:DataContext="{d:DesignInstance local:LabelsPage, IsDesignTimeCreatable=False}"
+           Title="Labels">
     <ui:UiPage.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
-        <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
         <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </ui:UiPage.Resources>
 
@@ -53,7 +46,7 @@
 
                     <!--Color-->
                     <TextBlock Text="Color" Margin="0,40,0,10" FontSize="14" />
-                    <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" />
+                    <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" Style="{StaticResource ColorPickerStyle}" />
 
                     <StackPanel Orientation="Horizontal" Margin="0, 40, 0, 10">
                         <ui:Button 
@@ -102,8 +95,7 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Ellipse 
-                                        Height="20" 
-                                        Width="20" 
+                                        Style="{StaticResource LabelCircleStyle}"
                                         Margin="0,0,10,0" 
                                         VerticalAlignment="Center" 
                                         Stroke="{Binding Color}" 

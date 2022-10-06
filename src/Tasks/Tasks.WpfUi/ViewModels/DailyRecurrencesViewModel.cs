@@ -95,7 +95,7 @@ public partial class DailyRecurrencesViewModel : ObservableObject
         // set the recurrence cancelled property to true to update the gui
         var recurrencesList = Recurrences.ToList();
         var index = recurrencesList.IndexOf(recurrenceToDelete);
-        recurrencesList[index].Cancelled = true;
+        recurrencesList.RemoveAt(index);
         Recurrences = recurrencesList;
 
         await _eventActionServices.SaveEventCancellationAsync(recurrenceToDelete.Event.Id.Value, recurrenceToDelete.OccursOn.Value);

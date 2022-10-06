@@ -13,11 +13,6 @@
            d:DesignWidth="800"
            d:DataContext="{d:DesignInstance local:AssignedEventLabelsPage, IsDesignTimeCreatable=False}"
            Title="AssignedEventLabelsPage">
-    <ui:UiPage.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-    </ui:UiPage.Resources>
-
     <ui:UiPage.InputBindings>
         <!--Exit page-->
         <KeyBinding Key="Esc" Command="{Binding ViewModel.GoBackCommand}" />
@@ -63,19 +58,18 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding IsAssigned}"
-                                          Command="{Binding ElementName=labelAssignmentsList, Path=DataContext.ViewModel.ToggleLabelAssignmentCommand}"
-                                          CommandParameter="{Binding}">
+                                              Command="{Binding ElementName=labelAssignmentsList, Path=DataContext.ViewModel.ToggleLabelAssignmentCommand}"
+                                              CommandParameter="{Binding}">
+                                        
                                         <CheckBox.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <Ellipse Height="20" 
-                                                     Width="20" 
-                                                     Margin="20,0,10,0" 
-                                                     VerticalAlignment="Center" 
-                                                     Stroke="{Binding Label.Color}" 
-                                                     Fill="{Binding Label.Color}" />
+                                                <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                         Margin="20,0,10,0" 
+                                                         VerticalAlignment="Center" 
+                                                         Stroke="{Binding Label.Color}" 
+                                                         Fill="{Binding Label.Color}" />
 
-                                                <TextBlock Text="{Binding Label.Name}" 
-                                                       VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Label.Name}" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
@@ -85,10 +79,9 @@
                         </ListView>
 
 
-                        <ui:Button 
-                            Command="{Binding ViewModel.GoToLabelsPageCommand}"
-                            Content="Edit labels" 
-                            Margin="0,20,0,0"/>
+                        <ui:Button Command="{Binding ViewModel.GoToLabelsPageCommand}"
+                                   Content="Edit labels" 
+                                   Margin="0,20,0,0"/>
 
                     </StackPanel>
 

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Tasks.WpfUi.Helpers;
+namespace Tasks.WpfUi.CustomConverters;
 
 public class TimeSpanToDateTimeConverter : IValueConverter
 {
@@ -23,7 +23,7 @@ public class TimeSpanToDateTimeConverter : IValueConverter
         if (value == null) return null;
 
         var timeSpan = (TimeSpan)value;
-        
+
         var result = new DateTime(timeSpan.Ticks);
 
         return result;
