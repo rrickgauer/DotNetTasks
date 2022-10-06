@@ -17,10 +17,10 @@
         <Style TargetType="StackPanel" x:Key="FormStackPanel">
             <Setter Property="Margin" Value="0,10,0,10" />
         </Style>
+
     </ui:UiPage.Resources>
 
     <ui:UiPage.InputBindings>
-        
         <!--Submit form-->
         <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding ViewModel.SaveEventCommand}" />
 
@@ -69,7 +69,10 @@
                 <!--Starts at-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Starts at</Label>
-                    <xctk:TimePicker Value="{Binding ViewModel.Event.StartsAt, Mode=TwoWay, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    <xctk:TimePicker 
+                        Style="{StaticResource TimePickerStyle}"
+                        Value="{Binding ViewModel.Event.StartsAt, Mode=TwoWay, Converter={StaticResource TimeSpanConverter}, UpdateSourceTrigger=PropertyChanged}" 
+                        />
                 </StackPanel>
 
                 <!--Frequency-->
