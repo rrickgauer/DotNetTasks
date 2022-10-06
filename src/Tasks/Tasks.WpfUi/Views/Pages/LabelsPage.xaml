@@ -46,7 +46,7 @@
 
                     <!--Color-->
                     <TextBlock Text="Color" Margin="0,40,0,10" FontSize="14" />
-                    <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" />
+                    <xctk:ColorPicker SelectedColor="{Binding ViewModel.NewLabelColor, Mode=TwoWay}" Style="{StaticResource ColorPickerStyle}" />
 
                     <StackPanel Orientation="Horizontal" Margin="0, 40, 0, 10">
                         <ui:Button 

@@ -45,6 +45,8 @@
             <xctk:ColorPicker 
                 SelectedColor="{Binding ViewModel.Label.Color, Mode=TwoWay, Converter={StaticResource ColorConverter}}" 
                 IsEnabled="{Binding ViewModel.IsEnabled}"
+                Style="{StaticResource ColorPickerStyle}"
+                ShowTabHeaders="False"
                 />
 
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
