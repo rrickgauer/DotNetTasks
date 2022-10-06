@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
+    xmlns:customConverters="clr-namespace:Tasks.WpfUi.CustomConverters"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     DispatcherUnhandledException="OnDispatcherUnhandledException"
     Exit="OnExit"
@@ -16,11 +16,12 @@
             </ResourceDictionary.MergedDictionaries>
             
             <!--Converters-->
-            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <helpers:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
-            <helpers:TimeSpanToDateTimeConverter x:Key="TimeSpanConverter" />
-            <helpers:ColorConverterMore x:Key="ColorConverter" />
-            
+            <customConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <customConverters:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
+            <customConverters:TimeSpanToDateTimeConverter x:Key="TimeSpanConverter" />
+            <customConverters:ColorConverterMore x:Key="ColorConverter" />
+            <customConverters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+
             <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
             <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
         </ResourceDictionary>

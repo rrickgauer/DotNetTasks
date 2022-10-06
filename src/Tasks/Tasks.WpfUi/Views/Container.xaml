@@ -16,9 +16,6 @@
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <ui:UiWindow.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </ui:UiWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

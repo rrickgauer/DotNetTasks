@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Tasks.WpfUi.Helpers;
+namespace Tasks.WpfUi.CustomConverters;
 
-public class BoolToVisibilityInverseConverter : IValueConverter
+public class BoolToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -17,10 +17,10 @@ public class BoolToVisibilityInverseConverter : IValueConverter
 
         if (booleanVal)
         {
-            return Visibility.Collapsed;
+            return Visibility.Visible;
         }
 
-        return Visibility.Visible;
+        return Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

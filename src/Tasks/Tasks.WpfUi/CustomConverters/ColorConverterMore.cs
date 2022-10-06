@@ -2,8 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using Tasks.WpfUi.Helpers;
 
-namespace Tasks.WpfUi.Helpers;
+namespace Tasks.WpfUi.CustomConverters;
 
 /// <summary>
 /// Convert a color to string and vice versa
