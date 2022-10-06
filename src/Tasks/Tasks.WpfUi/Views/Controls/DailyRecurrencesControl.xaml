@@ -16,6 +16,18 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="0,0,5,0" />
         </Style>
+
+        <!--Override the default style to make the current day border green-->
+        <Style TargetType="Border" BasedOn="{StaticResource CardBorderStyle}" x:Key="ThisCardStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ViewModel.IsCurrentDate}" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource PaletteGreenBrush}" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </DataTrigger>
+            </Style.Triggers>
+
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
@@ -51,7 +63,9 @@
                 <!--Recurrences list-->
                 <Border Grid.Row="0" 
                         Grid.Column="1" 
-                        Style="{StaticResource CardBorderStyle}">
+                        Style="{StaticResource ThisCardStyle}"
+                        >
+
                     
                     <ListView x:Name="recurrencesListView" 
                               ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
