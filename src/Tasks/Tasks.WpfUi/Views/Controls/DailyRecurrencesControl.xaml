@@ -13,12 +13,8 @@
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
-            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontSize" Value="16" />
             <Setter Property="Margin" Value="0,0,5,0" />
-        </Style>
-        <Style TargetType="{x:Type Ellipse}" x:Key="LabelCircleStyle">
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Width" Value="20" />
         </Style>
     </UserControl.Resources>
 
@@ -34,110 +30,133 @@
                 </Grid.RowDefinitions>
 
                 <!--Header-->
-                <Border Grid.Row="0" Grid.Column="0" >
+                <Border Grid.Row="0" Grid.Column="0" Margin="0,0,30,0" >
                     <StackPanel Orientation="Horizontal">
                         
                         <TextBlock d:Text="06/22/2022" 
+                                   d:Foreground="White"
                                    Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:MM/dd/yyyy}}" 
                                    Style="{StaticResource HeaderTextStyle}" />
 
-                        <TextBlock Text="·" Style="{StaticResource HeaderTextStyle}" />
+                        <TextBlock Text="·" Style="{StaticResource HeaderTextStyle}" 
+                                   d:Foreground="White" />
 
-                        <TextBlock d:Text="Monday" 
-                                   Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:dddd}}" 
+                        <TextBlock d:Text="Mon" 
+                                   d:Foreground="White"
+                                   Text="{Binding ViewModel.Date.Date.Date, Mode=OneWay, StringFormat={}{0:ddd}}" 
                                    Style="{StaticResource HeaderTextStyle}" />
                     </StackPanel>
                 </Border>
 
-                <ListView Grid.Row="0" 
-                          Grid.Column="1"
-                          x:Name="recurrencesListView" 
-                          ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                          d:ItemsSource="{d:SampleData ItemCount=5}" 
-                          SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
-                          PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
+                <!--Recurrences list-->
+                <Border Grid.Row="0" 
+                        Grid.Column="1" 
+                        Style="{StaticResource CardBorderStyle}">
+                    
+                    <ListView x:Name="recurrencesListView" 
+                              ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                              d:ItemsSource="{d:SampleData ItemCount=5}" 
+                              SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
+                              PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" >
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border Grid.Column="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
 
-                                    <StackPanel Orientation="Horizontal">
-                                        
-                                        <!--Checkbox-->
-                                        <CheckBox IsChecked="{Binding Completed}" 
-                                                  Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
-                                                  CommandParameter="{Binding}" 
-                                                  Content="{Binding Event.Name}" 
-                                                  Margin="0"/>
+                                <Border>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                        <!--Assigned labels-->
-                                        <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
-                                                  d:ItemsSource="{d:SampleData ItemCount=3}">
+                                        <Border Grid.Column="0">
+                                            <StackPanel Orientation="Horizontal">
 
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Ellipse Style="{StaticResource LabelCircleStyle}"
-                                                                     Margin="0,0,0,0" 
-                                                                     VerticalAlignment="Center" 
-                                                                     Stroke="{Binding Color}" 
-                                                                     Fill="{Binding Color}" 
-                                                                     ToolTip="{Binding Name}"/>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
+                                                <!--Checkbox-->
+                                                <CheckBox IsChecked="{Binding Completed}" 
+                                                      Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
+                                                      CommandParameter="{Binding}" 
+                                                      Content="{Binding Event.Name}" 
+                                                      MinWidth="0" 
+                                                      Margin="0,0,10,0"
+                                                      />
 
-                                            <ListView.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"></StackPanel>
-                                                </ItemsPanelTemplate>
-                                            </ListView.ItemsPanel>
-                                        </ListView>
-                                    </StackPanel>
-                                </Border>
+                                                <!--Assigned labels-->
+                                                <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
+                                                      d:ItemsSource="{d:SampleData ItemCount=3}">
 
-                                <Border Grid.Column="1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <!--View event button-->
-                                        <ui:Button Icon="Open24" 
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                                 Margin="0,0,0,0" 
+                                                                 VerticalAlignment="Center" 
+                                                                 d:Stroke="CadetBlue"
+                                                                 d:Fill="CadetBlue"
+                                                                 Stroke="{Binding Color}" 
+                                                                 Fill="{Binding Color}" 
+                                                                 ToolTip="{Binding Name}"/>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+
+                                                    <ListView.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal"></StackPanel>
+                                                        </ItemsPanelTemplate>
+                                                    </ListView.ItemsPanel>
+                                                </ListView>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Grid.Column="1">
+                                            <StackPanel Orientation="Horizontal">
+                                                <!--View event button-->
+                                                <ui:Button Icon="Open24" 
                                                    ToolTip="View event" 
                                                    Margin="0,0,5,0"
                                                    Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
                                                    CommandParameter="{Binding Path=Event}" />
 
-                                        <!--Edit label assignments button-->
-                                        <ui:Button Icon="Tag24" 
+                                                <!--Edit label assignments button-->
+                                                <ui:Button Icon="Tag24" 
                                                    ToolTip="Edit label assignments" 
                                                    Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewAssignedLabelsCommand}"
                                                    CommandParameter="{Binding Path=Event}"
                                                    Margin="0,0,5,0" />
 
-                                        <!--Edit label assignments button-->
-                                        <ui:Button Icon="Delete24" 
+                                                <!--Edit label assignments button-->
+                                                <ui:Button Icon="Delete24" 
                                                    ToolTip="Delete event" 
                                                    Margin="0,0,5,0" 
                                                    Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.CancelRecurrenceCommand}"
                                                    CommandParameter="{Binding}"/>
-                                    </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+
+                                    </Grid>
                                 </Border>
+                                
+                                
+               
 
-                            </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
 
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
+                    
+                    </ListView>
+                </Border>
+                
+
+                
+
             </Grid>
             
         </Border>
