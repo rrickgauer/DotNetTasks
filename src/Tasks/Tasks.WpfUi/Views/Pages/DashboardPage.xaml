@@ -27,30 +27,30 @@
 
     <Grid VerticalAlignment="Top">
 
-        <StackPanel>
-            
-            <TextBlock TextWrapping="Wrap" 
+        <Border Padding="10, 5">
+            <StackPanel>
+
+                <TextBlock TextWrapping="Wrap" 
                        Text="Log in to your account" 
                        Margin="0,0,0,0" 
                        FontSize="24" />
-            
-            <!--Email-->
-            <TextBlock Text="Email" Style="{StaticResource TextBlockStyle}"/>
-            <ui:TextBox 
-                TextWrapping="Wrap" 
-                Text="{Binding ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <!--Passsword-->
-            <TextBlock Text="Password" Style="{StaticResource TextBlockStyle}"/>
-            <ui:TextBox Text="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--Email-->
+                <TextBlock Text="Email" Style="{StaticResource TextBlockStyle}"/>
+                <ui:TextBox TextWrapping="Wrap" Text="{Binding ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <ui:Button 
-                Content="Log in" 
-                Margin="0,30,0,0"
-                Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
-                IsEnabled="{Binding ViewModel.InputsHaveValue}"
-                />
-        </StackPanel>
+                <!--Passsword-->
+                <TextBlock Text="Password" Style="{StaticResource TextBlockStyle}"/>
+                <ui:TextBox Text="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <ui:Button Content="Log in" 
+                           Margin="0,30,0,0"
+                           Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
+                           IsEnabled="{Binding ViewModel.InputsHaveValue}" />
+            </StackPanel>
+        </Border>
+        
+
         
 
 

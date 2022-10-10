@@ -86,7 +86,7 @@
             
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ui:Card>
+                    <ui:Card Margin="10, 1">
                         <ui:Card.Content>
                             <Grid>
                                 <Grid.ColumnDefinitions>

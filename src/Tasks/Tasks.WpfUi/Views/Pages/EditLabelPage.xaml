@@ -19,51 +19,55 @@
         <KeyBinding Key="Esc" Command="{Binding ViewModel.GoBackToLabelsPageCommand}" />
     </ui:UiPage.InputBindings>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <TextBlock FontSize="20">Edit label</TextBlock>
-        </StackPanel>
-        
+            <StackPanel Grid.Row="0">
+                <TextBlock FontSize="20">Edit label</TextBlock>
+            </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Margin="0,30,0,5">Name</TextBlock>
-            <ui:TextBox 
+
+            <StackPanel Grid.Row="1">
+                <TextBlock Margin="0,30,0,5">Name</TextBlock>
+                <ui:TextBox 
                 Text="{Binding ViewModel.Label.Name}"
                 IsEnabled="{Binding ViewModel.IsEnabled}"
             />
-            
-            <TextBlock Margin="0,30,0,5">Color</TextBlock>
 
-            <xctk:ColorPicker 
+                <TextBlock Margin="0,30,0,5">Color</TextBlock>
+
+                <xctk:ColorPicker 
                 SelectedColor="{Binding ViewModel.Label.Color, Mode=TwoWay, Converter={StaticResource ColorConverter}}" 
                 IsEnabled="{Binding ViewModel.IsEnabled}"
                 Style="{StaticResource ColorPickerStyle}"
                 ShowTabHeaders="False"
                 />
 
-            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
-                <ui:Button 
+                <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                    <ui:Button 
                     Content="Save changes" 
                     Margin="0,0,15,0" 
                     Command="{Binding ViewModel.SaveLabelChangesCommand}"
                     IsEnabled="{Binding ViewModel.IsEnabled}"
                     />
-                <ui:Button 
+                    <ui:Button 
                     Content="Cancel" 
                     Command="{Binding ViewModel.GoBackToLabelsPageCommand}"
                     IsEnabled="{Binding ViewModel.IsEnabled}"
                     />
-            </StackPanel>
-           
-        </StackPanel>
+                </StackPanel>
 
-    </Grid>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+
+
 </ui:UiPage>
