@@ -45,6 +45,10 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
         return true;
     }
 
+    
+    [ObservableProperty]
+    private bool _isLoading = true;
+
 
     [RelayCommand]
     public async void Login()
