@@ -50,12 +50,15 @@
                     Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
                 <StackPanel>
                     
-                    <!--Verify your account-->
+                    <!--Verify account-->
                     <Border Style="{StaticResource SectionContainerStyle}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Verify your account" />
                             <TextBlock Text="If you would like to get daily emails of your tasks, we need to confirm that you have access to your email." Margin="0,0,0,20" FontSize="14" />
-                            <ui:Button Content="Send verification" IsEnabled="{Binding ViewModel.IsSendEmailVerificationButtonEnabled, Mode=TwoWay}" />
+                            
+                            <ui:Button Content="Send verification" 
+                                       Command="{Binding ViewModel.VerifyAccountCommand}"
+                                       IsEnabled="{Binding ViewModel.IsSendEmailVerificationButtonEnabled, Mode=TwoWay}" />
                         </StackPanel>
                     </Border>
 

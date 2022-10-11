@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,32 +11,32 @@ using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 namespace Tasks.WpfUi.ViewModels;
 
 public partial class AccountPageViewModel : ObservableObject, INavigationAware
 {
-    #region INavigationAware
-    public void OnNavigatedFrom()
-    {
-        //throw new NotImplementedException();
-    }
-
-    public async void OnNavigatedTo()
-    {
-        ClearPasswordInputValues();
-        await LoadUserDataAsync();
-    }
-    #endregion
-
+    #region Injected dependencies
     private readonly WpfApplicationServices _applicationServices;
     private readonly IUserServices _userServices;
-    private GetUserResponse _user;
+    private readonly IUserEmailVerificationServices _userEmailVerificationServices;
+    #endregion
 
-    public AccountPageViewModel(WpfApplicationServices applicationServices, IUserServices userServices)
+    /// <summary>
+    /// Constructor with dependencies injected into it
+    /// </summary>
+    /// <param name="applicationServices"></param>
+    /// <param name="userServices"></param>
+    /// <param name="userEmailVerificationServices"></param>
+    public AccountPageViewModel(WpfApplicationServices applicationServices, IUserServices userServices, IUserEmailVerificationServices userEmailVerificationServices)
     {
         _applicationServices = applicationServices;
         _userServices = userServices;
+        _userEmailVerificationServices = userEmailVerificationServices;
     }
+
+    private GetUserResponse _user;
 
 
     #region Password values
@@ -89,6 +90,22 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     private bool _isSendEmailVerificationButtonEnabled = false;
 
 
+    #region INavigationAware
+    public void OnNavigatedFrom()
+    {
+        //throw new NotImplementedException();
+    }
+
+    public async void OnNavigatedTo()
+    {
+        ClearPasswordInputValues();
+        await LoadUserDataAsync();
+    }
+    #endregion
+
+
+    #region Load user data
+
     /// <summary>
     /// Load the user data
     /// </summary>
@@ -115,11 +132,23 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
         IsSendEmailVerificationButtonEnabled = !_user.IsConfirmed;
     }
 
+    #endregion
+
+    /// <summary>
+    /// Clear out the values in each of the password fields
+    /// </summary>
     private void ClearPasswordInputValues()
     {
         CurrentPassword = string.Empty;
         NewPassword = string.Empty;
         ConfirmPassword= string.Empty;
+    }
+
+
+    [RelayCommand]
+    public void VerifyAccount()
+    {
+        int x = 10;
     }
 
 }
