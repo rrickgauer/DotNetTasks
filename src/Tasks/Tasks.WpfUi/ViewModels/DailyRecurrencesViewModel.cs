@@ -36,6 +36,8 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [ObservableProperty]
     private bool _isCurrentDate = false;
 
+
+
     /// <summary>
     /// Empty constructor
     /// </summary>
@@ -81,15 +83,17 @@ public partial class DailyRecurrencesViewModel : ObservableObject
 
 
     [RelayCommand]
-    public async void ViewAssignedLabels(Event event_)
+    public async void ViewAssignedLabels()
     {
-        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(event_);
+        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(SelectedRecurrence.Event);
         _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 
     [RelayCommand]
-    public async void CancelRecurrence(GetRecurrencesResponse recurrenceToDelete)
+    public async void CancelRecurrence()
     {
+        GetRecurrencesResponse recurrenceToDelete = SelectedRecurrence;
+
         if (!ConfirmCancellation())
         {
             return;

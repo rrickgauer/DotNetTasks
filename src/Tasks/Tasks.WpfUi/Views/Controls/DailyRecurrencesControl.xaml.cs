@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Tasks.Domain.Views;
 using Tasks.WpfUi.ViewModels;
 
 namespace Tasks.WpfUi.Views.Controls;
@@ -35,5 +36,13 @@ public partial class DailyRecurrencesControl : UserControl
             var parent = ((Control)sender).Parent as UIElement;
             parent.RaiseEvent(eventArg);
         }
+    }
+
+    private void DropdownButton_Click(object sender, RoutedEventArgs e)
+    {
+        var button = (Button)sender;
+        button.ContextMenu.IsOpen = true;
+
+        ViewModel.SelectedRecurrence = button.DataContext as GetRecurrencesResponse;
     }
 }
