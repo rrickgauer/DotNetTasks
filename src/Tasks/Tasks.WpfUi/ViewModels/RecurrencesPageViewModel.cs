@@ -223,10 +223,23 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         LabelFilters = userLabels.Select(label => new LabelFilter(label, false)).ToList();
     }
 
+    /// <summary>
+    /// Apply the label filters to the recurrences
+    /// </summary>
     [RelayCommand]
     public async void ApplyLabelFilters()
     {
-        int x = 10;
+        DisplayRecurrences(Date);
+    }
+
+    /// <summary>
+    /// Clear the label filters
+    /// </summary>
+    [RelayCommand]
+    public async void ClearLabelFilters()
+    {
+        var s = LabelFilters.Select(lf => new LabelFilter(lf.Label, false)).ToList();
+        LabelFilters = s;
 
         DisplayRecurrences(Date);
     }

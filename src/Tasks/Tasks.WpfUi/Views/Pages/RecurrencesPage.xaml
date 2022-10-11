@@ -105,7 +105,15 @@
                     <StackPanel>
 
                         <!--Label filters-->
-                        <Expander Header="Filters" IsExpanded="{Binding ViewModel.IsLabelFiltersExpanded, Mode=TwoWay}">
+                        <Expander IsExpanded="{Binding ViewModel.IsLabelFiltersExpanded, Mode=TwoWay}">
+
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Filter24" Margin="0,0,10,0"/>
+                                    <TextBlock>Filters</TextBlock>
+                                </StackPanel>
+                            </Expander.Header>
+                            
                             <Expander.Content>
                                 <StackPanel>
                                     <ListView ItemsSource="{Binding ViewModel.LabelFilters, Mode=TwoWay}" 
@@ -137,11 +145,21 @@
                                     </ListView>
 
 
-                                    <ui:Button Margin="0,20,0,0"
-                                               Content="Apply filters"
-                                               Cursor="Hand"
-                                               Command="{Binding ViewModel.ApplyLabelFiltersCommand}"
-                                               />
+                                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+
+                                        <ui:Button Content="Apply filters"
+                                                   Cursor="Hand"
+                                                   Command="{Binding ViewModel.ApplyLabelFiltersCommand}" 
+                                                   Margin="0,0,5,0" />
+
+                                        <ui:Button Cursor="Hand"
+                                                   Command="{Binding ViewModel.ClearLabelFiltersCommand}" 
+                                                   Content="Clear" />
+
+                                    </StackPanel>
+                                    
+
+        
 
                                 </StackPanel>
                             </Expander.Content>
