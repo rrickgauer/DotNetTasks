@@ -1,7 +1,9 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
+using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.ViewModels
@@ -15,6 +17,14 @@ namespace Tasks.WpfUi.ViewModels
 
         [ObservableProperty]
         private Wpf.Ui.Appearance.ThemeType _currentTheme = Wpf.Ui.Appearance.ThemeType.Unknown;
+
+
+        private readonly WpfApplicationServices _applicationServices;
+
+        public SettingsViewModel(WpfApplicationServices applicationServices)
+        {
+            _applicationServices = applicationServices;
+        }
 
         public void OnNavigatedTo()
         {
@@ -62,6 +72,12 @@ namespace Tasks.WpfUi.ViewModels
 
                     break;
             }
+        }
+
+        [RelayCommand]
+        public void Logout()
+        {
+            _applicationServices.Logout();
         }
     }
 }

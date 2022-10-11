@@ -123,12 +123,10 @@ public partial class App
     {
         await _host.StartAsync();
 
-        var appset = GetService<WpfApplicationServices>();
+        var applicationServices = GetService<WpfApplicationServices>();
 
-        appset.CliArgs = e.Args.ToList();
-
-        int x = 10;
-
+        // save the cli args that were passed into the application
+        applicationServices.CliArgs = e.Args.ToList();
     }
 
     /// <summary>

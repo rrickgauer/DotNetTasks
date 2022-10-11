@@ -1,22 +1,21 @@
 ﻿using Wpf.Ui.Common.Interfaces;
 
-namespace Tasks.WpfUi.Views.Pages
+namespace Tasks.WpfUi.Views.Pages;
+
+/// <summary>
+/// Interaction logic for SettingsPage.xaml
+/// </summary>
+public partial class SettingsPage : INavigableView<ViewModels.SettingsViewModel>
 {
-    /// <summary>
-    /// Interaction logic for SettingsPage.xaml
-    /// </summary>
-    public partial class SettingsPage : INavigableView<ViewModels.SettingsViewModel>
+    public ViewModels.SettingsViewModel ViewModel
     {
-        public ViewModels.SettingsViewModel ViewModel
-        {
-            get;
-        }
+        get;
+    }
 
-        public SettingsPage(ViewModels.SettingsViewModel viewModel)
-        {
-            ViewModel = viewModel;
+    public SettingsPage(ViewModels.SettingsViewModel viewModel)
+    {
+        ViewModel = viewModel;
 
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
