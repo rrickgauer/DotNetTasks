@@ -114,7 +114,8 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     {
         IsLoading = true;
 
-        _user = await _userServices.GetUserViewAsync(_applicationServices.User.Id.Value) ?? new();
+        //_user = await _userServices.GetUserViewAsync(_applicationServices.User.Id.Value) ?? new();
+        _user = await _userServices.GetUserViewAsync(_applicationServices.CurrentUserId) ?? new();
 
         SetControlsData();
 

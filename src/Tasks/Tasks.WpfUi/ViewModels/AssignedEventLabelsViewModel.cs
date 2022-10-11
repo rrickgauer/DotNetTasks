@@ -86,7 +86,7 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     {
         Event = e;
 
-        var labelAssignments = await _eventLabelServices.GetUserEventLabelAssignmentsAsync(Event.Id.Value, _applicationServices.User.Id.Value);
+        var labelAssignments = await _eventLabelServices.GetUserEventLabelAssignmentsAsync(Event.Id.Value, _applicationServices.CurrentUserId);
         LabelAssignments = labelAssignments;
 
         IsLoading = false;
@@ -109,7 +109,7 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
                 LabelId = labelAssignment.Label.Id.Value,
             };
 
-            await _eventLabelServices.CreateAsync(parms, _applicationServices.User.Id.Value);
+            await _eventLabelServices.CreateAsync(parms, _applicationServices.CurrentUserId);
         }
 
         // delete the assignment
