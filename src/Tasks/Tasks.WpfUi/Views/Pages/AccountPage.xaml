@@ -61,7 +61,7 @@
                     <!--Email preferences-->
                     <Border Style="{StaticResource SectionContainerStyle}">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Email preferences" />\
+                            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Email preferences" />
                             <CheckBox Content="Receive daily event reminders." Margin="0,0,0,5" />
                             <TextBlock Text="We'll send you an email every morning with all your tasks for the day." Margin="30,0,0,20"/>
                             <ui:Button Content="Update email preferences" />
