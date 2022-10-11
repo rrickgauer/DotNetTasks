@@ -90,12 +90,25 @@
 
                                                 <!--Checkbox-->
                                                 <CheckBox IsChecked="{Binding Completed}" 
-                                                      Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
-                                                      CommandParameter="{Binding}" 
-                                                      Content="{Binding Event.Name}" 
-                                                      MinWidth="0" 
-                                                      Margin="0,0,10,0"
-                                                      />
+                                                          Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
+                                                          CommandParameter="{Binding}" 
+                                                          MinWidth="0" 
+                                                          Margin="0,0,10,0" />
+
+                                                <!--Button disguised as a text block for opening the event-->
+                                                <Button Content="{Binding Event.Name}" 
+                                                        d:Content="Event name"
+                                                        VerticalAlignment="Center"
+                                                        Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
+                                                        CommandParameter="{Binding Path=Event}"
+                                                        Margin="0,0,10,0"
+                                                        Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <TextBlock Text="{TemplateBinding Content}" />
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
 
                                                 <!--Assigned labels-->
                                                 <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
@@ -126,13 +139,7 @@
 
                                         <Border Grid.Column="1">
                                             <StackPanel Orientation="Horizontal">
-                                                <!--View event button-->
-                                                <ui:Button Icon="Open24" 
-                                                   ToolTip="View event" 
-                                                   Margin="0,0,5,0"
-                                                   Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
-                                                   CommandParameter="{Binding Path=Event}" />
-
+                 
                                                 <!--Edit label assignments button-->
                                                 <ui:Button Icon="Tag24" 
                                                    ToolTip="Edit label assignments" 
