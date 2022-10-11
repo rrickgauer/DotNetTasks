@@ -15,10 +15,10 @@ public class RecurrenceRetrieval : IValidDateRange
     public bool IsValid() => EndsOn >= StartsOn;
 
 
-    public RecurrenceRetrieval()
-    {
-        
-    }
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    public RecurrenceRetrieval() { }
 
 
     /// <summary>
@@ -39,7 +39,7 @@ public class RecurrenceRetrieval : IValidDateRange
     /// </summary>
     public void ParseLabels()
     {
-        if (GetRecurrencesQueryParms.Labels is null)
+        if (GetRecurrencesQueryParms is null || GetRecurrencesQueryParms.Labels is null)
         {
             return;
         }

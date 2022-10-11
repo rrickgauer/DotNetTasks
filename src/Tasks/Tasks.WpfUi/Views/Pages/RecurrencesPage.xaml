@@ -71,7 +71,7 @@
 
         </StackPanel>
 
-        
+
         <ui:ProgressRing
             Grid.Row="1"
             IsIndeterminate="True" 
@@ -80,21 +80,95 @@
             Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
             d:Visibility="Collapsed"/>
 
+        <Border Grid.Row="2" 
+                Margin="0,30,0,30" 
+                Padding="15" 
+                Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
-        <Border Grid.Row="2" Margin="0,30,0,30" Padding="15">
-            <ListView 
-                ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                d:ItemsSource="{d:SampleData ItemCount=5}"
-                Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                PreviewMouseWheel="ListView_PreviewMouseWheel"
-                ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="250"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
 
-            </ListView>
-        </Border>
+                <!--Recurrences-->
+                <ListView Grid.Column="0"
+                          ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                          d:ItemsSource="{d:SampleData ItemCount=5}"
+                          PreviewMouseWheel="ListView_PreviewMouseWheel"
+                          ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+
+                <Border Grid.Column="1" Padding="20,0,0,0">
+                    <StackPanel>
+
+                        <!--Label filters-->
+                        <Expander IsExpanded="{Binding ViewModel.IsLabelFiltersExpanded, Mode=TwoWay}">
+
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Filter24" Margin="0,0,10,0"/>
+                                    <TextBlock>Filters</TextBlock>
+                                </StackPanel>
+                            </Expander.Header>
+                            
+                            <Expander.Content>
+                                <StackPanel>
+                                    <ListView ItemsSource="{Binding ViewModel.LabelFilters, Mode=TwoWay}" 
+                                              x:Name="labelFiltersListView"
+                                              d:ItemsSource="{d:SampleData ItemCount=5}"
+                                              Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                              PreviewMouseWheel="ListView_PreviewMouseWheel"
+                                              ItemContainerStyle="{StaticResource ListViewItemStyle}">
+
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                                    <CheckBox.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                                     Margin="0,0,10,0" 
+                                                                     VerticalAlignment="Center" 
+                                                                     Stroke="{Binding Label.Color}" 
+                                                                     Fill="{Binding Label.Color}" />
+
+                                                            <TextBlock Text="{Binding Label.Name}" 
+                                                                       VerticalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </CheckBox.Content>
+                                                </CheckBox>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                    </ListView>
+
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+
+                                        <ui:Button Content="Apply filters"
+                                                   Cursor="Hand"
+                                                   Command="{Binding ViewModel.ApplyLabelFiltersCommand}" 
+                                                   Margin="0,0,5,0" />
+
+                                        <ui:Button Cursor="Hand"
+                                                   Command="{Binding ViewModel.ClearLabelFiltersCommand}" 
+                                                   Content="Clear" />
+
+                                    </StackPanel>
+                                    
+
         
 
+                                </StackPanel>
+                            </Expander.Content>
+                        </Expander>
 
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 
 </ui:UiPage>

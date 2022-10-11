@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Domain.Models;
 using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
@@ -22,7 +23,9 @@ namespace Tasks.WpfUi.ViewModels;
 public partial class RecurrencesPageViewModel : ObservableObject, INavigationAware
 {
     private readonly IRecurrenceServices _recurrenceServices;
+    private readonly ILabelServices _labelServices;
     private readonly WpfApplicationServices _applicationServices;
+
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
     private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
@@ -31,10 +34,11 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// </summary>
     /// <param name="recurrenceServices"></param>
     /// <param name="applicationServices"></param>
-    public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices)
+    public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices, ILabelServices labelServices)
     {
         _recurrenceServices = recurrenceServices;
         _applicationServices = applicationServices;
+        _labelServices = labelServices; 
     }
 
     private bool _initalLoad = false;
@@ -73,15 +77,31 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private DateTime _datePreviousWeek = DateTime.Now.AddDays(-7);
 
+    [ObservableProperty]
+    private bool _isLabelFiltersExpanded = false;
+
+    [ObservableProperty]
+    private List<LabelFilter> _labelFilters = new();
+
+    /// <summary>
+    /// Get a list of checked label filter ids
+    /// </summary>
+    private List<Guid> _checkedLabelFilterIds => LabelFilters.Where(x => x.IsChecked).Select(label => label.Label.Id.Value).ToList();
+
+
     #region INavigationAware
     public void OnNavigatedFrom() { }
     
     public async void OnNavigatedTo() 
     {
+        IsLabelFiltersExpanded = false;
+
         if (_initalLoad)
         {
             DisplayRecurrences(Date);
         }
+
+        LoadLabelFilters();
     }
     #endregion
 
@@ -157,6 +177,12 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
             UserId = _applicationServices.User.Id.Value,
         };
 
+        // leave the label ids null if there are no selected label filters
+        if (_checkedLabelFilterIds.Count > 0)
+        {
+            recurrenceRetrieval.LabelIds = _checkedLabelFilterIds;
+        }
+
         var recurrences = await _recurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
 
         return recurrences;
@@ -186,4 +212,35 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         _navigation.Navigate(_viewEventPage.GetType());
     }
 
+    /// <summary>
+    /// Load the labels to display in the labels filter dropdown.
+    /// </summary>
+    public async void LoadLabelFilters()
+    {
+        var userLabels = (await _labelServices.GetLabelsAsync(_applicationServices.User.Id.Value)).Data;
+        userLabels ??= new List<Label>();
+        
+        LabelFilters = userLabels.Select(label => new LabelFilter(label, false)).ToList();
+    }
+
+    /// <summary>
+    /// Apply the label filters to the recurrences
+    /// </summary>
+    [RelayCommand]
+    public async void ApplyLabelFilters()
+    {
+        DisplayRecurrences(Date);
+    }
+
+    /// <summary>
+    /// Clear the label filters
+    /// </summary>
+    [RelayCommand]
+    public async void ClearLabelFilters()
+    {
+        var s = LabelFilters.Select(lf => new LabelFilter(lf.Label, false)).ToList();
+        LabelFilters = s;
+
+        DisplayRecurrences(Date);
+    }
 }
