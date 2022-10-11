@@ -86,7 +86,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// <summary>
     /// Get a list of checked label filter ids
     /// </summary>
-    private List<Guid> _labelFilterIds => LabelFilters.Where(x => x.IsChecked).Select(label => label.Label.Id.Value).ToList();
+    private List<Guid> _checkedLabelFilterIds => LabelFilters.Where(x => x.IsChecked).Select(label => label.Label.Id.Value).ToList();
 
 
     #region INavigationAware
@@ -168,8 +168,6 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// <returns></returns>
     private async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(DateTime date)
     {
-        return await GetRecurrencesAsync2(date);
-
         ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
 
         RecurrenceRetrieval recurrenceRetrieval = new()
@@ -179,63 +177,16 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
             UserId = _applicationServices.User.Id.Value,
         };
 
-        var recurrences = await _recurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
-
-        return recurrences;
-    }
-
-
-    private async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync2(DateTime date)
-    {
-        ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
-
-        GetRecurrencesQueryParms parms = new()
+        // leave the label ids null if there are no selected label filters
+        if (_checkedLabelFilterIds.Count > 0)
         {
-            StartsOn = range.StartsOn,
-            EndsOn = range.EndsOn,
-            Labels = GetLabelIdsText(),
-        };
-
-        RecurrenceRetrieval recurrenceRetrieval = new(parms, _applicationServices.User.Id.Value);
-        recurrenceRetrieval.ParseLabels();
+            recurrenceRetrieval.LabelIds = _checkedLabelFilterIds;
+        }
 
         var recurrences = await _recurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
 
         return recurrences;
     }
-
-
-    private string? GetLabelIdsText()
-    {
-        List<Guid>? labelIds = _labelFilterIds;
-
-        if (labelIds is null || labelIds.Count == 0)
-        {
-            return null;
-        }
-
-
-        string result = string.Empty;
-        bool isFirst = true;
-
-        foreach (var labelId in labelIds)
-        {
-
-            if (isFirst)
-            {
-                isFirst = false;
-                result += $"{labelId}";
-            }
-            else
-            {
-                result += $",{labelId}";
-            }
-        }
-
-        return result;  
-    }
-
-
 
     #endregion
 
