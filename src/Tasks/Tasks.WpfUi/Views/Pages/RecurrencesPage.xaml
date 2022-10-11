@@ -117,16 +117,16 @@
 
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <CheckBox>
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
                                                     <CheckBox.Content>
                                                         <StackPanel Orientation="Horizontal">
                                                             <Ellipse Style="{StaticResource LabelCircleStyle}"
                                                                      Margin="0,0,10,0" 
                                                                      VerticalAlignment="Center" 
-                                                                     Stroke="{Binding Color}" 
-                                                                     Fill="{Binding Color}" />
+                                                                     Stroke="{Binding Label.Color}" 
+                                                                     Fill="{Binding Label.Color}" />
 
-                                                            <TextBlock Text="{Binding Name}" 
+                                                            <TextBlock Text="{Binding Label.Name}" 
                                                                        VerticalAlignment="Center" />
                                                         </StackPanel>
                                                     </CheckBox.Content>

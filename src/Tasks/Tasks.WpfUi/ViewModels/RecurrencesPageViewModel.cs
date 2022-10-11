@@ -81,7 +81,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     private bool _isLabelFiltersExpanded = false;
 
     [ObservableProperty]
-    private List<Label> _labelFilters = new();
+    private List<LabelFilter> _labelFilters = new();
 
 
     #region INavigationAware
@@ -208,7 +208,8 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     {
         var userLabels = (await _labelServices.GetLabelsAsync(_applicationServices.User.Id.Value)).Data;
         userLabels ??= new List<Label>();
-        LabelFilters = userLabels.ToList();
+        
+        LabelFilters = userLabels.Select(label => new LabelFilter(label, false)).ToList();
     }
 
     [RelayCommand]
