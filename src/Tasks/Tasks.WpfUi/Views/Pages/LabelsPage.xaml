@@ -81,8 +81,7 @@
             SelectedItem="{Binding ViewModel.SelectedLabel, Mode=TwoWay}"
             MouseWheel="ListView_MouseWheel"
             Visibility="{Binding ViewModel.ShowLabels, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}"
-            ItemContainerStyle="{StaticResource ListViewItemStyle}"
-            >
+            ItemContainerStyle="{StaticResource ListViewItemStyle}">
             
             <ListView.ItemTemplate>
                 <DataTemplate>

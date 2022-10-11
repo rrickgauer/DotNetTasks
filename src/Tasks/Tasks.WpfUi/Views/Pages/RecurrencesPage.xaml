@@ -82,15 +82,36 @@
 
 
         <Border Grid.Row="2" Margin="0,30,0,30" Padding="15">
-            <ListView 
-                ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                d:ItemsSource="{d:SampleData ItemCount=5}"
-                Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                PreviewMouseWheel="ListView_PreviewMouseWheel"
-                ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                >
 
-            </ListView>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="250"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <ListView 
+                    Grid.Column="0"
+                    ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                    Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                    PreviewMouseWheel="ListView_PreviewMouseWheel"
+                    ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+
+                <Border Grid.Column="1" Padding="20,0,0,0">
+                    <StackPanel>
+                        
+
+                    </StackPanel>
+                </Border>
+                
+
+
+            </Grid>
+            
+
         </Border>
         
 

@@ -11,9 +11,10 @@ namespace Tasks.WpfUi.Views.Pages;
 /// </summary>
 public partial class RecurrencesPage : INavigableView<RecurrencesPageViewModel>
 {
+
     public RecurrencesPage(RecurrencesPageViewModel viewModel)
     {
-        ViewModel = viewModel;
+        ViewModel = viewModel;        
 
         InitializeComponent();
     }
