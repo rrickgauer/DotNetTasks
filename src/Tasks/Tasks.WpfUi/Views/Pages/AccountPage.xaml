@@ -104,7 +104,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <ui:Button Content="Update password" Margin="0,10,0,0" />
+                            <ui:Button Content="Update password" Margin="0,10,0,0" IsEnabled="{Binding ViewModel.IsUpdatePasswordButtonEnabled}" />
                         </StackPanel>
                     </Border>
 

@@ -40,13 +40,31 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     #region Password values
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
     private string? _currentPassword = null;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
     private string? _newPassword = null;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
     private string? _confirmPassword = null;
+
+    
+    public bool IsUpdatePasswordButtonEnabled => DoPasswordsHaveValues();
+
+    private bool DoPasswordsHaveValues()
+    {
+        if (string.IsNullOrEmpty(_currentPassword))
+            return false;
+        if (string.IsNullOrEmpty(_newPassword))
+            return false;
+        if (string.IsNullOrEmpty(_confirmPassword))
+            return false;
+
+        return true;
+    }
 
     #endregion
 
