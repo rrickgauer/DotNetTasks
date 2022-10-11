@@ -75,6 +75,9 @@ public partial class App
             services.AddScoped<Views.Pages.AssignedEventLabelsPage>();
             services.AddScoped<ViewModels.AssignedEventLabelsViewModel>();
 
+            services.AddScoped<Views.Pages.AccountPage>();
+            services.AddScoped<ViewModels.AccountPageViewModel>();
+
             services.AddSingleton<IConfigs, ConfigurationDev>();
 
             services.AddScoped<WpfApplicationServices>();
