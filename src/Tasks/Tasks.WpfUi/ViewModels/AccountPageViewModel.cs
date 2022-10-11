@@ -22,6 +22,7 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
 
     public async void OnNavigatedTo()
     {
+        ClearPasswordInputValues();
         await LoadUserDataAsync();
     }
     #endregion
@@ -112,6 +113,13 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
         IsUpdateEmailPreferencesButtonEnabled = false;
 
         IsSendEmailVerificationButtonEnabled = !_user.IsConfirmed;
+    }
+
+    private void ClearPasswordInputValues()
+    {
+        CurrentPassword = string.Empty;
+        NewPassword = string.Empty;
+        ConfirmPassword= string.Empty;
     }
 
 }
