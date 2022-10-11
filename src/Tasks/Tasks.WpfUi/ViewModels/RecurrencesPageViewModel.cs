@@ -83,6 +83,11 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private List<LabelFilter> _labelFilters = new();
 
+    /// <summary>
+    /// Get a list of checked label filter ids
+    /// </summary>
+    private List<Guid> _labelFilterIds => LabelFilters.Where(x => x.IsChecked).Select(label => label.Label.Id.Value).ToList();
+
 
     #region INavigationAware
     public void OnNavigatedFrom() { }
@@ -163,6 +168,8 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// <returns></returns>
     private async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(DateTime date)
     {
+        return await GetRecurrencesAsync2(date);
+
         ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
 
         RecurrenceRetrieval recurrenceRetrieval = new()
@@ -176,6 +183,59 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
         return recurrences;
     }
+
+
+    private async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync2(DateTime date)
+    {
+        ValidDateRange range = date.GetDateRangeFromWeek(DayOfWeek.Monday);
+
+        GetRecurrencesQueryParms parms = new()
+        {
+            StartsOn = range.StartsOn,
+            EndsOn = range.EndsOn,
+            Labels = GetLabelIdsText(),
+        };
+
+        RecurrenceRetrieval recurrenceRetrieval = new(parms, _applicationServices.User.Id.Value);
+        recurrenceRetrieval.ParseLabels();
+
+        var recurrences = await _recurrenceServices.GetRecurrencesAsync(recurrenceRetrieval);
+
+        return recurrences;
+    }
+
+
+    private string? GetLabelIdsText()
+    {
+        List<Guid>? labelIds = _labelFilterIds;
+
+        if (labelIds is null || labelIds.Count == 0)
+        {
+            return null;
+        }
+
+
+        string result = string.Empty;
+        bool isFirst = true;
+
+        foreach (var labelId in labelIds)
+        {
+
+            if (isFirst)
+            {
+                isFirst = false;
+                result += $"{labelId}";
+            }
+            else
+            {
+                result += $",{labelId}";
+            }
+        }
+
+        return result;  
+    }
+
+
 
     #endregion
 
@@ -213,8 +273,10 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     }
 
     [RelayCommand]
-    public void ApplyLabelFilters()
+    public async void ApplyLabelFilters()
     {
         int x = 10;
+
+        DisplayRecurrences(Date);
     }
 }
