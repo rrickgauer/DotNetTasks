@@ -76,7 +76,7 @@ public partial class EditLabelViewModel : ObservableObject, INavigationAware
             Name = Label.Name,
         };
 
-        var response = await _labelServices.UpdateLabelAsync(Label.Id.Value, _applicationServices.User.Id.Value, updateLabelForm);
+        var response = await _labelServices.UpdateLabelAsync(Label.Id.Value, _applicationServices.CurrentUserId, updateLabelForm);
 
         IsEnabled = true;
 

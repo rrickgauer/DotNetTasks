@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
@@ -75,6 +76,9 @@ public partial class App
             services.AddScoped<Views.Pages.AssignedEventLabelsPage>();
             services.AddScoped<ViewModels.AssignedEventLabelsViewModel>();
 
+            services.AddScoped<Views.Pages.AccountPage>();
+            services.AddScoped<ViewModels.AccountPageViewModel>();
+
             services.AddSingleton<IConfigs, ConfigurationDev>();
 
             services.AddScoped<WpfApplicationServices>();
@@ -118,6 +122,11 @@ public partial class App
     private async void OnStartup(object sender, StartupEventArgs e)
     {
         await _host.StartAsync();
+
+        var applicationServices = GetService<WpfApplicationServices>();
+
+        // save the cli args that were passed into the application
+        applicationServices.CliArgs = e.Args.ToList();
     }
 
     /// <summary>

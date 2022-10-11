@@ -174,7 +174,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         {
             StartsOn = range.StartsOn,
             EndsOn = range.EndsOn,
-            UserId = _applicationServices.User.Id.Value,
+            UserId = _applicationServices.CurrentUserId,
         };
 
         // leave the label ids null if there are no selected label filters
@@ -217,7 +217,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// </summary>
     public async void LoadLabelFilters()
     {
-        var userLabels = (await _labelServices.GetLabelsAsync(_applicationServices.User.Id.Value)).Data;
+        var userLabels = (await _labelServices.GetLabelsAsync(_applicationServices.CurrentUserId)).Data;
         userLabels ??= new List<Label>();
         
         LabelFilters = userLabels.Select(label => new LabelFilter(label, false)).ToList();

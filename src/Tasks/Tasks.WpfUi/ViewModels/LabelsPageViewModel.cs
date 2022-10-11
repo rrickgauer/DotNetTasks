@@ -103,7 +103,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         };
 
         var labelId = Guid.NewGuid();
-        var userId = _applicationServices.User.Id.Value;
+        var userId = _applicationServices.CurrentUserId;
 
         var result = await _labelServices.UpdateLabelAsync(labelId, userId, newLabelForm);
 
@@ -146,7 +146,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         ShowProgress = true;
         ShowLabels = false;
 
-        var labels = (await _labelServices.GetLabelsAsync(_applicationServices.User.Id.Value)).Data;
+        var labels = (await _labelServices.GetLabelsAsync(_applicationServices.CurrentUserId)).Data;
         labels ??= new List<Label>();
         Labels = labels.ToList();
 
@@ -180,7 +180,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         ShowProgress = true;
         ShowLabels = false;
 
-        var response = await _labelServices.DeleteLabelAsync(SelectedLabel.Id.Value, _applicationServices.User.Id.Value);
+        var response = await _labelServices.DeleteLabelAsync(SelectedLabel.Id.Value, _applicationServices.CurrentUserId);
 
         await LoadLabelsAsync();
     }

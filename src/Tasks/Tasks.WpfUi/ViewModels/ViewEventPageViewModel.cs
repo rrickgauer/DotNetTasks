@@ -177,7 +177,7 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
         Event newEvent = new()
         {
             Id = Guid.NewGuid(),
-            UserId = _applicationServices.User.Id.Value,
+            UserId = _applicationServices.CurrentUserId,
             StartsOn = date,
             EndsOn = date,
             Frequency = Frequency.ONCE,
