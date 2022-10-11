@@ -27,27 +27,35 @@
 
     <Grid VerticalAlignment="Top">
 
-        <Border Padding="10, 5">
+        <Border Padding="10,5">
             <StackPanel>
+                <Border VerticalAlignment="Center"  
+                        Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ui:ProgressRing IsIndeterminate="True" />
+                </Border>
 
-                <TextBlock TextWrapping="Wrap" 
+                <StackPanel Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
+                    <TextBlock TextWrapping="Wrap" 
                        Text="Log in to your account" 
                        Margin="0,0,0,0" 
                        FontSize="24" />
 
-                <!--Email-->
-                <TextBlock Text="Email" Style="{StaticResource TextBlockStyle}"/>
-                <ui:TextBox TextWrapping="Wrap" Text="{Binding ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!--Email-->
+                    <TextBlock Text="Email" Style="{StaticResource TextBlockStyle}"/>
+                    <ui:TextBox TextWrapping="Wrap" Text="{Binding ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!--Passsword-->
-                <TextBlock Text="Password" Style="{StaticResource TextBlockStyle}"/>
-                <ui:TextBox Text="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!--Passsword-->
+                    <TextBlock Text="Password" Style="{StaticResource TextBlockStyle}"/>
+                    <ui:TextBox Text="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <ui:Button Content="Log in" 
+                    <ui:Button Content="Log in" 
                            Margin="0,30,0,0"
                            Command="{Binding ViewModel.LoginCommand, Mode=OneWay}"
                            IsEnabled="{Binding ViewModel.InputsHaveValue}" />
+                </StackPanel>
             </StackPanel>
+            
+
         </Border>
         
 
