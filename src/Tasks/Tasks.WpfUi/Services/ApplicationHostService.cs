@@ -16,10 +16,12 @@ public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
     private INavigationWindow _navigationWindow;
+    private readonly WpfApplicationServices _applicationServices;
 
-    public ApplicationHostService(IServiceProvider serviceProvider)
+    public ApplicationHostService(IServiceProvider serviceProvider, WpfApplicationServices applicationServices)
     {
         _serviceProvider = serviceProvider;
+        _applicationServices = applicationServices;
     }
 
     /// <summary>

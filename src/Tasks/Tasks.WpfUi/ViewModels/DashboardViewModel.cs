@@ -24,14 +24,30 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
     }
 
     #region INavigationAware
-    public void OnNavigatedTo() {}
+    public async void OnNavigatedTo() 
+    {
+        var credentials = await ApplicationServices.GetUserCredentials();
+
+        if (credentials is null)
+        {
+            IsLoading = false;
+            return;
+        }
+
+        Email = credentials.Email;
+        Password = credentials.Password;
+
+        Login();
+    }
+
+
     public void OnNavigatedFrom() {}
     #endregion
 
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InputsHaveValue))]
-    private string _email = "rrickgauer1@gmail.com";
+    private string _email = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InputsHaveValue))]
