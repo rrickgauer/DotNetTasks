@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Configurations;
 using Tasks.Domain.Models;
 using Tasks.Services.Interfaces;
@@ -13,8 +16,13 @@ public class WpfApplicationServices
     private readonly IUserServices _userServices;
     private readonly IConfigs _configs;
 
+    public List<string> CliArgs { get; set; } = new();
+
     public User? User { get; private set; }
 
+    /// <summary>
+    /// Get the current User's ID
+    /// </summary>
     public Guid CurrentUserId
     {
         get
@@ -63,6 +71,40 @@ public class WpfApplicationServices
         return true;
     }
 
+    /// <summary>
+    /// Log the user out
+    /// </summary>
+    public void Logout()
+    {
+        // delete the credentials file
+        DeleteUserCredentialsFile();
+
+        // start up a new process
+        StartNewProcess();
+
+        // shut down the current process
+        Application.Current.Shutdown();
+    }
+
+    /// <summary>
+    /// Start up a new process
+    /// </summary>
+    private void StartNewProcess()
+    {
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = _configs.WpfApplicationExe.FullName,
+        };
+
+        foreach (var arg in CliArgs)
+        {
+            startInfo.ArgumentList.Add(arg);
+        }
+
+        Process.Start(startInfo);
+    }
+
+
     #region Local program data direcory shit...
 
     /// <summary>
@@ -85,7 +127,8 @@ public class WpfApplicationServices
     }
     
     /// <summary>
-    /// Get the user's credentials from the credentials file located in the local program data directory
+    /// Get the user's credentials from the credentials file located in the local program data directory.
+    /// Returns null if the credentials file was not found or is empty, etc...
     /// </summary>
     /// <returns></returns>
     public async Task<WpfUserCredentials?> GetUserCredentials()
@@ -112,6 +155,18 @@ public class WpfApplicationServices
         {
             Directory.CreateDirectory(localAppDataFolder.FullName);
         }
+    }
+
+    /// <summary>
+    /// Delete the user credentials file if it exists.
+    /// </summary>
+    public void DeleteUserCredentialsFile()
+    {
+        var credentialsFile = _configs.WpfUserCredentials;
+
+        if (!credentialsFile.Exists) return;
+
+        File.Delete(credentialsFile.FullName);
     }
 
     #endregion

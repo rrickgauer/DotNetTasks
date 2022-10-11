@@ -25,6 +25,8 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     private readonly IUserEmailVerificationServices _userEmailVerificationServices;
     #endregion
 
+    private GetUserResponse _user;
+
     /// <summary>
     /// Constructor with dependencies injected into it
     /// </summary>
@@ -38,8 +40,8 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
         _userEmailVerificationServices = userEmailVerificationServices;
     }
 
-    private GetUserResponse _user;
 
+    #region Observable properties
 
     #region Password values
 
@@ -90,6 +92,10 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private bool _isSendEmailVerificationButtonEnabled = false;
 
+    [ObservableProperty]
+    private bool _isPasswordFormEnabled = true;
+
+    #endregion
 
     #region INavigationAware
     public void OnNavigatedFrom()
@@ -103,7 +109,6 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
         await LoadUserDataAsync();
     }
     #endregion
-
 
     #region Load user data
 
@@ -134,16 +139,6 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     }
 
     #endregion
-
-    /// <summary>
-    /// Clear out the values in each of the password fields
-    /// </summary>
-    private void ClearPasswordInputValues()
-    {
-        CurrentPassword = string.Empty;
-        NewPassword = string.Empty;
-        ConfirmPassword= string.Empty;
-    }
 
 
     #region Account verification
@@ -215,7 +210,6 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
 
     #endregion
 
-
     #region Update email preferences
     
     /// <summary>
@@ -245,4 +239,85 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
 
     #endregion
 
+    #region Update password
+
+    /// <summary>
+    /// Update the user's password
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    public async Task<bool> UpdatePasswordAsync()
+    {
+        IsPasswordFormEnabled = false;
+
+        // validate the new passwords
+        if (!AreNewPasswordsValid())
+        {
+            IsPasswordFormEnabled = true;
+            return false;
+        }
+
+        var updatedSuccessfully = await _userServices.UpdatePasswordAsync(_applicationServices.CurrentUserId, NewPassword);
+
+        HandleUpdatePasswordResult(updatedSuccessfully);
+
+        IsPasswordFormEnabled = true;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Validate the new passwords.
+    /// Returns true if the new passwords are valid.
+    /// Otherwise it returns false.
+    /// </summary>
+    /// <returns>Whether or not the passwords are valid.</returns>
+    private bool AreNewPasswordsValid()
+    {
+        if (CurrentPassword != _user.Password)
+        {
+            MessageBoxServices.ShowMessage("Current password is not correct!");
+            return false;
+        }
+
+        else if (NewPassword != ConfirmPassword)
+        {
+            MessageBoxServices.ShowMessage("New passwords do not match!");
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Handle the result of the update password service call
+    /// </summary>
+    /// <param name="updatedSuccessfully"></param>
+    private void HandleUpdatePasswordResult(bool updatedSuccessfully)
+    {
+        if (updatedSuccessfully)
+        {
+            _applicationServices.Logout();
+        }
+        else
+        {
+            MessageBoxServices.ShowMessage("Password was not updated successfully!");
+        }
+    }
+
+    #endregion
+
+
+    #region Misc functions
+
+    /// <summary>
+    /// Clear out the values in each of the password fields
+    /// </summary>
+    private void ClearPasswordInputValues()
+    {
+        CurrentPassword = string.Empty;
+        NewPassword = string.Empty;
+        ConfirmPassword = string.Empty;
+    }
+    #endregion
 }
