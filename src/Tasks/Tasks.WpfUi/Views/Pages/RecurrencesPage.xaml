@@ -109,6 +109,7 @@
                             <Expander.Content>
                                 <StackPanel>
                                     <ListView ItemsSource="{Binding ViewModel.LabelFilters, Mode=TwoWay}" 
+                                              x:Name="labelFiltersListView"
                                               d:ItemsSource="{d:SampleData ItemCount=5}"
                                               Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                               PreviewMouseWheel="ListView_PreviewMouseWheel"
@@ -134,6 +135,14 @@
                                         </ListView.ItemTemplate>
 
                                     </ListView>
+
+
+                                    <ui:Button Margin="0,20,0,0"
+                                               Content="Apply filters"
+                                               Cursor="Hand"
+                                               Command="{Binding ViewModel.ApplyLabelFiltersCommand}"
+                                               />
+
                                 </StackPanel>
                             </Expander.Content>
                         </Expander>

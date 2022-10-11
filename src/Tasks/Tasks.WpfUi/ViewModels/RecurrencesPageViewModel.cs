@@ -210,4 +210,10 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
         userLabels ??= new List<Label>();
         LabelFilters = userLabels.ToList();
     }
+
+    [RelayCommand]
+    public void ApplyLabelFilters()
+    {
+        int x = 10;
+    }
 }
