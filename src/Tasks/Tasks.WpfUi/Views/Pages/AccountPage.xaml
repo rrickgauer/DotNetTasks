@@ -53,8 +53,12 @@
                     <!--Verify account-->
                     <Border Style="{StaticResource SectionContainerStyle}">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Verify your account" />
-                            <TextBlock Text="If you would like to get daily emails of your tasks, we need to confirm that you have access to your email." Margin="0,0,0,20" FontSize="14" />
+                            <TextBlock Style="{StaticResource SectionHeaderStyle}" 
+                                       Text="Verify your account" />
+                            
+                            <TextBlock Text="If you would like to get daily emails of your tasks, we need to confirm that you have access to your email." 
+                                       Margin="0,0,0,20" 
+                                       FontSize="14" />
                             
                             <ui:Button Content="Send verification" 
                                        Command="{Binding ViewModel.VerifyAccountCommand}"
@@ -65,15 +69,18 @@
                     <!--Email preferences-->
                     <Border Style="{StaticResource SectionContainerStyle}">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Email preferences" />
+                            <TextBlock Style="{StaticResource SectionHeaderStyle}" 
+                                       Text="Email preferences" />
                             
                             <CheckBox Content="Receive daily event reminders." 
                                       IsChecked="{Binding ViewModel.IsReceiveDailyRemindersChecked, Mode=TwoWay}"
                                       Margin="0,0,0,5" />
                             
-                            <TextBlock Text="We'll send you an email every morning with all your tasks for the day." Margin="30,0,0,20"/>
+                            <TextBlock Text="We'll send you an email every morning with all your tasks for the day." 
+                                       Margin="30,0,0,20"/>
                             
-                            <ui:Button Content="Update email preferences"
+                            <ui:Button Content="Save changes"
+                                       Command="{Binding ViewModel.UpdateEmailPreferencesAsyncCommand}"
                                        IsEnabled="{Binding ViewModel.IsUpdateEmailPreferencesButtonEnabled}" />
                         </StackPanel>
                     </Border>

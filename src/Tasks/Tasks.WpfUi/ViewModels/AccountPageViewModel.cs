@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Tasks.Domain.Models;
+using Tasks.Domain.Parms;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
 using Tasks.WpfUi.Services;
@@ -211,6 +212,36 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
             MessageBoxServices.ShowMessage("Could not send the verification message to your inbox!");
         }
     }
+
+    #endregion
+
+
+    #region Update email preferences
+    
+    /// <summary>
+    /// Update the user's email preferences
+    /// </summary>
+    [RelayCommand]
+    public async void UpdateEmailPreferencesAsync()
+    {
+        IsUpdateEmailPreferencesButtonEnabled = false;
+
+        UpdateUserRequestForm newUserData = new()
+        {
+            Email = _user.Email ?? string.Empty,
+            DeliverReminders = IsReceiveDailyRemindersChecked,
+        };
+
+        var successfulUpdate = await _userServices.UpdateUserAsync(_applicationServices.CurrentUserId, newUserData);
+
+        if (!successfulUpdate)
+        {
+            MessageBoxServices.ShowMessage("Did not update email preferences!");
+        }
+
+        IsUpdateEmailPreferencesButtonEnabled = true;
+    }
+
 
     #endregion
 
