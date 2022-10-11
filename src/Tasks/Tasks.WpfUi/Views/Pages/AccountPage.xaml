@@ -55,7 +55,7 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Verify your account" />
                             <TextBlock Text="If you would like to get daily emails of your tasks, we need to confirm that you have access to your email." Margin="0,0,0,20" FontSize="14" />
-                            <ui:Button Content="Send verification" />
+                            <ui:Button Content="Send verification" IsEnabled="{Binding ViewModel.IsSendEmailVerificationButtonEnabled, Mode=TwoWay}" />
                         </StackPanel>
                     </Border>
 

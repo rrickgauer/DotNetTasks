@@ -22,25 +22,18 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
 
     public async void OnNavigatedTo()
     {
-        IsLoading = true;
-
-        await LoadUserData();
-
-        IsLoading = false;
+        await LoadUserDataAsync();
     }
     #endregion
 
     private readonly WpfApplicationServices _applicationServices;
     private readonly IUserServices _userServices;
-
     private GetUserResponse _user;
 
     public AccountPageViewModel(WpfApplicationServices applicationServices, IUserServices userServices)
     {
         _applicationServices = applicationServices;
         _userServices = userServices;
-
-        LoadUserData();
     }
 
 
@@ -73,15 +66,34 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private bool _isUpdateEmailPreferencesButtonEnabled = false;
 
+    [ObservableProperty]
+    private bool _isSendEmailVerificationButtonEnabled = false;
 
 
-    public async Task LoadUserData()
+    /// <summary>
+    /// Load the user data
+    /// </summary>
+    /// <returns></returns>
+    public async Task LoadUserDataAsync()
     {
+        IsLoading = true;
+
         _user = await _userServices.GetUserViewAsync(_applicationServices.User.Id.Value) ?? new();
 
-        IsReceiveDailyRemindersChecked = _user.DeliverReminders ?? false;
+        SetControlsData();
 
+        IsLoading = false;
+    }
+
+    /// <summary>
+    /// Update the control values to the new user data
+    /// </summary>
+    private void SetControlsData()
+    {
+        IsReceiveDailyRemindersChecked = _user.DeliverReminders ?? false;
         IsUpdateEmailPreferencesButtonEnabled = false;
+
+        IsSendEmailVerificationButtonEnabled = !_user.IsConfirmed;
     }
 
 }
