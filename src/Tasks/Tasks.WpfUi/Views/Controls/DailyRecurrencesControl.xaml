@@ -27,6 +27,8 @@
             </Style.Triggers>
         </Style>
 
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
+
     </UserControl.Resources>
 
     <Grid>
@@ -139,20 +141,14 @@
 
                                         <Border Grid.Column="1">
                                             <StackPanel Orientation="Horizontal">
-                 
-                                                <!--Edit label assignments button-->
-                                                <ui:Button Icon="Tag24" 
-                                                   ToolTip="Edit label assignments" 
-                                                   Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewAssignedLabelsCommand}"
-                                                   CommandParameter="{Binding Path=Event}"
-                                                   Margin="0,0,5,0" />
-
-                                                <!--Edit label assignments button-->
-                                                <ui:Button Icon="Delete24" 
-                                                   ToolTip="Delete event" 
-                                                   Margin="0,0,5,0" 
-                                                   Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.CancelRecurrenceCommand}"
-                                                   CommandParameter="{Binding}"/>
+                                                <ui:Button Icon="MoreHorizontal24" Click="DropdownButton_Click">
+                                                    <ui:Button.ContextMenu>
+                                                        <ContextMenu DataContext="{Binding Source={StaticResource Proxy}}">
+                                                            <ui:MenuItem SymbolIcon="Tag24" Header="Edit label assignments" Command="{Binding Data.ViewModel.ViewAssignedLabelsCommand}" />
+                                                            <ui:MenuItem SymbolIcon="Delete24" Header="Cancel event" Command="{Binding Data.ViewModel.CancelRecurrenceCommand}" />
+                                                        </ContextMenu>
+                                                    </ui:Button.ContextMenu>
+                                                </ui:Button>
                                             </StackPanel>
                                         </Border>
 
