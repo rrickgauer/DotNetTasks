@@ -43,10 +43,11 @@
             </Grid.RowDefinitions>
 
             <ui:ProgressRing Grid.Row="0"
-                             Visibility="Collapsed"
+                             Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
                              IsIndeterminate="True" />
 
-            <Border Grid.Row="1">
+            <Border Grid.Row="1" 
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
                 <StackPanel>
                     
                     <!--Verify your account-->
@@ -62,9 +63,15 @@
                     <Border Style="{StaticResource SectionContainerStyle}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Email preferences" />
-                            <CheckBox Content="Receive daily event reminders." Margin="0,0,0,5" />
+                            
+                            <CheckBox Content="Receive daily event reminders." 
+                                      IsChecked="{Binding ViewModel.IsReceiveDailyRemindersChecked, Mode=TwoWay}"
+                                      Margin="0,0,0,5" />
+                            
                             <TextBlock Text="We'll send you an email every morning with all your tasks for the day." Margin="30,0,0,20"/>
-                            <ui:Button Content="Update email preferences" />
+                            
+                            <ui:Button Content="Update email preferences"
+                                       IsEnabled="{Binding ViewModel.IsUpdateEmailPreferencesButtonEnabled}" />
                         </StackPanel>
                     </Border>
 
@@ -77,7 +84,7 @@
                             <Border Style="{StaticResource UpdatePasswordFormGroupStyle}">
                                 <StackPanel>
                                     <Label Content="Current password" />
-                                    <ui:TextBox />
+                                    <ui:TextBox Text="{Binding ViewModel.CurrentPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </Border>
 
@@ -85,7 +92,7 @@
                             <Border Style="{StaticResource UpdatePasswordFormGroupStyle}">
                                 <StackPanel>
                                     <Label Content="New password" />
-                                    <ui:TextBox />
+                                    <ui:TextBox Text="{Binding ViewModel.NewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </Border>
 
@@ -93,7 +100,7 @@
                             <Border Style="{StaticResource UpdatePasswordFormGroupStyle}">
                                 <StackPanel>
                                     <Label Content="Confirm" />
-                                    <ui:TextBox />
+                                    <ui:TextBox Text="{Binding ViewModel.ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </Border>
 
