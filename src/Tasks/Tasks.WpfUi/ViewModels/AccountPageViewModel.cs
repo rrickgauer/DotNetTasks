@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Domain.Models;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
@@ -82,7 +83,6 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
         IsUpdateEmailPreferencesButtonEnabled = true;
     }
 
-
     [ObservableProperty]
     private bool _isUpdateEmailPreferencesButtonEnabled = false;
 
@@ -114,7 +114,6 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     {
         IsLoading = true;
 
-        //_user = await _userServices.GetUserViewAsync(_applicationServices.User.Id.Value) ?? new();
         _user = await _userServices.GetUserViewAsync(_applicationServices.CurrentUserId) ?? new();
 
         SetControlsData();
@@ -146,10 +145,73 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     }
 
 
+    #region Account verification
+
+    /// <summary>
+    /// Verify the user's account by sending them an email with a verification link in the body
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
-    public void VerifyAccount()
+    public async Task VerifyAccountAsync()
     {
-        int x = 10;
+        IsSendEmailVerificationButtonEnabled = false;
+
+        // Create a new account verification record
+        UserEmailVerification? verification = await CreateNewVerificationRecord();
+
+        if (verification is null)
+        {
+            return;
+        }
+
+        bool sentSuccessfully = await SendEmailVericationMessage(verification);
+        HandleSendEmailVericationMessage(sentSuccessfully);
     }
+
+    /// <summary>
+    /// Create a new account verification record
+    /// </summary>
+    /// <returns></returns>
+    private async Task<UserEmailVerification?> CreateNewVerificationRecord()
+    {
+        UserEmailVerification? verification = await _userEmailVerificationServices.CreateNewAsync(_applicationServices.CurrentUserId);
+
+        if (verification is null)
+        {
+            MessageBoxServices.ShowMessage("Couldn't create a new UserEmailVerification record");
+        }
+
+        return verification;
+    }
+
+    /// <summary>
+    /// Have the application send an email to the user with the account verification link
+    /// </summary>
+    /// <param name="verification"></param>
+    /// <returns></returns>
+    private async Task<bool> SendEmailVericationMessage(UserEmailVerification verification)
+    {
+        bool sentSuccessfully = await _userEmailVerificationServices.SendEmailAsync(verification);
+
+        return sentSuccessfully;
+    }
+    
+    /// <summary>
+    /// Handle the response to the sending of the account email message
+    /// </summary>
+    /// <param name="success"></param>
+    private void HandleSendEmailVericationMessage(bool success)
+    {
+        if (success)
+        {
+            MessageBoxServices.ShowMessage("Check your inbox for the verification message which has the next steps.");
+        }
+        else
+        {
+            MessageBoxServices.ShowMessage("Could not send the verification message to your inbox!");
+        }
+    }
+
+    #endregion
 
 }
