@@ -71,7 +71,7 @@
 
         </StackPanel>
 
-        
+
         <ui:ProgressRing
             Grid.Row="1"
             IsIndeterminate="True" 
@@ -80,8 +80,10 @@
             Visibility="{Binding ViewModel.IsLoading, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" 
             d:Visibility="Collapsed"/>
 
-
-        <Border Grid.Row="2" Margin="0,30,0,30" Padding="15">
+        <Border Grid.Row="2" 
+                Margin="0,30,0,30" 
+                Padding="15" 
+                Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -92,30 +94,54 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <ListView 
-                    Grid.Column="0"
-                    ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                    PreviewMouseWheel="ListView_PreviewMouseWheel"
-                    ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                <!--Recurrences-->
+                <ListView Grid.Column="0"
+                          ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                          d:ItemsSource="{d:SampleData ItemCount=5}"
+                          PreviewMouseWheel="ListView_PreviewMouseWheel"
+                          ItemContainerStyle="{StaticResource ListViewItemStyle}" />
 
                 <Border Grid.Column="1" Padding="20,0,0,0">
                     <StackPanel>
-                        
+
+                        <!--Label filters-->
+                        <Expander Header="Filters" IsExpanded="{Binding ViewModel.IsLabelFiltersExpanded, Mode=TwoWay}">
+                            <Expander.Content>
+                                <StackPanel>
+                                    <ListView ItemsSource="{Binding ViewModel.LabelFilters, Mode=TwoWay}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=5}"
+                                              Visibility="{Binding ViewModel.RecurrencesVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                              PreviewMouseWheel="ListView_PreviewMouseWheel"
+                                              ItemContainerStyle="{StaticResource ListViewItemStyle}">
+
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox>
+                                                    <CheckBox.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                                     Margin="0,0,10,0" 
+                                                                     VerticalAlignment="Center" 
+                                                                     Stroke="{Binding Color}" 
+                                                                     Fill="{Binding Color}" />
+
+                                                            <TextBlock Text="{Binding Name}" 
+                                                                       VerticalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </CheckBox.Content>
+                                                </CheckBox>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                    </ListView>
+                                </StackPanel>
+                            </Expander.Content>
+                        </Expander>
 
                     </StackPanel>
                 </Border>
-                
-
-
             </Grid>
-            
-
         </Border>
-        
-
-
     </Grid>
 
 </ui:UiPage>
