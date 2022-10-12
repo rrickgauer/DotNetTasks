@@ -47,6 +47,12 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     private Event? _event = null;
 
+
+    partial void OnEventChanging(Event? value)
+    {
+        int x = 10;
+    }
+
     [ObservableProperty]
     private bool _formIsEnabled = true;
 
