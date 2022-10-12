@@ -68,77 +68,84 @@
                         Grid.Column="1" 
                         Style="{StaticResource ThisCardStyle}">
 
-                    <!--Recurrences list-->
-                    <ListView x:Name="recurrencesListView" 
-                              ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
-                              d:ItemsSource="{d:SampleData ItemCount=5}" 
-                              SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
-                              PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" 
-                              ItemContainerStyle="{StaticResource ListViewItemStyle}" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
+                        <!--Recurrences list-->
+                        <ListView x:Name="recurrencesListView" 
+                                  Grid.Row="0"
+                                  ItemsSource="{Binding ViewModel.Recurrences, Mode=TwoWay}" 
+                                  d:ItemsSource="{d:SampleData ItemCount=5}" 
+                                  SelectedItem="{Binding ViewModel.SelectedRecurrence, Mode=TwoWay}" 
+                                  PreviewMouseWheel="recurrencesListView_PreviewMouseWheel" 
+                                  ItemContainerStyle="{StaticResource ListViewItemStyle}" >
 
-                                <Border Padding="0,15,0,15" BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="0,1,0,0">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
 
-                                        <!--(left side)-->
-                                        <Border Grid.Column="0">
-                                            <StackPanel Orientation="Horizontal">
+                                    <Border Padding="0,15,0,15" BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="0,1,0,0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                                                <!--Checkbox-->
-                                                <CheckBox IsChecked="{Binding Completed}" 
+                                            <!--(left side)-->
+                                            <Border Grid.Column="0">
+                                                <StackPanel Orientation="Horizontal">
+
+                                                    <!--Checkbox-->
+                                                    <CheckBox IsChecked="{Binding Completed}" 
                                                           Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.MarkCompleteCommand}" 
                                                           CommandParameter="{Binding}" 
                                                           MinWidth="0" 
                                                           Margin="0,0,10,0" />
 
-                                                <!--StartsAt-->
-                                                <Border Visibility="{Binding Event.StartsAt, Converter={StaticResource NullPropertyToVisibilityConverter}}">
-                                                    <ui:Badge Appearance="Light" 
+                                                    <!--StartsAt-->
+                                                    <Border Visibility="{Binding Event.StartsAt, Converter={StaticResource NullPropertyToVisibilityConverter}}">
+                                                        <ui:Badge Appearance="Light" 
                                                               d:Content="10:00 PM" 
                                                               FontSize="9" 
                                                               VerticalAlignment="Center" 
                                                               Margin="0,0,10,0">
 
-                                                        <ui:Badge.Content>
-                                                            <TextBlock Text="{Binding Event.StartsAt, Converter={StaticResource TimeSpanConverter}, StringFormat={}{0:hh:mm tt}}"/>
-                                                        </ui:Badge.Content>
-                                                    </ui:Badge>
-                                                </Border>
-                                                
-                             
+                                                            <ui:Badge.Content>
+                                                                <TextBlock Text="{Binding Event.StartsAt, Converter={StaticResource TimeSpanConverter}, StringFormat={}{0:hh:mm tt}}"/>
+                                                            </ui:Badge.Content>
+                                                        </ui:Badge>
+                                                    </Border>
 
-                                                <!--Button disguised as a text block for opening the event-->
-                                                <Button Content="{Binding Event.Name}" 
+
+
+                                                    <!--Button disguised as a text block for opening the event-->
+                                                    <Button Content="{Binding Event.Name}" 
                                                         d:Content="Event name"
                                                         VerticalAlignment="Center"
                                                         Command="{Binding ElementName=recurrencesListView, Path=DataContext.ViewModel.ViewEventCommand}"
                                                         CommandParameter="{Binding Path=Event}"
                                                         Margin="0,0,10,0"
                                                         Cursor="Hand">
-                                                    <Button.Template>
-                                                        <ControlTemplate TargetType="Button">
-                                                            <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" FontSize="16" />
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" FontSize="16" />
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
 
-                                                <!--Assigned labels-->
-                                                <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
+                                                    <!--Assigned labels-->
+                                                    <ListView ItemsSource="{Binding Labels, Mode=TwoWay}"
                                                           ItemContainerStyle="{StaticResource ListViewItemStyle}"
                                                           d:ItemsSource="{d:SampleData ItemCount=3}">
 
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                        <ListView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Ellipse Style="{StaticResource LabelCircleStyle}"
                                                                      Margin="0,0,5,0" 
                                                                      VerticalAlignment="Center" 
                                                                      d:Stroke="CadetBlue"
@@ -146,45 +153,67 @@
                                                                      Stroke="{Binding Color}" 
                                                                      Fill="{Binding Color}" 
                                                                      ToolTip="{Binding Name}"/>
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
+                                                            </DataTemplate>
+                                                        </ListView.ItemTemplate>
 
-                                                    <ListView.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <StackPanel Orientation="Horizontal"></StackPanel>
-                                                        </ItemsPanelTemplate>
-                                                    </ListView.ItemsPanel>
-                                                </ListView>
-                                            </StackPanel>
-                                        </Border>
+                                                        <ListView.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal"></StackPanel>
+                                                            </ItemsPanelTemplate>
+                                                        </ListView.ItemsPanel>
+                                                    </ListView>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <!--Dropdown menu (right side)-->
-                                        <Border Grid.Column="1">
-                                            <StackPanel Orientation="Horizontal">
-                                                <ui:Button Icon="MoreHorizontal24" Click="DropdownButton_Click">
-                                                    <ui:Button.ContextMenu>
-                                                        <ContextMenu DataContext="{Binding Source={StaticResource Proxy}}">
-                                                            <ui:MenuItem SymbolIcon="Tag24" Header="Edit label assignments" Command="{Binding Data.ViewModel.ViewAssignedLabelsCommand}" />
-                                                            <ui:MenuItem SymbolIcon="Delete24" Header="Cancel event" Command="{Binding Data.ViewModel.CancelRecurrenceCommand}" />
-                                                        </ContextMenu>
-                                                    </ui:Button.ContextMenu>
-                                                </ui:Button>
-                                            </StackPanel>
-                                        </Border>
+                                            <!--Dropdown menu (right side)-->
+                                            <Border Grid.Column="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ui:Button Icon="MoreHorizontal24" Click="DropdownButton_Click">
+                                                        <ui:Button.ContextMenu>
+                                                            <ContextMenu DataContext="{Binding Source={StaticResource Proxy}}">
+                                                                <ui:MenuItem SymbolIcon="Tag24" Header="Edit label assignments" Command="{Binding Data.ViewModel.ViewAssignedLabelsCommand}" />
+                                                                <ui:MenuItem SymbolIcon="Delete24" Header="Cancel event" Command="{Binding Data.ViewModel.CancelRecurrenceCommand}" />
+                                                            </ContextMenu>
+                                                        </ui:Button.ContextMenu>
+                                                    </ui:Button>
+                                                </StackPanel>
+                                            </Border>
 
-                                    </Grid>
-                                </Border>
+                                        </Grid>
+                                    </Border>
 
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
 
-                    </ListView>
+                        </ListView>
+
+
+                        <Border Grid.Row="1" BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="0,1,0,0" Padding="0,20,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBox Grid.Column="0" PlaceholderText="New event..." Margin="0,0,5,0" />
+                                <ui:Button Grid.Column="1" Icon="Add24" VerticalAlignment="Stretch" ToolTip="Create new event"/>
+                            </Grid>
+                            
+                       
+                            
+                            
+                        </Border>
+                        
+                    </Grid>
+
+
+                    
+                    
                 </Border>
 
             </Grid>
