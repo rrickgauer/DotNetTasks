@@ -100,15 +100,20 @@
                                                           MinWidth="0" 
                                                           Margin="0,0,10,0" />
 
+                                                <!--StartsAt-->
                                                 <Border Visibility="{Binding Event.StartsAt, Converter={StaticResource NullPropertyToVisibilityConverter}}">
                                                     <ui:Badge Appearance="Light" 
                                                               d:Content="10:00 PM" 
-                                                              Content="{Binding Event.StartsAt}" 
                                                               FontSize="9" 
                                                               VerticalAlignment="Center" 
-                                                              Margin="0,0,10,0" />
+                                                              Margin="0,0,10,0">
+
+                                                        <ui:Badge.Content>
+                                                            <TextBlock Text="{Binding Event.StartsAt, Converter={StaticResource TimeSpanConverter}, StringFormat={}{0:hh:mm tt}}"/>
+                                                        </ui:Badge.Content>
+                                                    </ui:Badge>
                                                 </Border>
-                                                <!--StartsAt-->
+                                                
                              
 
                                                 <!--Button disguised as a text block for opening the event-->
