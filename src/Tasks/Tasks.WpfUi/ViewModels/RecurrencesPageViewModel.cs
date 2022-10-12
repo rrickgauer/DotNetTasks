@@ -144,8 +144,8 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
             // get the recurrences for the date
             // ordered by StartsAt
             var recurrencesToday = recurrencesList.Where(r => r.OccursOn == d)
-                .OrderBy(r => r.Event.StartsAt)
-                .OrderBy(r => !r.Event.StartsAt.HasValue)
+                //.OrderBy(r => r.Event.StartsAt)
+                //.OrderBy(r => !r.Event.StartsAt.HasValue)
                 .ToList();
 
             // setup a new view model for the daily recurrences control
