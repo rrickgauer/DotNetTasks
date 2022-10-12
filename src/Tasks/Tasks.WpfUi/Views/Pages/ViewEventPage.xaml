@@ -15,8 +15,13 @@
 
     <ui:UiPage.Resources>
         <Style TargetType="StackPanel" x:Key="FormStackPanel">
-            <Setter Property="Margin" Value="0,10,0,10" />
+            <Setter Property="Margin" Value="0,15,0,15" />
         </Style>
+
+        <Style TargetType="Grid" x:Key="GridFormStyle">
+            <Setter Property="Margin" Value="0,15,0,15" />
+        </Style>
+
 
     </ui:UiPage.Resources>
 
@@ -54,22 +59,33 @@
                     <ui:TextBox Text="{Binding ViewModel.Event.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
-                <!--Starts on-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Starts on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+
+                <Grid Style="{StaticResource GridFormStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Starts on-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                        <Label>Starts on</Label>
+                        <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 IsTodayHighlighted="True"
                                 x:Name="startsOnDatepickerInput"
                                 SelectedDateChanged="startsOnDatepickerInput_SelectedDateChanged"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <!--Ends on-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Ends on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!--Ends on-->
+                    <StackPanel Grid.Column="1">
+                        <Label>Ends on</Label>
+                        <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsTodayHighlighted="True"
                                 x:Name="endsOnDatepickerInput"/>
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
 
                 <!--Starts at-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
@@ -80,46 +96,81 @@
                         />
                 </StackPanel>
 
-                <!--Frequency-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Frequency</Label>
-                    <ComboBox ItemsSource="{Binding ViewModel.FrequencyOptions, Mode=OneTime}" 
-                              SelectedItem="{Binding ViewModel.Event.Frequency, Mode=TwoWay}" />
-                </StackPanel>
 
-                <!--Separation-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Separation</Label>
-                    <ui:NumberBox Value="{Binding ViewModel.Event.Separation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                <Grid Style="{StaticResource GridFormStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Frequency-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                        <Label>Frequency</Label>
+                        <ComboBox ItemsSource="{Binding ViewModel.FrequencyOptions, Mode=OneTime}" 
+                              SelectedItem="{Binding ViewModel.Event.Frequency, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <!--Separation-->
+                    <StackPanel Grid.Column="1">
+                        <Label>Separation</Label>
+                        <ui:NumberBox Value="{Binding ViewModel.Event.Separation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   IntegersOnly="True"
                                   Min="1"
                                   Step="1"/>
-                </StackPanel>
-
-                <!--Recurrence day-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Day</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <!--Recurrence week-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Week</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceWeek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
 
 
-                <!--Phone number-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Phone number</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
 
-                <!--Location-->
-                <StackPanel Style="{StaticResource FormStackPanel}">
-                    <Label>Location</Label>
-                    <ui:TextBox Text="{Binding ViewModel.Event.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                <Grid Style="{StaticResource GridFormStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Recurrence day-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                        <Label>Day</Label>
+                        <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <!--Recurrence week-->
+                    <StackPanel Grid.Column="1">
+                        <Label>Week</Label>
+                        <ui:TextBox Text="{Binding ViewModel.Event.RecurrenceWeek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
+
+
+                <Grid Style="{StaticResource GridFormStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Phone number-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                        <Label>Phone number</Label>
+                        <ui:TextBox Text="{Binding ViewModel.Event.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    d:Text="847-254-6584"
+                                    />
+                    </StackPanel>
+
+                    <!--Location-->
+                    <StackPanel Grid.Column="1">
+                        <Label>Location</Label>
+                        <ui:TextBox Text="{Binding ViewModel.Event.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
 
 
                 <StackPanel Orientation="Horizontal" Style="{StaticResource FormStackPanel}">
