@@ -200,6 +200,12 @@
                                 BorderBrush="{DynamicResource ControlElevationBorderBrush}" 
                                 BorderThickness="0,1,0,0" 
                                 Padding="0,20,0,0">
+
+                            <Border.InputBindings>
+                                <!--Submit form-->
+                                <KeyBinding Modifiers="Ctrl" Key="Enter" Command="{Binding ViewModel.CreateNewEventCommand}" />
+                            </Border.InputBindings>
+
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />

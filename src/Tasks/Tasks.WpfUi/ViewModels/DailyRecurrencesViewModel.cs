@@ -145,6 +145,8 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [RelayCommand]
     public async Task CreateNewEventAsync()
     {
+        if (!CanCreateNewEvent) return;
+
         IsNewEventFormEnabled = false;
 
         try 
