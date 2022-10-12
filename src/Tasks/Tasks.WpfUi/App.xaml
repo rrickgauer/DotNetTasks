@@ -23,6 +23,7 @@
             <customConverters:TimeSpanToDateTimeConverter x:Key="TimeSpanConverter" />
             <customConverters:ColorConverterMore x:Key="ColorConverter" />
             <customConverters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            <customConverters:NullPropertyToVisibilityConverter x:Key="NullPropertyToVisibilityConverter" />
 
             <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
             <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
