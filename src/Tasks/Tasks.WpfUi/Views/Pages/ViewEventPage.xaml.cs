@@ -30,4 +30,10 @@ public partial class ViewEventPage : INavigableView<ViewEventPageViewModel>
 
         InitializeComponent();
     }
+
+    private void startsOnDatepickerInput_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    {
+        this.endsOnDatepickerInput.DisplayDateStart = this.startsOnDatepickerInput.SelectedDate;
+        this.endsOnDatepickerInput.SelectedDate = this.startsOnDatepickerInput.SelectedDate;
+    }
 }

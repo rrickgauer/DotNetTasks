@@ -57,13 +57,18 @@
                 <!--Starts on-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Starts on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DatePicker Text="{Binding ViewModel.Event.StartsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                IsTodayHighlighted="True"
+                                x:Name="startsOnDatepickerInput"
+                                SelectedDateChanged="startsOnDatepickerInput_SelectedDateChanged"/>
                 </StackPanel>
 
                 <!--Ends on-->
                 <StackPanel Style="{StaticResource FormStackPanel}">
                     <Label>Ends on</Label>
-                    <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DatePicker Text="{Binding ViewModel.Event.EndsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsTodayHighlighted="True"
+                                x:Name="endsOnDatepickerInput"/>
                 </StackPanel>
 
                 <!--Starts at-->
