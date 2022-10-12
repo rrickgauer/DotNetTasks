@@ -9,6 +9,7 @@ using System.Windows;
 using Tasks.Domain.Models;
 using Tasks.Domain.Views;
 using Tasks.Services.Interfaces;
+using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -19,10 +20,14 @@ namespace Tasks.WpfUi.ViewModels;
 
 public partial class DailyRecurrencesViewModel : ObservableObject
 {
-    private readonly IEventActionServices _eventActionServices = App.GetService<IEventActionServices>();
-    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
-    private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
+    #region Private members
+    private readonly IEventActionServices _eventActionServices        = App.GetService<IEventActionServices>();
+    private readonly INavigation _navigation                          = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly ViewEventPage _viewEventPage                     = App.GetService<IPageService>().GetPage<ViewEventPage>();
     private readonly AssignedEventLabelsPage _assignedEventLabelsPage = App.GetService<IPageService>().GetPage<AssignedEventLabelsPage>();
+    private readonly WpfApplicationServices _applicationServices      = App.GetService<WpfApplicationServices>();
+    private readonly IEventServices _eventServices                    = App.GetService<IEventServices>();
+    #endregion
 
     [ObservableProperty]
     private DateTime _date = DateTime.Today;
@@ -36,6 +41,14 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     [ObservableProperty]
     private bool _isCurrentDate = false;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanCreateNewEvent))]
+    private string _newEventName = string.Empty;
+
+    public bool CanCreateNewEvent => !string.IsNullOrEmpty(NewEventName);
+
+    [ObservableProperty]
+    private bool _isNewEventFormEnabled = true;
 
 
     /// <summary>
@@ -124,6 +137,52 @@ public partial class DailyRecurrencesViewModel : ObservableObject
 
         return true;
     }
+
+    /// <summary>
+    /// Create a new event for the date
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    public async Task CreateNewEventAsync()
+    {
+        if (!CanCreateNewEvent) return;
+
+        IsNewEventFormEnabled = false;
+
+        try 
+        {
+            // create a new event and save it to the database
+            Event newEvent = Event.CreateSingleEvent(NewEventName, Date, _applicationServices.CurrentUserId);
+            var result = await _eventServices.UpdateEventAsync(newEvent);
+
+            // add a new recurrence item to the collection to update the GUI
+            GetRecurrencesResponse newRecurrence = new()
+            {
+                Event = newEvent,
+                Cancelled = false,
+                Completed = false,
+                OccursOn = newEvent.StartsOn
+            };
+
+            var recurrences = Recurrences.ToList();
+            recurrences.Add(newRecurrence);
+            Recurrences = recurrences.OrderBy(r => r.Event.StartsOn);
+
+            // reset the form 
+            NewEventName = string.Empty;
+        }
+        catch(Exception ex)
+        {
+            MessageBoxServices.ShowException(ex);
+        }
+        finally
+        {
+            IsNewEventFormEnabled = true;
+        }
+    }
+
+
+
 
 
 }

@@ -57,5 +57,29 @@ public class Event
 	[SqlColumn("recurrence_month")] 
 	public int? RecurrenceMonth { get; set; }
 
+	/// <summary>
+	/// Create a single event that occurs once
+	/// </summary>
+	/// <param name="name"></param>
+	/// <param name="startsOn"></param>
+	/// <param name="userId"></param>
+	/// <returns></returns>
+	public static Event CreateSingleEvent(string name, DateTime startsOn, Guid userId)
+    {
+		Event newEvent = new()
+		{
+			Name = name,
+			StartsOn = startsOn,
+			UserId = userId,
+			Frequency = Enums.Frequency.ONCE,
+			EndsOn = startsOn,
+			Separation = 1,
+			Id = Guid.NewGuid(),
+			CreatedOn = DateTime.Now,
+		};
+
+		return newEvent;
+    }
+
 }
 
