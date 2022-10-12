@@ -5,14 +5,87 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
            xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages"
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           xmlns:viewModels="clr-namespace:Tasks.WpfUi.ViewModels"
            d:DesignWidth="800"
+           d:DesignHeight="500"
            Title="HomePage"
            d:DataContext="{d:DesignInstance local:HomePage, IsDesignTimeCreatable=False}"
-           mc:Ignorable="d" >
+           d:Foreground="White"
+           mc:Ignorable="d">
 
-    <Grid>
+    <ui:UiPage.Resources>
+        <Style x:Key="ItemBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="10" />
+        </Style>
+    </ui:UiPage.Resources>
 
-        <TextBlock>This is the home page</TextBlock>
+    <Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+
+
+            <Border Grid.Column="0" Grid.Row="0" 
+                    Style="{StaticResource ItemBorderStyle}">
+                
+                <ui:CardAction Icon="CalendarLtr32" 
+                               Command="{Binding ViewModel.GoToPageCommand}"
+                               CommandParameter="{x:Static viewModels:HomePageViewModel+PageNames.Recurrences}"
+                               Content="Recurrences" />
+            </Border>
+
+            <Border Grid.Column="1" Grid.Row="0"
+                    Style="{StaticResource ItemBorderStyle}">
+                
+                <ui:CardAction Icon="Tag32" 
+                               Command="{Binding ViewModel.GoToPageCommand}"
+                               CommandParameter="{x:Static viewModels:HomePageViewModel+PageNames.Labels}"
+                               Content="Labels" />
+            </Border>
+
+            <Border Grid.Column="2" 
+                    Grid.Row="0"
+                    Style="{StaticResource ItemBorderStyle}">
+                
+                <ui:CardAction Icon="Person32" Content="Account" 
+                               Command="{Binding ViewModel.GoToPageCommand}"
+                               CommandParameter="{x:Static viewModels:HomePageViewModel+PageNames.Account}"/>
+            </Border>
+
+            <Border Grid.Column="3" Grid.Row="0"
+                    Style="{StaticResource ItemBorderStyle}">
+                
+                <ui:CardAction Icon="Settings32" 
+                               Command="{Binding ViewModel.GoToPageCommand}"
+                               CommandParameter="{x:Static viewModels:HomePageViewModel+PageNames.Settings}"
+                               Content="Settings" />
+            </Border>
+
+
+
+            <Border Grid.Column="0" Grid.Row="1" Style="{StaticResource ItemBorderStyle}">
+                <StackPanel Margin="0,20">
+                    <ui:Hyperlink NavigateUri="https://github.com/rrickgauer/DotNetTasks" Icon="Code24" Content="View source code" />
+                    <ui:Hyperlink NavigateUri="https://tasks.ryanrickgauer.com/auth/login" Icon="Link48" Content="Website" />
+                    <ui:Hyperlink NavigateUri="https://www.ryanrickgauer.com/" Content="Author" />
+                </StackPanel>
+            </Border>
+
+
+        </Grid>
         
-    </Grid>
+        
+        
+        
+    </Border>
 </ui:UiPage>
