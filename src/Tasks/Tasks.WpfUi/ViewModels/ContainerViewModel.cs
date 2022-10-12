@@ -70,12 +70,22 @@ public partial class ContainerViewModel : ObservableObject
         {
             new NavigationItem()
             {
+                Content = "Home",
+                PageTag = "home",
+                Icon = SymbolRegular.Home32,
+                PageType = typeof(Views.Pages.HomePage),
+                Visibility = System.Windows.Visibility.Visible,
+            },
+
+            new NavigationItem()
+            {
                 Content = "Recurrences",
                 PageTag = "recurrences",
                 Icon = SymbolRegular.CalendarLtr32,
                 PageType = typeof(Views.Pages.RecurrencesPage),
                 Visibility = System.Windows.Visibility.Visible,
             },
+
             new NavigationItem()
             {
                 Content = "Labels",

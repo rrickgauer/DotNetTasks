@@ -84,7 +84,8 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
         containerVM.UserLoggedIn();
 
         // go to the reccurences page
-        NavigationService.Navigate(typeof(RecurrencesPage));
+        //NavigationService.Navigate(typeof(RecurrencesPage));
+        NavigationService.Navigate(typeof(HomePage));
     }
 }
 

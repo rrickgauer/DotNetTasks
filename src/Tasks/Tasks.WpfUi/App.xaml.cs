@@ -54,30 +54,45 @@ public partial class App
             services.AddScoped<INavigationWindow, Views.Container>();
             services.AddScoped<ViewModels.ContainerViewModel>();
 
-            // Views and ViewModels
+            #region Pages and ViewModels
+
+            // dashboard page (login)
             services.AddScoped<Views.Pages.DashboardPage>();
             services.AddScoped<ViewModels.DashboardViewModel>();
-                            
+            
+            // settings
             services.AddScoped<Views.Pages.SettingsPage>();
             services.AddScoped<ViewModels.SettingsViewModel>();
 
+            // Recurrences
             services.AddScoped<Views.Pages.RecurrencesPage>();
             services.AddScoped<ViewModels.RecurrencesPageViewModel>();
 
+            // Labels
             services.AddScoped<Views.Pages.LabelsPage>();
             services.AddScoped<ViewModels.LabelsPageViewModel>();
 
+            // Edit label
             services.AddScoped<Views.Pages.EditLabelPage>();
             services.AddScoped<ViewModels.EditLabelViewModel>();
 
+            // View event
             services.AddScoped<Views.Pages.ViewEventPage>();
             services.AddScoped<ViewModels.ViewEventPageViewModel>();
 
+            // Assigned labels
             services.AddScoped<Views.Pages.AssignedEventLabelsPage>();
             services.AddScoped<ViewModels.AssignedEventLabelsViewModel>();
 
+            // Account
             services.AddScoped<Views.Pages.AccountPage>();
             services.AddScoped<ViewModels.AccountPageViewModel>();
+
+            // Home
+            services.AddScoped<Views.Pages.HomePage>();
+            services.AddScoped<ViewModels.HomePageViewModel>();
+
+            #endregion
 
             services.AddSingleton<IConfigs, ConfigurationDev>();
 
@@ -123,9 +138,8 @@ public partial class App
     {
         await _host.StartAsync();
 
-        var applicationServices = GetService<WpfApplicationServices>();
-
         // save the cli args that were passed into the application
+        var applicationServices = GetService<WpfApplicationServices>();
         applicationServices.CliArgs = e.Args.ToList();
     }
 
