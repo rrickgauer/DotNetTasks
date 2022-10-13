@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommandLine;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using Tasks.Configurations;
+using Tasks.Domain.CliArgs;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Implementations;
@@ -23,12 +25,20 @@ namespace Tasks.WpfUi;
 /// </summary>
 public partial class App
 {
+
+
+
+
     // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
     // https://docs.microsoft.com/dotnet/core/extensions/generic-host
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
-    private static readonly IHost _host = Host
+    private static IHost _host;
+
+    private static IHost GetHost()
+    {
+        return Host
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
         .ConfigureServices((context, services) =>
@@ -59,7 +69,7 @@ public partial class App
             // dashboard page (login)
             services.AddScoped<Views.Pages.DashboardPage>();
             services.AddScoped<ViewModels.DashboardViewModel>();
-            
+
             // settings
             services.AddScoped<Views.Pages.SettingsPage>();
             services.AddScoped<ViewModels.SettingsViewModel>();
@@ -94,9 +104,17 @@ public partial class App
 
             #endregion
 
-            services.AddSingleton<IConfigs, ConfigurationDev>();
-
             services.AddScoped<WpfApplicationServices>();
+
+
+            if (_cliArgs.Debug)
+            {
+                services.AddSingleton<IConfigs, ConfigurationDev>();
+            }
+            else
+            {
+                services.AddSingleton<IConfigs, ConfigurationProduction>();
+            }
 
             services.AddScoped<IEventServices, EventServices>()
                 .AddScoped<IRecurrenceServices, RecurrenceServices>()
@@ -120,6 +138,17 @@ public partial class App
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         }).Build();
+    }
+
+    //private static IHost _host;
+
+    private static WpfUiCliArgs _cliArgs;
+
+    public App()
+    {
+        int x = 10;
+    }
+
 
     /// <summary>
     /// Gets registered service.
@@ -136,7 +165,13 @@ public partial class App
     /// </summary>
     private async void OnStartup(object sender, StartupEventArgs e)
     {
+        _cliArgs = Parser.Default.ParseArguments<WpfUiCliArgs>(e.Args).Value;
+
+        _host = GetHost();
+
         await _host.StartAsync();
+
+        //_host.
 
         // save the cli args that were passed into the application
         var applicationServices = GetService<WpfApplicationServices>();
