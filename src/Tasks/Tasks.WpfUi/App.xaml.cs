@@ -26,9 +26,6 @@ namespace Tasks.WpfUi;
 public partial class App
 {
 
-
-
-
     // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
     // https://docs.microsoft.com/dotnet/core/extensions/generic-host
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
@@ -140,14 +137,7 @@ public partial class App
         }).Build();
     }
 
-    //private static IHost _host;
-
     private static WpfUiCliArgs _cliArgs;
-
-    public App()
-    {
-        int x = 10;
-    }
 
 
     /// <summary>
@@ -170,8 +160,6 @@ public partial class App
         _host = GetHost();
 
         await _host.StartAsync();
-
-        //_host.
 
         // save the cli args that were passed into the application
         var applicationServices = GetService<WpfApplicationServices>();
