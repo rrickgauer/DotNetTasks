@@ -75,14 +75,14 @@
         <ui:TitleBar
             Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
             Grid.Row="0"
-            Icon="pack://application:,,,/Assets/applicationIcon-256.png"
-            UseSnapLayout="True">
+            
+            UseSnapLayout="True" Icon="/Views/checkbox-checked-solid-240.png">
             <ui:TitleBar.Tray>
                 <ui:NotifyIcon
                     FocusOnLeftClick="True"
-                    Icon="pack://application:,,,/Assets/applicationIcon-256.png"
+                    Icon="/Views/checkbox-checked-solid-240.png"
                     MenuOnRightClick="True"
-                    TooltipText="Tasks.WpfUi">
+                    TooltipText="Tasks.WpfUi" >
                     <ui:NotifyIcon.Menu>
                         <ContextMenu>
                             <MenuItem Header="Home" Tag="home" />

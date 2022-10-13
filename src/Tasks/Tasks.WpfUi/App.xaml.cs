@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommandLine;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using Tasks.Configurations;
+using Tasks.Domain.CliArgs;
 using Tasks.Repositories.Implementations;
 using Tasks.Repositories.Interfaces;
 using Tasks.Services.Implementations;
@@ -23,12 +25,17 @@ namespace Tasks.WpfUi;
 /// </summary>
 public partial class App
 {
+
     // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
     // https://docs.microsoft.com/dotnet/core/extensions/generic-host
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
-    private static readonly IHost _host = Host
+    private static IHost _host;
+
+    private static IHost GetHost()
+    {
+        return Host
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
         .ConfigureServices((context, services) =>
@@ -54,34 +61,57 @@ public partial class App
             services.AddScoped<INavigationWindow, Views.Container>();
             services.AddScoped<ViewModels.ContainerViewModel>();
 
-            // Views and ViewModels
+            #region Pages and ViewModels
+
+            // dashboard page (login)
             services.AddScoped<Views.Pages.DashboardPage>();
             services.AddScoped<ViewModels.DashboardViewModel>();
-                            
+
+            // settings
             services.AddScoped<Views.Pages.SettingsPage>();
             services.AddScoped<ViewModels.SettingsViewModel>();
 
+            // Recurrences
             services.AddScoped<Views.Pages.RecurrencesPage>();
             services.AddScoped<ViewModels.RecurrencesPageViewModel>();
 
+            // Labels
             services.AddScoped<Views.Pages.LabelsPage>();
             services.AddScoped<ViewModels.LabelsPageViewModel>();
 
+            // Edit label
             services.AddScoped<Views.Pages.EditLabelPage>();
             services.AddScoped<ViewModels.EditLabelViewModel>();
 
+            // View event
             services.AddScoped<Views.Pages.ViewEventPage>();
             services.AddScoped<ViewModels.ViewEventPageViewModel>();
 
+            // Assigned labels
             services.AddScoped<Views.Pages.AssignedEventLabelsPage>();
             services.AddScoped<ViewModels.AssignedEventLabelsViewModel>();
 
+            // Account
             services.AddScoped<Views.Pages.AccountPage>();
             services.AddScoped<ViewModels.AccountPageViewModel>();
 
-            services.AddSingleton<IConfigs, ConfigurationDev>();
+            // Home
+            services.AddScoped<Views.Pages.HomePage>();
+            services.AddScoped<ViewModels.HomePageViewModel>();
+
+            #endregion
 
             services.AddScoped<WpfApplicationServices>();
+
+
+            if (_cliArgs.Debug)
+            {
+                services.AddSingleton<IConfigs, ConfigurationDev>();
+            }
+            else
+            {
+                services.AddSingleton<IConfigs, ConfigurationProduction>();
+            }
 
             services.AddScoped<IEventServices, EventServices>()
                 .AddScoped<IRecurrenceServices, RecurrenceServices>()
@@ -105,6 +135,10 @@ public partial class App
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         }).Build();
+    }
+
+    private static WpfUiCliArgs _cliArgs;
+
 
     /// <summary>
     /// Gets registered service.
@@ -121,11 +155,14 @@ public partial class App
     /// </summary>
     private async void OnStartup(object sender, StartupEventArgs e)
     {
+        _cliArgs = Parser.Default.ParseArguments<WpfUiCliArgs>(e.Args).Value;
+
+        _host = GetHost();
+
         await _host.StartAsync();
 
-        var applicationServices = GetService<WpfApplicationServices>();
-
         // save the cli args that were passed into the application
+        var applicationServices = GetService<WpfApplicationServices>();
         applicationServices.CliArgs = e.Args.ToList();
     }
 

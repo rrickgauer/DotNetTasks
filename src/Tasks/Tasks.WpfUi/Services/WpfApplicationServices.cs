@@ -133,6 +133,11 @@ public class WpfApplicationServices
     /// <returns></returns>
     public async Task<WpfUserCredentials?> GetUserCredentials()
     {
+
+        var isProduction = _configs.IsProduction;
+        var db = _configs.DbDataBase;
+        var url = _configs.UrlGui;
+
         SetupLocalDataDirectory();
 
         var credentialsFile = _configs.WpfUserCredentials;

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Tasks.WpfUi - debug": {
+      "commandName": "Project",
+      "commandLineArgs": "--debug"
+    }
+  }
+}
