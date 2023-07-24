@@ -18,6 +18,7 @@ public class UserEmailVerificationServices : IUserEmailVerificationServices
     private readonly IUserServices _userServices;
     private readonly IUserEmailVerificationRepository _userEmailVerificationRepository;
     private readonly IConfigs _configs;
+    private static readonly UserEmailVerificationMapper _userEmailVerificationMapper = new();
     #endregion
 
     /// <summary>
@@ -132,7 +133,7 @@ public class UserEmailVerificationServices : IUserEmailVerificationServices
 
         if (dataRow is null) return null;
 
-        var model = UserEmailVerificationMapper.ToModel(dataRow);
+        var model = _userEmailVerificationMapper.ToModel(dataRow);
 
         return model;
     }

@@ -12,6 +12,7 @@ public class EventActionServices : IEventActionServices
 {
     #region Private members
     private readonly IEventActionRepository _eventActionRepository;
+    private readonly EventActionMapper _mapper = new();
     #endregion
 
     /// <summary>
@@ -66,7 +67,7 @@ public class EventActionServices : IEventActionServices
 
         if (dataRow != null)
         {
-            eventAction = EventActionMapper.ToModel(dataRow);
+            eventAction = _mapper.ToModel(dataRow);
         }
 
         return eventAction;

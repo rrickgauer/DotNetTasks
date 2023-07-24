@@ -16,6 +16,8 @@ public class UserServices : IUserServices
 {
     #region Private members
     private readonly IUserRepository _userRepository;
+    private static readonly GetUserResponseMapper _getUserResponseMapper = new();
+    private static readonly UserMapper _userMapper = new();
     #endregion
 
     /// <summary>
@@ -190,7 +192,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return UserMapper.ToModel(dataRow);
+        return _userMapper.ToModel(dataRow);
     }
 
     /// <summary>
@@ -205,7 +207,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return UserMapper.ToModel(dataRow);
+        return _userMapper.ToModel(dataRow);
     }
 
     /// <summary>
@@ -220,7 +222,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return UserMapper.ToModel(dataRow);
+        return _userMapper.ToModel(dataRow);
     }
 
     #endregion
@@ -239,7 +241,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        GetUserResponse model = GetUserResponseMapper.ToModel(dataRow);
+        GetUserResponse model = _getUserResponseMapper.ToModel(dataRow);
 
         return model;
     }
@@ -258,7 +260,7 @@ public class UserServices : IUserServices
 
         var users = 
             from dataRow in dataTable.AsEnumerable() 
-            select UserMapper.ToModel(dataRow);
+            select _userMapper.ToModel(dataRow);
 
         return users;
     }

@@ -4,17 +4,19 @@ using System.Data.Common;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class EventMapper
+public class EventMapper : ModelMapper<Event>
 {
+
     /// <summary>
     /// Transform the given datarow into an Event domain model
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static Event ToModel(DataRow dataRow)
+    public override Event ToModel(DataRow dataRow)
     {
         Event newEvent = new()
         {

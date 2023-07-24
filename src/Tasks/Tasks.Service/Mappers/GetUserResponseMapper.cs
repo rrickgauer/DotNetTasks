@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Tasks.Service.Domain.Views;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class GetUserResponseMapper
+public class GetUserResponseMapper : ModelMapper<GetUserResponse>
 {
-    public static GetUserResponse ToModel(DataRow dataRow)
+    public override GetUserResponse ToModel(DataRow dataRow)
     {
         GetUserResponse result = new()
         {

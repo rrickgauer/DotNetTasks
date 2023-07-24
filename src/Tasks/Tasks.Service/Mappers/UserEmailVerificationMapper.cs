@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class UserEmailVerificationMapper
+public class UserEmailVerificationMapper : ModelMapper<UserEmailVerification>
 {
-    public static UserEmailVerification ToModel(DataRow dataRow)
+    public override UserEmailVerification ToModel(DataRow dataRow)
     {
         UserEmailVerification userEmailVerification = new()
         {

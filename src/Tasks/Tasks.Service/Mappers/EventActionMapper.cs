@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class EventActionMapper
+public class EventActionMapper : ModelMapper<EventAction>
 {
     /// <summary>
     /// Get a dictionary for the get recurrences stored procedure
@@ -28,7 +29,7 @@ public static class EventActionMapper
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static EventAction ToModel(DataRow dataRow)
+    public override EventAction ToModel(DataRow dataRow)
     {
         EventAction eventAction = new()
         {

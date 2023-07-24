@@ -1,33 +1,19 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
 
-public static class LabelMapper
+public class LabelMapper : ModelMapper<Label>
 {
-    /// <summary>
-    /// Map the data rows in the data table to a collection of Labels
-    /// </summary>
-    /// <param name="dataTable"></param>
-    /// <returns></returns>
-    public static IEnumerable<Label> ToModels(DataTable dataTable)
-    {
-        var labels =
-            from row
-            in dataTable.AsEnumerable()
-            select ToModel(row);
-
-        return labels;
-    }
-
 
     /// <summary>
     /// Generate a new Label object from the given datarow
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static Label ToModel(DataRow dataRow)
+    public override Label ToModel(DataRow dataRow)
     {
         Label label = new()
         {

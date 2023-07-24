@@ -1,16 +1,17 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public class UserMapper
+public class UserMapper : ModelMapper<User>
 {
     /// <summary>
     /// Map the specified data row to a user domain model
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static User ToModel(DataRow dataRow)
+    public override User ToModel(DataRow dataRow)
     {
         User user = new()
         {

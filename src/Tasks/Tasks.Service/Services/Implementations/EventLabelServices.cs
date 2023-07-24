@@ -14,6 +14,8 @@ public class EventLabelServices : IEventLabelServices
     #region Private memebers
     private readonly IEventLabelRepository _eventLabelRepository;
     private readonly ILabelServices _labelServices;
+    private readonly EventLabelMapper _eventLabelMapper = new();
+    private readonly LabelMapper _labelMapper = new();
     #endregion
 
 
@@ -66,7 +68,7 @@ public class EventLabelServices : IEventLabelServices
     {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(eventId, userId);
 
-        return LabelMapper.ToModels(dataTable);   
+        return _labelMapper.ToModels(dataTable);   
     }
 
     /// <summary>
@@ -89,7 +91,7 @@ public class EventLabelServices : IEventLabelServices
     {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(userId);
 
-        var eventLabels = EventLabelMapper.ToModels(dataTable);
+        var eventLabels = _eventLabelMapper.ToModels(dataTable);
 
         return eventLabels;
     }
