@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
@@ -25,8 +24,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly ILabelServices _labelServices;
     private readonly WpfApplicationServices _applicationServices;
-
-    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly INavigation _navigation;
     private readonly ViewEventPage _viewEventPage = App.GetService<IPageService>().GetPage<ViewEventPage>();
 
     /// <summary>
@@ -34,11 +32,13 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// </summary>
     /// <param name="recurrenceServices"></param>
     /// <param name="applicationServices"></param>
-    public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices, ILabelServices labelServices)
+    public RecurrencesPageViewModel(IRecurrenceServices recurrenceServices, WpfApplicationServices applicationServices, ILabelServices labelServices, INavigationService navigationService)
     {
         _recurrenceServices = recurrenceServices;
         _applicationServices = applicationServices;
-        _labelServices = labelServices; 
+        _labelServices = labelServices;
+
+        _navigation = navigationService.GetNavigationControl();
     }
 
     private bool _initalLoad = false;
@@ -68,7 +68,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
     async partial void OnDateChanged(DateTime value)
     {
-        DisplayRecurrences(value);
+        await DisplayRecurrences(value);
     }
 
     [ObservableProperty]
@@ -98,7 +98,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
 
         if (_initalLoad)
         {
-            DisplayRecurrences(Date);
+            await DisplayRecurrences(Date);
         }
 
         LoadLabelFilters();
@@ -112,7 +112,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// Display the recurrences within the week of the specified day
     /// </summary>
     /// <param name="date"></param>
-    public async void DisplayRecurrences(DateTime date)
+    public async Task DisplayRecurrences(DateTime date)
     {
         _initalLoad = true;
         IsLoading = true;
@@ -231,20 +231,20 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// Apply the label filters to the recurrences
     /// </summary>
     [RelayCommand]
-    public async void ApplyLabelFilters()
+    public async Task ApplyLabelFilters()
     {
-        DisplayRecurrences(Date);
+        await DisplayRecurrences(Date);
     }
 
     /// <summary>
     /// Clear the label filters
     /// </summary>
     [RelayCommand]
-    public async void ClearLabelFilters()
+    public async Task ClearLabelFilters()
     {
         var s = LabelFilters.Select(lf => new LabelFilter(lf.Label, false)).ToList();
         LabelFilters = s;
 
-        DisplayRecurrences(Date);
+        await DisplayRecurrences(Date);
     }
 }

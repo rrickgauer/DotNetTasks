@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Pages;
@@ -37,7 +38,7 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
         Email = credentials.Email;
         Password = credentials.Password;
 
-        Login();
+        await Login();
     }
 
 
@@ -56,8 +57,8 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
     public bool InputsHaveValue => DoInputsHaveValue();
     private bool DoInputsHaveValue()
     {
-        if (string.IsNullOrEmpty(_email)) return false;
-        if (string.IsNullOrEmpty(_password)) return false;
+        if (string.IsNullOrEmpty(Email)) return false;
+        if (string.IsNullOrEmpty(Password)) return false;
         return true;
     }
 
@@ -67,7 +68,7 @@ public partial class DashboardViewModel : ObservableObject, INavigationAware, IN
 
 
     [RelayCommand]
-    public async void Login()
+    public async Task Login()
     {
         var successfulLogin = await ApplicationServices.LogInUser(Email, Password);
             

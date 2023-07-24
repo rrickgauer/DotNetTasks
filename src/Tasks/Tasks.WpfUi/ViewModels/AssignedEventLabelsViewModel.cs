@@ -98,7 +98,7 @@ public partial class AssignedEventLabelsViewModel : ObservableObject, INavigatio
     /// </summary>
     /// <param name="labelAssignment"></param>
     [RelayCommand]
-    public async void ToggleLabelAssignment(LabelAssignment labelAssignment)
+    public async Task ToggleLabelAssignment(LabelAssignment labelAssignment)
     {
         // save the assignment
         if (labelAssignment.IsAssigned)

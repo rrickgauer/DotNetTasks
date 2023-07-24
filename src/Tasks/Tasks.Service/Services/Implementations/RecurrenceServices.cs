@@ -19,6 +19,7 @@ public class RecurrenceServices : IRecurrenceServices
     private readonly IEventLabelServices _eventLabelServices;
     private readonly IEventServices _eventServices;
     private readonly ILabelServices _labelServices;
+    private static readonly RecurrenceMapper _recurrenceMapper = new();
 
     #endregion
 
@@ -45,7 +46,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesForRemindersAsync(validDateRange);
 
-        return RecurrenceMapper.ToModels(recurrencesTable);
+        return _recurrenceMapper.ToModels(recurrencesTable);
     }
 
     #endregion
@@ -106,7 +107,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(recurrenceRetrieval);
 
-        return RecurrenceMapper.ToModels(recurrencesTable);
+        return _recurrenceMapper.ToModels(recurrencesTable);
     }
 
     #endregion
@@ -151,7 +152,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(eventRecurrenceRetrieval, eventId);
 
-        return RecurrenceMapper.ToModels(recurrencesTable);
+        return _recurrenceMapper.ToModels(recurrencesTable);
     }
 
 

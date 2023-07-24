@@ -47,26 +47,26 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
-    private string? _currentPassword = null;
+    private string _currentPassword = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
-    private string? _newPassword = null;
+    private string _newPassword = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsUpdatePasswordButtonEnabled))]
-    private string? _confirmPassword = null;
+    private string _confirmPassword = string.Empty;
 
     
     public bool IsUpdatePasswordButtonEnabled => DoPasswordsHaveValues();
 
     private bool DoPasswordsHaveValues()
     {
-        if (string.IsNullOrEmpty(_currentPassword))
+        if (string.IsNullOrEmpty(CurrentPassword))
             return false;
-        if (string.IsNullOrEmpty(_newPassword))
+        if (string.IsNullOrEmpty(NewPassword))
             return false;
-        if (string.IsNullOrEmpty(_confirmPassword))
+        if (string.IsNullOrEmpty(ConfirmPassword))
             return false;
 
         return true;
@@ -216,7 +216,7 @@ public partial class AccountPageViewModel : ObservableObject, INavigationAware
     /// Update the user's email preferences
     /// </summary>
     [RelayCommand]
-    public async void UpdateEmailPreferencesAsync()
+    public async Task UpdateEmailPreferencesAsync()
     {
         IsUpdateEmailPreferencesButtonEnabled = false;
 

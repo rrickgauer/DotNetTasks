@@ -15,6 +15,7 @@ public class LabelServices : ILabelServices
 {
     #region Private members
     private readonly ILabelRepository _labelRepository;
+    private static LabelMapper _labelMapper = new();
     #endregion
 
     /// <summary>
@@ -94,7 +95,7 @@ public class LabelServices : ILabelServices
         }
 
         // label exists, so make sure the user owns it 
-        label = LabelMapper.ToModel(dataRow);
+        label = _labelMapper.ToModel(dataRow);
 
         if (label.UserId != userId)
         {
@@ -159,7 +160,7 @@ public class LabelServices : ILabelServices
         // map out the records to models
         DataTable dataTable = repoResult.Data ?? (new());
 
-        result.Data = LabelMapper.ToModels(dataTable);
+        result.Data = _labelMapper.ToModels(dataTable);
 
         return result;
     }
@@ -187,7 +188,7 @@ public class LabelServices : ILabelServices
         }
 
         // make sure the user owns the label
-        Label label = LabelMapper.ToModel(selectResult.Data);
+        Label label = _labelMapper.ToModel(selectResult.Data);
 
         if (label.UserId != userId)
         {

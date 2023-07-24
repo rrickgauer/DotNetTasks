@@ -1,32 +1,18 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class RecurrenceMapper
+public class RecurrenceMapper : ModelMapper<Recurrence>
 {
-    /// <summary>
-    /// Map each DataRow in the table to a Recurrence domain model
-    /// </summary>
-    /// <param name="dataTable"></param>
-    /// <returns></returns>
-    public static List<Recurrence> ToModels(DataTable dataTable)
-    {
-        var recurrences =
-            from dataRow
-            in dataTable.AsEnumerable()
-            select ToModel(dataRow);
-
-        return recurrences.ToList();
-    }
-
     /// <summary>
     /// Convert the data row into a recurrence domain model
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static Recurrence ToModel(DataRow dataRow)
+    public override Recurrence ToModel(DataRow dataRow)
     {
         Recurrence recurrence = new()
         {

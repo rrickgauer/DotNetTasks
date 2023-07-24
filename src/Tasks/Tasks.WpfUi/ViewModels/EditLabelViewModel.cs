@@ -61,20 +61,22 @@ public partial class EditLabelViewModel : ObservableObject, INavigationAware
     /// Save the updated labels
     /// </summary>
     [RelayCommand]
-    public async void SaveLabelChanges()
+    public async Task SaveLabelChanges()
     {
         if (AreChangesInvalid())
         {
             return;
         }
 
-        IsEnabled = false;      
+        IsEnabled = false;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         var updateLabelForm = new UpdateLabelForm
         {
             Color = Label.Color,
             Name = Label.Name,
         };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         var response = await _labelServices.UpdateLabelAsync(Label.Id.Value, _applicationServices.CurrentUserId, updateLabelForm);
 

@@ -5,20 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class EventLabelMapper
+public class EventLabelMapper : ModelMapper<EventLabel>
 {
 
-    public static IEnumerable<EventLabel> ToModels(DataTable dataTable)
-    {
-        var eventLabels = dataTable.AsEnumerable().Select(e => ToModel(e));
-
-        return eventLabels;
-    }
-
-    public static EventLabel ToModel(DataRow dataRow)
+    public override EventLabel ToModel(DataRow dataRow)
     {
         EventLabel eventLabel = new()
         {

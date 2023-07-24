@@ -4,7 +4,6 @@ using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Mappers;
 
-#pragma warning disable CS8629 // Nullable value type may be null.
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -12,6 +11,7 @@ public class EventServices : IEventServices
 {
     #region Private members
     private readonly IEventRepository _eventRepository;
+    private readonly EventMapper _eventMapper = new();
     #endregion
 
     /// <summary>
@@ -61,7 +61,7 @@ public class EventServices : IEventServices
     {
         DataRow? dr = await _eventRepository.GetEventAsync(eventId);
 
-        Event? theEvent = dr != null ? EventMapper.ToModel(dr) : null;
+        Event? theEvent = dr != null ? _eventMapper.ToModel(dr) : null;
 
         return theEvent;
     }
@@ -76,7 +76,7 @@ public class EventServices : IEventServices
 
         var events = 
             from dataRow in dataTable.AsEnumerable() 
-            select EventMapper.ToModel(dataRow);
+            select _eventMapper.ToModel(dataRow);
 
         return events.ToList();
     }

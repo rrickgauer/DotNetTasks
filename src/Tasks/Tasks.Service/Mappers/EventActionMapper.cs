@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;
 
-public static class EventActionMapper
+public class EventActionMapper : ModelMapper<EventAction>
 {
     /// <summary>
     /// Get a dictionary for the get recurrences stored procedure
@@ -13,12 +14,13 @@ public static class EventActionMapper
     /// <returns></returns>
     public static SqlCommandParmsMap ToSqlCommandParmsMap(EventAction recurrenceRetrieval)
     {
-        SqlCommandParmsMap map = new();
-
-        map.Add("@event_id", recurrenceRetrieval.EventId);
-        map.Add("@on_date", recurrenceRetrieval.OnDate);
-        map.Add("@event_action_type_id", recurrenceRetrieval.EventActionType);
-        map.Add("@created_on", recurrenceRetrieval.CreatedOn);
+        SqlCommandParmsMap map = new()
+        {
+            { "@event_id", recurrenceRetrieval.EventId },
+            { "@on_date", recurrenceRetrieval.OnDate },
+            { "@event_action_type_id", recurrenceRetrieval.EventActionType },
+            { "@created_on", recurrenceRetrieval.CreatedOn }
+        };
 
         return map;
     }
@@ -28,7 +30,7 @@ public static class EventActionMapper
     /// </summary>
     /// <param name="dataRow"></param>
     /// <returns></returns>
-    public static EventAction ToModel(DataRow dataRow)
+    public override EventAction ToModel(DataRow dataRow)
     {
         EventAction eventAction = new()
         {
