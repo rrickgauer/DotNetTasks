@@ -15,6 +15,16 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>2</WarningLevel>
+    <NoWarn>1701;1702; 8618; 8602; 8601; </NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>2</WarningLevel>
+    <NoWarn>1701;1702; 8618; 8602; 8601; </NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="applicationIcon.ico" />
   </ItemGroup>

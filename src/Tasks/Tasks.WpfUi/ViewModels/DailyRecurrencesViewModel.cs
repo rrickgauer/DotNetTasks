@@ -71,19 +71,19 @@ public partial class DailyRecurrencesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void MarkComplete(GetRecurrencesResponse? recurrenceResponse)
+    public async Task MarkComplete(GetRecurrencesResponse? recurrenceResponse)
     {
         if (recurrenceResponse is null) return;
 
         if (recurrenceResponse.Completed.HasValue && recurrenceResponse.Completed.Value == true)
         {
             // save the completion
-            _eventActionServices.SaveEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
+            await _eventActionServices.SaveEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
         }
         else
         {
             // remove the completion
-            _eventActionServices.DeleteEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
+            await _eventActionServices.DeleteEventCompletionAsync(recurrenceResponse.Event.Id.Value, recurrenceResponse.OccursOn.Value);
         }
     }
 
@@ -96,16 +96,16 @@ public partial class DailyRecurrencesViewModel : ObservableObject
 
 
     [RelayCommand]
-    public async void ViewAssignedLabels()
+    public async Task ViewAssignedLabels()
     {
-        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(SelectedRecurrence.Event);
+        await _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(SelectedRecurrence.Event);
         _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 
     [RelayCommand]
-    public async void CancelRecurrence()
+    public async Task CancelRecurrence()
     {
-        GetRecurrencesResponse recurrenceToDelete = SelectedRecurrence;
+        GetRecurrencesResponse? recurrenceToDelete = SelectedRecurrence;
 
         if (!ConfirmCancellation())
         {

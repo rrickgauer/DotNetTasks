@@ -14,12 +14,13 @@ public class EventActionMapper : ModelMapper<EventAction>
     /// <returns></returns>
     public static SqlCommandParmsMap ToSqlCommandParmsMap(EventAction recurrenceRetrieval)
     {
-        SqlCommandParmsMap map = new();
-
-        map.Add("@event_id", recurrenceRetrieval.EventId);
-        map.Add("@on_date", recurrenceRetrieval.OnDate);
-        map.Add("@event_action_type_id", recurrenceRetrieval.EventActionType);
-        map.Add("@created_on", recurrenceRetrieval.CreatedOn);
+        SqlCommandParmsMap map = new()
+        {
+            { "@event_id", recurrenceRetrieval.EventId },
+            { "@on_date", recurrenceRetrieval.OnDate },
+            { "@event_action_type_id", recurrenceRetrieval.EventActionType },
+            { "@created_on", recurrenceRetrieval.CreatedOn }
+        };
 
         return map;
     }

@@ -208,7 +208,7 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     /// Delete the event
     /// </summary>
     [RelayCommand]
-    public async void DeleteEvent()
+    public async Task DeleteEvent()
     {
         if (!ConfirmDeletion())
         {
@@ -245,9 +245,9 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
 
 
     [RelayCommand]
-    public void GoToLabelAssignmentsPage()
+    public async Task GoToLabelAssignmentsPage()
     {
-        _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(Event);
+        await _assignedEventLabelsPage.ViewModel.ViewAssignedEventLabels(Event);
         _navigation.Navigate(_assignedEventLabelsPage.GetType());
     }
 

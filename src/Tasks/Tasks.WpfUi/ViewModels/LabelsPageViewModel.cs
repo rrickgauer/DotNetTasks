@@ -29,9 +29,9 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         //throw new NotImplementedException();
     }
 
-    public void OnNavigatedTo()
+    public async void OnNavigatedTo()
     {
-        LoadLabelsAsync();
+        await LoadLabelsAsync();
     }
     #endregion
 
@@ -68,7 +68,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     private Color? _newLabelColor;
 
     [RelayCommand]
-    public async void CreateLabelFromForm()
+    public async Task CreateLabelFromForm()
     {
         var name = NewLabelName;
         var color = NewLabelColor;
@@ -80,7 +80,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
 
         await CreateNewLabel(name, color.Value);
 
-        LoadLabelsAsync();
+        await LoadLabelsAsync();
 
         ShowNewLabelForm(false);
         NewLabelColor = null;

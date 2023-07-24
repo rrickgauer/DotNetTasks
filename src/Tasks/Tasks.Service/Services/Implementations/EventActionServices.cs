@@ -119,7 +119,7 @@ public class EventActionServices : IEventActionServices
             OnDate = onDate,
         };
 
-        var numRows = await _eventActionRepository.ModifyEventActionAsync(eventAction);
+        await _eventActionRepository.ModifyEventActionAsync(eventAction);
 
         return eventAction;
     }

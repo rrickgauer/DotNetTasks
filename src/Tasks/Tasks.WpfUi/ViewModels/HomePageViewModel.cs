@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace Tasks.WpfUi.ViewModels;
@@ -11,15 +10,8 @@ namespace Tasks.WpfUi.ViewModels;
 public partial class HomePageViewModel : ObservableObject, INavigationAware
 {
     #region Private members
-    private readonly WpfApplicationServices _applicationServices;
-    private readonly INavigationService _navigationService;
-
-    private readonly RecurrencesPage _recurrencesPage = App.GetService<IPageService>().GetPage<RecurrencesPage>();
-    private readonly LabelsPage _labelsPage           = App.GetService<IPageService>().GetPage<LabelsPage>();
-    private readonly AccountPage _accountPage         = App.GetService<IPageService>().GetPage<AccountPage>();
-    private readonly SettingsPage _settingsPage       = App.GetService<IPageService>().GetPage<SettingsPage>();
+    private readonly INavigation _navigationService;
     #endregion
-
 
     public enum PageNames
     {
@@ -34,27 +26,30 @@ public partial class HomePageViewModel : ObservableObject, INavigationAware
     /// </summary>
     /// <param name="applicationServices"></param>
     /// <param name="navigationService"></param>
-    public HomePageViewModel(WpfApplicationServices applicationServices, INavigationService navigationService)
+    public HomePageViewModel(INavigationService navigationService)
     {
-        _applicationServices = applicationServices;
-        _navigationService = navigationService;
+        _navigationService = navigationService.GetNavigationControl();
     }
 
 
     [RelayCommand]
     public void GoToPage(PageNames page)
     {
-
-        Type pageType = page switch
+        switch (page)
         {
-            PageNames.Recurrences => _recurrencesPage.GetType(),
-            PageNames.Labels => _labelsPage.GetType(),
-            PageNames.Account => _accountPage.GetType(),
-            PageNames.Settings => _settingsPage.GetType(),
-            _ => _recurrencesPage.GetType(),
-        };
-
-        _navigationService.Navigate(pageType); 
+            case PageNames.Recurrences:
+                _navigationService.Navigate(typeof(RecurrencesPage));
+                break;
+            case PageNames.Labels:
+                _navigationService.Navigate(typeof(LabelsPage));
+                break;
+            case PageNames.Account:
+                _navigationService.Navigate(typeof(AccountPage));
+                break;
+            case PageNames.Settings:
+                _navigationService.Navigate(typeof(SettingsPage));
+                break;
+        }
     }
 
     #region INavigationAware
