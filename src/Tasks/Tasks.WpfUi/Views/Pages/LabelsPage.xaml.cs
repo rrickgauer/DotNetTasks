@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Tasks.WpfUi.ViewModels;
 using Wpf.Ui.Common.Interfaces;
+using LabelModel = Tasks.Service.Domain.Models.Label;
 
 namespace Tasks.WpfUi.Views.Pages;
 
@@ -51,7 +52,7 @@ public partial class LabelsPage : INavigableView<LabelsPageViewModel>
         var button = (Button)sender;
         button.ContextMenu.IsOpen = true;
 
-        ViewModel.SelectedLabel = button.DataContext as Domain.Models.Label;
+        ViewModel.SelectedLabel = button.DataContext as LabelModel;
     }
 
     private void MenuItem_Click(object sender, RoutedEventArgs e)

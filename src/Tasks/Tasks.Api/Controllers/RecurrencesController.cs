@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Domain.Parms;
-using Tasks.Domain.Views;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
-using Tasks.Validation;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Domain.Views;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
+using Tasks.Service.Validation;
 
 #pragma warning disable CS8629 // Nullable value type may be null.
 
@@ -24,7 +24,7 @@ namespace Tasks.Api.Controllers;
 public class RecurrencesController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IRecurrenceServices _recurrenceServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -36,7 +36,7 @@ public class RecurrencesController : ControllerBase
     /// </summary>
     /// <param name="configs"></param>
     /// <param name="recurrenceServices"></param>
-    public RecurrencesController(Configurations.IConfigs configs, IRecurrenceServices recurrenceServices, IEventServices eventServices)
+    public RecurrencesController(IConfigs configs, IRecurrenceServices recurrenceServices, IEventServices eventServices)
     {
         _configuration = configs;
         _recurrenceServices = recurrenceServices;

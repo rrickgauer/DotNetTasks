@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Domain.Parms;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -20,7 +20,7 @@ using LabelsCollection = ActionResult<IEnumerable<Label>>;
 public class EventLabelsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IEventLabelServices _eventLabelServices;
     private readonly IEventServices _eventServices;
     private readonly ILabelServices _labelServices;
@@ -32,7 +32,7 @@ public class EventLabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public EventLabelsController(Configurations.IConfigs configuration, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
+    public EventLabelsController(IConfigs configuration, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
     {
         _configuration = configuration;
         _eventLabelServices = eventLabelServices;

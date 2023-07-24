@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
-using Tasks.Auth;
-using Tasks.Configurations;
-using Tasks.DependenciesInjector;
-using Tasks.Repositories.Implementations;
-using Tasks.Repositories.Interfaces;
-using Tasks.Services.Implementations;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Configurations;
+using Tasks.Service.Repositories.Implementations;
+using Tasks.Service.Repositories.Interfaces;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Implementations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.DependenciesInjector;
+using Tasks.Service.Auth;
 
 namespace Tasks.Api;
 
@@ -24,7 +25,7 @@ public static class ApiUtilities
 
         builder.Services.AddControllers();
 
-        Configurations.IConfigs config = new ConfigurationProduction();
+        IConfigs config = new ConfigurationProduction();
 
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {

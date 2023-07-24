@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tasks.Configurations\Tasks.Configurations.csproj" />
-    <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
-    <ProjectReference Include="..\Tasks.Utilities\Tasks.Utilities.csproj" />
+    <ProjectReference Include="..\Tasks.Service\Tasks.Service.csproj" />
   </ItemGroup>
 
 </Project>

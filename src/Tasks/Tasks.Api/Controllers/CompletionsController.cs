@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 #pragma warning disable CS8629 // Nullable value type may be null.
 
@@ -19,7 +19,7 @@ namespace Tasks.Api.Controllers;
 public class CompletionsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IEventActionServices _eventCompletionServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -29,7 +29,7 @@ public class CompletionsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public CompletionsController(Configurations.IConfigs configuration, IEventActionServices eventCompletionServices, IEventServices eventServices)
+    public CompletionsController(IConfigs configuration, IEventActionServices eventCompletionServices, IEventServices eventServices)
     {
         _configuration = configuration;
         _eventCompletionServices = eventCompletionServices;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Configurations;
-using Tasks.Domain.Parms;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -14,7 +14,7 @@ namespace Tasks.Api.Controllers;
 public class PasswordController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IUserServices _userServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -24,7 +24,7 @@ public class PasswordController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="eventServices"></param>
-    public PasswordController(Configurations.IConfigs configuration, IUserServices eventServices)
+    public PasswordController(IConfigs configuration, IUserServices eventServices)
     {
         _configuration = configuration;
         _userServices = eventServices;

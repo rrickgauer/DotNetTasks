@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Repositories.Implementations;
-using Tasks.Repositories.Interfaces;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Repositories.Implementations;
+using Tasks.Service.Repositories.Interfaces;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -16,7 +16,7 @@ namespace Tasks.Api.Controllers;
 public class EventsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -26,7 +26,7 @@ public class EventsController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="eventRepository"></param>
-    public EventsController(Configurations.IConfigs configuration, IEventServices eventServices)
+    public EventsController(IConfigs configuration, IEventServices eventServices)
     {
         _configuration = configuration;
         _eventServices = eventServices;

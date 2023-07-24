@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Auth;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Auth;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -15,7 +15,7 @@ namespace Tasks.Api.Controllers;
 public class UserEmailVarificationsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IUserEmailVerificationServices _userEmailVerificationServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -26,7 +26,7 @@ public class UserEmailVarificationsController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="userEmailVerificationServices"></param>
-    public UserEmailVarificationsController(Configurations.IConfigs configuration, IUserEmailVerificationServices userEmailVerificationServices)
+    public UserEmailVarificationsController(IConfigs configuration, IUserEmailVerificationServices userEmailVerificationServices)
     {
         _configuration = configuration;
         _userEmailVerificationServices = userEmailVerificationServices;

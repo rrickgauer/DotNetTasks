@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -17,7 +17,7 @@ namespace Tasks.Api.Controllers;
 public class CancellationsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IEventActionServices _eventCompletionServices;
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
@@ -29,7 +29,7 @@ public class CancellationsController : ControllerBase
     /// <param name="configs"></param>
     /// <param name="eventActionServices"></param>
     /// <param name="eventServices"></param>
-    public CancellationsController(Configurations.IConfigs configs, IEventActionServices eventActionServices, IEventServices eventServices)
+    public CancellationsController(IConfigs configs, IEventActionServices eventActionServices, IEventServices eventServices)
     {
         _configuration = configs;
         _eventCompletionServices = eventActionServices;

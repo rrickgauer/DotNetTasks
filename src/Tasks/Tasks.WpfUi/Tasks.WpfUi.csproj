@@ -34,9 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tasks.Domain\Tasks.Domain.csproj" />
-    <ProjectReference Include="..\Tasks.Services\Tasks.Services.csproj" />
-    <ProjectReference Include="..\Tasks.Utilities\Tasks.Utilities.csproj" />
+    <ProjectReference Include="..\Tasks.Service\Tasks.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
