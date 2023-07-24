@@ -12,7 +12,7 @@ namespace Tasks.Api.Controllers;
 using LabelsCollection = ActionResult<IEnumerable<Label>>;
 
 /// <summary>
-/// Url Prefix: /event/event:
+/// Url Prefix: /events/:eventId/labels
 /// </summary>
 [Authorize]
 [ApiController]
