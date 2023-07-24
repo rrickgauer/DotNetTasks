@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Tasks.Configurations;
-using Tasks.Domain.CliArgs;
-using Tasks.Utilities;
+using Tasks.Service.Configurations;
+using Tasks.Service.Domain.CliArgs;
+using Tasks.Service.Utilities;
 
 // parse the cli args
 TasksCliArgs tasksCliArgs = CliArgUtilities.ParseArgs<TasksCliArgs>(args) ?? new();

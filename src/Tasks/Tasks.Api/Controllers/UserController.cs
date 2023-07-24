@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Auth;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Domain.Parms;
-using Tasks.Domain.Views;
-using Tasks.Errors;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Auth;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Domain.Views;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Errors;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -18,7 +18,7 @@ namespace Tasks.Api.Controllers;
 public class UserController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configuration;
+    private readonly IConfigs _configuration;
     private readonly IUserServices _userServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="userServices"></param>
-    public UserController(Configurations.IConfigs configuration, IUserServices userServices)
+    public UserController(IConfigs configuration, IUserServices userServices)
     {
         _configuration = configuration;
         _userServices = userServices;
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
         // validate the user info before inserting it into the database
         var validationResult = await _userServices.ValidateNewUserAsync(signUpRequest);
 
-        if (validationResult != Domain.Enums.ValidateUserResult.Valid)
+        if (validationResult != Service.Domain.Enums.ValidateUserResult.Valid)
         {
             return BadRequest(_userServices.GetInvalidSignUpRequestResponse(validationResult));
         }

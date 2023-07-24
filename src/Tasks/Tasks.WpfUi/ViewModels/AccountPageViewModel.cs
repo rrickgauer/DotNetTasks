@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Tasks.Domain.Models;
-using Tasks.Domain.Parms;
-using Tasks.Domain.Views;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Domain.Views;
+using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 

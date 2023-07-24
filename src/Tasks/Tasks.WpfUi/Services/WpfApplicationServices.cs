@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Services.Interfaces;
-using Tasks.Utilities;
+using Tasks.Service.Configurations;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Utilities;
 
 namespace Tasks.WpfUi.Services;
 

@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
 using Tasks.Api;
-using Tasks.Auth;
-using Tasks.Configurations;
-using Tasks.Repositories.Implementations;
-using Tasks.Repositories.Interfaces;
-using Tasks.Services.Implementations;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Auth;
+using Tasks.Service.Configurations;
+using Tasks.Service.Repositories.Implementations;
+using Tasks.Service.Repositories.Interfaces;
+using Tasks.Service.Services.Implementations;
+using Tasks.Service.Services.Interfaces;
 
 
 var builder = ApiUtilities.GetWebApplicationBuilder(args);

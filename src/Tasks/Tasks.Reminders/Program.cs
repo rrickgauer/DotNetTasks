@@ -1,12 +1,12 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Mail;
-using Tasks.Configurations;
-using Tasks.Email;
-using Tasks.Email.Messages;
+using Tasks.Service.Configurations;
+using Tasks.Service.Email;
+using Tasks.Service.Email.Messages;
 using Tasks.Reminders;
-using Tasks.Services.Interfaces;
-using Tasks.Validation;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Validation;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 

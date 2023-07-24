@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tasks.Configurations;
-using Tasks.Domain.Models;
-using Tasks.Domain.Parms;
-using Tasks.Security;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
+using Tasks.Service.Configurations;
+using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Security;
 
 namespace Tasks.Api.Controllers;
 
@@ -16,7 +16,7 @@ namespace Tasks.Api.Controllers;
 public class LabelsController : ControllerBase
 {
     #region Private members
-    private readonly Configurations.IConfigs _configs;
+    private readonly IConfigs _configs;
     private readonly ILabelServices _labelServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
@@ -25,7 +25,7 @@ public class LabelsController : ControllerBase
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
-    public LabelsController(Configurations.IConfigs configuration, ILabelServices labelServices)
+    public LabelsController(IConfigs configuration, ILabelServices labelServices)
     {
         _configs = configuration;
         _labelServices = labelServices;

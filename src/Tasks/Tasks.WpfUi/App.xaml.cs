@@ -7,16 +7,16 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using Tasks.Configurations;
-using Tasks.Domain.CliArgs;
-using Tasks.Repositories.Implementations;
-using Tasks.Repositories.Interfaces;
-using Tasks.Services.Implementations;
-using Tasks.Services.Interfaces;
+using Tasks.Service.Configurations;
+using Tasks.Service.Repositories.Implementations;
+using Tasks.Service.Repositories.Interfaces;
+using Tasks.Service.Services.Implementations;
+using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Models;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
+using Tasks.Service.Domain.CliArgs;
 
 namespace Tasks.WpfUi;
 
