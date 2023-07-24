@@ -21,7 +21,9 @@ public interface IConfigs
 
     public string IpAddressVps { get; }
 
-    public FileInfo WpfApplicationExe { get; }
-    public FileInfo WpfUserCredentials { get; }
+
     public DirectoryInfo LocalApplicationDataFolder { get; }
+    public FileInfo WpfUserCredentials { get; }
+    
+    public FileInfo WpfApplicationExe { get; }
 }
