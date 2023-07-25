@@ -22,6 +22,83 @@
 USE `Tasks_Dev`;
 
 --
+-- Table structure for table `Checklist_Items`
+--
+
+DROP TABLE IF EXISTS `Checklist_Items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklist_Items` (
+  `id` char(36) NOT NULL,
+  `checklist_id` char(36) NOT NULL,
+  `content` char(150) DEFAULT NULL,
+  `position` int unsigned NOT NULL DEFAULT '0',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `completed_on` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `checklist_id` (`checklist_id`),
+  CONSTRAINT `Checklist_Items_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Checklist_Label_Assignments`
+--
+
+DROP TABLE IF EXISTS `Checklist_Label_Assignments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklist_Label_Assignments` (
+  `checklist_id` char(36) NOT NULL,
+  `label_id` char(36) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`checklist_id`,`label_id`),
+  KEY `label_id` (`label_id`),
+  CONSTRAINT `Checklist_Label_Assignments_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Checklist_Label_Assignments_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `Labels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Checklist_Types`
+--
+
+DROP TABLE IF EXISTS `Checklist_Types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklist_Types` (
+  `id` smallint unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Checklists`
+--
+
+DROP TABLE IF EXISTS `Checklists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklists` (
+  `id` char(36) NOT NULL,
+  `user_id` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` char(100) DEFAULT NULL,
+  `checklist_type_id` smallint unsigned NOT NULL DEFAULT '1',
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `Checklists_ibfk_2_idx` (`checklist_type_id`),
+  CONSTRAINT `Checklists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Checklists_ibfk_2` FOREIGN KEY (`checklist_type_id`) REFERENCES `Checklist_Types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `Event_Action_Types`
 --
 
@@ -200,6 +277,23 @@ CREATE TABLE `Users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `View_Checklists`
+--
+
+DROP TABLE IF EXISTS `View_Checklists`;
+/*!50001 DROP VIEW IF EXISTS `View_Checklists`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Checklists` AS SELECT 
+ 1 AS `id`,
+ 1 AS `user_id`,
+ 1 AS `title`,
+ 1 AS `checklist_type_id`,
+ 1 AS `created_on`,
+ 1 AS `count_items`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary view structure for view `View_Events`
@@ -1394,6 +1488,24 @@ DELIMITER ;
 USE `Tasks_Dev`;
 
 --
+-- Final view structure for view `View_Checklists`
+--
+
+/*!50001 DROP VIEW IF EXISTS `View_Checklists`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `View_Checklists` AS select `c`.`id` AS `id`,`c`.`user_id` AS `user_id`,`c`.`title` AS `title`,`c`.`checklist_type_id` AS `checklist_type_id`,`c`.`created_on` AS `created_on`,count(`i`.`id`) AS `count_items` from (`Checklists` `c` left join `Checklist_Items` `i` on((`i`.`checklist_id` = `c`.`id`))) group by `c`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `View_Events`
 --
 
@@ -1474,7 +1586,7 @@ USE `Tasks_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 19:30:58
+-- Dump completed on 2023-07-24 20:51:42
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
@@ -1513,6 +1625,17 @@ LOCK TABLES `Event_Action_Types` WRITE;
 REPLACE INTO `Event_Action_Types` VALUES (1,'completion'),(2,'cancellation');
 /*!40000 ALTER TABLE `Event_Action_Types` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `Checklist_Types`
+--
+-- ORDER BY:  `id`
+
+LOCK TABLES `Checklist_Types` WRITE;
+/*!40000 ALTER TABLE `Checklist_Types` DISABLE KEYS */;
+REPLACE INTO `Checklist_Types` VALUES (1,'Checklist'),(2,'Template');
+/*!40000 ALTER TABLE `Checklist_Types` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1523,4 +1646,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 19:31:02
+-- Dump completed on 2023-07-24 20:51:45

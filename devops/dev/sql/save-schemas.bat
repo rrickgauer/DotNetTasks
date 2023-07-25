@@ -18,7 +18,7 @@ mysqldump -u main -h 104.225.208.163 -p ^
 --replace ^
 --order-by-primary ^
 --result-file "C:\xampp\htdocs\files\DotNetTasks\sql\schema\.data.sql" ^
-Tasks_Dev Event_Frequencies Event_Action_Types
+Tasks_Dev Event_Frequencies Event_Action_Types Checklist_Types
 
 @echo off
 cd "C:\xampp\htdocs\files\DotNetTasks\sql\schema"
