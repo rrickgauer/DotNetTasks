@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
@@ -7,13 +7,19 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `Tasks_Dev`
+--
+
+USE `Tasks_Dev`;
 
 --
 -- Table structure for table `Event_Action_Types`
@@ -1382,6 +1388,12 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Current Database: `Tasks_Dev`
+--
+
+USE `Tasks_Dev`;
+
+--
 -- Final view structure for view `View_Events`
 --
 
@@ -1448,7 +1460,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `View_Users` AS select `u`.`id` AS `id`,`u`.`email` AS `email`,`u`.`password` AS `password`,`u`.`created_on` AS `created_on`,`u`.`deliver_reminders` AS `deliver_reminders`,`v`.`confirmed_on` AS `email_confirmed_on` from (`Users` `u` left join `User_Email_Verifications` `v` on(((`v`.`user_id` = `u`.`id`) and (`v`.`email` = `u`.`email`)))) group by `u`.`id` */;
+/*!50001 VIEW `View_Users` AS select `u`.`id` AS `id`,`u`.`email` AS `email`,`u`.`password` AS `password`,`u`.`created_on` AS `created_on`,`u`.`deliver_reminders` AS `deliver_reminders`,(select `v`.`created_on` from `User_Email_Verifications` `v` where ((`v`.`user_id` = `u`.`id`) and (`v`.`email` = `u`.`email`) and (`v`.`confirmed_on` is not null)) limit 1) AS `email_confirmed_on` from `Users` `u` group by `u`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1462,4 +1474,53 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-12 18:09:56
+-- Dump completed on 2023-07-24 19:30:58
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+--
+-- Host: 104.225.208.163    Database: Tasks_Dev
+-- ------------------------------------------------------
+-- Server version	8.0.28-0ubuntu0.20.04.3
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Dumping data for table `Event_Frequencies`
+--
+-- ORDER BY:  `id`
+
+LOCK TABLES `Event_Frequencies` WRITE;
+/*!40000 ALTER TABLE `Event_Frequencies` DISABLE KEYS */;
+REPLACE INTO `Event_Frequencies` VALUES (1,'once'),(2,'daily'),(3,'weekly'),(4,'monthly'),(5,'yearly');
+/*!40000 ALTER TABLE `Event_Frequencies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `Event_Action_Types`
+--
+-- ORDER BY:  `id`
+
+LOCK TABLES `Event_Action_Types` WRITE;
+/*!40000 ALTER TABLE `Event_Action_Types` DISABLE KEYS */;
+REPLACE INTO `Event_Action_Types` VALUES (1,'completion'),(2,'cancellation');
+/*!40000 ALTER TABLE `Event_Action_Types` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-07-24 19:31:02
