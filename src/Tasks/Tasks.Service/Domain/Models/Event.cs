@@ -57,6 +57,8 @@ public class Event
 	[SqlColumn("recurrence_month")] 
 	public int? RecurrenceMonth { get; set; }
 
+
+
 	/// <summary>
 	/// Create a single event that occurs once
 	/// </summary>
