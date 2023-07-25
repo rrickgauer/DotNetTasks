@@ -4,7 +4,7 @@ OUTPUT_FILE=enums.sql
 # mysqldump Tasks_Dev Event_Frequencies Event_Action_Types 
 mysqldump \
 --databases Tasks_Dev \
---tables Event_Frequencies Event_Action_Types \
+--tables Event_Frequencies Event_Action_Types Checklist_Types \
 --user=main \
 --column-statistics=FALSE \
 --password \
