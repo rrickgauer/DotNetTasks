@@ -1,7 +1,7 @@
 ﻿
 namespace Tasks.Service.Repositories.Commands;
 
-public class EventRepositorySql
+public class EventCommands
 {
     public const string SelectAllUsersEvents = @"
         SELECT

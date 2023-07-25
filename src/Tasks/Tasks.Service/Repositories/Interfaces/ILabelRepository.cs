@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
-using static Tasks.Service.Domain.Responses.RepositoryResponses;
+using static Tasks.Service.Domain.Responses.Basic.RepositoryResponses;
 
 namespace Tasks.Service.Repositories.Interfaces;
 

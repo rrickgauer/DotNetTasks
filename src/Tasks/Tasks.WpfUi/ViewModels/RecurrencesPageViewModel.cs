@@ -6,7 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
+using Tasks.Service.Domain.Responses.Custom;
+
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Utilities;
 using Tasks.Service.Validation;

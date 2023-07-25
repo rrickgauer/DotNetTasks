@@ -1,6 +1,6 @@
 ﻿using Tasks.Service.Domain.Models;
 
-namespace Tasks.Service.Domain.Views;
+namespace Tasks.Service.Domain.Responses.Custom;
 
 public class LabelFilter
 {

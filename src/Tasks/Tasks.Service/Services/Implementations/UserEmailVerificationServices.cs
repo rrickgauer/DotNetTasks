@@ -18,18 +18,19 @@ public class UserEmailVerificationServices : IUserEmailVerificationServices
     private readonly IUserServices _userServices;
     private readonly IUserEmailVerificationRepository _userEmailVerificationRepository;
     private readonly IConfigs _configs;
-    private static readonly UserEmailVerificationMapper _userEmailVerificationMapper = new();
+    private readonly IMapperServices _mapperServices;
     #endregion
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="userServices"></param>
-    public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository, IConfigs configs)
+    public UserEmailVerificationServices(IUserServices userServices, IUserEmailVerificationRepository userEmailVerificationRepository, IConfigs configs, IMapperServices mapperServices)
     {
         _userServices = userServices;
         _userEmailVerificationRepository = userEmailVerificationRepository;
         _configs = configs;
+        _mapperServices = mapperServices;
     }
 
     /// <summary>
@@ -133,7 +134,7 @@ public class UserEmailVerificationServices : IUserEmailVerificationServices
 
         if (dataRow is null) return null;
 
-        var model = _userEmailVerificationMapper.ToModel(dataRow);
+        var model = _mapperServices.ToModel<UserEmailVerification>(dataRow);
 
         return model;
     }

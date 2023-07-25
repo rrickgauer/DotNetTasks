@@ -3,12 +3,11 @@ using Tasks.Service.Domain.Constants;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
-
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Errors;
 using Tasks.Service.Mappers;
+using Tasks.Service.Domain.Responses.Custom;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -16,17 +15,19 @@ public class UserServices : IUserServices
 {
     #region Private members
     private readonly IUserRepository _userRepository;
-    private static readonly GetUserResponseMapper _getUserResponseMapper = new();
-    private static readonly UserMapper _userMapper = new();
+    private readonly IMapperServices _mapperServices;
+    //private static readonly GetUserResponseMapper _getUserResponseMapper = new();
+    //private static readonly UserMapper _userMapper = new();
     #endregion
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="userRepository"></param>
-    public UserServices(IUserRepository userRepository)
+    public UserServices(IUserRepository userRepository, IMapperServices mapperServices)
     {
         _userRepository = userRepository;
+        _mapperServices = mapperServices;
     }
 
     #region Update password
@@ -192,7 +193,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return _userMapper.ToModel(dataRow);
+        return _mapperServices.ToModel<User>(dataRow);
     }
 
     /// <summary>
@@ -207,7 +208,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return _userMapper.ToModel(dataRow);
+        return _mapperServices.ToModel<User>(dataRow);
     }
 
     /// <summary>
@@ -222,7 +223,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        return _userMapper.ToModel(dataRow);
+        return _mapperServices.ToModel<User>(dataRow);
     }
 
     #endregion
@@ -241,7 +242,7 @@ public class UserServices : IUserServices
 
         if (dataRow is null) return null;
 
-        GetUserResponse model = _getUserResponseMapper.ToModel(dataRow);
+        GetUserResponse model = _mapperServices.ToModel<GetUserResponse>(dataRow);
 
         return model;
     }
@@ -258,9 +259,7 @@ public class UserServices : IUserServices
     {
         DataTable dataTable = await _userRepository.SelectUsersWithRemindersAsync();
 
-        var users = 
-            from dataRow in dataTable.AsEnumerable() 
-            select _userMapper.ToModel(dataRow);
+        var users = _mapperServices.ToModels<User>(dataTable);
 
         return users;
     }

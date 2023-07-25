@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using Tasks.Service.Domain.Views;
+using Tasks.Service.Domain.Responses.Custom;
 using Tasks.Service.Mappers.Interfaces;
 
 namespace Tasks.Service.Mappers;

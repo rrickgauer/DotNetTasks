@@ -62,7 +62,7 @@ public class EventLabelsBatchInsertSqlGenerator
     #region Build sql statement
     private string GetSqlStatement()
     {
-        string template = EventLabelRepositorySql.BatchInsertTemplate;
+        string template = EventLabelCommands.BatchInsertTemplate;
         string labelIdsList = GetLabelIdsListText();
 
         string sqlStatement = string.Format(template, labelIdsList);

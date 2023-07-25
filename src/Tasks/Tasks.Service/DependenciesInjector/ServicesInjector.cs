@@ -5,6 +5,7 @@ using Tasks.Service.Auth;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Repositories;
 
 namespace Tasks.Service.DependenciesInjector;
 
@@ -36,6 +37,8 @@ public static class ServicesInjector
         .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
         .AddScoped<ILabelServices, LabelServices>()
         .AddScoped<IEventLabelServices, EventLabelServices>()
+        .AddScoped<IChecklistServices, ChecklistServices>()
+        .AddSingleton<IMapperServices, MapperServices>()
 
         // repositories
         .AddScoped<IUserRepository, UserRepository>()
@@ -45,6 +48,9 @@ public static class ServicesInjector
         .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
         .AddScoped<ILabelRepository, LabelRepository>()
         .AddScoped<IEventLabelRepository, EventLabelRepository>()
+        .AddScoped<IChecklistRepository, ChecklistRepository>()
+
+        .AddTransient<DbConnection>()
 
         // custom filters
         .AddScoped<CustomHeaderFilter>();

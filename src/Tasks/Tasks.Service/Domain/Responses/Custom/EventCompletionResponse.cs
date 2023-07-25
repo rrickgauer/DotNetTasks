@@ -1,4 +1,4 @@
-﻿namespace Tasks.Service.Domain.Views;
+﻿namespace Tasks.Service.Domain.Responses.Custom;
 
 public class EventCompletionResponse
 {

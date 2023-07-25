@@ -1,7 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
-using Tasks.Service.Configurations;
-using Tasks.Service.Domain.Constants;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Repositories.Commands;
@@ -11,7 +9,6 @@ namespace Tasks.Service.Repositories.Implementations;
 public class UserRepository : IUserRepository
 {
     #region Private members
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -19,10 +16,9 @@ public class UserRepository : IUserRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public UserRepository(IConfigs configs)
+    public UserRepository(DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new DbConnection(_configs);
+        _dbConnection = dbConnection;
     }
 
     #region Get user
@@ -36,7 +32,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(string email, string password)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SelectFromEmailPassword);
+        MySqlCommand cmd = new(UserCommands.SelectFromEmailPassword);
 
         cmd.Parameters.AddWithValue("@email", email);
         cmd.Parameters.AddWithValue("@password", password);
@@ -52,7 +48,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(string email)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SelectFromEmail);
+        MySqlCommand cmd = new(UserCommands.SelectFromEmail);
         
         cmd.Parameters.AddWithValue("@email", email);
 
@@ -68,7 +64,7 @@ public class UserRepository : IUserRepository
     public async Task<DataRow?> GetUserAsync(Guid userId)
     {
         // setup a new sql command
-        MySqlCommand cmd = new(UserRepositorySql.SelectFromId);
+        MySqlCommand cmd = new(UserCommands.SelectFromId);
 
         cmd.Parameters.AddWithValue("@id", userId);
 
@@ -85,7 +81,7 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<int> UpdateUserPasswordAsync(Guid userId, string password)
     {
-        MySqlCommand cmd = new(UserRepositorySql.UpdatePassword);
+        MySqlCommand cmd = new(UserCommands.UpdatePassword);
 
         cmd.Parameters.AddWithValue("@password", password);
         cmd.Parameters.AddWithValue("@id", userId);
@@ -123,7 +119,7 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     private async Task<int> ModifyUserAsync(User user)
     {
-        MySqlCommand command = new(UserRepositorySql.Modify);
+        MySqlCommand command = new(UserCommands.Modify);
 
         command.Parameters.AddWithValue("@id", user.Id);
         command.Parameters.AddWithValue("@email", user.Email);
@@ -139,7 +135,7 @@ public class UserRepository : IUserRepository
 
     public async Task<DataRow?> SelectUserViewAsync(Guid userId)
     {
-        MySqlCommand command = new(UserRepositorySql.SelectFromView);
+        MySqlCommand command = new(UserCommands.SelectFromView);
 
         command.Parameters.AddWithValue("@id", userId);
 
@@ -149,7 +145,7 @@ public class UserRepository : IUserRepository
 
     public async Task<DataTable> SelectUsersWithRemindersAsync()
     {
-        MySqlCommand command = new(UserRepositorySql.SelectUsersWithReminders);
+        MySqlCommand command = new(UserCommands.SelectUsersWithReminders);
 
         DataTable dataTable = await _dbConnection.FetchAllAsync(command);
 

@@ -4,7 +4,6 @@ using System.Net;
 using Tasks.Service.Configurations;
 using Tasks.Service.Repositories.Implementations;
 using Tasks.Service.Repositories.Interfaces;
-using Tasks.Service.Configurations;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.DependenciesInjector;

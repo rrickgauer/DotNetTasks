@@ -2,12 +2,13 @@
 using System.Linq;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
+
 
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Mappers;
 using Tasks.Service.Validation;
+using Tasks.Service.Domain.Responses.Custom;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -19,7 +20,8 @@ public class RecurrenceServices : IRecurrenceServices
     private readonly IEventLabelServices _eventLabelServices;
     private readonly IEventServices _eventServices;
     private readonly ILabelServices _labelServices;
-    private static readonly RecurrenceMapper _recurrenceMapper = new();
+    //private static readonly RecurrenceMapper _recurrenceMapper = new();
+    private readonly IMapperServices _mapperServices;
 
     #endregion
 
@@ -27,12 +29,13 @@ public class RecurrenceServices : IRecurrenceServices
     /// Constructor
     /// </summary>
     /// <param name="recurrenceRepository"></param>
-    public RecurrenceServices(IRecurrenceRepository recurrenceRepository, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices)
+    public RecurrenceServices(IRecurrenceRepository recurrenceRepository, IEventLabelServices eventLabelServices, IEventServices eventServices, ILabelServices labelServices, IMapperServices mapperServices)
     {
         _recurrenceRepository = recurrenceRepository;
         _eventLabelServices = eventLabelServices;
         _eventServices = eventServices;
         _labelServices = labelServices;
+        _mapperServices = mapperServices;
     }
 
     #region Get recurrences for email
@@ -46,11 +49,10 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesForRemindersAsync(validDateRange);
 
-        return _recurrenceMapper.ToModels(recurrencesTable);
+        return _mapperServices.ToModels<Recurrence>(recurrencesTable);
     }
 
     #endregion
-
 
 
     #region Get Recurrences
@@ -107,7 +109,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(recurrenceRetrieval);
 
-        return _recurrenceMapper.ToModels(recurrencesTable);
+        return _mapperServices.ToModels<Recurrence>(recurrencesTable);
     }
 
     #endregion
@@ -152,7 +154,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         DataTable recurrencesTable = await _recurrenceRepository.GetRecurrencesAsync(eventRecurrenceRetrieval, eventId);
 
-        return _recurrenceMapper.ToModels(recurrencesTable);
+        return _mapperServices.ToModels<Recurrence>(recurrencesTable);
     }
 
 

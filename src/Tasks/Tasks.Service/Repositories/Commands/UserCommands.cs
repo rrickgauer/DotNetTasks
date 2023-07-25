@@ -1,6 +1,6 @@
 ﻿namespace Tasks.Service.Repositories.Commands;
 
-public sealed class UserRepositorySql
+public sealed class UserCommands
 {
     public const string SelectFromEmailPassword = @"  
         SELECT 

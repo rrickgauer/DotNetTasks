@@ -6,11 +6,11 @@
 namespace Tasks.Service.CustomAttributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class SqlColumn : Attribute
+public class SqlColumnAttribute : Attribute
 {
     public string ColumnName { get; }
 
-    public SqlColumn(string columnName)
+    public SqlColumnAttribute(string columnName)
     {
         ColumnName = columnName;
     }

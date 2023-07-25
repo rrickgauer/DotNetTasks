@@ -1,7 +1,8 @@
 ﻿using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
+using Tasks.Service.Domain.Responses.Custom;
+
 
 namespace Tasks.Service.Services.Interfaces;
 

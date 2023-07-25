@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tasks.Service.Domain.Models;
-using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
+﻿using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Responses.Custom;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Validation;
 

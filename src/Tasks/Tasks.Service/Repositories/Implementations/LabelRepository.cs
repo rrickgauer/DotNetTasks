@@ -1,7 +1,7 @@
 ﻿using Tasks.Service.Configurations;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
-using static Tasks.Service.Domain.Responses.RepositoryResponses;
+using static Tasks.Service.Domain.Responses.Basic.RepositoryResponses;
 using MySql.Data.MySqlClient;
 using Tasks.Service.Repositories.Commands;
 
@@ -11,7 +11,6 @@ namespace Tasks.Service.Repositories.Implementations;
 public class LabelRepository : ILabelRepository
 {
     #region Private memebers
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -19,10 +18,9 @@ public class LabelRepository : ILabelRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public LabelRepository(IConfigs configs)
+    public LabelRepository(DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new(_configs);
+        _dbConnection = dbConnection;
     }
 
     /// <summary>
@@ -38,7 +36,7 @@ public class LabelRepository : ILabelRepository
             Successful = true,
         };
 
-        MySqlCommand command = new(LabelRepositorySql.SelectAllByUserId);
+        MySqlCommand command = new(LabelCommands.SelectAllByUserId);
 
         command.Parameters.AddWithValue("@user_id", userId);
 
@@ -55,7 +53,7 @@ public class LabelRepository : ILabelRepository
             Successful = true,
         };
 
-        MySqlCommand command = new(LabelRepositorySql.Modify);
+        MySqlCommand command = new(LabelCommands.Modify);
 
         command.Parameters.AddWithValue("@id", label.Id);
         command.Parameters.AddWithValue("@user_id", label.UserId);
@@ -80,7 +78,7 @@ public class LabelRepository : ILabelRepository
             Successful = true,
         };
 
-        MySqlCommand command = new(LabelRepositorySql.SelectById);
+        MySqlCommand command = new(LabelCommands.SelectById);
 
         command.Parameters.AddWithValue("@id", labelId);
 
@@ -97,7 +95,7 @@ public class LabelRepository : ILabelRepository
             Successful = true,
         };
 
-        MySqlCommand command = new(LabelRepositorySql.DeleteByIdAndUserId);
+        MySqlCommand command = new(LabelCommands.DeleteByIdAndUserId);
 
         command.Parameters.AddWithValue("@id", label.Id);
         command.Parameters.AddWithValue("@user_id", label.UserId);

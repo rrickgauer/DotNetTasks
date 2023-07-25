@@ -4,8 +4,8 @@ using Tasks.Service.Domain.Parms;
 using Tasks.Service.Domain.Responses;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
-using static Tasks.Service.Domain.Responses.RepositoryResponses;
-using static Tasks.Service.Domain.Responses.ServicesResponses.LabelServicesResponses;
+using static Tasks.Service.Domain.Responses.Basic.RepositoryResponses;
+using static Tasks.Service.Domain.Responses.Basic.LabelServicesResponses;
 using Tasks.Service.Mappers;
 
 namespace Tasks.Service.Services.Implementations;
@@ -15,16 +15,18 @@ public class LabelServices : ILabelServices
 {
     #region Private members
     private readonly ILabelRepository _labelRepository;
-    private static LabelMapper _labelMapper = new();
+    private readonly IMapperServices _mapperServices;
+    //private static LabelMapper _labelMapper = new();
     #endregion
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="labelRepository"></param>
-    public LabelServices(ILabelRepository labelRepository)
+    public LabelServices(ILabelRepository labelRepository, IMapperServices mapperServices)
     {
         _labelRepository = labelRepository;
+        _mapperServices = mapperServices;
     }
 
 
@@ -95,7 +97,8 @@ public class LabelServices : ILabelServices
         }
 
         // label exists, so make sure the user owns it 
-        label = _labelMapper.ToModel(dataRow);
+        var mapper = new LabelMapper();
+        label = mapper.ToModel(dataRow);
 
         if (label.UserId != userId)
         {
@@ -160,7 +163,7 @@ public class LabelServices : ILabelServices
         // map out the records to models
         DataTable dataTable = repoResult.Data ?? (new());
 
-        result.Data = _labelMapper.ToModels(dataTable);
+        result.Data = _mapperServices.ToModels<Label>(dataTable);
 
         return result;
     }
@@ -188,7 +191,7 @@ public class LabelServices : ILabelServices
         }
 
         // make sure the user owns the label
-        Label label = _labelMapper.ToModel(selectResult.Data);
+        Label label = _mapperServices.ToModel<Label>(selectResult.Data);
 
         if (label.UserId != userId)
         {

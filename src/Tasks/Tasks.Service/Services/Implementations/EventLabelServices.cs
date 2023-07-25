@@ -1,11 +1,12 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
+
 
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Mappers;
+using Tasks.Service.Domain.Responses.Custom;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -14,8 +15,11 @@ public class EventLabelServices : IEventLabelServices
     #region Private memebers
     private readonly IEventLabelRepository _eventLabelRepository;
     private readonly ILabelServices _labelServices;
-    private readonly EventLabelMapper _eventLabelMapper = new();
-    private readonly LabelMapper _labelMapper = new();
+
+    private readonly IMapperServices _mapperServices;
+
+    //private readonly EventLabelMapper _eventLabelMapper = new();
+    //private readonly LabelMapper _labelMapper = new();
     #endregion
 
 
@@ -23,10 +27,11 @@ public class EventLabelServices : IEventLabelServices
     /// Constructor
     /// </summary>
     /// <param name="eventLabelRepository"></param>
-    public EventLabelServices(IEventLabelRepository eventLabelRepository, ILabelServices eventServices)
+    public EventLabelServices(IEventLabelRepository eventLabelRepository, ILabelServices eventServices, IMapperServices mapperServices)
     {
         _eventLabelRepository = eventLabelRepository;
         _labelServices = eventServices;
+        _mapperServices = mapperServices;
     }
 
     /// <summary>
@@ -68,7 +73,7 @@ public class EventLabelServices : IEventLabelServices
     {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(eventId, userId);
 
-        return _labelMapper.ToModels(dataTable);   
+        return _mapperServices.ToModels<Label>(dataTable);   
     }
 
     /// <summary>
@@ -91,7 +96,7 @@ public class EventLabelServices : IEventLabelServices
     {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(userId);
 
-        var eventLabels = _eventLabelMapper.ToModels(dataTable);
+        var eventLabels = _mapperServices.ToModels<EventLabel>(dataTable);
 
         return eventLabels;
     }

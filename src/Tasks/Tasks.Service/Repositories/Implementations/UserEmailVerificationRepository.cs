@@ -16,7 +16,6 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
 {
 
     #region Private members
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -24,10 +23,9 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public UserEmailVerificationRepository(IConfigs configs)
+    public UserEmailVerificationRepository(DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new(_configs);
+        _dbConnection = dbConnection;
     }
 
     /// <summary>
@@ -72,7 +70,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// <returns></returns>
     private static MySqlCommand GetModifySqlCommand(UserEmailVerification userEmailVerification)
     {
-        MySqlCommand command = new(UserEmailVerificationRepositorySql.Modify);
+        MySqlCommand command = new(UserEmailVerificationCommands.Modify);
 
         command.Parameters.AddWithValue("@id", userEmailVerification.Id);
         command.Parameters.AddWithValue("@user_id", userEmailVerification.UserId);
@@ -90,7 +88,7 @@ public class UserEmailVerificationRepository : IUserEmailVerificationRepository
     /// <returns></returns>
     public async Task<DataRow?> GetAsync(Guid id)
     {
-        MySqlCommand command = new(UserEmailVerificationRepositorySql.Select);
+        MySqlCommand command = new(UserEmailVerificationCommands.Select);
 
         command.Parameters.AddWithValue("@id", id);
 

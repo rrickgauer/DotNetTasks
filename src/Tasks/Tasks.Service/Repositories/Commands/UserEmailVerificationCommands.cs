@@ -1,6 +1,6 @@
 ﻿namespace Tasks.Service.Repositories.Commands;
 
-public sealed class UserEmailVerificationRepositorySql
+public sealed class UserEmailVerificationCommands
 {
     public const string Modify = @"
         INSERT INTO

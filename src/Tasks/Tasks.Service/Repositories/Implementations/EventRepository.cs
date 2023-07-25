@@ -1,8 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
-using Tasks.Service.Configurations;
 using Tasks.Service.Domain.Models;
-
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Repositories.Commands;
 using Tasks.Service.Mappers;
@@ -11,16 +9,16 @@ namespace Tasks.Service.Repositories.Implementations;
 
 public partial class EventRepository : IEventRepository
 {
-    private readonly IConfigs _configs;
+    private readonly DbConnection _dbConnection;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
     /// <param name="httpContextAccessor"></param>
-    public EventRepository(IConfigs configs)
+    public EventRepository(DbConnection connection)
     {
-        _configs = configs;
+        _dbConnection = connection;
     }
 
     /// <summary>
@@ -29,10 +27,9 @@ public partial class EventRepository : IEventRepository
     /// <param name="userId"></param>
     /// <returns></returns>
     public async Task<DataTable> GetUserEventsAsync(Guid userId)
-    {
-        DbConnection connection = new(_configs);
+    {   
         MySqlCommand command = BuildCommandForGetUserEvents(userId);
-        var results = await connection.FetchAllAsync(command);
+        var results = await _dbConnection.FetchAllAsync(command);
 
         return results;
     }
@@ -43,12 +40,11 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     private MySqlCommand BuildCommandForGetUserEvents(Guid userId)
     {
-        MySqlCommand cmd = new(EventRepositorySql.SelectAllUsersEvents);
+        MySqlCommand command = new(EventCommands.SelectAllUsersEvents);
 
-        //var userId = GetCurrentUserId();
-        cmd.Parameters.Add(new("@userId", userId));
+        command.Parameters.Add(new("@userId", userId));
 
-        return cmd;
+        return command;
     }
 
     /// <summary>
@@ -58,12 +54,11 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     public async Task<int> DeleteEventAsync(Guid eventId)
     {
-        MySqlCommand command = new(EventRepositorySql.Delete);
+        MySqlCommand command = new(EventCommands.Delete);
+
         command.Parameters.Add(new("@id", eventId));
 
-        DbConnection connection = new(_configs);
-
-        var result = await connection.ModifyAsync(command);
+        var result = await _dbConnection.ModifyAsync(command);
 
         return result;
     }
@@ -75,14 +70,11 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     public async Task<int> ModifyEventAsync(Event e)
     {
-        // make a new connection
-        DbConnection connection = new(_configs);
-
         // create a new sql command loaded with all the parms from the event argument
-        MySqlCommand cmd = SetupModifyEventMySqlCommand(e);
+        MySqlCommand command = SetupModifyEventMySqlCommand(e);
 
         // execute the query
-        var result = await connection.ModifyAsync(cmd);
+        var result = await _dbConnection.ModifyAsync(command);
 
         return result;
     }
@@ -96,7 +88,7 @@ public partial class EventRepository : IEventRepository
     private MySqlCommand SetupModifyEventMySqlCommand(Event e)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(EventRepositorySql.ModifyEventProcedure)
+        MySqlCommand command = new(EventCommands.ModifyEventProcedure)
         {
             CommandType = CommandType.StoredProcedure,
         };
@@ -115,12 +107,11 @@ public partial class EventRepository : IEventRepository
     /// <returns></returns>
     public async Task<DataRow?> GetEventAsync(Guid eventId)
     {
-        DbConnection connection = new(_configs);
+        MySqlCommand command = new(EventCommands.SelectById);
         
-        MySqlCommand command = new(EventRepositorySql.SelectById);
         command.Parameters.AddWithValue("@id", eventId);
 
-        var result = await connection.FetchAsync(command);
+        var result = await _dbConnection.FetchAsync(command);
 
         return result;
     }

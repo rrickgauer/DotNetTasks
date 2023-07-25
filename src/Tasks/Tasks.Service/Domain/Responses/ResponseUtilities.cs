@@ -1,4 +1,6 @@
-﻿namespace Tasks.Service.Domain.Responses;
+﻿using Tasks.Service.Domain.Responses.Basic;
+
+namespace Tasks.Service.Domain.Responses;
 
 public static class ResponseUtilities
 {
@@ -9,7 +11,7 @@ public static class ResponseUtilities
     /// <typeparam name="X"></typeparam>
     /// <param name="source"></param>
     /// <param name="destination"></param>
-    public static void TransferResponseData<T, X>(IBaseResponse<T> source, IBaseResponse<X> destination)
+    public static void TransferResponseData<T, X>(IDataResponse<T> source, IDataResponse<X> destination)
     {
         destination.Exception = source.Exception;
         destination.Successful = source.Successful;

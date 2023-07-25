@@ -1,5 +1,5 @@
 ﻿using Tasks.Service.Domain.Parms;
-using static Tasks.Service.Domain.Responses.ServicesResponses.LabelServicesResponses;
+using static Tasks.Service.Domain.Responses.Basic.LabelServicesResponses;
 
 namespace Tasks.Service.Services.Interfaces;
 
