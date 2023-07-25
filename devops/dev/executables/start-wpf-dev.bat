@@ -1,3 +1,5 @@
-cd "C:\xampp\htdocs\files\DotNetTasks\src\Tasks\Tasks\bin\Debug\net6.0"
+cd "C:\xampp\htdocs\files\DotNetTasks\src\Tasks\Tasks.WpfUi\bin\Debug\net7.0-windows"
 
-.\Tasks.exe --debug
+start Tasks.WpfUi.exe --debug
+
+exit
