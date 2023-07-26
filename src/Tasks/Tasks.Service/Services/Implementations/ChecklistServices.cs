@@ -64,7 +64,7 @@ public class ChecklistServices : IChecklistServices
 
         if (checklist is null)
         {
-            return ModifyChecklistStatus.CanCreate;
+            return ModifyChecklistStatus.Insert;
         }
 
         if (checklist.UserId != userId)
@@ -72,7 +72,7 @@ public class ChecklistServices : IChecklistServices
             return ModifyChecklistStatus.TakenByAnotherUser;
         }
 
-        return ModifyChecklistStatus.CanUpdate;
+        return ModifyChecklistStatus.Update;
     }
 
 

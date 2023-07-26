@@ -14,6 +14,6 @@ var builder = ApiUtilities.GetWebApplicationBuilder(args);
 
 var app = builder.Build();
 
-ApiUtilities.ConfigureWebApplication(app);
+ApiUtilities.BuildWebApplication(app);
 
 app.Run();

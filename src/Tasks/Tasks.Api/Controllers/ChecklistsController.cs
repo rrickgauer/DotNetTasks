@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tasks.Api.Controllers.Bases;
+using Tasks.Service.Auth;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
@@ -46,19 +47,10 @@ public class ChecklistsController : AuthorizedControllerBase
     /// <param name="checklistId"></param>
     /// <returns></returns>
     [HttpGet("{checklistId}")]
+    [ServiceFilter(typeof(ChecklistAuthFilters))]
     public async Task<ActionResult<Checklist>> GetChecklistAsync(Guid checklistId)
     {
         var checklist = await _checklistServices.GetChecklistAsync(checklistId);
-
-        if (checklist == null)
-        {
-            return NotFound();
-        }
-
-        if (checklist.UserId != CurrentUserId)
-        {
-            return Forbid();
-        }
 
         return Ok(checklist);
     }
@@ -93,13 +85,15 @@ public class ChecklistsController : AuthorizedControllerBase
         var result = await _checklistServices.SaveChecklistAsync(checklist);
 
         // return the updated model
-        if (status == ModifyChecklistStatus.CanCreate)
+        if (status == ModifyChecklistStatus.Insert)
         {
             return Created($"/checklists/{result.Id}", result);
         }
 
         return Ok(result);
     }
+
+
 
 
 }

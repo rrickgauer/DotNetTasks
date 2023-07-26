@@ -53,6 +53,8 @@ public static class ServicesInjector
         .AddTransient<DbConnection>()
 
         // custom filters
+        .AddScoped<ChecklistAuthFilters>()
+
         .AddScoped<CustomHeaderFilter>();
     }
 }

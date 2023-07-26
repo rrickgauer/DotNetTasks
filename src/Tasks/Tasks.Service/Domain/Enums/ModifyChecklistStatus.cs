@@ -10,6 +10,6 @@ namespace Tasks.Service.Domain.Enums;
 public enum ModifyChecklistStatus
 {
     TakenByAnotherUser,
-    CanCreate,
-    CanUpdate,
+    Insert,
+    Update,
 }
