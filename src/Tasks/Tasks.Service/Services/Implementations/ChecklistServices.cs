@@ -40,9 +40,21 @@ public class ChecklistServices : IChecklistServices
         return checklists;
     }
 
+    /// <summary>
+    /// Get a single checklist
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <returns></returns>
     public async Task<Checklist?> GetChecklistAsync(Guid checklistId)
     {
-        throw new NotImplementedException();
+        var datarow = await _checklistRepository.SelectChecklistAsync(checklistId);
+
+        if (datarow == null)
+            return null;
+
+        var model = _mapperServices.ToModel<Checklist>(datarow);
+
+        return model;
     }
 }
 

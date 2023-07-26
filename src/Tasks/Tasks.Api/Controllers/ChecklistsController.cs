@@ -46,7 +46,19 @@ public class ChecklistsController : AuthorizedControllerBase
     [HttpGet("{checklistId}")]
     public async Task<ActionResult<Checklist>> GetChecklistAsync(Guid checklistId)
     {
-        return Ok();
+        var checklist = await _checklistServices.GetChecklistAsync(checklistId);
+
+        if (checklist == null)
+        {
+            return NotFound();
+        }
+
+        if (checklist.UserId != CurrentUserId)
+        {
+            return Forbid();
+        }
+
+        return Ok(checklist);
     }
 
 

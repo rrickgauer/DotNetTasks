@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Tasks.Service.Auth;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Errors;
