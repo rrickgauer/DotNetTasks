@@ -12,16 +12,18 @@ public class EventActionServices : IEventActionServices
 {
     #region Private members
     private readonly IEventActionRepository _eventActionRepository;
-    private readonly EventActionMapper _mapper = new();
+    private readonly IMapperServices _mapperServices;
+    //private readonly EventActionMapper _mapper = new();
     #endregion
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="eventActionRepository"></param>
-    public EventActionServices(IEventActionRepository eventActionRepository)
+    public EventActionServices(IEventActionRepository eventActionRepository, IMapperServices modelMapperServices)
     {
         _eventActionRepository = eventActionRepository;
+        _mapperServices = modelMapperServices;
     }
 
     /// <summary>
@@ -67,7 +69,7 @@ public class EventActionServices : IEventActionServices
 
         if (dataRow != null)
         {
-            eventAction = _mapper.ToModel(dataRow);
+            eventAction = _mapperServices.ToModel<EventAction>(dataRow);
         }
 
         return eventAction;

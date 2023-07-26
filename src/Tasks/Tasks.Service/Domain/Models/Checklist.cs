@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.Enums;
+using Tasks.Service.Domain.TableView;
 
 namespace Tasks.Service.Domain.Models;
 
-public class Checklist
+public class Checklist : ITableViewModel<ChecklistTableView, Checklist>
 {
     [SqlColumn("id")]
     public Guid? Id { get; set; }
@@ -17,10 +18,30 @@ public class Checklist
     public string? Title { get; set; }
 
     [SqlColumn("checklist_type_id")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonPropertyName("type")]
     public ChecklistType ListType { get; set; } = ChecklistType.List;
 
     [SqlColumn("created_on")]
     public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+
+
+    // ITableViewModel
+    public static explicit operator Checklist(ChecklistTableView other)
+    {
+        Checklist checklist = new()
+        {
+            Id = other.Id,
+            Title = other.Title,
+            UserId = other.UserId,
+            ListType = other.ListType,
+            CreatedOn = other.CreatedOn
+        };
+
+        return checklist;
+
+    }
 }
 
 

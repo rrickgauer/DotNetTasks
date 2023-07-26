@@ -15,20 +15,19 @@ namespace Tasks.Api.Controllers;
 [Route("events")]
 public class EventsController : ControllerBase
 {
-    #region Private members
-    private readonly IConfigs _configuration;
+    #region - Private members -
     private readonly IEventServices _eventServices;
     private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
+
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="eventRepository"></param>
-    public EventsController(IConfigs configuration, IEventServices eventServices)
+    public EventsController(IEventServices eventServices)
     {
-        _configuration = configuration;
         _eventServices = eventServices;
     }
 

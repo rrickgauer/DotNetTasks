@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasks.Service.Repositories.Commands;
 
-public class EventLabelRepositorySql
+public class EventLabelCommands
 {
     /// <summary>
     /// @event_id

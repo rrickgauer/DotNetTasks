@@ -1,6 +1,6 @@
 ﻿using Tasks.Service.Configurations;
 using Tasks.Service.Domain.Models;
-using Tasks.Service.Domain.Views;
+using Tasks.Service.Domain.Responses.Custom;
 
 
 #pragma warning disable CS8601 // Possible null reference assignment.

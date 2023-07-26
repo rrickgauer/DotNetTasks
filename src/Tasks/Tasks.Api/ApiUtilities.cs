@@ -4,7 +4,6 @@ using System.Net;
 using Tasks.Service.Configurations;
 using Tasks.Service.Repositories.Implementations;
 using Tasks.Service.Repositories.Interfaces;
-using Tasks.Service.Configurations;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.DependenciesInjector;
@@ -23,8 +22,33 @@ public static class ApiUtilities
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers();
+        ConfigureControllers(builder);
+        ConfigureIpAddress(builder);
 
+        // setup basic authentication
+        builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+        
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddHttpContextAccessor();
+
+        // inject depenedenencies
+        ServicesInjector.InjectDependencies(builder.Services, builder.Environment.IsDevelopment());
+
+        return builder;
+    }
+
+
+    private static void ConfigureControllers(WebApplicationBuilder builder)
+    {
+        builder.Services.AddControllers(options =>
+        {
+            options.Filters.Add<HttpResponseExceptionFilter>();
+        });
+
+    }
+
+    private static void ConfigureIpAddress(WebApplicationBuilder builder)
+    {
         IConfigs config = new ConfigurationProduction();
 
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -32,22 +56,17 @@ public static class ApiUtilities
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.KnownProxies.Add(IPAddress.Parse(config.IpAddressVps));
         });
-
-        // setup basic authentication
-        builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddHttpContextAccessor();
-
-        ServicesInjector.InjectDependencies(builder.Services, builder.Environment.IsDevelopment());
-
-        return builder;
     }
+
+
+
+
 
     /// <summary>
     /// Configure the web application
     /// </summary>
     /// <param name="webApplication"></param>
-    public static void ConfigureWebApplication(WebApplication webApplication)
+    public static void BuildWebApplication(WebApplication webApplication)
     {
         webApplication.UseForwardedHeaders();
 

@@ -14,7 +14,6 @@ public class RecurrenceRepository : IRecurrenceRepository
 {
 
     #region Private memebers
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -22,10 +21,9 @@ public class RecurrenceRepository : IRecurrenceRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public RecurrenceRepository(IConfigs configs)
+    public RecurrenceRepository(IConfigs configs, DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new(_configs);
+        _dbConnection = dbConnection;
     }
 
 
@@ -37,7 +35,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(RecurrenceRepositorySql.GetRecurrences)
+        MySqlCommand command = new(RecurrenceCommands.GetRecurrences)
         {
             CommandType = CommandType.StoredProcedure,
         };
@@ -58,7 +56,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public async Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval, Guid eventId)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(RecurrenceRepositorySql.GetEventRecurrences)
+        MySqlCommand command = new(RecurrenceCommands.GetEventRecurrences)
         {
             CommandType = CommandType.StoredProcedure,
         };
@@ -75,7 +73,7 @@ public class RecurrenceRepository : IRecurrenceRepository
     public async Task<DataTable> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange)
     {
         // setup a new stored procedure command 
-        MySqlCommand command = new(RecurrenceRepositorySql.GetRecurrencesForReminders)
+        MySqlCommand command = new(RecurrenceCommands.GetRecurrencesForReminders)
         {
             CommandType = CommandType.StoredProcedure,
         };

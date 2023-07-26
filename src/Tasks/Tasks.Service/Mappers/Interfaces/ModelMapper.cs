@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Mappers.Interfaces;
 
@@ -17,6 +18,11 @@ public abstract class ModelMapper<T>
         }
 
         return models;
+    }
+
+    protected string SqlColumn(string propertyName) 
+    {
+        return AttributeUtilities.GetSqlColumn<T>(propertyName);
     }
 }
 

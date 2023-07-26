@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Auth\" />
+    <Compile Remove="Domain\TableViews\**" />
+    <EmbeddedResource Remove="Domain\TableViews\**" />
+    <None Remove="Domain\TableViews\**" />
   </ItemGroup>
 
     <ItemGroup>

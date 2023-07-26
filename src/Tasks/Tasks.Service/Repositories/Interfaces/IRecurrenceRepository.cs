@@ -2,12 +2,11 @@
 using Tasks.Service.Domain.Parms;
 using Tasks.Service.Validation;
 
-namespace Tasks.Service.Repositories.Interfaces
+namespace Tasks.Service.Repositories.Interfaces;
+
+public interface IRecurrenceRepository
 {
-    public interface IRecurrenceRepository
-    {
-        public Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval);
-        public Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval eventRecurrenceRetrieval, Guid eventId);
-        public Task<DataTable> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange);
-    }
+    public Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval);
+    public Task<DataTable> GetRecurrencesAsync(RecurrenceRetrieval eventRecurrenceRetrieval, Guid eventId);
+    public Task<DataTable> GetRecurrencesForRemindersAsync(IValidDateRange validDateRange);
 }

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Tasks.Service.Auth;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Views;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Errors;
 using Tasks.Service.Security;
+using Tasks.Service.Domain.Responses.Custom;
 
 namespace Tasks.Api.Controllers;
 

@@ -12,7 +12,6 @@ namespace Tasks.Service.Repositories.Implementations;
 public class EventLabelRepository : IEventLabelRepository
 {
     #region Private members
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -20,10 +19,10 @@ public class EventLabelRepository : IEventLabelRepository
     /// 
     /// </summary>
     /// <param name="configs"></param>
-    public EventLabelRepository(IConfigs configs)
+    public EventLabelRepository(DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new(_configs);
+        _dbConnection = dbConnection;
+        
     }
 
     /// <summary>
@@ -34,7 +33,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// <returns></returns>
     public async Task<int> InsertAsync(EventLabel eventLabel, Guid userId)
     {
-        MySqlCommand command = new(EventLabelRepositorySql.Insert);
+        MySqlCommand command = new(EventLabelCommands.Insert);
 
         command.Parameters.AddWithValue("@event_id", eventLabel.EventId);
         command.Parameters.AddWithValue("@label_id", eventLabel.LabelId);
@@ -54,7 +53,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// <returns></returns>
     public async Task<DataTable> SelectAllAsync(Guid eventId, Guid userId)
     {
-        MySqlCommand command = new(EventLabelRepositorySql.SelectAllByIdAndUserId);
+        MySqlCommand command = new(EventLabelCommands.SelectAllByIdAndUserId);
 
         command.Parameters.AddWithValue("@event_id", eventId);
         command.Parameters.AddWithValue("@user_id", userId);
@@ -71,7 +70,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// <returns></returns>
     public async Task<int> InsertBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest)
     {
-        MySqlCommand deleteCommand = new(EventLabelRepositorySql.DeleteAllByEvent);
+        MySqlCommand deleteCommand = new(EventLabelCommands.DeleteAllByEvent);
         deleteCommand.Parameters.AddWithValue("@event_id", eventLabelsBatchRequest.EventId);
 
         // don't need to run the insert command because there are no labels to add
@@ -96,7 +95,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// <returns></returns>
     public async Task<DataTable> SelectAllAsync(Guid userId)
     {
-        MySqlCommand command = new(EventLabelRepositorySql.SelectAllByUser);
+        MySqlCommand command = new(EventLabelCommands.SelectAllByUser);
 
         command.Parameters.AddWithValue("@user_id", userId);
 
@@ -115,7 +114,7 @@ public class EventLabelRepository : IEventLabelRepository
     /// <exception cref="NotImplementedException"></exception>
     public async Task<int> DeleteAsync(Guid eventId, Guid labelId)
     {
-        MySqlCommand command = new(EventLabelRepositorySql.Delete);
+        MySqlCommand command = new(EventLabelCommands.Delete);
 
         command.Parameters.AddWithValue("@event_id", eventId);
         command.Parameters.AddWithValue("@label_id", labelId);

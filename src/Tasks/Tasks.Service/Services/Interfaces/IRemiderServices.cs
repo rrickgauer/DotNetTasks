@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
-using Tasks.Service.Domain.Views;
+using Tasks.Service.Domain.Responses.Custom;
 using Tasks.Service.Validation;
 
 namespace Tasks.Service.Services.Interfaces;

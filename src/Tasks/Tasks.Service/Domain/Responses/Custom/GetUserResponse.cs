@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
 
-namespace Tasks.Service.Domain.Views;
+namespace Tasks.Service.Domain.Responses.Custom;
 
 public class GetUserResponse
 {

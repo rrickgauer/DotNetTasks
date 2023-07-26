@@ -11,7 +11,8 @@ public class EventServices : IEventServices
 {
     #region Private members
     private readonly IEventRepository _eventRepository;
-    private readonly EventMapper _eventMapper = new();
+    private readonly IMapperServices _mapperServices;
+    //private readonly EventMapper _eventMapper = new();
     #endregion
 
     /// <summary>
@@ -19,9 +20,10 @@ public class EventServices : IEventServices
     /// </summary>
     /// <param name="httpContextAccessor"></param>
     /// <param name="eventRepository"></param>
-    public EventServices(IEventRepository eventRepository)
+    public EventServices(IEventRepository eventRepository, IMapperServices mapperServices)
     {
         _eventRepository = eventRepository;
+        _mapperServices = mapperServices;
     }
 
     /// <summary>
@@ -61,7 +63,7 @@ public class EventServices : IEventServices
     {
         DataRow? dr = await _eventRepository.GetEventAsync(eventId);
 
-        Event? theEvent = dr != null ? _eventMapper.ToModel(dr) : null;
+        Event? theEvent = dr != null ? _mapperServices.ToModel<Event>(dr) : null;
 
         return theEvent;
     }
@@ -74,9 +76,7 @@ public class EventServices : IEventServices
     {
         var dataTable = await _eventRepository.GetUserEventsAsync(userId);
 
-        var events = 
-            from dataRow in dataTable.AsEnumerable() 
-            select _eventMapper.ToModel(dataRow);
+        var events = _mapperServices.ToModels<Event>(dataTable);
 
         return events.ToList();
     }

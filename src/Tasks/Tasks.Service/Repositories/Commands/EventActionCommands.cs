@@ -1,6 +1,6 @@
 ﻿namespace Tasks.Service.Repositories.Commands;
 
-public sealed class EventActionRepositorySql
+public sealed class EventActionCommands
 {
     public const string Modify = @"
         REPLACE INTO Event_Actions 

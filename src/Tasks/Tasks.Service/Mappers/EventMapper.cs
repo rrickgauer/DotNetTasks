@@ -1,7 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using System.Data;
-using System.Data.Common;
-using Tasks.Service.CustomAttributes;
+﻿using System.Data;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Mappers.Interfaces;
@@ -48,23 +45,24 @@ public class EventMapper : ModelMapper<Event>
     /// <returns></returns>
     public static SqlCommandParmsMap ToSqlCommandParmsMap(Event e)
     {
-        SqlCommandParmsMap parms = new();
-
-        parms.Add("@in_id", e.Id);
-        parms.Add("@in_user_id", e.UserId);
-        parms.Add("@in_name", e.Name);
-        parms.Add("@in_description", e.Description);
-        parms.Add("@in_phone_number", e.PhoneNumber);
-        parms.Add("@in_location", e.Location);
-        parms.Add("@in_starts_on", e.StartsOn);
-        parms.Add("@in_ends_on", e.EndsOn);
-        parms.Add("@in_starts_at", e.StartsAt);
-        parms.Add("@in_ends_at", e.EndsAt);
-        parms.Add("@in_frequency", e.Frequency);
-        parms.Add("@in_separation", e.Separation);
-        parms.Add("@in_recurrence_day", e.RecurrenceDay);
-        parms.Add("@in_recurrence_week", e.RecurrenceWeek);
-        parms.Add("@in_recurrence_month", e.RecurrenceMonth);
+        SqlCommandParmsMap parms = new()
+        {
+            { "@in_id", e.Id },
+            { "@in_user_id", e.UserId },
+            { "@in_name", e.Name },
+            { "@in_description", e.Description },
+            { "@in_phone_number", e.PhoneNumber },
+            { "@in_location", e.Location },
+            { "@in_starts_on", e.StartsOn },
+            { "@in_ends_on", e.EndsOn },
+            { "@in_starts_at", e.StartsAt },
+            { "@in_ends_at", e.EndsAt },
+            { "@in_frequency", e.Frequency },
+            { "@in_separation", e.Separation },
+            { "@in_recurrence_day", e.RecurrenceDay },
+            { "@in_recurrence_week", e.RecurrenceWeek },
+            { "@in_recurrence_month", e.RecurrenceMonth }
+        };
 
         return parms;
     }

@@ -12,7 +12,6 @@ namespace Tasks.Service.Repositories.Implementations;
 public class EventActionRepository : IEventActionRepository
 {
     #region Private members
-    private readonly IConfigs _configs;
     private readonly DbConnection _dbConnection;
     #endregion
 
@@ -20,17 +19,16 @@ public class EventActionRepository : IEventActionRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public EventActionRepository(IConfigs configs)
+    public EventActionRepository(DbConnection dbConnection)
     {
-        _configs = configs;
-        _dbConnection = new(_configs);
+        _dbConnection = dbConnection;
     }
 
     
     public async Task<int> ModifyEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.Modify);
+        MySqlCommand command = new(EventActionCommands.Modify);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.AddParmsToCommand(command);
@@ -42,7 +40,7 @@ public class EventActionRepository : IEventActionRepository
     public async Task<int> DeleteEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.Delete);
+        MySqlCommand command = new(EventActionCommands.Delete);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.Parms.Remove("@created_on");
@@ -55,7 +53,7 @@ public class EventActionRepository : IEventActionRepository
     public async Task<DataRow?> GetEventActionAsync(EventAction eventAction)
     {
         // map the EventAction argument's values to the sql named params
-        MySqlCommand command = new(EventActionRepositorySql.Select);
+        MySqlCommand command = new(EventActionCommands.Select);
 
         SqlCommandParmsMap parmsMap = EventActionMapper.ToSqlCommandParmsMap(eventAction);
         parmsMap.Parms.Remove("@created_on");
