@@ -1,4 +1,7 @@
-﻿using Tasks.Service.Domain.Models;
+﻿#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8629 // Nullable value type may be null.
+
+using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 
@@ -51,5 +54,14 @@ public class ChecklistItemServices : IChecklistItemServices
         var checklistItem = _mapperServices.ToModel<ChecklistItem>(row);
 
         return checklistItem;
+    }
+
+
+    public async Task<int> SaveChecklistItemAsync(ChecklistItem item)
+    {
+        var numRecords = await _repository.SaveChecklistItemAsync(item);
+
+        return numRecords;
+        
     }
 }

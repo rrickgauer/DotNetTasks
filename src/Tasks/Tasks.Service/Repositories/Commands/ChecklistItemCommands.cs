@@ -35,4 +35,28 @@ public sealed class ChecklistItemCommands
             1";
 
 
+    public const string Modify = @"
+        INSERT INTO Checklist_Items 
+        (
+            id,
+            checklist_id,
+            content,
+            position,
+            completed_on
+        )
+        VALUES
+        (
+            @id,
+            @checklist_id,
+            @content,
+            @position,
+            @completed_on
+        ) AS new_values 
+        ON DUPLICATE KEY UPDATE
+            content = new_values.content,
+            position = new_values.position,
+            completed_on = new_values.completed_on";
+
+
+
 }

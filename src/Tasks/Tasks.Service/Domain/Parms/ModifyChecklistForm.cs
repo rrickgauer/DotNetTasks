@@ -9,7 +9,6 @@ namespace Tasks.Service.Domain.Parms;
 public class ModifyChecklistForm : IModelParms<Checklist>
 {
     [BindProperty]
-    //[FromForm]
     public string? Title { get; set; }
 
     [BindRequired]

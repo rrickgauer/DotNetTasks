@@ -11,4 +11,5 @@ public interface IChecklistItemServices
 {
     public Task<IEnumerable<ChecklistItem>> GetChecklistItemsAsync(Guid checklistId);
     public Task<ChecklistItem?> GetChecklistItemAsync(Guid itemId);
+    public Task<int> SaveChecklistItemAsync(ChecklistItem item);
 }

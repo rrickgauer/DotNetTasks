@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tasks.Api.Controllers.Bases;
 using Tasks.Service.Auth;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
 using Tasks.Service.Services.Interfaces;
 
 namespace Tasks.Api.Controllers;
@@ -59,9 +60,20 @@ public class ChecklistItemsController : AuthorizedControllerBase
     /// <param name="checklistId"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> PostChecklistItemAsync([FromRoute] Guid checklistId)
+    public async Task<IActionResult> PostChecklistItemAsync([FromRoute] Guid checklistId, [FromForm] ModifyChecklistItemForm modifyChecklistItemForm)
     {
-        return Created($"uri", "post");
+        ChecklistItem newItem = new()
+        {
+            Id = Guid.NewGuid(),
+            ChecklistId = checklistId,
+        };
+
+        modifyChecklistItemForm.CopyFieldsToModel(newItem);
+
+        await _checklistItemServices.SaveChecklistItemAsync(newItem);
+
+        string uri = $"/checklists/{checklistId}/items/{newItem.Id}";
+        return Created(uri, newItem);
     }
 
 
