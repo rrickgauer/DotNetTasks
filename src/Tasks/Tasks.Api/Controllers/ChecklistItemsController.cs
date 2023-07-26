@@ -44,9 +44,12 @@ public class ChecklistItemsController : AuthorizedControllerBase
     /// <param name="itemId"></param>
     /// <returns></returns>
     [HttpGet("{itemId}")]
-    public async Task<IActionResult> GetChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
+    [ServiceFilter(typeof(ChecklistItemAuthFilter))]
+    public async Task<ActionResult<ChecklistItem>> GetChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
     {
-        return Ok("get single");
+        var item = await _checklistItemServices.GetChecklistItemAsync(itemId);
+
+        return Ok(item);
     }
 
 
@@ -82,6 +85,7 @@ public class ChecklistItemsController : AuthorizedControllerBase
     /// <param name="itemId"></param>
     /// <returns></returns>
     [HttpDelete("{itemId}")]
+    [ServiceFilter(typeof(ChecklistItemAuthFilter))]
     public async Task<IActionResult> DeleteChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
     {
         return NoContent();

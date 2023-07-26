@@ -8,6 +8,7 @@ public class ChecklistItem
     [SqlColumn("id")]
     public Guid? Id { get; set; }
 
+    [JsonIgnore]
     [SqlColumn("checklist_id")]
     public Guid? ChecklistId { get; set; }
 

@@ -41,6 +41,15 @@ public class ChecklistItemServices : IChecklistItemServices
 
     public async Task<ChecklistItem?> GetChecklistItemAsync(Guid itemId)
     {
-        throw new NotImplementedException();
+        var row = await _repository.SelectChecklistItemAsync(itemId);
+
+        if (row == null)
+        {
+            return null;
+        }
+
+        var checklistItem = _mapperServices.ToModel<ChecklistItem>(row);
+
+        return checklistItem;
     }
 }

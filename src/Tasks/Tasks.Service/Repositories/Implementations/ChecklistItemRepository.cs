@@ -37,7 +37,11 @@ public class ChecklistItemRepository : IChecklistItemRepository
 
     public async Task<DataRow?> SelectChecklistItemAsync(Guid itemId)
     {
-        throw new NotImplementedException();
+        MySqlCommand command = new(ChecklistItemCommands.SelectSingle);
+
+        command.Parameters.AddWithValue("@id", itemId);
+
+        return await _connection.FetchAsync(command);
     }
 
 
