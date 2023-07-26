@@ -84,6 +84,11 @@ public class ChecklistServices : IChecklistServices
         // return the updated checklist
         return await GetChecklistAsync(checklist.Id.Value);
     }
+
+    public async Task<int> DeleteChecklistAsync(Guid checklistId)
+    {
+        return await _checklistRepository.DeleteChecklistAsync(checklistId);
+    }
 }
 
 

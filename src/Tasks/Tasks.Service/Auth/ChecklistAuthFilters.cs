@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿/***********************************************************************
+ 
+This filter ensures that the client has authorization for viewing a Checklist.
+ 
+************************************************************************/
+
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 using Tasks.Service.Errors;
 using Tasks.Service.Services.Interfaces;
@@ -23,11 +29,13 @@ public class ChecklistAuthFilters : IAsyncActionFilter
 
         var checklist = await _checklistServices.GetChecklistAsync(checklistId);
 
+        // does checklist exist?
         if (checklist == null)
         {
             throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 
+        // is client authorized to view it?
         if (checklist.UserId != clientId)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);

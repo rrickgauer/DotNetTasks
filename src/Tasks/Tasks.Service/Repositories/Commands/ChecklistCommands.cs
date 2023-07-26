@@ -33,4 +33,7 @@ public sealed class ChecklistCommands
             title = new_values.title,
             checklist_type_id = new_values.checklist_type_id";
 
+
+    public const string Delete = @"DELETE FROM Checklists WHERE id = @id";
+
 }

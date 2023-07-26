@@ -117,5 +117,19 @@ public class ChecklistsController : AuthorizedControllerBase
         return Created($"/checklists/{result.Id}", result);
     }
 
+    /// <summary>
+    /// DELETE: /checklists/:checklistId
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <returns></returns>
+    [HttpDelete("{checklistId}")]
+    [ServiceFilter(typeof(ChecklistAuthFilters))]
+    public async Task<IActionResult> DeleteChecklistAsync([FromRoute] Guid checklistId)
+    {
+        await _checklistServices.DeleteChecklistAsync(checklistId);
+
+        return NoContent();
+    }
+
 
 }
