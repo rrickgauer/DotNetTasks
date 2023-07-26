@@ -94,6 +94,28 @@ public class ChecklistsController : AuthorizedControllerBase
     }
 
 
+    /// <summary>
+    /// POST: /checklists
+    /// </summary>
+    /// <param name="modifyChecklistForm"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ActionResult<Checklist>> PostChecklistAsync([FromForm] ModifyChecklistForm modifyChecklistForm)
+    {
+        // copy over the form data into a new checklist model
+        Checklist checklist = new()
+        {
+            Id = Guid.NewGuid(),
+            UserId = CurrentUserId,
+        };
+
+        modifyChecklistForm.CopyFieldsToModel(checklist);
+
+        // save the changes in the datbase
+        var result = await _checklistServices.SaveChecklistAsync(checklist);
+
+        return Created($"/checklists/{result.Id}", result);
+    }
 
 
 }
