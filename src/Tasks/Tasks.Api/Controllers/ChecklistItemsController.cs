@@ -19,6 +19,11 @@ public class ChecklistItemsController : AuthorizedControllerBase
     private readonly IChecklistItemServices _checklistItemServices;
     #endregion
 
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="checklistItemServices"></param>
     public ChecklistItemsController(IChecklistItemServices checklistItemServices)
     {
         _checklistItemServices = checklistItemServices;
@@ -120,6 +125,7 @@ public class ChecklistItemsController : AuthorizedControllerBase
     [ServiceFilter(typeof(ChecklistItemAuthFilter))]
     public async Task<IActionResult> DeleteChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
     {
+        await _checklistItemServices.DeleteChecklistItemAsync(itemId);
         return NoContent();
     }
 

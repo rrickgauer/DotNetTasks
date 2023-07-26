@@ -62,7 +62,11 @@ public class ChecklistItemRepository : IChecklistItemRepository
     /// <exception cref="NotImplementedException"></exception>
     public async Task<int> DeleteChecklistItemAsync(Guid itemId)
     {
-        throw new NotImplementedException();
+        MySqlCommand command = new(ChecklistItemCommands.Delete);
+
+        command.Parameters.AddWithValue("@id", itemId);
+
+        return await _connection.ModifyAsync(command);
     }
 
 

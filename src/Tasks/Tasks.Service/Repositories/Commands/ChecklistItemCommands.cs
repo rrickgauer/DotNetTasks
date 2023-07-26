@@ -58,5 +58,12 @@ public sealed class ChecklistItemCommands
             completed_on = new_values.completed_on";
 
 
+    public const string Delete = @"
+        DELETE FROM
+            Checklist_Items
+        WHERE
+            id = @id";
+
+
 
 }

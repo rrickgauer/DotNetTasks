@@ -1,7 +1,4 @@
-﻿#pragma warning disable CS8603 // Possible null reference return.
-#pragma warning disable CS8629 // Nullable value type may be null.
-
-using Tasks.Service.Domain.Models;
+﻿using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 
@@ -41,7 +38,11 @@ public class ChecklistItemServices : IChecklistItemServices
         return items;
     }
 
-
+    /// <summary>
+    /// Get a the specified checklist item
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
     public async Task<ChecklistItem?> GetChecklistItemAsync(Guid itemId)
     {
         var row = await _repository.SelectChecklistItemAsync(itemId);
@@ -56,12 +57,25 @@ public class ChecklistItemServices : IChecklistItemServices
         return checklistItem;
     }
 
-
+    /// <summary>
+    /// Save the given checklist item
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
     public async Task<int> SaveChecklistItemAsync(ChecklistItem item)
     {
         var numRecords = await _repository.SaveChecklistItemAsync(item);
 
         return numRecords;
-        
+    }
+
+    /// <summary>
+    /// Delete the specified checklist item
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    public async Task<int> DeleteChecklistItemAsync(Guid itemId)
+    {
+        return await _repository.DeleteChecklistItemAsync(itemId);
     }
 }
