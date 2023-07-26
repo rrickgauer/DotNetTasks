@@ -38,7 +38,10 @@ public static class ServicesInjector
         .AddScoped<ILabelServices, LabelServices>()
         .AddScoped<IEventLabelServices, EventLabelServices>()
         .AddScoped<IChecklistServices, ChecklistServices>()
+        .AddScoped<IChecklistItemServices, ChecklistItemServices>()
+        
         .AddSingleton<IMapperServices, MapperServices>()
+        
 
         // repositories
         .AddScoped<IUserRepository, UserRepository>()
@@ -49,11 +52,13 @@ public static class ServicesInjector
         .AddScoped<ILabelRepository, LabelRepository>()
         .AddScoped<IEventLabelRepository, EventLabelRepository>()
         .AddScoped<IChecklistRepository, ChecklistRepository>()
+        .AddScoped<IChecklistItemRepository, ChecklistItemRepository>()
 
         .AddTransient<DbConnection>()
 
         // custom filters
         .AddScoped<ChecklistAuthFilters>()
+        .AddScoped<ChecklistItemAuthFilter>()
 
         .AddScoped<CustomHeaderFilter>();
     }

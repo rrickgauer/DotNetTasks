@@ -1,4 +1,5 @@
-﻿using Tasks.Service.CustomAttributes;
+﻿using System.Text.Json.Serialization;
+using Tasks.Service.CustomAttributes;
 
 namespace Tasks.Service.Domain.Models;
 
@@ -7,8 +8,9 @@ public class ChecklistItem
     [SqlColumn("id")]
     public Guid? Id { get; set; }
 
+    [JsonIgnore]
     [SqlColumn("checklist_id")]
-    public Guid? ListId { get; set; }
+    public Guid? ChecklistId { get; set; }
 
     [SqlColumn("content")]
     public string? Content { get; set; }
@@ -17,11 +19,11 @@ public class ChecklistItem
     public DateTime CreatedOn { get; set; } = DateTime.Now;
 
     [SqlColumn("completed_on")]
+    [JsonIgnore]
     public DateTime? CompletedOn { get; set; } = null;
 
     [SqlColumn("position")]
     public uint Position { get; set; } = 0;
-
 
 
     /// <summary>
