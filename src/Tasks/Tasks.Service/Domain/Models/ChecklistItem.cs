@@ -19,6 +19,7 @@ public class ChecklistItem
     public DateTime CreatedOn { get; set; } = DateTime.Now;
 
     [SqlColumn("completed_on")]
+    [JsonIgnore]
     public DateTime? CompletedOn { get; set; } = null;
 
     [SqlColumn("position")]
@@ -30,7 +31,6 @@ public class ChecklistItem
     /// If CompletedOn has a value (is not null), then the item is complete.
     /// Otherwise, it is incomplete.
     /// </summary>
-    [JsonIgnore]
     public bool IsComplete
     {
         get => CompletedOn != null;

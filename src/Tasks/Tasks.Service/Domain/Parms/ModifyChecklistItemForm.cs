@@ -9,7 +9,7 @@ public class ModifyChecklistItemForm : IModelParms<ChecklistItem>
     public string? Content { get; set; }
 
     [BindProperty]
-    public DateTime? CompletedOn { get; set; } = null;
+    public bool IsComplete { get; set; } = false;
 
     [BindProperty]
     public uint Position { get; set; } = 0;
@@ -18,7 +18,7 @@ public class ModifyChecklistItemForm : IModelParms<ChecklistItem>
     public void CopyFieldsToModel(ChecklistItem model)
     {
         model.Content = Content;
-        model.CompletedOn = CompletedOn;
+        model.IsComplete = IsComplete;
         model.Position = Position;
     }
 }

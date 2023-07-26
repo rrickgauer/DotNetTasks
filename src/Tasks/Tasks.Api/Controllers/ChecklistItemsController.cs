@@ -84,9 +84,29 @@ public class ChecklistItemsController : AuthorizedControllerBase
     /// <param name="itemId"></param>
     /// <returns></returns>
     [HttpPut("{itemId}")]
-    public async Task<IActionResult> PutChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
+    public async Task<IActionResult> PutChecklistItemAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId, [FromForm] ModifyChecklistItemForm modifyChecklistItemForm)
     {
-        return Ok("put");
+        var existingChecklistItem = await _checklistItemServices.GetChecklistItemAsync(itemId);
+
+        ChecklistItem newItem = new()
+        {
+            Id = itemId,
+            ChecklistId = checklistId,
+        };
+
+        modifyChecklistItemForm.CopyFieldsToModel(newItem);
+
+        await _checklistItemServices.SaveChecklistItemAsync(newItem);
+
+        if (existingChecklistItem == null)
+        {
+            string uri = $"/checklists/{checklistId}/items/{newItem.Id}";
+            return Created(uri, newItem);
+        }
+
+        newItem.CreatedOn = existingChecklistItem.CreatedOn;
+
+        return Ok(newItem);
     }
 
 

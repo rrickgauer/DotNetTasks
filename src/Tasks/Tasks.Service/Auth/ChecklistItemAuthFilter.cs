@@ -25,10 +25,16 @@ public class ChecklistItemAuthFilter : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var itemId = FilterUtitilities.GetRequestRouteValue<Guid>(context, "itemId");
+        var checklistId = FilterUtitilities.GetRequestRouteValue<Guid>(context, "checklistId");
 
         var checklistItem = await _checklistItemService.GetChecklistItemAsync(itemId);
 
         if (checklistItem == null)
+        {
+            throw new HttpResponseException(HttpStatusCode.NotFound);
+        }
+
+        if (checklistItem.ChecklistId != checklistId)
         {
             throw new HttpResponseException(HttpStatusCode.NotFound);
         }
