@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
-using Tasks.Service.Configurations;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Commands;
 using Tasks.Service.Repositories.Interfaces;
@@ -49,6 +48,42 @@ public class ChecklistRepository : IChecklistRepository
         return await _dbConnection.FetchAsync(command);
     }
 
+    /// <summary>
+    /// Update or Insert the specified checklist.
+    /// The command initially inserts the checklist, but updates it if it already exists.
+    /// </summary>
+    /// <param name="checklist"></param>
+    /// <returns></returns>
+    public async Task<int> SaveChecklistAsync(Checklist checklist)
+    {
+        MySqlCommand command = new(ChecklistCommands.Save);
 
+        AddSaveChecklistParms(command, checklist);
 
+        return await _dbConnection.ModifyAsync(command);
+    }
+
+    /// <summary>
+    /// Add the appropriate checklist parm values to the given command.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="checklist"></param>
+    private static void AddSaveChecklistParms(MySqlCommand command, Checklist checklist)
+    {
+        command.Parameters.AddWithValue("@id", checklist.Id);
+        command.Parameters.AddWithValue("@user_id", checklist.UserId);
+        command.Parameters.AddWithValue("@title", checklist.Title);
+        command.Parameters.AddWithValue("@checklist_type_id", (ushort)checklist.ListType);
+    }
+
+    /// <summary>
+    /// Execute a delete command.
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<int> DeleteChecklistAsync(Guid checklistId)
+    {
+        throw new NotImplementedException();
+    }
 }

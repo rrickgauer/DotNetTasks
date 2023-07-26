@@ -7,6 +7,7 @@ namespace Tasks.Service.Domain.TableView;
 public class ChecklistTableView : ITableView
 {
     // ITableView
+    [JsonIgnore]
     public string ViewName => "View_Checklists";
 
 

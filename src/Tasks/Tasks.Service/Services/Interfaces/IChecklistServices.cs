@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 
@@ -11,7 +7,9 @@ namespace Tasks.Service.Services.Interfaces;
 public interface IChecklistServices
 {
     public Task<IEnumerable<ChecklistTableView>> GetUserChecklistsAsync(Guid userId);
-    public Task<Checklist?> GetChecklistAsync(Guid checklistId);
+    public Task<ChecklistTableView?> GetChecklistAsync(Guid checklistId);
+    public Task<ModifyChecklistStatus> GetModifyChecklistStatusAsync(Guid checklistId, Guid userId);
+    public Task<ChecklistTableView> SaveChecklistAsync(Checklist checklist);
 }
 
 
