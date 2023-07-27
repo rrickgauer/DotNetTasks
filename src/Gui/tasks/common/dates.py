@@ -1,30 +1,8 @@
 from __future__ import annotations
-from datetime import datetime
 from tasks.domain import models
 from datetime import date, timedelta
-from enum import Enum
 
 SUNDAY_WEEKDAY_INDEX = 6
-
-#------------------------------------------------------
-# Custom date formatting values
-#------------------------------------------------------
-class DateFormatTokens(str, Enum):
-    DATE_LONG       = "%a %x"       # Tue 07/26/22
-    DAY_OF_THE_WEEK = "%a"          # Tue
-    SLASHES         = "%x"          # 07/26/22
-    TIME            = "%I:%M %p"    # 10:13 AM
-
-#------------------------------------------------------
-# Format the given datetime object to the specified token
-#------------------------------------------------------
-def format_date(day: datetime, token: DateFormatTokens) -> str:
-    try:
-        formatted_date = day.strftime(token.value)
-    except ValueError as ex:
-        formatted_date = str(ex)
-    
-    return formatted_date
 
 #------------------------------------------------------
 # Get a week range from the specified date
@@ -68,8 +46,6 @@ def get_dates_in_range(week_range: models.WeekRange) -> list[date]:
         days.append(day)
 
     return days
-
-
 
 
 def get_weeks_interval(date_val: date, num_weeks: int) -> date:

@@ -61,10 +61,10 @@ data:
                 {# Occurence date #}
                 <div>
                     {# 01/01/22 #}
-                    <span>{{ occurence_date|format_date(date_format_tokens.SLASHES) }}</span>
+                    <span>{{ occurence_date|format_iso_date_str(DateFormatTokens.SLASHES) }}</span>
                     &sdot;
                     {# Mon #}
-                    <span>{{ occurence_date|format_date(date_format_tokens.DAY_OF_THE_WEEK) }}</span> 
+                    <span>{{ occurence_date|format_iso_date_str(DateFormatTokens.DAY_OF_THE_WEEK) }}</span> 
                 </div>
             </div>
 
@@ -128,7 +128,7 @@ Create the html for a daily recurrences list item
                 {# Starts on #}
                 <span class="daily-recurrences-list-item-starts-on">
                     {% if recurrence.event.starts_at %}
-                        <span class="badge badge-light">{{ recurrence.event.starts_at|format_time_obj(date_format_tokens.TIME) }}</span>
+                        <span class="badge badge-light">{{ recurrence.event.starts_at|format_iso_date_str(DateFormatTokens.TIME) }}</span>
                     {% endif %} 
                 </span>
 

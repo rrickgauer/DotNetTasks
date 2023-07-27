@@ -8,13 +8,8 @@ Flask application startup services
 
 from __future__ import annotations
 import flask
-
-import flasklib.json
-
+import flasklib
 from tasks import routes
-from tasks.common import url_converters
-from tasks.common import template_filters
-from tasks.common import dates
 from tasks.config import get_correct_config_class
 
 
@@ -28,17 +23,11 @@ class StartupService:
     def setup_app(self):
         """Setup the flask application"""
 
-        self._setup_custom_converters()
-        self._register_blueprints()
+        flasklib.dates.register_template_filters(self.app)
+
         self._setup_config()
-        self._register_template_data()
-        self._add_template_filters()
 
-        
-    def _setup_custom_converters(self):
-        """Setup the custom url type converters for some enums"""
-
-        self.app.url_map.converters.update(date=url_converters.UrlConverterDate)
+        self._register_blueprints()
 
 
     def _register_blueprints(self):
@@ -73,26 +62,8 @@ class StartupService:
 
         self.app.config.from_object(app_config)
         
-        
-        # self.app.json_encoder = app_config.JSON_ENCODER
-
         flasklib.json.set_json_encoder(self.app)
         
-
-
         self.app.secret_key = app_config.SECRET_KEY_GUI
-
-
-    def _register_template_data(self):
-        """Register global template data"""
-        self.app.jinja_env.globals.update(
-            date_format_tokens = dates.DateFormatTokens,
-        )
-
-
-    def _add_template_filters(self):
-        """Add custom template functions"""
-        self.app.add_template_filter(template_filters.format_date, 'format_date')
-        self.app.add_template_filter(template_filters.format_time_obj, 'format_time_obj')
-
+        
 
