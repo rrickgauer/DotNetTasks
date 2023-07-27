@@ -12,9 +12,7 @@ from __future__ import annotations
 import flask
 from .services.startup import StartupService
 
-
 app = flask.Flask(__name__)
 
 startup = StartupService(app)
-
 startup.setup_app()

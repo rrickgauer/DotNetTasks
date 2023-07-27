@@ -15,7 +15,6 @@ from tasks.domain.models.api_responses import EventApiResponse
 from tasks.common.api_url_builder import ApiUrlBuilder
 from tasks.common import security
 from tasks.common.structs import BaseReturn
-from tasks.common import serializers
 
 @dataclass
 class GetEventApiResponse(BaseReturn):
@@ -63,10 +62,7 @@ def get_event_model(event_id: UUID) -> GetEventModelResult:
         json_object = flask.json.loads(api_response.data)
 
         # serialize the dict into a domain model
-        serializer = serializers.EventApiResponseSerializer(json_object)
-        model = serializer.serialize()
-
-        result.data = model
+        result.data = EventApiResponse.from_dict(json_object)
     
     except Exception as ex:
         result.successful = False

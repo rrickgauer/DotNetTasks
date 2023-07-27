@@ -34,7 +34,7 @@ class DailyRecurrencesMapper:
     #------------------------------------------------------
     def add(self, recurrence: models.EventRecurrence):
         # get the iso string value of the date
-        occurs_on_val = recurrence.occurs_on.isoformat()
+        occurs_on_val = recurrence.occursOn.isoformat()
 
         # get the existing list of recurrences that occur on this date, if it exists
         # otherwise create an empty list

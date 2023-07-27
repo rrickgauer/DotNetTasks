@@ -12,7 +12,7 @@ def get_config() -> ConfigBase:
 # Get the appropriate configuration for the specified flask application
 #------------------------------------------------------
 def get_correct_config_class(flask_app: flask.Flask) -> ConfigBase:
-    if flask_app.env == "production":
-        return ConfigProduction()
-    else:
+    if flask_app.debug:
         return ConfigDev()
+    else:
+        return ConfigProduction()        

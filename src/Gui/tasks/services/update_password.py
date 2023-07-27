@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 import flask
 from tasks.domain import models
-from tasks.common import security, serializers
+from tasks.common import security
 import requests
 from tasks.common import ApiUrlBuilder
 
@@ -39,10 +39,7 @@ def validate_password_update_values(passwords: models.UpdatePasswordArgs) -> Val
 #------------------------------------------------------
 def get_update_password_args_from_request() -> models.UpdatePasswordArgs:
     form_values = flask.request.form.to_dict()
-
-    serializer = serializers.UpdatePasswordArgsSerializer(form_values)
-
-    return serializer.serialize()
+    return models.UpdatePasswordArgs.from_dict(form_values)
 
 #------------------------------------------------------
 # Transform the validation result into a dict

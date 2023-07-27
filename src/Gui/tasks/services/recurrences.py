@@ -6,7 +6,6 @@ from tasks.common.structs import BaseReturn
 from tasks.domain import models
 from tasks.config import get_config
 from tasks.common import security
-from tasks.common import serializers
 from tasks.common import DailyRecurrencesMapper
 from tasks.common import DailyRecurrenceMapType
 
@@ -24,7 +23,8 @@ def get_recurrences(week_range: models.WeekRange, labels=None) -> GetRecurrences
 
     try:
         api_response      = _get_recurrences_from_api(week_range, labels)
-        event_recurrences = _serialize_api_response(api_response)
+        data = api_response.json()
+        event_recurrences = models.EventRecurrence.from_dicts(data)
         result.data       = _create_date_range_map(event_recurrences, week_range)
     except Exception as ex:
         result.successful = False
@@ -61,26 +61,6 @@ def _get_recurrences_from_api(week_range: models.WeekRange, labels=None) -> requ
     )
 
     return api_response
-
-#------------------------------------------------------
-# Serialize the give recurrence api response into a list of EventRecurrence objects
-#------------------------------------------------------
-def _serialize_api_response(response: requests.Response) -> list[models.EventRecurrence]:
-    event_recurrences = []
-
-    for d in response.json():
-        event_recurrences.append(_to_event_recurrence(d))
-
-    return event_recurrences
-
-#------------------------------------------------------
-# Serialize the specified dictionary into an EventRecurrence domain model
-#------------------------------------------------------
-def _to_event_recurrence(response_dict: dict) -> models.EventRecurrence:
-    serializer = serializers.ApiResponseRecurrenceSerializer(response_dict)
-    event_recurrence = serializer.to_model()
-    
-    return event_recurrence
 
 
 #------------------------------------------------------

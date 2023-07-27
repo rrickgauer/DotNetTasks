@@ -8,6 +8,9 @@ Flask application startup services
 
 from __future__ import annotations
 import flask
+
+import flasklib.json
+
 from tasks import routes
 from tasks.common import url_converters
 from tasks.common import template_filters
@@ -69,7 +72,14 @@ class StartupService:
         app_config = get_correct_config_class(self.app)
 
         self.app.config.from_object(app_config)
-        self.app.json_encoder = app_config.JSON_ENCODER
+        
+        
+        # self.app.json_encoder = app_config.JSON_ENCODER
+
+        flasklib.json.set_json_encoder(self.app)
+        
+
+
         self.app.secret_key = app_config.SECRET_KEY_GUI
 
 

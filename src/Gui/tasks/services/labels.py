@@ -11,7 +11,6 @@ import flask
 from dataclasses import dataclass
 from uuid import UUID
 import requests
-from tasks.common import serializers
 from tasks.domain.models.api_responses import LabelResponse
 from tasks.common import security
 from tasks.common.structs import BaseReturn
@@ -38,7 +37,8 @@ def get_labels() -> GetLabelsResult:
     # serialize the json objects into label models
     labels = response.json().get('data', [])
     
-    result.data  = _serialize_labels(labels)
+    # result.data  = _serialize_labels(labels)
+    result.data  = LabelResponse.from_dicts(labels)
 
     return result
 
@@ -55,23 +55,6 @@ def _send_get_request() -> requests.Response:
     )
 
     return response
-
-
-def _serialize_labels(labels: list[dict]) -> list[LabelResponse]:
-    models = []
-
-    for label in labels:
-        models.append(_serialize_label(label))
-
-    return models
-
-
-def _serialize_label(label: dict) -> LabelResponse:
-    serializer = serializers.LabelResponseSerializer(label)
-
-    model = serializer.serialize()
-
-    return model
 
 
 def get_labels_html(labels: list[LabelResponse]) -> str:

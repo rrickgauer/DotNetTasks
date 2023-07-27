@@ -3,59 +3,60 @@ from dataclasses import dataclass
 from datetime import datetime, time, date
 from uuid import UUID
 from tasks.domain.enums import EventFrequency
+from flasklib.mappers import IMappable
+from typing import Optional as Opt
 
 #------------------------------------------------------
 # Json object returned from the api for retrieving recurrences
 #------------------------------------------------------
 @dataclass
-class Recurrence:
-    event     : EventApiResponse    = None
-    occursOn  : datetime            = None
-    completed : bool                = None
-    cancelled : bool                = None
-    labels    : list[LabelResponse] = None
+class Recurrence(IMappable):
+    event     : Opt[EventApiResponse]    = None
+    occursOn  : Opt[datetime]            = None
+    completed : Opt[bool]                = None
+    cancelled : Opt[bool]                = None
+    labels    : Opt[list[LabelResponse]] = None
 
 #------------------------------------------------------
 # JSON object returned for an event
 #------------------------------------------------------
 @dataclass
-class EventApiResponse:
-    id              : UUID           = None
-    name            : str            = None
-    description     : str            = None
-    phoneNumber     : str            = None
-    location        : str            = None
-    startsOn        : date           = None
-    endsOn          : date           = None
-    startsAt        : time           = None
-    endsAt          : time           = None
-    frequency       : EventFrequency = None
-    separation      : int            = None
-    createdOn       : datetime       = None
-    recurrenceDay   : int            = None
-    recurrenceWeek  : int            = None
-    recurrenceMonth : int            = None
+class EventApiResponse(IMappable):
+    id              : Opt[UUID]           = None
+    name            : Opt[str]            = None
+    description     : Opt[str]            = None
+    phoneNumber     : Opt[str]            = None
+    location        : Opt[str]            = None
+    startsOn        : Opt[datetime]       = None
+    endsOn          : Opt[datetime]       = None
+    startsAt        : Opt[time]           = None
+    endsAt          : Opt[time]           = None
+    frequency       : Opt[EventFrequency] = None
+    separation      : Opt[int]            = None
+    createdOn       : Opt[datetime]       = None
+    recurrenceDay   : Opt[int]            = None
+    recurrenceWeek  : Opt[int]            = None
+    recurrenceMonth : Opt[int]            = None
 
 
 
 @dataclass
-class UserSignUpApiResponseUser:
-    id         : UUID     = None
-    email      : str      = None
-    password   : str      = None
-    createdOn : datetime = None
+class UserSignUpApiResponseUser(IMappable):
+    id         : Opt[UUID]     = None
+    email      : Opt[str]      = None
+    password   : Opt[str]      = None
+    createdOn  : Opt[datetime] = None
 
 @dataclass
-class UserSignUpApiResponse:
-    successful: bool = None
-    user: UserSignUpApiResponseUser = None
-    error: str = None
-
+class UserSignUpApiResponse(IMappable):
+    successful: Opt[bool]                      = None
+    user      : Opt[UserSignUpApiResponseUser] = None
+    error     : Opt[str]                       = None
 
 @dataclass
-class LabelResponse:
-    id        : UUID     = None
-    userId    : UUID     = None
-    name      : str      = None
-    color     : str      = None
-    createdOn : datetime = None
+class LabelResponse(IMappable):
+    id        : Opt[UUID]     = None
+    userId    : Opt[UUID]     = None
+    name      : Opt[str]      = None
+    color     : Opt[str]      = None
+    createdOn : Opt[datetime] = None

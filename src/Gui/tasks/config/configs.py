@@ -22,3 +22,5 @@ class ConfigDev(ConfigBase):
     # pass
     URL_API = 'https://localhost:7259'
     URL_GUI = 'http://127.0.0.1:5020'
+
+    IS_PRODUCTION = False
