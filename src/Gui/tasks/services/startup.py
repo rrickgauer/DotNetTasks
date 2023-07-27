@@ -24,6 +24,7 @@ class StartupService:
         """Setup the flask application"""
 
         flasklib.dates.register_template_filters(self.app)
+        flasklib.errors.add_error_handler(self.app)
 
         self._setup_config()
 

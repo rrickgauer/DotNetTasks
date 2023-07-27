@@ -2,6 +2,7 @@ from __future__ import annotations
 from datetime import date
 import flask
 import requests
+from flasklib.errors import RequestError
 from tasks.common.structs import BaseReturn
 from tasks.domain import models
 from tasks.config import get_config
@@ -21,15 +22,11 @@ class GetRecurrencesResult(BaseReturn):
 def get_recurrences(week_range: models.WeekRange, labels=None) -> GetRecurrencesResult:
     result = GetRecurrencesResult(successful=True)
 
-    try:
-        api_response      = _get_recurrences_from_api(week_range, labels)
-        data = api_response.json()
-        event_recurrences = models.EventRecurrence.from_dicts(data)
-        result.data       = _create_date_range_map(event_recurrences, week_range)
-    except Exception as ex:
-        result.successful = False
-        result.error = ex
-    
+    api_response      = _get_recurrences_from_api(week_range, labels)
+    data              = api_response.json()
+    event_recurrences = models.EventRecurrence.from_dicts(data)
+    result.data       = _create_date_range_map(event_recurrences, week_range)
+
     return result
 
 #------------------------------------------------------
@@ -59,6 +56,9 @@ def _get_recurrences_from_api(week_range: models.WeekRange, labels=None) -> requ
         url    = api_url,
         params = parms,
     )
+
+    if not api_response.ok:
+        raise RequestError(api_response)
 
     return api_response
 
