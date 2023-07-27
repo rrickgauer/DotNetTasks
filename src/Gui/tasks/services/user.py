@@ -4,7 +4,7 @@ from enum import Enum
 import flask
 from tasks.common.structs import BaseReturn
 from tasks.domain import models
-from tasks.common import security, serializers
+from tasks.common import security
 import requests
 from tasks.common import ApiUrlBuilder
 
@@ -16,9 +16,8 @@ def send_signup_request():
     response = _send_signup_api_request()
 
     response_data = response.json()
-
-    serializer = serializers.UserSignUpApiResponseSerializer(response_data)
-    result = serializer.serialize()
+    
+    result = models.api_responses.UserSignUpApiResponse.from_dict(response_data)
 
     return result
 

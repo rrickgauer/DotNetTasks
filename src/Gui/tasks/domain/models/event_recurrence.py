@@ -1,17 +1,18 @@
 
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import datetime, time
-from uuid import UUID
+from datetime import date, datetime
 from tasks.domain.models.api_responses import EventApiResponse
+from flasklib.mappers import IMappable
+from typing import Optional as Opt
 
 @dataclass
-class EventRecurrence:
-    event    : EventApiResponse = None
-    labels   : list             = None
-    occurs_on : datetime        = None
-    completed : bool            = None
-    cancelled : bool            = None
+class EventRecurrence(IMappable):
+    event     : Opt[EventApiResponse] = None
+    labels    : Opt[list]             = None
+    occursOn  : Opt[date]         = None
+    completed : Opt[bool]             = None
+    cancelled : Opt[bool]             = None
 
 
 

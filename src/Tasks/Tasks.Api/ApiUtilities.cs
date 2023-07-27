@@ -8,6 +8,7 @@ using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.DependenciesInjector;
 using Tasks.Service.Auth;
+using Tasks.Service.Converters;
 
 namespace Tasks.Api;
 
@@ -43,8 +44,18 @@ public static class ApiUtilities
         builder.Services.AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();
+        })
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
         });
 
+
+
+        //builder.Services.AddControllers(options =>
+        //{
+        //    options.Filters.Add<HttpResponseExceptionFilter>();
+        //});
     }
 
     private static void ConfigureIpAddress(WebApplicationBuilder builder)
