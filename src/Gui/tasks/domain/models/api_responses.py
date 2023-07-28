@@ -10,7 +10,7 @@ from typing import Optional as Opt
 # Json object returned from the api for retrieving recurrences
 #------------------------------------------------------
 @dataclass
-class Recurrence(IMappable):
+class RecurrenceResponse(IMappable):
     event     : Opt[EventApiResponse]    = None
     occursOn  : Opt[datetime]            = None
     completed : Opt[bool]                = None
@@ -39,18 +39,17 @@ class EventApiResponse(IMappable):
     recurrenceMonth : Opt[int]            = None
 
 
-
 @dataclass
-class UserSignUpApiResponseUser(IMappable):
+class UserSignUpUserResponse(IMappable):
     id         : Opt[UUID]     = None
     email      : Opt[str]      = None
     password   : Opt[str]      = None
     createdOn  : Opt[datetime] = None
 
 @dataclass
-class UserSignUpApiResponse(IMappable):
+class UserSignUpResponse(IMappable):
     successful: Opt[bool]                      = None
-    user      : Opt[UserSignUpApiResponseUser] = None
+    user      : Opt[UserSignUpUserResponse] = None
     error     : Opt[str]                       = None
 
 @dataclass
@@ -60,3 +59,13 @@ class LabelResponse(IMappable):
     name      : Opt[str]      = None
     color     : Opt[str]      = None
     createdOn : Opt[datetime] = None
+
+
+@dataclass
+class ChecklistResponse(IMappable):
+    id         : Opt[UUID]     = None
+    title      : Opt[str]      = None
+    type       : Opt[str]      = None
+    createdOn  : Opt[datetime] = None
+    countItems : Opt[int]      = None
+

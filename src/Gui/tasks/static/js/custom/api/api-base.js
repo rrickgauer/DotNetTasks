@@ -11,6 +11,7 @@ export const ApiEndpoints = {
     EMAIL_VERIFICATIONS: `${URL_PREFIX}/email-verifications`,
     LABELS             : `${URL_PREFIX}/labels`,
     EVENT_LABELS       : `${URL_PREFIX}/events`,
+    CHECKLISTS         : `${URL_PREFIX}/checklists`,
 }
 
 export const HttpMethods = {
