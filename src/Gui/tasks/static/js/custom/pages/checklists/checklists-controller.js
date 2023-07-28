@@ -1,6 +1,7 @@
 import { ApiChecklists } from "../../api/api-checklists";
 import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
 import { ChecklistsElements } from "./checklists-elements";
+import { NewChecklistFormController } from "./new-checklist-form-controller";
 
 
 export class ChecklistsController
@@ -12,6 +13,7 @@ export class ChecklistsController
     {
         this.sidebar = new ChecklistSidebarElements();
         this.elements = new ChecklistsElements(container);
+        this.newChecklistForm = new NewChecklistFormController();
         this.api = new ApiChecklists();
     }
 
@@ -26,6 +28,10 @@ export class ChecklistsController
         this.sidebar.closeSidebarButton.addEventListener('click', this.#closeSidebar);
         this.elements.openSidebarButton.addEventListener('click', this.#openSidebar);
         this.#listenForSidebarOverlayClick();
+        
+        this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
+        this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
+        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.#updateNewChecklistFormSubmitButton);
     }
 
     #listenForSidebarOverlayClick = () =>
@@ -66,6 +72,19 @@ export class ChecklistsController
         const checklistsHtml = await response.text();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
     }
+
+    #updateNewChecklistFormSubmitButton = () =>
+    {
+        if (this.newChecklistForm.inputValue().length == 0)
+        {
+            this.newChecklistForm.disableSubmitButton();
+        }
+        else
+        {
+            this.newChecklistForm.enableSubmitButton();
+        }
+    }
+
 
 
 
