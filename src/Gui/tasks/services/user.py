@@ -17,7 +17,7 @@ def send_signup_request():
 
     response_data = response.json()
     
-    result = models.api_responses.UserSignUpApiResponse.from_dict(response_data)
+    result = models.api_responses.UserSignUpResponse.from_dict(response_data)
 
     return result
 

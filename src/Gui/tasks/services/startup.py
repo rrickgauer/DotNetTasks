@@ -27,7 +27,6 @@ class StartupService:
         flasklib.errors.add_error_handler(self.app)
 
         self._setup_config()
-
         self._register_blueprints()
 
 
@@ -40,6 +39,7 @@ class StartupService:
         self.app.register_blueprint(routes.gui.bp_account, url_prefix='/account')
         self.app.register_blueprint(routes.gui.bp_email_verifications, url_prefix='/email-verifications')
         self.app.register_blueprint(routes.gui.bp_labels, url_prefix='/labels')
+        self.app.register_blueprint(routes.gui.bp_checklists, url_prefix='/checklists')
 
         # api
         self.app.register_blueprint(routes.api.bp_api_login, url_prefix='/api/login')
@@ -51,6 +51,7 @@ class StartupService:
         self.app.register_blueprint(routes.api.bp_api_email_verifications, url_prefix='/api/email-verifications')
         self.app.register_blueprint(routes.api.bp_api_labels, url_prefix='/api/labels')
         self.app.register_blueprint(routes.api.bp_api_event_labels, url_prefix='/api/events/<uuid:event_id>/labels')
+        self.app.register_blueprint(routes.api.bp_api_checklists, url_prefix='/api/checklists')
 
         # home
         self.app.register_blueprint(routes.gui.bp_home, url_prefix='/')

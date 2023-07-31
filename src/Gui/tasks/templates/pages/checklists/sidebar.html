@@ -1,0 +1,35 @@
+<!-- Sidebar -->
+<div class="checklists-sidebar card card-body">
+    
+    <div class="checklists-sidebar-spacing">
+        <div class="d-flex align-items-baseline justify-content-between p-1 mb-3">
+            <button class="btn btn-sm btn-light btn-new-checklist">New</button>
+
+            <button type="button" class="btn close btn-close-checklist" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <!-- New checklist form -->
+        <div class="new-checklist-form-container p-3 d-none">
+            <div class="card card-body">
+                <form class="new-checklist-form">
+                    
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="new-checklist-form-input-title">Title</label>
+                        <input type="text" class="form-control form-control-sm new-checklist-form-input" name="title" id="new-checklist-form-input-title" required>
+                    </div>
+
+                    <button class="btn btn-sm btn-success save" type="button" disabled>Create list</button>
+                    <button class="btn btn-sm btn-outline-danger cancel" type="button">Cancel</button>
+                </form>
+    
+            </div>
+        </div>
+
+        <!-- Checklists -->
+        <div class="list-group checklist-sidebar-items"></div>
+    </div>
+
+</div>

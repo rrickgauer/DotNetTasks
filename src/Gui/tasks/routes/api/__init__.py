@@ -8,3 +8,4 @@ from .user import bp_api_user as bp_api_user
 from .email_verifications import bp_api_email_verifications as bp_api_email_verifications
 from .labels import bp_api_labels as bp_api_labels
 from .event_labels import bp_api_event_labels as bp_api_event_labels
+from .checklists import bp_api_checklists as bp_api_checklists

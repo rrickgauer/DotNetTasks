@@ -1,0 +1,41 @@
+{# 
+    
+    index page for the application
+
+    Incoming data:
+        - current_date
+        - next_week_date
+        - previous_week_date
+        - labels
+#}
+
+
+{% extends 'base.html' %}
+
+{% block title %}Checklists{% endblock %}
+
+{% block content %}
+
+
+<div class="checklists-page-container">
+
+    <!-- sidebar -->
+    {% include 'pages/checklists/sidebar.html' %}
+
+
+    <!-- open sidebar button -->
+    <button class="btn btn-primary btn-open-sidebar" type="button">Sidebar</button>
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block footer %}
+<script src="/static/js/dist/checklists.bundle.js"></script>
+{% endblock %}  
