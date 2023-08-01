@@ -7,7 +7,8 @@ import { NewChecklistFormController } from "./new-checklist-form-controller";
 export class ChecklistsController
 {
 
-    static eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
+    static OverlayClass = 'drawer-overlay';
+    static eOverlay = `<div style="z-index: 109;" class="${ChecklistsController.OverlayClass}"></div>`;
 
     constructor(container)
     {
@@ -31,14 +32,14 @@ export class ChecklistsController
         
         this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
         this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.#updateNewChecklistFormSubmitButton);
+        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.newChecklistForm.updateSubmitButtonDisabled);
     }
 
     #listenForSidebarOverlayClick = () =>
     {
         document.querySelector('body').addEventListener('click', (e) => 
         {
-            if (e.target.classList.contains('drawer-overlay'))
+            if (e.target.classList.contains(ChecklistsController.OverlayClass))
             {
                 this.#closeSidebar();
             }
@@ -53,7 +54,7 @@ export class ChecklistsController
     #closeSidebar = () => 
     {
         this.sidebar.container.classList.remove(ChecklistSidebarElements.ContainerVisibility);
-        document.querySelector('.drawer-overlay').remove();
+        document.querySelector(`.${ChecklistsController.OverlayClass}`).remove();
     }
 
     /** Open the sidebar */
@@ -71,18 +72,6 @@ export class ChecklistsController
         const response = await this.api.getAll();
         const checklistsHtml = await response.text();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
-    }
-
-    #updateNewChecklistFormSubmitButton = () =>
-    {
-        if (this.newChecklistForm.inputValue().length == 0)
-        {
-            this.newChecklistForm.disableSubmitButton();
-        }
-        else
-        {
-            this.newChecklistForm.enableSubmitButton();
-        }
     }
 
 
