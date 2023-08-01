@@ -1,4 +1,4 @@
-import { ApiChecklists } from "../../api/api-checklists";
+import { ChecklistServices } from "../../services/checklist-services";
 import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
 import { ChecklistsElements } from "./checklists-elements";
 import { NewChecklistFormController } from "./new-checklist-form-controller";
@@ -15,7 +15,7 @@ export class ChecklistsController
         this.sidebar = new ChecklistSidebarElements();
         this.elements = new ChecklistsElements(container);
         this.newChecklistForm = new NewChecklistFormController();
-        this.api = new ApiChecklists();
+        this.services = new ChecklistServices();
     }
 
     init = async () =>
@@ -29,10 +29,10 @@ export class ChecklistsController
         this.sidebar.closeSidebarButton.addEventListener('click', this.#closeSidebar);
         this.elements.openSidebarButton.addEventListener('click', this.#openSidebar);
         this.#listenForSidebarOverlayClick();
-        
         this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
         this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
         this.sidebar.newListFormInputTitle.addEventListener('keyup', this.newChecklistForm.updateSubmitButtonDisabled);
+        this.sidebar.newListForm.addEventListener('submit', this.#createChecklist);
     }
 
     #listenForSidebarOverlayClick = () =>
@@ -69,10 +69,18 @@ export class ChecklistsController
 
     #fetchChecklists = async () =>
     {
-        const response = await this.api.getAll();
-        const checklistsHtml = await response.text();
+        const checklistsHtml = await this.services.getAllChecklistHtml();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
     }
+
+    #createChecklist = async (e) =>
+    {
+        e.preventDefault();
+        await this.newChecklistForm.submitForm();
+        await this.#fetchChecklists();
+        this.newChecklistForm.resetCloseForm();
+    }
+
 
 
 

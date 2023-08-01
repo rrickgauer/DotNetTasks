@@ -11,9 +11,9 @@ export class SpinnerButton
         a_strSelector - the html selector
         a_strDisplayText - the original text to display
     *************************************************/
-    constructor(a_strSelector) {
-        this.selector = a_strSelector;
-        this.displayText = $(a_strSelector).text();
+    constructor(selector) {
+        this.selector = selector;
+        this.displayText = $(selector).text();
     }
 
     /************************************************
