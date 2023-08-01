@@ -1,14 +1,15 @@
 import { ChecklistServices } from "../../services/checklist-services";
+import { ChecklistsElements } from "./checklist-elements";
 import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
-import { ChecklistsElements } from "./checklists-elements";
-import { NewChecklistFormController } from "./new-checklist-form-controller";
+import { NewChecklistFormController } from "./new-checklist-form";
+import { ChecklistSidebarItem } from "./sidebar-item";
 
 
-export class ChecklistsController
+export class SidebarController
 {
 
     static OverlayClass = 'drawer-overlay';
-    static eOverlay = `<div style="z-index: 109;" class="${ChecklistsController.OverlayClass}"></div>`;
+    static eOverlay = `<div style="z-index: 109;" class="${SidebarController.OverlayClass}"></div>`;
 
     constructor(container)
     {
@@ -28,11 +29,13 @@ export class ChecklistsController
     {
         this.sidebar.closeSidebarButton.addEventListener('click', this.#closeSidebar);
         this.elements.openSidebarButton.addEventListener('click', this.#openSidebar);
+        
         this.#listenForSidebarOverlayClick();
+
         this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.newChecklistForm.updateSubmitButtonDisabled);
-        this.sidebar.newListForm.addEventListener('submit', this.#createChecklist);
+        this.sidebar.newChecklistForm.buttonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
+        this.sidebar.newChecklistForm.form.addEventListener('submit', this.#createChecklist);
+        
         this.#listenForChecklistClick();
     }
 
@@ -40,7 +43,7 @@ export class ChecklistsController
     {
         document.querySelector('body').addEventListener('click', (e) => 
         {
-            if (e.target.classList.contains(ChecklistsController.OverlayClass))
+            if (e.target.classList.contains(SidebarController.OverlayClass))
             {
                 this.#closeSidebar();
             }
@@ -51,13 +54,11 @@ export class ChecklistsController
     {
         this.sidebar.checklistsItemsContainer.addEventListener('click', async (e) =>
         {
-
             const parentContainer = e.target.closest('.list-group-item');
 
             if (parentContainer != null)
             {
-                const checklistId = parentContainer.getAttribute('data-checklist-id');
-                await this.#toggleChecklist(checklistId);
+                await this.#toggleChecklist(parentContainer);
             }
         });
     }
@@ -70,37 +71,48 @@ export class ChecklistsController
     #closeSidebar = () => 
     {
         this.sidebar.container.classList.remove(ChecklistSidebarElements.ContainerVisibility);
-        document.querySelector(`.${ChecklistsController.OverlayClass}`).remove();
+        document.querySelector(`.${SidebarController.OverlayClass}`).remove();
     }
 
     /** Open the sidebar */
     #openSidebar = () => 
     {
         this.sidebar.container.classList.add(ChecklistSidebarElements.ContainerVisibility);
-        $('body').append(ChecklistsController.eOverlay);
+        $('body').append(SidebarController.eOverlay);
     }
     
     //#endregion
 
 
+    /**
+     * Fetch all the checklists html
+     */
     #fetchChecklists = async () =>
     {
         const checklistsHtml = await this.services.getAllChecklistHtml();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
     }
 
+    /**
+     * Handle the new checklist form submission event
+     * @param {SubmitEvent} e the submit event
+     */
     #createChecklist = async (e) =>
     {
         e.preventDefault();
+
         await this.newChecklistForm.submitForm();
+        
         await this.#fetchChecklists();
+
         this.newChecklistForm.resetCloseForm();
     }
 
 
-    #toggleChecklist = async (checklistId) =>
+    #toggleChecklist = async (clickedItem) =>
     {
-        alert(checklistId);
+        const checklistItem = new ChecklistSidebarItem(clickedItem);
+        await checklistItem.toggle();
     }
 
 
