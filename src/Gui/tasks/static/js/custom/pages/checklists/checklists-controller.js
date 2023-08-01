@@ -1,4 +1,4 @@
-import { ApiChecklists } from "../../api/api-checklists";
+import { ChecklistServices } from "../../services/checklist-services";
 import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
 import { ChecklistsElements } from "./checklists-elements";
 import { NewChecklistFormController } from "./new-checklist-form-controller";
@@ -7,14 +7,15 @@ import { NewChecklistFormController } from "./new-checklist-form-controller";
 export class ChecklistsController
 {
 
-    static eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
+    static OverlayClass = 'drawer-overlay';
+    static eOverlay = `<div style="z-index: 109;" class="${ChecklistsController.OverlayClass}"></div>`;
 
     constructor(container)
     {
         this.sidebar = new ChecklistSidebarElements();
         this.elements = new ChecklistsElements(container);
         this.newChecklistForm = new NewChecklistFormController();
-        this.api = new ApiChecklists();
+        this.services = new ChecklistServices();
     }
 
     init = async () =>
@@ -28,17 +29,17 @@ export class ChecklistsController
         this.sidebar.closeSidebarButton.addEventListener('click', this.#closeSidebar);
         this.elements.openSidebarButton.addEventListener('click', this.#openSidebar);
         this.#listenForSidebarOverlayClick();
-        
         this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
         this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.#updateNewChecklistFormSubmitButton);
+        this.sidebar.newListFormInputTitle.addEventListener('keyup', this.newChecklistForm.updateSubmitButtonDisabled);
+        this.sidebar.newListForm.addEventListener('submit', this.#createChecklist);
     }
 
     #listenForSidebarOverlayClick = () =>
     {
         document.querySelector('body').addEventListener('click', (e) => 
         {
-            if (e.target.classList.contains('drawer-overlay'))
+            if (e.target.classList.contains(ChecklistsController.OverlayClass))
             {
                 this.#closeSidebar();
             }
@@ -53,7 +54,7 @@ export class ChecklistsController
     #closeSidebar = () => 
     {
         this.sidebar.container.classList.remove(ChecklistSidebarElements.ContainerVisibility);
-        document.querySelector('.drawer-overlay').remove();
+        document.querySelector(`.${ChecklistsController.OverlayClass}`).remove();
     }
 
     /** Open the sidebar */
@@ -68,22 +69,18 @@ export class ChecklistsController
 
     #fetchChecklists = async () =>
     {
-        const response = await this.api.getAll();
-        const checklistsHtml = await response.text();
+        const checklistsHtml = await this.services.getAllChecklistHtml();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
     }
 
-    #updateNewChecklistFormSubmitButton = () =>
+    #createChecklist = async (e) =>
     {
-        if (this.newChecklistForm.inputValue().length == 0)
-        {
-            this.newChecklistForm.disableSubmitButton();
-        }
-        else
-        {
-            this.newChecklistForm.enableSubmitButton();
-        }
+        e.preventDefault();
+        await this.newChecklistForm.submitForm();
+        await this.#fetchChecklists();
+        this.newChecklistForm.resetCloseForm();
     }
+
 
 
 

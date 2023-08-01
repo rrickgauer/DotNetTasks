@@ -24,6 +24,12 @@ def build_checklists_sidebar_html(checklists: List[models.ChecklistResponse]) ->
 
 
 
+def create_checklist(data):
+    api = ApiWrapperChecklists()
+    response = api.post(data)
+    return response.json()
+
+
 
 
 
