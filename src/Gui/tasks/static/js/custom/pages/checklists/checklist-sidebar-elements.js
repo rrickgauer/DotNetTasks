@@ -35,5 +35,8 @@ export class ChecklistSidebarElements
 
         /** @type {HTMLButtonElement} */
         this.newListFormButtonCancel = this.newListForm.querySelector('.cancel');
+
+        /** @type {HTMLDivElement} */
+        this.checklistsItemsContainer = this.container.querySelector('.checklist-sidebar-items');
     }
 }

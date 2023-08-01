@@ -33,6 +33,7 @@ export class ChecklistsController
         this.sidebar.newListFormButtonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
         this.sidebar.newListFormInputTitle.addEventListener('keyup', this.newChecklistForm.updateSubmitButtonDisabled);
         this.sidebar.newListForm.addEventListener('submit', this.#createChecklist);
+        this.#listenForChecklistClick();
     }
 
     #listenForSidebarOverlayClick = () =>
@@ -42,6 +43,21 @@ export class ChecklistsController
             if (e.target.classList.contains(ChecklistsController.OverlayClass))
             {
                 this.#closeSidebar();
+            }
+        });
+    }
+
+    #listenForChecklistClick = async () =>
+    {
+        this.sidebar.checklistsItemsContainer.addEventListener('click', async (e) =>
+        {
+
+            const parentContainer = e.target.closest('.list-group-item');
+
+            if (parentContainer != null)
+            {
+                const checklistId = parentContainer.getAttribute('data-checklist-id');
+                await this.#toggleChecklist(checklistId);
             }
         });
     }
@@ -81,6 +97,11 @@ export class ChecklistsController
         this.newChecklistForm.resetCloseForm();
     }
 
+
+    #toggleChecklist = async (checklistId) =>
+    {
+        alert(checklistId);
+    }
 
 
 
