@@ -1,5 +1,7 @@
 "use strict";
 
+import { BaseEventDetail } from "../../domain/events/detail";
+
 import { SidebarController } from "./sidebar-controller";
 
 
@@ -22,6 +24,7 @@ function setup()
 function test()
 {
 
-    
 
 }
+
+

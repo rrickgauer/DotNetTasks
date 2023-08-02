@@ -1,7 +1,9 @@
 
 
-export class ChecklistsElements {
-    constructor(container) {
+export class ChecklistsElements 
+{
+    constructor(container) 
+    {
         /** @type {HTMLDivElement} */
         this.container = container;
 

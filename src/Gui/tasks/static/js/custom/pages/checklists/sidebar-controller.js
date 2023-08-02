@@ -1,16 +1,17 @@
+import { NativeEvents } from "../../domain/constants/native-events";
+import { BaseEventDetail } from "../../domain/events/detail";
+import { ChecklistsOverlayClickedEvent, ChecklistsSidebarClosedEvent, ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent, ChecklistsSidebarOpenedEvent, NewChecklistFormSubmittedEvent, NewChecklistFormToggleEvent } from "../../domain/events/events";
 import { ChecklistServices } from "../../services/checklist-services";
 import { ChecklistsElements } from "./checklist-elements";
 import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
 import { NewChecklistFormController } from "./new-checklist-form";
+import { ChecklistsOverlay } from "./overlay";
 import { ChecklistSidebarItem } from "./sidebar-item";
 import { ChecklistsPageUrlWrapper } from "./url-wrapper";
 
 
 export class SidebarController
 {
-
-    static OverlayClass = 'drawer-overlay';
-    static eOverlay = `<div style="z-index: 109;" class="${SidebarController.OverlayClass}"></div>`;
 
     /**
      * Constructor
@@ -23,6 +24,10 @@ export class SidebarController
         this.newChecklistForm = new NewChecklistFormController();
         this.services = new ChecklistServices();
         this.urlWrapper = ChecklistsPageUrlWrapper.fromCurrentUrl();
+        this.overlay = new ChecklistsOverlay();
+
+        /** @type {ChecklistSidebarItem[]} */
+        this.sidebarItems = [];
     }
 
     /**
@@ -39,69 +44,37 @@ export class SidebarController
      */
     #addEventListeners = () =>
     {
-        this.sidebar.closeSidebarButton.addEventListener('click', this.#closeSidebar);
-        this.elements.openSidebarButton.addEventListener('click', this.#openSidebar);
+        this.sidebar.closeSidebarButton.addEventListener(NativeEvents.CLICK, this.#closeSidebar);
+        this.elements.openSidebarButton.addEventListener(NativeEvents.CLICK, this.#openSidebar);
         
-        this.#listenForSidebarOverlayClick();
-
-        this.sidebar.newChecklistButton.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newChecklistForm.buttonCancel.addEventListener('click', this.newChecklistForm.toggleNewChecklistForm);
-        this.sidebar.newChecklistForm.form.addEventListener('submit', this.#createChecklist);
-        
-        this.#listenForChecklistClick();
-    }
-
-    /**
-     * Listen for a click event of the main page overlay element
-     */
-    #listenForSidebarOverlayClick = () =>
-    {
-        document.querySelector('body').addEventListener('click', (e) => 
-        {
-            if (e.target.classList.contains(SidebarController.OverlayClass))
-            {
-                this.#closeSidebar();
-            }
+        this.sidebar.openNewChecklistFormButton.addEventListener(NativeEvents.CLICK, (e) => {
+            NewChecklistFormToggleEvent.invoke(this);
         });
-    }
 
-    /**
-     * Listen for a sidebar checklist item click
-     */
-    #listenForChecklistClick = async () =>
-    {
-        this.sidebar.checklistsItemsContainer.addEventListener('click', async (e) =>
-        {
-            const parentContainer = e.target.closest('.list-group-item');
+        NewChecklistFormSubmittedEvent.addListener(this.#onNewChecklistFormSubmittedEvent);
 
-            if (parentContainer != null)
-            {
-                await this.#toggleChecklist(parentContainer);
-            }
+        ChecklistsOverlayClickedEvent.addListener((e) => {
+            this.#closeSidebar();
         });
+
+        ChecklistsSidebarItemOpenedEvent.addListener(this.#onChecklistsSidebarItemOpenedEvent);
+        ChecklistsSidebarItemClosedEvent.addListener(this.#onChecklistsSidebarItemClosedEvent);
     }
 
 
-    /**
-     * If the url openChecklists search parm has any open checklist ids, activate the corresponding sidebar item.
-     */
-    #activateItemsFromUrlSearchParm = () =>
+    #onChecklistsSidebarItemOpenedEvent = (eventDetail) =>
     {
-        const openChecklistIdsInUrl = this.urlWrapper.getOpenChecklistIds();
-
-        if (openChecklistIdsInUrl.length == 0)
-            return;
-
-        const sidebarItems = ChecklistSidebarItem.getAllInContainer(this.sidebar.checklistsItemsContainer);
-
-        for(const sidebarItem of sidebarItems)
-        {
-            if (openChecklistIdsInUrl.includes(sidebarItem.checklistId))
-            {
-                sidebarItem.isActive = true;
-            }
-        }
+        alert(`opened: ${eventDetail.data}`);
     }
+
+
+    #onChecklistsSidebarItemClosedEvent = (eventDetail) =>
+    {
+        alert('closed');
+    }
+
+
+
 
 
     //#region Toggle sidebar
@@ -110,14 +83,14 @@ export class SidebarController
     #closeSidebar = () => 
     {
         this.sidebar.container.classList.remove(ChecklistSidebarElements.ContainerVisibility);
-        document.querySelector(`.${SidebarController.OverlayClass}`).remove();
+        ChecklistsSidebarClosedEvent.invoke(this, null);
     }
 
     /** Open the sidebar */
     #openSidebar = () => 
     {
         this.sidebar.container.classList.add(ChecklistSidebarElements.ContainerVisibility);
-        $('body').append(SidebarController.eOverlay);
+        ChecklistsSidebarOpenedEvent.invoke(this, null);
     }
     
     //#endregion
@@ -131,30 +104,38 @@ export class SidebarController
         const checklistsHtml = await this.services.getAllChecklistHtml();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
 
-        this.#activateItemsFromUrlSearchParm();
+        this.sidebarItems = ChecklistSidebarItem.getAllInContainer(this.sidebar.checklistsItemsContainer);
+        this.#activateSidebarItems();
+    }
+
+    /**
+     * If the url openChecklists search parm has any open checklist ids, activate the corresponding sidebar item.
+     */
+    #activateSidebarItems = () =>
+    {
+        const openChecklistIdsInUrl = this.urlWrapper.getOpenChecklistIds();
+
+        if (openChecklistIdsInUrl.length == 0)
+            return;
+
+        for(const sidebarItem of this.sidebarItems)
+        {
+            if (openChecklistIdsInUrl.includes(sidebarItem.checklistId))
+            {
+                sidebarItem.isActive = true;
+            }
+        }
     }
 
     /**
      * Handle the new checklist form submission event
-     * @param {SubmitEvent} e the submit event
+     * @param {BaseEventDetail} eventDetails 
      */
-    #createChecklist = async (e) =>
+    #onNewChecklistFormSubmittedEvent = async (eventDetails) =>
     {
-        e.preventDefault();
-
-        await this.newChecklistForm.submitForm();
         await this.#fetchChecklists();
-        this.newChecklistForm.resetCloseForm();
+        NewChecklistFormToggleEvent.invoke(this);
     }
 
 
-    /**
-     * Toggle the sidebar checklist item.
-     * @param {HTMLElement} clickedItem the clicked sidebar html element to toggle
-     */
-    #toggleChecklist = async (clickedItem) =>
-    {
-        const checklistItem = new ChecklistSidebarItem(clickedItem);
-        await checklistItem.toggle();
-    }
 }

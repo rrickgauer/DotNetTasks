@@ -1,4 +1,8 @@
+import { BoostrapConstants } from "../../domain/constants/bootstrap-classes";
+import { NativeEvents } from "../../domain/constants/native-events";
+import { NewChecklistFormSubmittedEvent, NewChecklistFormToggleEvent } from "../../domain/events/events";
 import { SpinnerButton } from "../../helpers/spinner-button";
+import { Utililties } from "../../helpers/utilities";
 import { ChecklistServices } from "../../services/checklist-services";
 
 
@@ -35,17 +39,33 @@ export class NewChecklistFormController
         this.#addEventListeners();
     }
 
-    openNewChecklistForm   = () => this.elements.container.classList.remove('d-none');
-    closeNewChecklistForm  = () => this.elements.container.classList.add('d-none');
-    toggleNewChecklistForm = () => this.elements.container.classList.toggle('d-none');
+    
+    openNewChecklistForm   = () => this.elements.container.classList.remove(BoostrapConstants.DISPLAY_NONE);
+    closeNewChecklistForm  = () => this.elements.container.classList.add(BoostrapConstants.DISPLAY_NONE);
+    toggleNewChecklistForm = () => this.elements.container.classList.toggle(BoostrapConstants.DISPLAY_NONE);
     inputValue             = () => this.elements.inputTitle.value;
-    enableSubmitButton     = () => this.elements.buttonSubmit.removeAttribute('disabled');
-    disableSubmitButton    = () => this.elements.buttonSubmit.setAttribute('disabled', true);
+    enableSubmitButton     = () => Utililties.enableElement(this.elements.buttonSubmit);
+    disableSubmitButton    = () => Utililties.disableElement(this.elements.buttonSubmit);
 
 
     #addEventListeners = () =>
     {
-        this.elements.inputTitle.addEventListener('keyup', this.updateSubmitButtonDisabled);
+        this.elements.inputTitle.addEventListener(NativeEvents.KEY_UP, this.#updateSubmitButtonDisabled);
+        this.elements.buttonCancel.addEventListener(NativeEvents.CLICK, this.toggleNewChecklistForm);
+
+        NewChecklistFormToggleEvent.addListener(this.toggleNewChecklistForm);
+
+        this.#eventListenerFormSubmission();
+    }
+
+
+    #eventListenerFormSubmission = () =>
+    {
+        this.elements.form.addEventListener(NativeEvents.SUBMIT, (e) => 
+        {
+            e.preventDefault();
+            this.submitForm();
+        });
     }
 
 
@@ -53,7 +73,7 @@ export class NewChecklistFormController
     /**
      * Enable or disable the submit button based on the input value length
      */
-    updateSubmitButtonDisabled = () =>
+    #updateSubmitButtonDisabled = () =>
     {
         if (this.inputValue().length == 0)
         {
@@ -86,17 +106,9 @@ export class NewChecklistFormController
         finally
         {
             this.submitButtonSpinner.reset();
+            NewChecklistFormSubmittedEvent.invoke(this);
         }
-    }
 
-
-    /**
-     * Reset and close the form
-     */
-    resetCloseForm = () =>
-    {
-        this.elements.form.reset();
-        this.closeNewChecklistForm();
     }
 
 }

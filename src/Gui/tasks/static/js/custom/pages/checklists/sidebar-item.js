@@ -1,3 +1,5 @@
+import { NativeEvents } from "../../domain/constants/native-events";
+import { ChecklistSidebarClickedEvent, ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent } from "../../domain/events/events";
 import { ChecklistsPageUrlWrapper } from "./url-wrapper";
 
 
@@ -45,6 +47,16 @@ export class ChecklistSidebarItem
         this.container = innerHtmlElement.closest(`.${ChecklistSidebarItem.ContainerClass}`);
 
         this.urlWrapper = ChecklistsPageUrlWrapper.fromCurrentUrl();
+
+        this.#addListeners();
+    }
+
+
+    #addListeners = () =>
+    {
+        this.container.addEventListener(NativeEvents.CLICK, (e) => {
+            this.toggle();
+        });
     }
 
 
@@ -84,6 +96,7 @@ export class ChecklistSidebarItem
     {
         this.urlWrapper.add(this.checklistId);
         this.isActive = true;
+        ChecklistsSidebarItemOpenedEvent.invoke(this, this.checklistId);
     }
 
     /**
@@ -93,6 +106,7 @@ export class ChecklistSidebarItem
     {
         this.urlWrapper.remove(this.checklistId);
         this.isActive = false;
+        ChecklistsSidebarItemClosedEvent.invoke(this, this.checklistId);
     }
 
     //#endregion

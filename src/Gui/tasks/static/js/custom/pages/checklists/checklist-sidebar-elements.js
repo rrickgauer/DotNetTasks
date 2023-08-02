@@ -15,7 +15,7 @@ export class ChecklistSidebarElements
         this.closeSidebarButton = this.container.querySelector('.btn-close-checklist');
 
         /** @type {HTMLButtonElement} */
-        this.newChecklistButton = this.container.querySelector('.btn-new-checklist');
+        this.openNewChecklistFormButton = this.container.querySelector('.btn-new-checklist');
 
         /** @type {HTMLDivElement} */
         this.sidebarItemsContainer = this.container.querySelector('.checklist-sidebar-items');
