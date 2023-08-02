@@ -66,4 +66,16 @@ export class Utililties
         console.log("\n\n");
     }
 
+
+    /**
+     * Transform the given array into a string separated by the specified character(s).
+     * listToString([5,4,3], "-") => '5-4-3'
+     * @param {Array} items 
+     * @param {string} separator 
+     */
+    static listToString(items, separator)
+    {
+        return items.join(separator);
+    }
+
 }

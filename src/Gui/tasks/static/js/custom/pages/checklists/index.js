@@ -1,7 +1,6 @@
+"use strict";
+
 import { SidebarController } from "./sidebar-controller";
-import { ChecklistsPageUrlWrapper } from "./url-wrapper";
-
-
 
 
 $(document).ready(function() {
@@ -16,15 +15,13 @@ function setup()
     const controller = new SidebarController(container);
     controller.init();
 
-    console.log({controller});
+    // console.log({controller});
 }
 
 
 function test()
 {
 
-    const urlWrapper = ChecklistsPageUrlWrapper.fromCurrentUrl();
-
-    console.log(urlWrapper.getOpenChecklistIds());
+    
 
 }

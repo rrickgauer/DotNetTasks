@@ -1,3 +1,4 @@
+import { ChecklistsPageUrlWrapper } from "./url-wrapper";
 
 
 
@@ -29,6 +30,8 @@ export class ChecklistSidebarItem
     {
         /** @type {HTMLButtonElement} */
         this.container = innerHtmlElement.closest(`.${ChecklistSidebarItem.ContainerClass}`);
+
+        this.urlWrapper = ChecklistsPageUrlWrapper.fromCurrentUrl();
     }
 
 
@@ -40,10 +43,36 @@ export class ChecklistSidebarItem
         return this.container.classList.contains(ChecklistSidebarItem.ActiveClass);
     }
 
+
+    set isActive(active)
+    {
+        if (active)
+        {
+            this.#addActiveClass();
+        }
+        else
+        {
+            this.#removeActiveClass();
+        }
+    }
+
+
+    #addActiveClass = () =>
+    {
+        this.container.classList.add(ChecklistSidebarItem.ActiveClass);
+    }
+
+    #removeActiveClass = () =>
+    {
+        this.container.classList.remove(ChecklistSidebarItem.ActiveClass);
+    }
+
+
+
     /**
      * @returns {String}
      */
-    get id()
+    get checklistId()
     {
         return this.container.getAttribute(ChecklistSidebarItem.ChecklistIdAttribute);
     }
@@ -52,25 +81,29 @@ export class ChecklistSidebarItem
     
     toggle = async () =>
     {
+        // console.log(this.isActive);
+
         if (this.isActive)
         {
-            await this.openChecklist();
+            await this.closeChecklist();
         }
         else
         {
-            await this.closeChecklist();
+            await this.openChecklist();
         }
     }
 
 
     openChecklist = async () =>
     {
-
+        this.urlWrapper.add(this.checklistId);
+        this.isActive = true;
     }
 
     closeChecklist = async () =>
     {
-        
+        this.urlWrapper.remove(this.checklistId);
+        this.isActive = false;
     }
 
 
