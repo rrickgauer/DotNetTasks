@@ -12,8 +12,14 @@
 
 
     <div class="checklists-main-page">
-        <!-- open sidebar button -->
-        <button class="btn btn-primary btn-open-sidebar mb-5 mt-3 ml-5" type="button">Sidebar</button>
+
+        <div class="d-flex mb-5 mt-3 ml-5">
+            <!-- open sidebar button -->
+            <button class="btn btn-light btn-open-sidebar mr-1" type="button" title="Open the sidebar">Sidebar</button>
+
+            <!-- Close all checklists button -->
+            <a class="btn btn-light" title="Close all open checklists" href="/checklists">Close all</a>
+        </div>
 
 
         <!-- Open Checklists Container -->
@@ -34,4 +40,4 @@
 
 {% block footer %}
 <script src="/static/js/dist/checklists.bundle.js"></script>
-{% endblock %}  
+{% endblock %}
