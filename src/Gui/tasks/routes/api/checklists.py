@@ -46,3 +46,14 @@ def get_checklist(checklist_id: UUID):
     checklist = checklist_services.get_checklist(checklist_id)
     html = checklist_services.get_open_checklist_card_html(checklist)
     return html
+
+
+
+#------------------------------------------------------
+# DELETE: /api/checklists/:checklistId
+#------------------------------------------------------
+@bp_api_checklists.delete('<uuid:checklist_id>')
+@security.login_required
+def delete_checklist(checklist_id: UUID):
+    response = checklist_services.delete_checklist(checklist_id)
+    return (response.text, response.status_code)

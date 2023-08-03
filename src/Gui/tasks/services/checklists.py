@@ -1,11 +1,13 @@
 from __future__ import annotations
 from uuid import UUID
+import requests
 from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.domain import models
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
 from tasks.common.macros import OpenChecklistCardMarco
 from markupsafe import Markup
+from flasklib.errors import RequestError
 
 def get_checklists() -> List[models.ChecklistResponse]:
     """Get all the user's checklists"""
@@ -21,12 +23,16 @@ def get_checklists() -> List[models.ChecklistResponse]:
 
 
 def build_checklists_sidebar_html(checklists: List[models.ChecklistResponse]) -> Markup:
+    """Build the sidebar html for the checklists"""
+
     html = ChecklistsSidebarMacro.render_html(checklists)
     return html
 
 
 
-def create_checklist(data):
+def create_checklist(data: dict):
+    """Create a new checklist"""
+
     api = ApiWrapperChecklists()
     response = api.post(data)
     return response.json()
@@ -35,6 +41,8 @@ def create_checklist(data):
 
 
 def get_checklist(checklist_id: UUID):
+    """Get the specified checklist"""
+
     api = ApiWrapperChecklists()
     response_data = api.get(checklist_id).json()
     
@@ -43,7 +51,22 @@ def get_checklist(checklist_id: UUID):
 
 
 def get_open_checklist_card_html(checklist) -> Markup:
+    """Build the html for the open checklist"""
+
     return OpenChecklistCardMarco.render_html(checklist)
+
+
+def delete_checklist(checklist_id: UUID) -> requests.Response:
+    """Delete the specified checklist"""
+
+    api = ApiWrapperChecklists()
+
+    try:
+        response = api.delete(checklist_id)
+    except RequestError as error:
+        pass
+
+    return response
 
 
 

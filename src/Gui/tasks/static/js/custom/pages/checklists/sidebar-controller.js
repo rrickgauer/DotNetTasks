@@ -34,8 +34,6 @@ export class SidebarElements
 }
 
 
-
-
 export class SidebarController
 {
 
@@ -132,6 +130,16 @@ export class SidebarController
                 sidebarItem.isActive = true;
             }
         }
+    }
+
+
+    removeChecklist = (checklistId) =>
+    {
+        const checklist = this.getChecklist(checklistId);
+        
+        checklist.container.remove();
+        
+        this.sidebarItems = this.sidebarItems.filter(i => i.checklistId !== checklistId);
     }
 
 

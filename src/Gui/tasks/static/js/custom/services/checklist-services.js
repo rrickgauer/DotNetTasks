@@ -39,6 +39,21 @@ export class ChecklistServices
         return await response.text();
     }
 
+    
+    /**
+     * Delete the specified checklist
+     * @param {string} checklistId the checklist to delete
+     * @returns if successful
+     */
+    deleteChecklist = async (checklistId) =>
+    {
+        const response = await this.#api.delete(checklistId);
+
+        this.#handleBadResponse(response);
+
+        return response.ok;
+    }
+
 
 
     /**
