@@ -66,4 +66,35 @@ export class Utililties
         console.log("\n\n");
     }
 
+
+    /**
+     * Transform the given array into a string separated by the specified character(s).
+     * listToString([5,4,3], "-") => '5-4-3'
+     * @param {Array} items 
+     * @param {string} separator 
+     */
+    static listToString(items, separator)
+    {
+        return items.join(separator);
+    }
+
+
+    /**
+     * Disable the element
+     * @param {HTMLElement} element 
+     */
+    static disableElement(element)
+    {
+        element.setAttribute('disabled', true);
+    }
+
+    /**
+     * Remove the disabled attribute from the given html element
+     * @param {HTMLElement} element 
+     */
+    static enableElement(element)
+    {
+        element.removeAttribute('disabled');
+    }
+
 }

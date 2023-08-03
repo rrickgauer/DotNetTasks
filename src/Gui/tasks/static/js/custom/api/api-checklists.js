@@ -20,4 +20,12 @@ export class ApiChecklists
         });
     }
 
+
+    get = async (checklistId) =>
+    {
+        const url = `${ApiEndpoints.CHECKLISTS}/${checklistId}`;
+
+        return await fetch(url);
+    }
+
 }

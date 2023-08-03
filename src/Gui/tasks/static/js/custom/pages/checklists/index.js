@@ -1,18 +1,18 @@
-import { ChecklistsController } from "./checklists-controller";
+"use strict";
+
+import { PageController } from "./page-controller";
 
 
-
-
-$(document).ready(function() {
+$(document).ready(function() 
+{
     setup();
 });
 
 
-function setup()
+async function setup()
 {
-    const container = document.querySelector('.checklists-page-container');
-    const controller = new ChecklistsController(container);
-    controller.init();
+    const pageController = new PageController();
+    await pageController.init();
 
-    console.log({controller});
 }
+
