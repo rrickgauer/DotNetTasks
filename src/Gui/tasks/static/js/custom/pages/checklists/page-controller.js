@@ -67,6 +67,7 @@ export class PageController
         {
             await this.#deleteChecklist(e.data);
         });
+        
     }
 
 
@@ -133,7 +134,5 @@ export class PageController
             alert('Checklist could not be deleted');
         }
     }
-
-
-
+    
 }

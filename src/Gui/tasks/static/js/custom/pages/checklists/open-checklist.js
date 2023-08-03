@@ -37,9 +37,6 @@ export class OpenChecklistElements
         this.actionButtonsDropdown = this.container.querySelector('.action-buttons');
 
         /** @type {HTMLButtonElement} */
-        this.editButton = this.actionButtonsDropdown.querySelector(`.dropdown-item[${OpenChecklistElements.ActionButtonAttribute}=${ActionButtons.EDIT}]`);
-
-        /** @type {HTMLButtonElement} */
         this.deleteButton = this.actionButtonsDropdown.querySelector(`.dropdown-item[${OpenChecklistElements.ActionButtonAttribute}=${ActionButtons.DELETE}]`);
     }
 
@@ -105,11 +102,6 @@ export class OpenChecklist
         this.elements.closeButton.addEventListener(NativeEvents.CLICK, (e) => 
         {
             OpenChecklistCloseButtonClickedEvent.invoke(this, this.checklistId);
-        });
-
-        this.elements.editButton.addEventListener(NativeEvents.CLICK, (e) =>
-        {
-            alert('edit');
         });
 
         this.elements.deleteButton.addEventListener(NativeEvents.CLICK, (e) =>
