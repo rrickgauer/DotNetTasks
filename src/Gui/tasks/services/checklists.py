@@ -3,6 +3,7 @@ from uuid import UUID
 import requests
 from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.domain import models
+from tasks.domain.views import ChecklistSettingsPageView
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
 from tasks.common.macros import OpenChecklistCardMarco
@@ -30,13 +31,28 @@ def build_checklists_sidebar_html(checklists: List[models.ChecklistResponse]) ->
 
 
 
-def create_checklist(data: dict):
+def create_checklist(data: dict) -> dict:
     """Create a new checklist"""
 
     api = ApiWrapperChecklists()
     response = api.post(data)
     return response.json()
 
+
+
+def save_checklist(checklist_id: UUID, data: dict) -> requests.Response:
+    api = ApiWrapperChecklists()
+    response = api.put(checklist_id, data)
+    return response
+
+
+def get_settings_page_view(checklist_id: UUID) -> ChecklistSettingsPageView:
+    
+    result = ChecklistSettingsPageView(
+        checklist = get_checklist(checklist_id)
+    )
+
+    return result
 
 
 

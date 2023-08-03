@@ -38,6 +38,24 @@ export class ApiChecklists
         });
     }
 
+
+    /**
+     * Send a put request
+     * @param {string} checklistId 
+     * @param {FormData} formData 
+     * @returns 
+     */
+    put = async (checklistId, formData) =>
+    {
+        const url = this.#getUrl(checklistId);
+
+        return await fetch(url, {
+            method: HttpMethods.PUT,
+            body: formData,
+        });
+    }
+
+
     #getUrl = (checklistId) =>
     {
         return `${ApiEndpoints.CHECKLISTS}/${checklistId}`;

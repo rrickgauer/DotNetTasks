@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Checklists{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container mt-5">
+    
+    {{ section_header('General') }}
+
+    {% include 'pages/checklist-settings/general.html' %}
+
+</div>
+
+
+<div class="container mt-5">
+
+    {{ section_header('Clone') }}
+
+    <p>Create a copy of this list and its current items.</p>
+
+</div>
+
+
+
+<!-- hidden -->
+<div class="container mt-5 d-none">
+
+    {{ section_header('Tags') }}
+
+</div>
+
+
+<div class="container mt-5">
+
+    {{ section_header('Danger Zone') }}
+
+    <p>Once you delete a list, there is no going back. Please be certain.</p>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block footer %}
+<script src="/static/js/dist/checklist-settings.bundle.js"></script>
+{% endblock %}  
+
+
+{% macro section_header(title) -%}
+
+<h2>{{ title }}</h2>
+<hr>
+
+{%- endmacro %}

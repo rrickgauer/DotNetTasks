@@ -15,4 +15,14 @@ export class UrlMethods
         newUrl.searchParams.set(key, value);
         return newUrl
     }
+
+
+    static getPathValue(index)
+    {
+        const url = new URL(window.location.href);
+
+        const pathValues = url.pathname.split('/').filter(v => v !== "");
+
+        return pathValues[index];
+    }
 }

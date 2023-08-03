@@ -57,3 +57,13 @@ def get_checklist(checklist_id: UUID):
 def delete_checklist(checklist_id: UUID):
     response = checklist_services.delete_checklist(checklist_id)
     return (response.text, response.status_code)
+
+
+#------------------------------------------------------
+# PUT: /api/checklists/:checklistId
+#------------------------------------------------------
+@bp_api_checklists.put('<uuid:checklist_id>')
+@security.login_required
+def put_checklist(checklist_id: UUID):
+    response = checklist_services.save_checklist(checklist_id, flask.request.form.to_dict())
+    return (response.text, response.status_code)

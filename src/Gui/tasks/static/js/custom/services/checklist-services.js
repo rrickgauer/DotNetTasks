@@ -1,4 +1,5 @@
 import { ApiChecklists } from "../api/api-checklists";
+import { UpdateChecklistForm } from "../domain/forms/update-checklist-form";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 
 
@@ -52,6 +53,22 @@ export class ChecklistServices
         this.#handleBadResponse(response);
 
         return response.ok;
+    }
+
+
+    /**
+     * Save the checklist
+     * @param {string} checklistId 
+     * @param {UpdateChecklistForm} udpateChecklistForm 
+     */
+    saveChecklist = async (checklistId, udpateChecklistForm) =>
+    {
+        const formData = HttpRequestMapper.toFormData(udpateChecklistForm);
+        
+        const response = await this.#api.put(checklistId, formData);
+        this.#handleBadResponse(response);
+        
+        return await response.json();
     }
 
 
