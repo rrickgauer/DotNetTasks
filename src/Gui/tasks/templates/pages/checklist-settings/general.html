@@ -1,0 +1,48 @@
+{# 
+    
+    data:
+        - checklist
+            - id         : Opt[UUID]    
+            - title      : Opt[str]     
+            - type       : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - countItems : Opt[int]     
+#}
+
+
+{% macro list_type_radio(list_type, display, checked) -%}
+
+    {% set html_id %}form-input-radio-{{ list_type }}{% endset %}
+
+    <div class="custom-control custom-radio">
+        <input type="radio" id="{{ html_id }}" name="form-input-radio" class="custom-control-input" {{ 'checked' if checked }} value="{{ display }}">
+        <label class="custom-control-label" for="{{ html_id }}">{{ display }}</label>
+    </div>
+
+{%- endmacro %}
+
+
+
+<form class="checklists-settings-general-form">
+    <fieldset>
+        <!-- Title -->
+        <div class="form-group">
+            <label for="form-input-title">Title</label>
+            <input type="text" class="form-control" id="form-input-title" value="{{ data.checklist.title if data.checklist.title }}" required>
+        </div>
+        
+        <!-- List type -->
+        <div class="form-group">
+            {{ list_type_radio('list', 'List', data.checklist.type == 'List') }}
+            {{ list_type_radio('template', 'Template', data.checklist.type == 'Template') }}
+        </div>
+
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-success submit-form">Save changes</button>
+    </fieldset>
+</form>
+
+
+
+
