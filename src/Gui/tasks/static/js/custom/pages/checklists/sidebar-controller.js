@@ -136,6 +136,37 @@ export class SidebarController
 
 
     /**
+     * Get the specified checklist
+     * @param {string} checklistId 
+     * @returns the checklist
+     */
+    getChecklist = (checklistId) =>
+    {
+        const index = this.getChecklistIndex(checklistId);
+        return this.sidebarItems[index];
+    }
+
+    /**
+     * Get the index of the specified checklist
+     * @param {string} checklistId 
+     * @returns the index
+     */
+    getChecklistIndex = (checklistId) =>
+    {
+        const index = this.sidebarItems.findIndex(s => s.checklistId === checklistId);
+
+        if (index === -1)
+        {
+            throw new Error(`No sidebar checklist found with id = ${checklistId}`);
+        }
+
+        return index;
+    }
+
+
+
+
+    /**
      * Handle the new checklist form submission event
      * @param {BaseEventDetail} eventDetails 
      */

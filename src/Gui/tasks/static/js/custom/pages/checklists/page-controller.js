@@ -1,9 +1,8 @@
 import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent } from "../../domain/events/events";
+import { ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
 import { UrlWrapper } from "./url-wrapper";
 import { SidebarController } from "./sidebar-controller";
 import { OpenChecklistsController } from "./open-checklists-controller";
-
 
 
 export class PageElements 
@@ -14,7 +13,6 @@ export class PageElements
     /** @type {HTMLButtonElement} */
     openSidebarButton = this.container.querySelector('.btn-open-sidebar');
 }
-
 
 
 
@@ -54,6 +52,11 @@ export class PageController
         {
             this.#closeChecklist(e.data);
         });
+
+        OpenChecklistCloseButtonClickedEvent.addListener((e) => 
+        {
+            this.#closeChecklist(e.data);
+        });
     }
 
 
@@ -73,7 +76,6 @@ export class PageController
     {
         this.urlWrapper.add(checklistId);
         await this.openChecklistsController.openChecklist(checklistId);
-        
     }
 
     /**
@@ -83,6 +85,8 @@ export class PageController
     #closeChecklist = (checklistId) => 
     {
         this.urlWrapper.remove(checklistId);
+        this.openChecklistsController.closeOpenChecklist(checklistId);
+        this.sidebarController.getChecklist(checklistId).isActive = false;
     }
 
 

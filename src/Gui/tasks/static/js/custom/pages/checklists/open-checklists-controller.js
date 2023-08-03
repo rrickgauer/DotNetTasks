@@ -34,10 +34,7 @@ export class OpenChecklistsController
 
     #addEventListeners = () =>
     {
-        OpenChecklistCloseButtonClickedEvent.addListener((e) => 
-        {
-            this.#onOpenChecklistCloseButtonClickedEvent(e.data);
-        });
+
     }
 
 
@@ -61,16 +58,7 @@ export class OpenChecklistsController
     }
 
 
-    #onOpenChecklistCloseButtonClickedEvent = (checklistId) =>
-    {
-        this.#closeOpenChecklist(checklistId);
-
-        
-
-
-    }
-
-    #closeOpenChecklist = (checklistId) =>
+    closeOpenChecklist = (checklistId) =>
     {
         // remove the html from the page
         const openChecklist = this.#getOpenChecklist(checklistId);
