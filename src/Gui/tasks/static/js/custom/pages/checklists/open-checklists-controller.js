@@ -1,15 +1,10 @@
-import { OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
 import { OpenChecklist } from "./open-checklist";
-
-
 
 
 export class OpenChecklistsElements
 {
     /** @type {HTMLDivElement} */
     container = document.querySelector('.open-checklists-wrapper');
-
-
 }
 
 
@@ -26,24 +21,43 @@ export class OpenChecklistsController
     }
 
 
-    init = async () =>
+    /**
+     * Initialize the open checklists
+     * @param {string[]} openChecklistIds list of all open checklist ids to load
+     */
+    init = async (openChecklistIds) =>
     {
-        this.#addEventListeners();
+        await this.#openChecklists(openChecklistIds);
     }
 
 
-    #addEventListeners = () =>
+    /**
+     * Open mulitple checklists
+     * @param {string[]} checklistIds list of checklist ids to open
+     */
+    #openChecklists = async (checklistIds) =>
     {
-
+        const promises = Array.from(checklistIds, (id) => this.openChecklist(id));
+        await Promise.all(promises);
     }
 
 
+    /**
+     * Open the specified checklist
+     * @param {string} checklistId 
+     */
     openChecklist = async (checklistId) =>
     {
         const openChecklist = await this.#createNewOpenChecklist(checklistId);
         this.openChecklists.push(openChecklist);
     }
 
+
+    /**
+     * Create and load a checklist
+     * @param {string} checklistId the id of the checklist
+     * @returns the created checklist 
+     */
     #createNewOpenChecklist = async (checklistId) =>
     {
         const openChecklist = new OpenChecklist(checklistId);
@@ -58,6 +72,10 @@ export class OpenChecklistsController
     }
 
 
+    /**
+     * Close an open checklist
+     * @param {string} checklistId the checklist to close
+     */
     closeOpenChecklist = (checklistId) =>
     {
         // remove the html from the page
@@ -69,6 +87,10 @@ export class OpenChecklistsController
     }
 
 
+    /**
+     * Get the specified checklist
+     * @param {string} checklistId 
+     */
     #getOpenChecklist = (checklistId) =>
     {
         const index = this.#getOpenChecklistIndex(checklistId);
@@ -76,6 +98,10 @@ export class OpenChecklistsController
     }
 
 
+    /**
+     * Get the index of the specified checklist within the objects openChecklists collection
+     * @param {string} checklistId 
+     */
     #getOpenChecklistIndex = (checklistId) =>
     {
         const index = this.openChecklists.findIndex(c => c.checklistId === checklistId);

@@ -32,7 +32,9 @@ export class PageController
     {
         this.#addEventListeners();
         await this.sidebarController.init();
-        await this.openChecklistsController.init();
+
+        const openChecklistIds = this.urlWrapper.getOpenChecklistIds();
+        await this.openChecklistsController.init(openChecklistIds);
     }
 
 

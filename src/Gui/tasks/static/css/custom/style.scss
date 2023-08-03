@@ -228,6 +228,7 @@ textarea {
     padding: 10px;
     scroll-snap-type: x mandatory;
     align-items: flex-start;
+    min-height: 400px;
 }
 
 .open-checklist-container {
