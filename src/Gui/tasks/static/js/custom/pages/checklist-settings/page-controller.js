@@ -1,8 +1,8 @@
 import { AlertPageTopBase, AlertPageTopDanger, AlertPageTopSuccess } from "../../components/page-alerts/alert-page-top";
-import { ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
+import { ChecklistSettingsChecklistDeletedEvent, ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
 import { UrlMethods } from "../../helpers/url-methods";
+import { DeleteChecklistController } from "./delete-checklist-controller";
 import { GeneralSettingsFormController } from "./general-settings-form-controller"
-
 
 
 export class ChecklistSettingsPageController
@@ -12,11 +12,13 @@ export class ChecklistSettingsPageController
     {
         this.checklistId = UrlMethods.getPathValue(1);
         this.generalSettingsForm = new GeneralSettingsFormController(this.checklistId);
+        this.deleteChecklistController = new DeleteChecklistController(this.checklistId);
     }
 
     init = () =>
     {
         this.generalSettingsForm.init();
+        this.deleteChecklistController.init();
         this.#addEventListeners();
     }
 
@@ -27,6 +29,12 @@ export class ChecklistSettingsPageController
         {  
             this.#onChecklistSettingsGeneralFormSubmittedEvent(e.data);
         });
+
+        ChecklistSettingsChecklistDeletedEvent.addListener((e) => 
+        {
+            window.location.href = '/checklists';
+        });
+        
     }
 
     #onChecklistSettingsGeneralFormSubmittedEvent = (successful) =>
@@ -46,4 +54,8 @@ export class ChecklistSettingsPageController
 
         customAlert.show();
     }
+
+
+
+
 }
