@@ -1,22 +1,16 @@
 import { ApiChecklists } from "../api/api-checklists";
-import { Utililties } from "../helpers/utilities";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 
 
 
 export class ChecklistServices
 {
+    #api = new ApiChecklists();
 
-    constructor()
-    {
-        this.api = new ApiChecklists();
-    }
-
-
-
+    
     getAllChecklistHtml = async () =>
     {
-        const response = await this.api.getAll();
+        const response = await this.#api.getAll();
         this.#handleBadResponse(response);
 
         return await response.text();
@@ -31,11 +25,21 @@ export class ChecklistServices
 
         const formData = HttpRequestMapper.toFormData(checklistData);
         
-        const response = await this.api.post(formData);
+        const response = await this.#api.post(formData);
         this.#handleBadResponse(response);
         
         return await response.json();
     }
+
+    getChecklistHtml = async (checklistId) =>
+    {
+        const response = await this.#api.get(checklistId);
+        this.#handleBadResponse(response);
+
+        return await response.text();
+    }
+
+
 
     /**
      * Handle a bad response
@@ -49,5 +53,8 @@ export class ChecklistServices
             throw new Error(text);
         }
     }
+
+
+
 }
 

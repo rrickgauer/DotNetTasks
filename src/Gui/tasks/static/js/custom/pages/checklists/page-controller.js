@@ -2,6 +2,7 @@ import { NativeEvents } from "../../domain/constants/native-events";
 import { ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent } from "../../domain/events/events";
 import { UrlWrapper } from "./url-wrapper";
 import { SidebarController } from "./sidebar-controller";
+import { OpenChecklistsController } from "./open-checklists-controller";
 
 
 
@@ -25,6 +26,7 @@ export class PageController
         this.pageElements = new PageElements();
         this.sidebarController = new SidebarController();
         this.urlWrapper = new UrlWrapper(new URL(window.location.href));
+        this.openChecklistsController = new OpenChecklistsController();
     }
 
 
@@ -32,6 +34,7 @@ export class PageController
     {
         this.#addEventListeners();
         await this.sidebarController.init();
+        await this.openChecklistsController.init();
     }
 
 
@@ -69,6 +72,7 @@ export class PageController
     #openChecklist = async (checklistId) =>
     {
         this.urlWrapper.add(checklistId);
+        await this.openChecklistsController.openChecklist(checklistId);
     }
 
     /**

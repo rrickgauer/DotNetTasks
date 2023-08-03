@@ -1,8 +1,10 @@
 from __future__ import annotations
+from uuid import UUID
 from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.domain import models
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
+from tasks.common.macros import OpenChecklistCardMarco
 from markupsafe import Markup
 
 def get_checklists() -> List[models.ChecklistResponse]:
@@ -30,6 +32,18 @@ def create_checklist(data):
     return response.json()
 
 
+
+
+def get_checklist(checklist_id: UUID):
+    api = ApiWrapperChecklists()
+    response_data = api.get(checklist_id).json()
+    
+    checklist = models.ChecklistResponse.from_dict(response_data)
+    return checklist
+
+
+def get_open_checklist_card_html(checklist) -> Markup:
+    return OpenChecklistCardMarco.render_html(checklist)
 
 
 

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from uuid import UUID
 import requests
 from .base import ApiWrapperBase
 
@@ -14,3 +15,7 @@ class ApiWrapperChecklists(ApiWrapperBase):
     
     def post(self, data) -> requests.Response:
         return self._post_request(self.url, data=data)
+    
+    def get(self, checklist_id: UUID) -> requests.Response:
+        url = f'{self.url}/{checklist_id}'
+        return self._get_request(url)

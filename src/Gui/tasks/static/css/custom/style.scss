@@ -175,6 +175,10 @@ textarea {
 
 .checklists-page-container {
     
+    & {
+        display: flex;
+    }
+
     /* Sidebar styling */
     .checklists-sidebar {
         height: 100%;
@@ -213,4 +217,21 @@ textarea {
     animation: animation-drawer-fade-in .3s ease-in-out 1;
 }
 
+
+.checklists-main-page {
+    width: 100%;
+}
+
+.open-checklists-wrapper {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    align-items: flex-start;
+}
+
+.open-checklist-container {
+    min-width: 400px;
+    margin-left: 20px;
+}
 

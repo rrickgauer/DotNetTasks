@@ -1,0 +1,43 @@
+
+{# 
+
+    ChecklistResponse:
+        id         : Opt[UUID]     
+        title      : Opt[str]      
+        type       : Opt[str]      
+        createdOn  : Opt[datetime] 
+        countItems : Opt[int]      
+
+#}
+
+{% macro open_checklist_card(checklist) -%}
+
+
+    <div class="card open-checklist-container" data-checklist-id="{{ checklist.id }}">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h5>{{ checklist.title }}</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">    
+                        <button type="button" class="close" data-toggle="dropdown">
+                            <i class="bx bx-dots-horizontal"></i>
+                        </button>
+    
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button class="dropdown-item" type="button">Action</button>
+                            <button class="dropdown-item" type="button">Another action</button>
+                            <button class="dropdown-item" type="button">Something else here</button>
+                        </div>
+                    </div>
+    
+                    <button type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{%- endmacro %}
