@@ -23,9 +23,24 @@ export class ApiChecklists
 
     get = async (checklistId) =>
     {
-        const url = `${ApiEndpoints.CHECKLISTS}/${checklistId}`;
-
+        const url = this.#getUrl(checklistId);
         return await fetch(url);
+    }
+
+
+    delete = async (checklistId) =>
+    {
+        const url = this.#getUrl(checklistId);
+        
+        return await fetch(url, 
+        {
+            method: HttpMethods.DELETE,
+        });
+    }
+
+    #getUrl = (checklistId) =>
+    {
+        return `${ApiEndpoints.CHECKLISTS}/${checklistId}`;
     }
 
 }

@@ -15,3 +15,5 @@ export class ChecklistsSidebarItemClosedEvent extends BaseEvent {}
 
 
 export class OpenChecklistCloseButtonClickedEvent extends BaseEvent {}
+
+export class DeleteChecklistEvent extends BaseEvent {}

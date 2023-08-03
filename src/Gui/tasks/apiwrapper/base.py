@@ -19,7 +19,7 @@ class ApiWrapperBase:
     # Send a GET request
     #------------------------------------------------------
     def _get_request(self, url, parms=None, data=None) -> requests.Response:
-        return self._send_request(
+        return self.send_request(
             url               = url,
             requests_callback = requests.get,
             parms             = parms,
@@ -31,7 +31,7 @@ class ApiWrapperBase:
     # Send a PUT request
     #------------------------------------------------------
     def _put_request(self, url, parms=None, data=None) -> requests.Response:
-        return self._send_request(
+        return self.send_request(
             url               = url,
             requests_callback = requests.put,
             parms             = parms,
@@ -43,7 +43,7 @@ class ApiWrapperBase:
     # Send a POST request
     #------------------------------------------------------
     def _post_request(self, url, parms=None, data=None) -> requests.Response:
-        return self._send_request(
+        return self.send_request(
             url               = url,
             requests_callback = requests.post,
             parms             = parms,
@@ -55,7 +55,7 @@ class ApiWrapperBase:
     # Send a DELETE request
     #------------------------------------------------------
     def _delete_request(self, url, parms=None, data=None) -> requests.Response:
-        return self._send_request(
+        return self.send_request(
             url               = url,
             requests_callback = requests.delete,
             parms             = parms,
@@ -66,7 +66,7 @@ class ApiWrapperBase:
     #------------------------------------------------------
     # Send a request to the api
     #------------------------------------------------------
-    def _send_request(self, url, requests_callback, parms=None, data=None, authorize: bool=True, check_response: bool=True) -> requests.Response:
+    def send_request(self, url, requests_callback, parms=None, data=None, authorize: bool=True, check_response: bool=True) -> requests.Response:
         
         response = requests_callback(
             verify = False,
