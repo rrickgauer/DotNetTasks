@@ -11,6 +11,7 @@ public interface IChecklistServices
     public Task<ModifyChecklistStatus> GetModifyChecklistStatusAsync(Guid checklistId, Guid userId);
     public Task<ChecklistTableView> SaveChecklistAsync(Checklist checklist);
     public Task<int> DeleteChecklistAsync(Guid checklistId);
+    public Task<ChecklistTableView> CopyChecklistAsync(Guid existingChecklistId, string newChecklistTitle);
 }
 
 

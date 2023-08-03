@@ -88,4 +88,21 @@ public class ChecklistItemRepository : IChecklistItemRepository
 
         return await _connection.ModifyAsync(command);
     }
+
+
+    /// <summary>
+    /// Insert copies of every checklist item beloning to the sourceChecklistId into the target checklist.
+    /// </summary>
+    /// <param name="sourceChecklistId">Source checklist</param>
+    /// <param name="targetChecklistId">Target checklist</param>
+    /// <returns>Number of rows affected</returns>
+    public async Task<int> CopyChecklistItemsAsync(Guid sourceChecklistId, Guid targetChecklistId)
+    {
+        MySqlCommand command = new(ChecklistItemCommands.CopyItems);
+
+        command.Parameters.AddWithValue("@source_checklist_id", sourceChecklistId);
+        command.Parameters.AddWithValue("@target_checklist_id", targetChecklistId);
+
+        return await _connection.ModifyAsync(command);
+    }
 }

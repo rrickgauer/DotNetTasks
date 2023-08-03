@@ -65,5 +65,32 @@ public sealed class ChecklistItemCommands
             id = @id";
 
 
+    public const string CopyItems = @"
+        INSERT INTO Checklist_Items 
+        (
+            id,
+            checklist_id,
+            content,
+            position,
+            created_on,
+            completed_on
+        ) 
+        (
+            SELECT
+                uuid(),
+                @target_checklist_id,
+                source_checklist.content,
+                source_checklist.position,
+                source_checklist.created_on,
+                source_checklist.completed_on
+            FROM
+                Checklist_Items source_checklist
+            WHERE
+                source_checklist.checklist_id = @source_checklist_id
+        )";
+
+
+
+
 
 }

@@ -8,4 +8,5 @@ public interface IChecklistItemServices
     public Task<ChecklistItem?> GetChecklistItemAsync(Guid itemId);
     public Task<int> SaveChecklistItemAsync(ChecklistItem item);
     public Task<int> DeleteChecklistItemAsync(Guid itemId);
+    public Task<int> CopyChecklistItemsAsync(Guid sourceId, Guid destinationId);
 }

@@ -1,4 +1,6 @@
-﻿using Tasks.Service.Domain.Enums;
+﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
+using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Repositories.Interfaces;
@@ -10,10 +12,9 @@ public class ChecklistServices : IChecklistServices
 {
 
     #region - Private members -
-
     private readonly IChecklistRepository _checklistRepository;
     private readonly IMapperServices _mapperServices;
-
+    private readonly IChecklistItemServices _checklistItemServices;
     #endregion
 
     /// <summary>
@@ -21,10 +22,11 @@ public class ChecklistServices : IChecklistServices
     /// </summary>
     /// <param name="checklistRepository"></param>
     /// <param name="modelMapperServices"></param>
-    public ChecklistServices(IChecklistRepository checklistRepository, IMapperServices modelMapperServices)
+    public ChecklistServices(IChecklistRepository checklistRepository, IMapperServices modelMapperServices, IChecklistItemServices checklistItemServices)
     {
         _checklistRepository = checklistRepository;
         _mapperServices = modelMapperServices;
+        _checklistItemServices = checklistItemServices;
     }
 
     /// <summary>
@@ -58,6 +60,16 @@ public class ChecklistServices : IChecklistServices
         return model;
     }
 
+    /// <summary>
+    /// Get the status for when a user is trying to modify a checklist.
+    /// It can be:
+    ///     - Inserted
+    ///     - Updated
+    ///     - Taken by another user
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public async Task<ModifyChecklistStatus> GetModifyChecklistStatusAsync(Guid checklistId, Guid userId)
     {
         var checklist = await GetChecklistAsync(checklistId);
@@ -76,6 +88,11 @@ public class ChecklistServices : IChecklistServices
     }
 
 
+    /// <summary>
+    /// Save the specified checklist
+    /// </summary>
+    /// <param name="checklist"></param>
+    /// <returns></returns>
     public async Task<ChecklistTableView> SaveChecklistAsync(Checklist checklist)
     {
         // save the changes
@@ -85,10 +102,60 @@ public class ChecklistServices : IChecklistServices
         return await GetChecklistAsync(checklist.Id.Value);
     }
 
+    /// <summary>
+    /// Delete the checklist
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <returns></returns>
     public async Task<int> DeleteChecklistAsync(Guid checklistId)
     {
         return await _checklistRepository.DeleteChecklistAsync(checklistId);
     }
+
+
+    /// <summary>
+    /// Create a copy of the checklist and its items
+    /// </summary>
+    /// <param name="existingChecklistId"></param>
+    /// <param name="newChecklistTitle"></param>
+    /// <returns></returns>
+    public async Task<ChecklistTableView> CopyChecklistAsync(Guid existingChecklistId, string newChecklistTitle)
+    {
+        // create the new checklist first...
+        var copiedChecklist = await CreateCopiedChecklistAsync(existingChecklistId, newChecklistTitle);
+
+        // now, copy over the checklist items
+        var countItems = await _checklistItemServices.CopyChecklistItemsAsync(existingChecklistId, copiedChecklist.Id.Value);
+
+        copiedChecklist.CountItems = countItems;
+
+        return copiedChecklist;
+    }
+
+    /// <summary>
+    /// Create a copy of the specified checklist using the specified title.
+    /// </summary>
+    /// <param name="checklistId">The checklist to copy</param>
+    /// <param name="title">The title of the new checklist</param>
+    /// <returns></returns>
+    private async Task<ChecklistTableView> CreateCopiedChecklistAsync(Guid checklistId, string title)
+    {
+        var existingChecklist = await GetChecklistAsync(checklistId);
+
+        Checklist newChecklist = new()
+        {
+            Id = Guid.NewGuid(),
+            Title = title,
+            ListType = existingChecklist.ListType,
+            UserId = existingChecklist.UserId,
+            CreatedOn = DateTime.Now,
+        };
+
+        var result = await SaveChecklistAsync(newChecklist);
+
+        return result;
+    }
+
 }
 
 
