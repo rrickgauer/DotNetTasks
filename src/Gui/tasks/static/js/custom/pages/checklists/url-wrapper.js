@@ -3,7 +3,7 @@
 import { Utililties } from "../../helpers/utilities";
 
 
-export class ChecklistsPageUrlWrapper
+export class UrlWrapper
 {
     //#region Static Stuff
 
@@ -15,7 +15,7 @@ export class ChecklistsPageUrlWrapper
     static fromCurrentUrl = () =>
     {
         const url = new URL(window.location.href);
-        return new ChecklistsPageUrlWrapper(url);
+        return new UrlWrapper(url);
     }
 
     //#endregion
@@ -60,7 +60,7 @@ export class ChecklistsPageUrlWrapper
      */
     getOpenChecklistIds = () =>
     {
-        const rawText = this.url.searchParams.get(ChecklistsPageUrlWrapper.SearchParmsKey);
+        const rawText = this.url.searchParams.get(UrlWrapper.SearchParmsKey);
 
         if (Utililties.isNullOrEmpty(rawText))
         {
@@ -134,7 +134,7 @@ export class ChecklistsPageUrlWrapper
      */
     #clearOutSearchParm = () =>
     {
-        this.url.searchParams.delete(ChecklistsPageUrlWrapper.SearchParmsKey);
+        this.url.searchParams.delete(UrlWrapper.SearchParmsKey);
     }
 
 
@@ -144,7 +144,7 @@ export class ChecklistsPageUrlWrapper
      */
     #setOpenChecklistsUrlParm = (parmValue) =>
     {
-        this.url.searchParams.set(ChecklistsPageUrlWrapper.SearchParmsKey, parmValue);
+        this.url.searchParams.set(UrlWrapper.SearchParmsKey, parmValue);
     } 
 
 

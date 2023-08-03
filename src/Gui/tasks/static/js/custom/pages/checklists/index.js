@@ -1,30 +1,18 @@
 "use strict";
 
-import { BaseEventDetail } from "../../domain/events/detail";
-
-import { SidebarController } from "./sidebar-controller";
+import { PageController } from "./page-controller";
 
 
-$(document).ready(function() {
+$(document).ready(function() 
+{
     setup();
-    test();
 });
 
 
-function setup()
+async function setup()
 {
-    const container = document.querySelector('.checklists-page-container');
-    const controller = new SidebarController(container);
-    controller.init();
-
-    // console.log({controller});
-}
-
-
-function test()
-{
-
+    const pageController = new PageController();
+    await pageController.init();
 
 }
-
 

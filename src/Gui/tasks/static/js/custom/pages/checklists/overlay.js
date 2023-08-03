@@ -1,5 +1,5 @@
 import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistsOverlayClickedEvent, ChecklistsSidebarClosedEvent, ChecklistsSidebarOpenedEvent } from "../../domain/events/events";
+import { ChecklistsOverlayClickedEvent } from "../../domain/events/events";
 
 
 export class ChecklistsOverlay
@@ -14,14 +14,6 @@ export class ChecklistsOverlay
 
     #addListeners = () =>
     {
-        ChecklistsSidebarOpenedEvent.addListener((detail) => {
-            this.#show();
-        });
-
-        ChecklistsSidebarClosedEvent.addListener((e) => {
-            this.#remove();
-        });
-
         this.#listenForOverlayClick();
     }
 
@@ -31,19 +23,18 @@ export class ChecklistsOverlay
         {
             if (e.target.classList.contains(ChecklistsOverlay.OverlayClass))
             {
-                this.#remove();
                 ChecklistsOverlayClickedEvent.invoke(this, null);
             }
         });
     }
 
 
-    #show = () =>
+    show = () =>
     {
         $('body').append(ChecklistsOverlay.eOverlay);
     }
 
-    #remove = () =>
+    remove = () =>
     {
         document.querySelector(`.${ChecklistsOverlay.OverlayClass}`).remove();
     }

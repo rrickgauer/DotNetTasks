@@ -1,13 +1,39 @@
 import { NativeEvents } from "../../domain/constants/native-events";
 import { BaseEventDetail } from "../../domain/events/detail";
-import { ChecklistsOverlayClickedEvent, ChecklistsSidebarClosedEvent, ChecklistsSidebarItemClosedEvent, ChecklistsSidebarItemOpenedEvent, ChecklistsSidebarOpenedEvent, NewChecklistFormSubmittedEvent, NewChecklistFormToggleEvent } from "../../domain/events/events";
+import { ChecklistsOverlayClickedEvent, NewChecklistFormSubmittedEvent, NewChecklistFormToggleEvent } from "../../domain/events/events";
 import { ChecklistServices } from "../../services/checklist-services";
-import { ChecklistsElements } from "./checklist-elements";
-import { ChecklistSidebarElements } from "./checklist-sidebar-elements";
-import { NewChecklistFormController } from "./new-checklist-form";
+import { NewChecklistFormController, NewChecklistFormElements } from "./new-checklist-form";
 import { ChecklistsOverlay } from "./overlay";
 import { ChecklistSidebarItem } from "./sidebar-item";
-import { ChecklistsPageUrlWrapper } from "./url-wrapper";
+import { UrlWrapper } from "./url-wrapper";
+
+
+export class SidebarElements
+{
+    static ContainerVisibility = 'active';
+
+    constructor()
+    {
+        /** @type {HTMLDivElement} */
+        this.container = document.querySelector('.checklists-sidebar');
+
+        /** @type {HTMLButtonElement} */
+        this.closeSidebarButton = this.container.querySelector('.btn-close-checklist');
+
+        /** @type {HTMLButtonElement} */
+        this.openNewChecklistFormButton = this.container.querySelector('.btn-new-checklist');
+
+        /** @type {HTMLDivElement} */
+        this.sidebarItemsContainer = this.container.querySelector('.checklist-sidebar-items');
+
+        this.newChecklistForm = new NewChecklistFormElements(this.container);
+
+        /** @type {HTMLDivElement} */
+        this.checklistsItemsContainer = this.container.querySelector('.checklist-sidebar-items');
+    }
+}
+
+
 
 
 export class SidebarController
@@ -15,15 +41,13 @@ export class SidebarController
 
     /**
      * Constructor
-     * @param {HTMLElement} container sidebar container html element
      */
-    constructor(container)
+    constructor()
     {
-        this.sidebar = new ChecklistSidebarElements();
-        this.elements = new ChecklistsElements(container);
+        this.sidebar = new SidebarElements();
         this.newChecklistForm = new NewChecklistFormController();
         this.services = new ChecklistServices();
-        this.urlWrapper = ChecklistsPageUrlWrapper.fromCurrentUrl();
+        this.urlWrapper = UrlWrapper.fromCurrentUrl();
         this.overlay = new ChecklistsOverlay();
 
         /** @type {ChecklistSidebarItem[]} */
@@ -36,7 +60,7 @@ export class SidebarController
     init = async () =>
     {
         this.#addEventListeners();
-        await this.#fetchChecklists();
+        await this.fetchChecklists();
     }
 
     /**
@@ -44,53 +68,35 @@ export class SidebarController
      */
     #addEventListeners = () =>
     {
-        this.sidebar.closeSidebarButton.addEventListener(NativeEvents.CLICK, this.#closeSidebar);
-        this.elements.openSidebarButton.addEventListener(NativeEvents.CLICK, this.#openSidebar);
+        this.sidebar.closeSidebarButton.addEventListener(NativeEvents.CLICK, this.closeSidebar);
         
-        this.sidebar.openNewChecklistFormButton.addEventListener(NativeEvents.CLICK, (e) => {
+        this.sidebar.openNewChecklistFormButton.addEventListener(NativeEvents.CLICK, (e) => 
+        {
             NewChecklistFormToggleEvent.invoke(this);
         });
 
         NewChecklistFormSubmittedEvent.addListener(this.#onNewChecklistFormSubmittedEvent);
 
-        ChecklistsOverlayClickedEvent.addListener((e) => {
-            this.#closeSidebar();
+        ChecklistsOverlayClickedEvent.addListener((e) => 
+        {
+            this.closeSidebar();
         });
-
-        ChecklistsSidebarItemOpenedEvent.addListener(this.#onChecklistsSidebarItemOpenedEvent);
-        ChecklistsSidebarItemClosedEvent.addListener(this.#onChecklistsSidebarItemClosedEvent);
     }
-
-
-    #onChecklistsSidebarItemOpenedEvent = (eventDetail) =>
-    {
-        alert(`opened: ${eventDetail.data}`);
-    }
-
-
-    #onChecklistsSidebarItemClosedEvent = (eventDetail) =>
-    {
-        alert('closed');
-    }
-
-
-
-
 
     //#region Toggle sidebar
 
     /** Close the sidebar */
-    #closeSidebar = () => 
+    closeSidebar = () => 
     {
-        this.sidebar.container.classList.remove(ChecklistSidebarElements.ContainerVisibility);
-        ChecklistsSidebarClosedEvent.invoke(this, null);
+        this.sidebar.container.classList.remove(SidebarElements.ContainerVisibility);
+        this.overlay.remove();
     }
 
     /** Open the sidebar */
-    #openSidebar = () => 
+    openSidebar = () => 
     {
-        this.sidebar.container.classList.add(ChecklistSidebarElements.ContainerVisibility);
-        ChecklistsSidebarOpenedEvent.invoke(this, null);
+        this.sidebar.container.classList.add(SidebarElements.ContainerVisibility);
+        this.overlay.show();
     }
     
     //#endregion
@@ -99,7 +105,7 @@ export class SidebarController
     /**
      * Fetch all the checklists html
      */
-    #fetchChecklists = async () =>
+    fetchChecklists = async () =>
     {
         const checklistsHtml = await this.services.getAllChecklistHtml();
         this.sidebar.sidebarItemsContainer.innerHTML = checklistsHtml;
@@ -113,7 +119,8 @@ export class SidebarController
      */
     #activateSidebarItems = () =>
     {
-        const openChecklistIdsInUrl = this.urlWrapper.getOpenChecklistIds();
+        const urlWrapper = UrlWrapper.fromCurrentUrl();
+        const openChecklistIdsInUrl = urlWrapper.getOpenChecklistIds();
 
         if (openChecklistIdsInUrl.length == 0)
             return;
@@ -127,13 +134,14 @@ export class SidebarController
         }
     }
 
+
     /**
      * Handle the new checklist form submission event
      * @param {BaseEventDetail} eventDetails 
      */
     #onNewChecklistFormSubmittedEvent = async (eventDetails) =>
     {
-        await this.#fetchChecklists();
+        await this.fetchChecklists();
         NewChecklistFormToggleEvent.invoke(this);
     }
 
