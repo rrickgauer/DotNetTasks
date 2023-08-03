@@ -73,6 +73,7 @@ export class PageController
     {
         this.urlWrapper.add(checklistId);
         await this.openChecklistsController.openChecklist(checklistId);
+        
     }
 
     /**
