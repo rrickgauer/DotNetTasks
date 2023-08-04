@@ -1,2 +1,3 @@
 from .base import ApiWrapperBase as ApiWrapperBase
-from .checklists_api_wrapper import ApiWrapperChecklists as ApiWrapperChecklists
+from .checklists import ApiWrapperChecklists as ApiWrapperChecklists
+from .checklist_clones import ApiWrapperChecklistClones as ApiWrapperChecklistClones

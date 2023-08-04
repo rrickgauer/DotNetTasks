@@ -8,6 +8,7 @@ This class can build all the urls for the api.
 
 from __future__ import annotations
 from datetime import date
+from uuid import UUID
 from tasks.config.routines import get_config
 
 class ApiUrlBuilder:
@@ -54,4 +55,7 @@ class ApiUrlBuilder:
     
     def checklists(self) -> str:
         return f'{self.api_url}/checklists'
+    
+    def checklist_clones(self, checklist_id: UUID):
+        return f'{self.api_url}/checklists/{checklist_id}/clones'
          

@@ -5,48 +5,43 @@
 {% block content %}
 
 
-
-<div class="container mt-5">
+<!-- General -->
+<div class="container checklist-settings-container mt-5">
     
     {{ section_header('General') }}
-
-    {% include 'pages/checklist-settings/general.html' %}
-
+    
+    <div class="section-content">
+        {% include 'pages/checklist-settings/general.html' %}
+    </div>
+    
 </div>
 
 
-<div class="container mt-5">
-
+<!-- Clone -->
+<div class="container checklist-settings-container mt-5">
+    
     {{ section_header('Clone') }}
 
-    <p>Create a copy of this list and its current items.</p>
-
+    <div class="section-content">
+        {% include 'pages/checklist-settings/clone.html' %}
+    </div>
+    
 </div>
 
 
-
-<!-- hidden -->
-<div class="container mt-5 d-none">
-
-    {{ section_header('Tags') }}
-
-</div>
-
-
-<div class="container mt-5">
-
+<!-- Danger zone -->
+<div class="container checklist-settings-container mt-5">
     {{ section_header('Danger Zone') }}
 
-    <p>Once you delete a list, there is no going back. Please be certain.</p>
-
-    <button class="btn btn-danger btn-delete-checklist" type="button">Delete checklist</button>
-
+    <div class="section-content">
+        {% include 'pages/checklist-settings/danger.html' %}
+    </div>
+    
 </div>
 
-
-
-
 {% endblock %}
+
+
 
 
 {% block footer %}
@@ -56,7 +51,10 @@
 
 {% macro section_header(title) -%}
 
-<h2>{{ title }}</h2>
-<hr>
+
+<div class="section-header">
+    <h2>{{ title }}</h2>
+    <hr>
+</div>
 
 {%- endmacro %}

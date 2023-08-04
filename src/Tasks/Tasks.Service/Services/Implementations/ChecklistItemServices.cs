@@ -78,4 +78,15 @@ public class ChecklistItemServices : IChecklistItemServices
     {
         return await _repository.DeleteChecklistItemAsync(itemId);
     }
+
+    /// <summary>
+    /// Copy over all the items from one checklist into another
+    /// </summary>
+    /// <param name="sourceChecklistId">The source checklist id</param>
+    /// <param name="targetChecklistId">The destination checklist id</param>
+    /// <returns></returns>
+    public async Task<int> CopyChecklistItemsAsync(Guid sourceChecklistId, Guid targetChecklistId)
+    {
+        return await _repository.CopyChecklistItemsAsync(sourceChecklistId, targetChecklistId);
+    }
 }
