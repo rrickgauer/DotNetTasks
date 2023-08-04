@@ -6,26 +6,42 @@
 
 
 <!-- General -->
-<div class="container mt-5">
+<div class="container checklist-settings-container mt-5">
+    
     {{ section_header('General') }}
-    {% include 'pages/checklist-settings/general.html' %}
+    
+    <div class="section-content">
+        {% include 'pages/checklist-settings/general.html' %}
+    </div>
+    
 </div>
 
 
 <!-- Clone -->
-<div class="container mt-5">
+<div class="container checklist-settings-container mt-5">
+    
     {{ section_header('Clone') }}
-    {% include 'pages/checklist-settings/clone.html' %}
+
+    <div class="section-content">
+        {% include 'pages/checklist-settings/clone.html' %}
+    </div>
+    
 </div>
 
 
 <!-- Danger zone -->
-<div class="container mt-5">
+<div class="container checklist-settings-container mt-5">
     {{ section_header('Danger Zone') }}
-    {% include 'pages/checklist-settings/danger.html' %}
+
+    <div class="section-content">
+        {% include 'pages/checklist-settings/danger.html' %}
+    </div>
+    
 </div>
 
 {% endblock %}
+
+
 
 
 {% block footer %}
@@ -35,7 +51,10 @@
 
 {% macro section_header(title) -%}
 
-<h2>{{ title }}</h2>
-<hr>
+
+<div class="section-header">
+    <h2>{{ title }}</h2>
+    <hr>
+</div>
 
 {%- endmacro %}

@@ -22,28 +22,31 @@
 {%- endmacro %}
 
 
-
-<p>Update your checklist's basic information, including title and type.</p>
+<p class="text-muted mt-3 mb-0">Update your checklist's basic information, including title and type.</p>
 
 <form class="checklists-settings-general-form">
     <fieldset>
         <!-- Title -->
-        <div class="form-group">
+        <div class="form-group mt-3 mb-0">
             <label for="form-input-title">Title</label>
             <input type="text" class="form-control form-control-sm" id="form-input-title" value="{{ data.checklist.title if data.checklist.title }}" required>
         </div>
         
         <!-- List type -->
-        <div class="form-group">
+        <div class="form-group mt-3 mb-0">
             {{ list_type_radio('list', 'List', data.checklist.type == 'List') }}
             {{ list_type_radio('template', 'Template', data.checklist.type == 'Template') }}
         </div>
 
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-sm btn-standard submit-form">Save changes</button>
+        <button type="submit" class="btn btn-sm btn-standard submit-form mt-3">Save changes</button>
     </fieldset>
 </form>
+
+
+
+
 
 
 
