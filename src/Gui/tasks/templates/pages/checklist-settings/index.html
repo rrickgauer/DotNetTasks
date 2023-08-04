@@ -5,46 +5,25 @@
 {% block content %}
 
 
-
+<!-- General -->
 <div class="container mt-5">
-    
     {{ section_header('General') }}
-
     {% include 'pages/checklist-settings/general.html' %}
-
 </div>
 
 
+<!-- Clone -->
 <div class="container mt-5">
-
     {{ section_header('Clone') }}
-
-    <p>Create a copy of this list and its current items.</p>
-
+    {% include 'pages/checklist-settings/clone.html' %}
 </div>
 
 
-
-<!-- hidden -->
-<div class="container mt-5 d-none">
-
-    {{ section_header('Tags') }}
-
-</div>
-
-
+<!-- Danger zone -->
 <div class="container mt-5">
-
     {{ section_header('Danger Zone') }}
-
-    <p>Once you delete a list, there is no going back. Please be certain.</p>
-
-    <button class="btn btn-danger btn-delete-checklist" type="button">Delete checklist</button>
-
+    {% include 'pages/checklist-settings/danger.html' %}
 </div>
-
-
-
 
 {% endblock %}
 
