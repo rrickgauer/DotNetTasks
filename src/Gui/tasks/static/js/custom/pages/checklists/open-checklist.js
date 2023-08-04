@@ -1,6 +1,8 @@
 import { NativeEvents } from "../../domain/constants/native-events";
 import { DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
+import { ChecklistItemServices } from "../../services/checklist-item-services";
 import { ChecklistServices } from "../../services/checklist-services";
+import { OpenChecklistItem, OpenChecklistItemElements } from "./checklist-item";
 
 
 class ActionButtons
@@ -15,6 +17,7 @@ export class OpenChecklistElements
     static ContainerClass = 'open-checklist-container';
     static ChecklistIdAttribute = 'data-checklist-id';
     static ActionButtonAttribute = 'data-js-action';
+    static ChecklistItemsLoadingClass = 'loading';
 
     static getSelector = (checklistId) =>
     {
@@ -38,6 +41,12 @@ export class OpenChecklistElements
 
         /** @type {HTMLButtonElement} */
         this.deleteButton = this.actionButtonsDropdown.querySelector(`.dropdown-item[${OpenChecklistElements.ActionButtonAttribute}=${ActionButtons.DELETE}]`);
+
+        /** @type {HTMLDivElement} */
+        this.checklistItemsBody = this.container.querySelector('.open-checklist-body');
+
+        /** @type {HTMLDivElement} */
+        this.itemsContainer = this.container.querySelector('.open-checklist-body-items-container');
     }
 
 
@@ -54,20 +63,27 @@ export class OpenChecklistElements
 export class OpenChecklist
 {
 
-    #isLoaded = false;
-    get isLoaded()
+    #isMetaDataLoaded = false;
+    get isMetaDataLoaded()
     {
-        return this.#isLoaded;
+        return this.#isMetaDataLoaded;
     }
+
 
     constructor(checklistId)
     {
         this.checklistId = checklistId;
-        this.services = new ChecklistServices();
+        this.checklistServices = new ChecklistServices();
+        this.checklistItemServices = new ChecklistItemServices(this.checklistId);
+
+
         this.html = null;
 
         /** @type {OpenChecklistElements} */
         this.elements = null;
+
+        /** @type {OpenChecklistItem[]} */
+        this.checklistItems = [];
     }
 
 
@@ -80,10 +96,10 @@ export class OpenChecklist
     /**
      * Fetch the metadata for the checklist
      */
-    fetchData = async () =>
+    fetchMetaData = async () =>
     {
-        this.html = await this.services.getChecklistHtml(this.checklistId);
-        this.#isLoaded = true;
+        this.html = await this.checklistServices.getChecklistHtml(this.checklistId);
+        this.#isMetaDataLoaded = true;
     }
 
     /**
@@ -112,11 +128,39 @@ export class OpenChecklist
 
 
 
+    fetchItems = async () =>
+    {
+        const checklistItemsHtml = await this.checklistItemServices.getChecklistItemsHtml();
+        this.elements.itemsContainer.innerHTML = checklistItemsHtml;
+
+        this.#initOpenChecklistItemsFromHtml();
+    }
 
 
-    
+    #initOpenChecklistItemsFromHtml = () =>
+    {
+        this.checklistItems = [];
+        
+        const selector = `.${OpenChecklistItemElements.ContainerClass}`;
+        const itemsHtml = this.elements.itemsContainer.querySelectorAll(selector);
+
+        for (const itemHtmlElement of itemsHtml)
+        {
+            const openChecklistItem = new OpenChecklistItem(itemHtmlElement, this.checklistId);
+            this.checklistItems.push(openChecklistItem);
+        }
+    }
 
 
+    showChecklistItemsSpinner = () =>
+    {
+        this.elements.checklistItemsBody.classList.add(OpenChecklistElements.ChecklistItemsLoadingClass);
+    }
+
+    hideChecklistItemsSpinner = () =>
+    {
+        this.elements.checklistItemsBody.classList.remove(OpenChecklistElements.ChecklistItemsLoadingClass);
+    }
 
     
 }

@@ -58,4 +58,7 @@ class ApiUrlBuilder:
     
     def checklist_clones(self, checklist_id: UUID):
         return f'{self.api_url}/checklists/{checklist_id}/clones'
+    
+    def checklist_items(self, checklist_id: UUID):
+        return f'{self.api_url}/checklists/{checklist_id}/items'
          

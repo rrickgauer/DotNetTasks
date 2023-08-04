@@ -50,6 +50,23 @@ export class OpenChecklistsController
     {
         const openChecklist = await this.#createNewOpenChecklist(checklistId);
         this.openChecklists.push(openChecklist);
+
+        const checklist = this.#getOpenChecklist(checklistId);
+
+        try 
+        {
+            checklist.showChecklistItemsSpinner();
+            await checklist.fetchItems();
+        }
+        catch(error)
+        {
+            alert(error.message);
+        }
+        finally
+        {
+            checklist.hideChecklistItemsSpinner();
+        }
+        
     }
 
 
@@ -61,15 +78,16 @@ export class OpenChecklistsController
     #createNewOpenChecklist = async (checklistId) =>
     {
         const openChecklist = new OpenChecklist(checklistId);
-        await openChecklist.fetchData();
+        await openChecklist.fetchMetaData();
         
-        if (openChecklist.isLoaded)
+        if (openChecklist.isMetaDataLoaded)
         {
             openChecklist.appendChecklistToContainer(this.elements.container);
         }
 
         return openChecklist;
     }
+
 
 
     /**

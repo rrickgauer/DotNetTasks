@@ -12,6 +12,7 @@ from .api_responses import UserSignUpUserResponse as UserSignUpUserResponse
 from .api_responses import UserSignUpResponse as UserSignUpResponse
 from .api_responses import LabelResponse as LabelResponse
 from .api_responses import ChecklistResponse as ChecklistResponse
+from .api_responses import ChecklistItemResponse as ChecklistItemResponse
 
 
 

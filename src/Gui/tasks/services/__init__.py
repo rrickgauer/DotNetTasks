@@ -10,3 +10,4 @@ from . import email_verifications as email_verifications
 from . import labels as labels
 from . import event_labels as event_labels
 from . import startup as startup
+from .checklist_items import ChecklistItemService as ChecklistItemService

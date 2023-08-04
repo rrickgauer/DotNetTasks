@@ -50,7 +50,7 @@ export class PageController
 
         ChecklistsSidebarItemOpenedEvent.addListener(async (e) => 
         {
-            await this.#openChecklist(e.data);
+            this.#openChecklist(e.data);
         });
 
         ChecklistsSidebarItemClosedEvent.addListener((e) => 
@@ -86,7 +86,7 @@ export class PageController
     #openChecklist = async (checklistId) =>
     {
         this.urlWrapper.add(checklistId);
-        await this.openChecklistsController.openChecklist(checklistId);
+        this.openChecklistsController.openChecklist(checklistId);
     }
 
     /**
