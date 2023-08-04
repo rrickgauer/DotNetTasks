@@ -9,6 +9,7 @@ Endpoints for the api checklists
 """
 
 from __future__ import annotations
+from http import HTTPStatus
 from uuid import UUID
 import flask
 from tasks.common import security
@@ -67,3 +68,18 @@ def delete_checklist(checklist_id: UUID):
 def put_checklist(checklist_id: UUID):
     response = checklist_services.save_checklist(checklist_id, flask.request.form.to_dict())
     return (response.text, response.status_code)
+
+
+#------------------------------------------------------
+# POST: /api/checklists/:checklistId/clones
+#------------------------------------------------------
+@bp_api_checklists.post('<uuid:checklist_id>/clones')
+@security.login_required
+def post_checklist_clones(checklist_id: UUID):
+    request_data = flask.request.form.to_dict()
+    new_checklist = checklist_services.clone_checklist(checklist_id, request_data)
+
+    response = flask.jsonify(new_checklist)
+    response.status_code = HTTPStatus.CREATED
+    return response
+    

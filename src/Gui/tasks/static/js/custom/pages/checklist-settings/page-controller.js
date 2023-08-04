@@ -1,5 +1,5 @@
 import { AlertPageTopBase, AlertPageTopDanger, AlertPageTopSuccess } from "../../components/page-alerts/alert-page-top";
-import { ChecklistSettingsChecklistDeletedEvent, ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
+import { ChecklistSettingsChecklistClonedEvent, ChecklistSettingsChecklistDeletedEvent, ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
 import { UrlMethods } from "../../helpers/url-methods";
 import { CloneChecklistController } from "./clone-checklist-controller";
 import { DeleteChecklistController } from "./delete-checklist-controller";
@@ -36,6 +36,12 @@ export class ChecklistSettingsPageController
         ChecklistSettingsChecklistDeletedEvent.addListener((e) => 
         {
             window.location.href = '/checklists';
+        });
+
+        ChecklistSettingsChecklistClonedEvent.addListener((e) => 
+        {
+            const successAlert = new AlertPageTopSuccess("Checklist was successfully cloned");
+            successAlert.show();
         });
         
     }

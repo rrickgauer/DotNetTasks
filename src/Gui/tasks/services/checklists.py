@@ -2,6 +2,7 @@ from __future__ import annotations
 from uuid import UUID
 import requests
 from tasks.apiwrapper import ApiWrapperChecklists
+from tasks.apiwrapper import ApiWrapperChecklistClones
 from tasks.domain import models
 from tasks.domain.views import ChecklistSettingsPageView
 from typing import List
@@ -41,6 +42,8 @@ def create_checklist(data: dict) -> dict:
 
 
 def save_checklist(checklist_id: UUID, data: dict) -> requests.Response:
+    """Save the checklist"""
+    
     api = ApiWrapperChecklists()
     response = api.put(checklist_id, data)
     return response
@@ -62,8 +65,7 @@ def get_checklist(checklist_id: UUID):
     api = ApiWrapperChecklists()
     response_data = api.get(checklist_id).json()
     
-    checklist = models.ChecklistResponse.from_dict(response_data)
-    return checklist
+    return models.ChecklistResponse.from_dict(response_data)
 
 
 def get_open_checklist_card_html(checklist) -> Markup:
@@ -83,6 +85,21 @@ def delete_checklist(checklist_id: UUID) -> requests.Response:
         pass
 
     return response
+
+
+
+def clone_checklist(checklist_id: UUID, data: dict) -> models.ChecklistResponse:
+    """Clone the specified checklist"""
+
+    api = ApiWrapperChecklistClones(checklist_id)
+    
+    response_data = api.post(data).json()
+    
+    new_checklist = models.ChecklistResponse.from_dict(response_data)
+
+    return new_checklist
+    
+
 
 
 

@@ -1,5 +1,8 @@
+import { ApiChecklistClones } from "../api/api-checklist-clones";
 import { ApiChecklists } from "../api/api-checklists";
+import { CloneChecklistForm } from "../domain/forms/clone-checklist-form";
 import { UpdateChecklistForm } from "../domain/forms/update-checklist-form";
+import { ChecklistModel } from "../domain/models/checklist";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 
 
@@ -8,7 +11,7 @@ export class ChecklistServices
 {
     #api = new ApiChecklists();
 
-    
+
     getAllChecklistHtml = async () =>
     {
         const response = await this.#api.getAll();
@@ -66,6 +69,24 @@ export class ChecklistServices
         const formData = HttpRequestMapper.toFormData(udpateChecklistForm);
         
         const response = await this.#api.put(checklistId, formData);
+        this.#handleBadResponse(response);
+        
+        return await response.json();
+    }
+
+
+    /**
+     * Clone the specified checklist
+     * @param {string} checklistId the checklist to clone
+     * @param {CloneChecklistForm} cloneChecklistForm the data required to clone a checklist
+     */
+    cloneChecklist = async (checklistId, cloneChecklistForm) =>
+    {
+        const apiChecklistClones = new ApiChecklistClones(checklistId);
+        const formData = HttpRequestMapper.toFormData(cloneChecklistForm);
+        
+        // const response = await this.#api.put(checklistId, formData);
+        const response = await apiChecklistClones.post(formData);
         this.#handleBadResponse(response);
         
         return await response.json();
