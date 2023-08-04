@@ -62,9 +62,9 @@ export class CloneChecklistController
             e.preventDefault();
             await this.#submitForm();
         }); 
+
+        this.elements.titleInput.addEventListener(NativeEvents.KEY_UP, this.#handleTitleInputChange);
     }
-
-
 
     #submitForm = async () =>
     {
@@ -84,6 +84,8 @@ export class CloneChecklistController
         finally
         {
             this.#enableForm();
+            this.titleInputValue = "";
+            this.#handleTitleInputChange();
         }
 
     }
@@ -98,6 +100,19 @@ export class CloneChecklistController
     {
         Utililties.enableElement(this.elements.fieldSet);
         this.submitButtonSpinner.reset();
+    }
+
+
+    #handleTitleInputChange = () =>
+    {
+        if (this.titleInputValue.length > 0)
+        {
+            Utililties.enableElement(this.elements.submitButton);
+        }
+        else
+        {
+            Utililties.disableElement(this.elements.submitButton);
+        }
     }
 
 }
