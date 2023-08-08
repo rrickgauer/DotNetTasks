@@ -16,7 +16,7 @@ class ApiWrapperChecklistItems(ApiWrapperBase):
     def get_all(self) -> requests.Response:
         return self._get_request(self.url)
         
-        
+    
     
 
     

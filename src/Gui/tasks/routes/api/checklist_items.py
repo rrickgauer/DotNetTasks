@@ -27,13 +27,41 @@ def get_checklist_items(checklist_id: UUID):
 
     service = ChecklistItemService(checklist_id)
     checklist_items = service.get_checklist_items()
-
-    print(flask.json.dumps(checklist_items, indent=4))
-
-
     html = service.get_checklist_items_html(checklist_items)
 
     return html
+
+
+#------------------------------------------------------
+# PUT: /api/checklists/:checklistId/items/:itemId/complete
+#------------------------------------------------------
+@bp_api_checklist_items.put('<uuid:checklist_item_id>/complete')
+@security.login_required
+def put_item_complete(checklist_id: UUID, checklist_item_id: UUID):
+
+    service = ChecklistItemService(checklist_id)
+
+    response = service.mark_item_complete(checklist_item_id)
+
+    response_data = response.text
+
+    if response.ok:
+        response_data = response.json()
+    
+    return (response_data, response.status_code)
+    
+
+#------------------------------------------------------
+# DELETE: /api/checklists/:checklistId/items/:itemId/complete
+#------------------------------------------------------
+@bp_api_checklist_items.delete('<uuid:checklist_item_id>/complete')
+@security.login_required
+def delete_item_complete(checklist_id: UUID, checklist_item_id: UUID):
+    service = ChecklistItemService(checklist_id)
+
+    response = service.mark_item_incomplete(checklist_item_id)
+
+    return (response.text, response.status_code)
 
 
     

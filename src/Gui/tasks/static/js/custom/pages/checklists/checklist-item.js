@@ -1,3 +1,5 @@
+import { NativeEvents } from "../../domain/constants/native-events";
+import { ChecklistItemServices } from "../../services/checklist-item-services";
 
 
 
@@ -13,6 +15,8 @@ export class OpenChecklistItemElements
     static EditFormButtonsClass   = 'checklist-item-content-form-btn';
 
     static ChecklistItemIdAttribute = 'data-checklist-item-id';
+
+    static IsCompleteClass = 'complete';
 
     constructor(container)
     {
@@ -45,9 +49,33 @@ export class OpenChecklistItemElements
     }
 
 
-    get checklistItemIdAttrValue()
+    get checklistItemIdAttributeValue()
     {
         return this.container.getAttribute(OpenChecklistItemElements.ChecklistItemIdAttribute);
+    }
+
+
+    get hasCompleteClass()
+    {
+        return this.container.classList.contains(OpenChecklistItemElements.IsCompleteClass);
+    }
+
+    set hasCompleteClass(complete)
+    {
+        if (complete)
+        {
+            this.container.classList.add(OpenChecklistItemElements.IsCompleteClass);
+        }
+        else
+        {
+            this.container.classList.remove(OpenChecklistItemElements.IsCompleteClass);
+        }
+    }
+
+
+    toggleIsCompleteClass = () =>
+    {
+        this.container.classList.toggle(OpenChecklistItemElements.IsCompleteClass);
     }
 
 }
@@ -60,11 +88,39 @@ export class OpenChecklistItem
     {
         this.elements = new OpenChecklistItemElements(htmlElement);
         this.checklistId = checklistId;
+        this.checklistItemService = new ChecklistItemServices(this.checklistId);
+        this.#addEventListeners();
     }
 
 
     get itemId()
     {
-        return this.elements.checklistItemIdAttrValue;
+        return this.elements.checklistItemIdAttributeValue;
     }
+
+
+    #addEventListeners = () =>
+    {
+        this.elements.checkbox.addEventListener(NativeEvents.CHANGE, (e) => 
+        {
+            this.#toggleItemComplete();
+        });
+    }
+
+
+    
+    #toggleItemComplete = () =>
+    {
+        this.elements.toggleIsCompleteClass();
+
+        if (this.elements.checkbox.checked)
+        {
+            this.checklistItemService.markItemComplete(this.itemId);
+        }
+        else
+        {
+            this.checklistItemService.markItemIncomplete(this.itemId);
+        }
+    }
+
 }

@@ -130,4 +130,38 @@ public class ChecklistItemsController : AuthorizedControllerBase
     }
 
 
+    /// <summary>
+    /// PUT: /checklists/:checklistId/items/:itemId/complete
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    [HttpPut("{itemId}/complete")]
+    [ServiceFilter(typeof(ChecklistItemAuthFilter))]
+    public async Task<IActionResult> PutChecklistItemCompleteAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
+    {
+        var updatedItem = await _checklistItemServices.MarkItemCompleteAsync(itemId);
+
+        return Ok(updatedItem);
+    }
+
+
+    /// <summary>
+    /// DELETE: /checklists/:checklistId/items/:itemId/complete
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    [HttpDelete("{itemId}/complete")]
+    [ServiceFilter(typeof(ChecklistItemAuthFilter))]
+    public async Task<IActionResult> DeleteChecklistItemCompleteAsync([FromRoute] Guid checklistId, [FromRoute] Guid itemId)
+    {
+        var updatedItem = await _checklistItemServices.MarkItemIncompleteAsync(itemId);
+
+        return NoContent();
+    }
+
+
+
+
 }

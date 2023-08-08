@@ -4,15 +4,15 @@ from markupsafe import Markup
 import requests
 import typing
 from tasks.apiwrapper import ApiWrapperChecklistItems
+from tasks.apiwrapper import ApiWrapperChecklistItemComplete
 from tasks.domain.models import ChecklistItemResponse
 from tasks.common.macros import ChecklistItemsMacro
 
-
-
 class ChecklistItemService:
 
-
     def __init__(self, checklist_id: UUID):
+        """Checklist Item Services"""
+        
         self.checklist_id = checklist_id
 
 
@@ -25,5 +25,34 @@ class ChecklistItemService:
     
 
     def get_checklist_items_html(self, checklist_items: typing.List[ChecklistItemResponse]) -> Markup:
-     html = ChecklistItemsMacro.render_html(checklist_items)
-     return html
+        """Get the html for the checklist items"""
+
+        html = ChecklistItemsMacro.render_html(checklist_items)
+        return html
+
+    def mark_item_complete(self, checklist_item_id: UUID) -> requests.Response:
+        """Mark the specified item as complete"""
+
+        return self._update_item_complete(checklist_item_id, True)
+    
+    def mark_item_incomplete(self, checklist_item_id: UUID) -> requests.Response:
+        """Mark the specified item as incomplete"""
+
+        return self._update_item_complete(checklist_item_id, False)
+
+    def _update_item_complete(self, checklist_item_id: UUID, complete: bool) -> requests.Response:
+        """Update the specified item's isComplete property value"""
+
+        api = ApiWrapperChecklistItemComplete(self.checklist_id, checklist_item_id)
+
+        if complete:
+            return api.put()
+        else:
+            return api.delete()
+        
+        
+
+    
+    
+
+

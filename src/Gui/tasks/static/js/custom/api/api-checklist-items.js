@@ -13,8 +13,6 @@ export class ApiChecklistItems
         return `${ApiEndpoints.CHECKLISTS}/${this.checklistId}/items`;
     }
 
-
-
     getAll = async () =>
     {
         return await fetch(this.url);

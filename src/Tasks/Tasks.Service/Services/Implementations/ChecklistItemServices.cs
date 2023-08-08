@@ -89,4 +89,47 @@ public class ChecklistItemServices : IChecklistItemServices
     {
         return await _repository.CopyChecklistItemsAsync(sourceChecklistId, targetChecklistId);
     }
+
+    /// <summary>
+    /// Mark the specified item as complete
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    public async Task<ChecklistItem?> MarkItemCompleteAsync(Guid itemId)
+    {
+        return await SetItemComplete(itemId, true);
+    }
+    
+    /// <summary>
+    /// Mark the specified item as incomplete
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    public async Task<ChecklistItem?> MarkItemIncompleteAsync(Guid itemId)
+    {
+        return await SetItemComplete(itemId, false);
+    }
+
+
+    /// <summary>
+    /// Set the specified item's IsComplete value and save it.
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <param name="isComplete"></param>
+    /// <returns></returns>
+    private async Task<ChecklistItem?> SetItemComplete(Guid itemId, bool isComplete)
+    {
+        var checklistItem = await GetChecklistItemAsync(itemId);
+
+        if (checklistItem is null)
+        {
+            return null;
+        }
+
+        checklistItem.IsComplete = isComplete;
+
+        await SaveChecklistItemAsync(checklistItem);
+
+        return checklistItem;
+    }
 }
