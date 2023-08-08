@@ -5,10 +5,12 @@ import { HttpRequestMapper } from "../mappers/http-request-mapper";
 import { ServiceUtilities } from "./service-utilities";
 
 
-
-
 export class ChecklistItemServices
 {
+    /**
+     * Checklist Item Services
+     * @param {string} checklistId the parent checklist id
+     */
     constructor(checklistId)
     {
         /** @type {string} */
@@ -18,14 +20,24 @@ export class ChecklistItemServices
     }
 
 
+    /**
+     * Get the HTML from the api for an open checklist's items
+     */
     getChecklistItemsHtml = async () =>
     {
         const response = await this.apiChecklistItems.getAll();
+        
         await ServiceUtilities.handleBadResponse(response);
+        
         return response.text();
     }
 
 
+    /**
+     * Mark the item as completed
+     * @param {string} checklistItemId the checklist item's id
+     * @returns the api response   
+     */
     markItemComplete = async (checklistItemId) =>
     {
         const api = new ApiChecklistItemComplete(this.checklistId, checklistItemId);
@@ -35,12 +47,19 @@ export class ChecklistItemServices
         return response.ok;
     }
 
+    
+    /**
+     * Mark the item as incomplete
+     * @param {string} checklistItemId the checklist item's id
+     * @returns if the request was successful
+     */
     markItemIncomplete = async (checklistItemId) =>
     {
         const api = new ApiChecklistItemComplete(this.checklistId, checklistItemId);
-
         const response = await api.delete();
+        
         await ServiceUtilities.handleBadResponse(response);
+        
         return response.ok;
     }
 
@@ -57,10 +76,13 @@ export class ChecklistItemServices
         return await response.text();
     }
 
-
-    deleteChecklistItem = async (itemId) =>
+    /**
+     * Delete the specified checklist item
+     * @param {string} checklistItemId the checklist item to delete
+     */
+    deleteChecklistItem = async (checklistItemId) =>
     {
-        const response = await this.apiChecklistItems.delete(itemId);
+        const response = await this.apiChecklistItems.delete(checklistItemId);
         await ServiceUtilities.handleBadResponse(response);
     }
 
@@ -71,11 +93,9 @@ export class ChecklistItemServices
      */
     updateChecklistItem = async (itemId, updateChecklistItemForm) =>
     {
-        console.log({itemId, updateChecklistItemForm});
-
         const form = HttpRequestMapper.toFormData(updateChecklistItemForm);
-        
         const response = await this.apiChecklistItems.put(itemId, form);
+        
         await ServiceUtilities.handleBadResponse(response);
         
         return await response.json();

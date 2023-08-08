@@ -27,3 +27,5 @@ export class ChecklistSettingsChecklistClonedEvent extends BaseEvent {}
 
 // checklist items
 export class ChecklistItemDeleteButtonClickedEvent extends BaseEvent {}
+export class ChecklistItemMoveItemUpButtonClickedEvent extends BaseEvent {}
+export class ChecklistItemMoveItemDownButtonClickedEvent extends BaseEvent {}

@@ -1,5 +1,5 @@
 import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistItemDeleteButtonClickedEvent } from "../../domain/events/events";
+import { ChecklistItemDeleteButtonClickedEvent, ChecklistItemMoveItemDownButtonClickedEvent, ChecklistItemMoveItemUpButtonClickedEvent } from "../../domain/events/events";
 import { UpdateChecklistItemForm } from "../../domain/forms/checklist-item-forms";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 
@@ -207,6 +207,11 @@ export class OpenChecklistItem
     //#endregion
 
 
+    /**
+     * Open Checklist Item
+     * @param {HTMLElement} htmlElement 
+     * @param {string} checklistId 
+     */
     constructor(htmlElement, checklistId)
     {
         this.elements = new OpenChecklistItemElements(htmlElement);
@@ -216,34 +221,35 @@ export class OpenChecklistItem
     }
 
 
+    /**
+     * Add the event listeners
+     */
     #addEventListeners = () =>
     {
-        this.elements.checkbox.addEventListener(NativeEvents.Change, (e) => 
-        {
+        this.elements.checkbox.addEventListener(NativeEvents.Change, (e) => {
             this.#toggleItemComplete();
         });
 
-
-        this.elements.dropdownItemDelete.addEventListener(NativeEvents.Click, (e) =>
-        {
+        this.elements.dropdownItemDelete.addEventListener(NativeEvents.Click, (e) => {
             ChecklistItemDeleteButtonClickedEvent.invoke(this, {
                 checklistId: this.checklistId,
                 itemId: this.itemId,
             });
         });
 
-        this.elements.dropdownItemMoveUp.addEventListener(NativeEvents.Click, (e) =>
-        {
-            alert('moveup');
+        this.elements.dropdownItemMoveUp.addEventListener(NativeEvents.Click, (e) => {
+            ChecklistItemMoveItemUpButtonClickedEvent.invoke(this, {
+                checklistId: this.checklistId,
+            });
         });
 
-        this.elements.dropdownItemMoveDown.addEventListener(NativeEvents.Click, (e) =>
-        {
-            alert('move down');
+        this.elements.dropdownItemMoveDown.addEventListener(NativeEvents.Click, (e) => {
+            ChecklistItemMoveItemDownButtonClickedEvent.invoke(this, {
+                checklistId: this.checklistId,
+            });
         });
 
-        this.elements.dropdownItemDuplicate.addEventListener(NativeEvents.Click, (e) =>
-        {
+        this.elements.dropdownItemDuplicate.addEventListener(NativeEvents.Click, (e) => {
             alert('duplicate');
         });
 
@@ -267,7 +273,9 @@ export class OpenChecklistItem
     }
 
 
-    
+    /**
+     * Toggle the item's complete class
+     */
     #toggleItemComplete = () =>
     {
         this.elements.toggleIsCompleteClass();
@@ -282,19 +290,27 @@ export class OpenChecklistItem
         }
     }
 
-
+    /**
+     * Remove this item's html from the page
+     */
     remove = () =>
     {
         this.elements.container.remove();
     }
 
 
+    /**
+     * Open the edit form
+     */
     #openEditForm = () =>
     {
         this.editFormInputValue = this.contentDisplay;
         this.isEditFormVisible = true;
     }
 
+    /**
+     * Handle the edit content form submission event
+     */
     #handleEditFormSubmission = async () =>
     {
         if (this.editFormInputValue.length === 0)
@@ -307,9 +323,12 @@ export class OpenChecklistItem
         this.isEditFormVisible = false;
     }
 
+    /**
+     * Using the checklist item service, save the item's content
+     */
     #saveItemEdit = async () =>
     {
-        const updateForm = new UpdateChecklistItemForm(this.editFormInputValue, this.position, this.elements.hasCompleteClass);
+        const updateForm = this.#getUpdateChecklistItemFormFromEditForm();
 
         try 
         {
@@ -323,8 +342,26 @@ export class OpenChecklistItem
         }        
     }
 
+    /**
+     * Creates an instance of UpdateChecklistItemForm using the current content display text
+     */
+    getUpdateChecklistItemForm = () =>
+    {
+        return new UpdateChecklistItemForm(this.contentDisplay, this.position, this.elements.hasCompleteClass);
+    }
 
 
+    /**
+     * Creates an instance of UpdateChecklistItemForm using the current content edit form input text value
+     */
+    #getUpdateChecklistItemFormFromEditForm = () =>
+    {
+        return new UpdateChecklistItemForm(this.editFormInputValue, this.position, this.elements.hasCompleteClass);
+    }
+
+    /**
+     * Close the edit form
+     */
     #cancelEdit = () =>
     {
         this.isEditFormVisible = false;

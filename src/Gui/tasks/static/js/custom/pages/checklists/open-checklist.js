@@ -1,5 +1,5 @@
 import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistItemDeleteButtonClickedEvent, DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
+import { ChecklistItemDeleteButtonClickedEvent, ChecklistItemMoveItemDownButtonClickedEvent, ChecklistItemMoveItemUpButtonClickedEvent, DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
 import { CreateChecklistItemForm } from "../../domain/forms/checklist-item-forms";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 import { ChecklistServices } from "../../services/checklist-services";
@@ -72,7 +72,6 @@ export class OpenChecklistElements
 }
 
 
-
 export class OpenChecklist
 {
 
@@ -136,6 +135,9 @@ export class OpenChecklist
         this.#addListeners();
     }
 
+    /**
+     * Add the event listeners to the page
+     */
     #addListeners = () =>
     {
         this.elements.closeButton.addEventListener(NativeEvents.Click, (e) => 
@@ -162,10 +164,156 @@ export class OpenChecklist
                 await this.#deleteChecklistItem(e.data.itemId);
             }
         });
+
+        ChecklistItemMoveItemUpButtonClickedEvent.addListener(async (e) => {
+            if (e.data.checklistId === this.checklistId)
+            {
+                await this.#moveItemUp(e.caller.itemId);
+            }
+        });
+
+
+        ChecklistItemMoveItemDownButtonClickedEvent.addListener(async (e) => {
+            if (e.data.checklistId === this.checklistId)
+            {
+                await this.#moveItemDown(e.caller.itemId);
+            }
+        });
     }
 
 
+    //#region - Move Items -
 
+    /**
+     * Move the specified checklist item up
+     * @param {string} checklistItemId the checklist item id
+     */
+    #moveItemUp = async (checklistItemId) =>
+    {
+        const neighbors = this.#getChecklistItemNeighbors(checklistItemId);
+        
+        if (!neighbors.isFirst)
+        {
+            await this.#moveItems(neighbors.current, neighbors.above);    
+        }
+    }
+
+    /**
+     * Move the specified checklist item down
+     * @param {string} itemId the checklist item id
+     */
+    #moveItemDown = async (itemId) =>
+    {
+        const neighbors = this.#getChecklistItemNeighbors(itemId);
+        
+        if (!neighbors.isLast)
+        {
+            await this.#moveItems(neighbors.current, neighbors.below);
+        }
+    }
+
+    /**
+     * Swap the given OpenChecklistItems' positions
+     * @param {OpenChecklistItem} item1 
+     * @param {OpenChecklistItem} item2 
+     */
+    #moveItems = async (item1, item2) =>
+    {
+        this.showChecklistItemsSpinner();
+
+        try
+        {
+            await this.#saveItemPositionsSwap(item1, item2);
+            await this.fetchItems();
+        }
+        catch(error)
+        {
+            alert('there was an error moving the item');
+            console.error(error);
+        }
+        finally
+        {
+            this.hideChecklistItemsSpinner();
+        }
+    }
+
+
+    /**
+     * Get the specified OpenChecklistItem's neighbors
+     * @param {string} itemId the checklist item id
+     */
+    #getChecklistItemNeighbors = (itemId) =>
+    {
+        const currentIndex = this.#getChecklistItemIndex(itemId);
+        
+        const current = this.checklistItems[currentIndex];
+        const above = this.#isItemFirstInList(itemId) ? null : this.checklistItems[currentIndex - 1];
+        const below = this.#isItemLastInList(itemId) ? null : this.checklistItems[currentIndex + 1];
+
+        const neighbors = new ChecklistItemNeighbors(current, above, below);
+
+        return neighbors;
+    }
+
+    /**
+     * Is the specified item first in the collection?
+     * @param {string} checklistItemId the checklist item id
+     */
+    #isItemFirstInList = (checklistItemId) =>
+    {
+        const itemIndex = this.#getChecklistItemIndex(checklistItemId);
+
+        if (itemIndex === 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Is the item last in the collection?
+     * @param {string} checklistItemId the checklist item id
+     */
+    #isItemLastInList = (checklistItemId) =>
+    {
+        const itemIndex = this.#getChecklistItemIndex(checklistItemId);
+
+        const elementsCount = this.checklistItems.length;
+        const lastItemIndex = elementsCount - 1;
+
+        if (itemIndex === lastItemIndex)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Swap the 2 given item's positions
+     * @param {OpenChecklistItem} item1 
+     * @param {OpenChecklistItem} item2 
+     */
+    #saveItemPositionsSwap = async (item1, item2) => 
+    {
+        const tempPosition = item1.position;
+        item1.position = item2.position;
+        item2.position = tempPosition;
+        
+        const updateForm1 = item1.getUpdateChecklistItemForm();
+        const updateForm2 = item2.getUpdateChecklistItemForm();
+
+        await this.checklistItemServices.updateChecklistItem(item1.itemId, updateForm1);
+        await this.checklistItemServices.updateChecklistItem(item2.itemId, updateForm2);
+    }
+
+    //#endregion
+
+
+    /**
+     * Fetch the checklist's items
+     */
     fetchItems = async () =>
     {
         const checklistItemsHtml = await this.checklistItemServices.getChecklistItemsHtml();
@@ -174,6 +322,9 @@ export class OpenChecklist
     }
 
 
+    /**
+     * Initialize the collection of checklist items from the inner html elements
+     */
     #initOpenChecklistItemsFromHtml = () =>
     {
         this.checklistItems = [];
@@ -198,19 +349,26 @@ export class OpenChecklist
         this.checklistItems.push(openChecklistItem);
     }
 
-
+    /**
+     * Show the checklist item spinner
+     */
     showChecklistItemsSpinner = () =>
     {
         this.elements.checklistItemsBody.classList.add(OpenChecklistElements.ChecklistItemsLoadingClass);
     }
 
+    /**
+     * Hide the checklist item spinner
+     */
     hideChecklistItemsSpinner = () =>
     {
         this.elements.checklistItemsBody.classList.remove(OpenChecklistElements.ChecklistItemsLoadingClass);
     }
 
 
-
+    /**
+     * Create a new checklist item
+     */
     #createNewItem = async () =>
     {
         if (this.newItemFormInputValue.length < 1)
@@ -228,6 +386,9 @@ export class OpenChecklist
         this.#initOpenChecklistItemsFromHtml();
     }
 
+    /**
+     * Create a new CreateChecklistItemForm object
+     */
     #getCreateChecklistItemForm = () =>
     {
         const position = this.#getLargestItemPositionValue() + 1;
@@ -265,27 +426,27 @@ export class OpenChecklist
         return lastElement.position;
     }
 
-
-    #deleteChecklistItem = async (itemId) =>
+    /**
+     * Delete the specified checklist item
+     * @param {string} checklistItemId the checklist item id
+     */
+    #deleteChecklistItem = async (checklistItemId) =>
     {
-        this.checklistItemServices.deleteChecklistItem(itemId);
+        this.checklistItemServices.deleteChecklistItem(checklistItemId);
 
-        const checklistItem = this.#getChecklistItem(itemId);
+        const checklistItem = this.#getChecklistItem(checklistItemId);
         checklistItem.remove();
 
-        this.checklistItems = this.checklistItems.filter(c => c.itemId !== itemId);
+        this.checklistItems = this.checklistItems.filter(c => c.itemId !== checklistItemId);
     }
-
-
-
 
     /**
      * Get the specified checklist
      * @param {string} checklistId 
      */
-    #getChecklistItem = (itemId) =>
+    #getChecklistItem = (checklistItemId) =>
     {
-        const index = this.#getChecklistItemIndex(itemId);
+        const index = this.#getChecklistItemIndex(checklistItemId);
         return this.checklistItems[index];
     }
 
@@ -308,3 +469,35 @@ export class OpenChecklist
     
 }
 
+
+export class ChecklistItemNeighbors
+{
+    /**
+     * Checklist item neighbors
+     * @param {OpenChecklistItem} current 
+     * @param {OpenChecklistItem} above 
+     * @param {OpenChecklistItem} below 
+     */
+    constructor(current, above=null, below=null)
+    {
+        /** @type {OpenChecklistItem} */
+        this.current = current;
+        
+        /** @type {OpenChecklistItem} */
+        this.above = above;
+        
+        /** @type {OpenChecklistItem} */
+        this.below = below;
+    }
+
+
+    get isFirst()
+    {
+        return this.above === null;
+    } 
+    
+    get isLast()
+    {
+        return this.below === null;
+    }
+}

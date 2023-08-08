@@ -11,7 +11,9 @@ export class ChecklistServices
 {
     #api = new ApiChecklists();
 
-
+    /**
+     * Get the html for an open checklist cark
+     */
     getAllChecklistHtml = async () =>
     {
         const response = await this.#api.getAll();
@@ -20,6 +22,11 @@ export class ChecklistServices
         return await response.text();
     }
 
+    /**
+     * Create a new checklist
+     * @param {string} title the title of the checklist
+     * @returns the created checklist json object
+     */
     createNewChecklist = async (title) =>
     {
         const checklistData = {
@@ -35,6 +42,12 @@ export class ChecklistServices
         return await response.json();
     }
 
+
+    /**
+     * Get the html for an open checklist
+     * @param {string} checklistId the checklist id
+     * @returns the html for the checklist
+     */
     getChecklistHtml = async (checklistId) =>
     {
         const response = await this.#api.get(checklistId);
