@@ -445,4 +445,4 @@ ConfigurationProduction.cs
 send-daily-reminders-output.log
 
 **/scripts/sql/*.sql
-
+**/devops/vps/sql/*.sql

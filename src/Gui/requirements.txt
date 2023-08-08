@@ -7,7 +7,7 @@ dacite==1.8.1
 docopt==0.6.2
 Flask==2.3.2
 -e git+https://github.com/rrickgauer/Flask-Forward.git@9b25bf15976490f56677ae438d7040bb4fc67d27#egg=Flask_Forward&subdirectory=src
-Flask-Lib==0.2.1
+Flask-Lib==0.2.3
 idna==3.4
 importlib-metadata==6.8.0
 itsdangerous==2.1.2
