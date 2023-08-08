@@ -1,0 +1,72 @@
+{# 
+    
+    data:
+        - checklist
+            - id         : Opt[UUID]    
+            - title      : Opt[str]     
+            - type       : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - countItems : Opt[int]    
+            
+        - checklist_items:
+            - id         : Opt[str]     
+            - content    : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - position   : Opt[int]     
+            - isComplete : Opt[bool]    
+#}
+
+
+
+{% macro get_checklist_html(item) -%}
+
+    {% set checklist_html_id %}checklist-item-{{ item.id }}{% endset %}
+
+    <div class="form-check export-items-form-checkbox">
+        <input class="form-check-input" type="checkbox" id="{{ checklist_html_id }}" value="{{ item.id }}" {{ 'checked' if item.isComplete }} disabled>
+        <label class="form-check-label" for="{{ checklist_html_id }}">{{ item.content }}</label>
+    </div>
+
+{%- endmacro %}
+
+
+
+<p class="text-muted mt-3 mb-0">Export the checklist items.</p>
+
+
+<!-- Button trigger modal -->
+<button class="btn btn-sm btn-standard mt-3 mb-0" type="button" data-toggle="modal" data-target=".export-checklist-items-modal">Export items</button>
+
+<!-- Modal -->
+<div class="modal export-checklist-items-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="export-items-form">
+                    <fieldset>
+                        {% for item in data.checklist_items %}
+                            {{ get_checklist_html(item) }}
+                        {% endfor %}
+                    </fieldset>
+
+                </form>
+
+                
+
+            </div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-sm btn-light btn-copy-to-clipboard">Copy to clipboard</button>
+                <p class="text-success d-none copied-status-message">Copied!</p>
+                <!-- <span class="badge badge-success copied-status-message d-none">Success</span> -->
+                <!-- <p class="copied-status-message d-none"><span class="badge badge-success">Success</span></p> -->
+            </div>
+        </div>
+    </div>
+</div>

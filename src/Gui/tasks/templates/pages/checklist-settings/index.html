@@ -1,3 +1,21 @@
+{# 
+    
+    data:
+        - checklist
+            - id         : Opt[UUID]    
+            - title      : Opt[str]     
+            - type       : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - countItems : Opt[int]    
+            
+        - checklist_items:
+            - id         : Opt[str]     
+            - content    : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - position   : Opt[int]     
+            - isComplete : Opt[bool]    
+#}
+
 {% extends 'base.html' %}
 
 {% block title %}Checklists{% endblock %}
@@ -24,6 +42,18 @@
 
     <div class="section-content">
         {% include 'pages/checklist-settings/clone.html' %}
+    </div>
+    
+</div>
+
+
+<!-- Export -->
+<div class="container checklist-settings-container mt-5">
+    
+    {{ section_header('Export') }}
+
+    <div class="section-content">
+        {% include 'pages/checklist-settings/export.html' %}
     </div>
     
 </div>

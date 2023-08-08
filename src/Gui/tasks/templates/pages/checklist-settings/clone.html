@@ -1,4 +1,22 @@
-<p class="text-muted mt-3 mb-0"">Create a copy of this list and its children.</p>
+{# 
+    
+    data:
+        - checklist
+            - id         : Opt[UUID]    
+            - title      : Opt[str]     
+            - type       : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - countItems : Opt[int]    
+            
+        - checklist_items:
+            - id         : Opt[str]     
+            - content    : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - position   : Opt[int]     
+            - isComplete : Opt[bool]    
+#}
+
+<p class="text-muted mt-3 mb-0">Create a copy of this list and its children.</p>
 
 <form class="checklist-settings-clone-form">
 
@@ -10,6 +28,6 @@
         </div>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-sm btn-standard submit-clone-form mt-3 mb-0"" disabled>Clone list</button>
+        <button type="submit" class="btn btn-sm btn-standard submit-clone-form mt-3 mb-0" disabled>Clone list</button>
     </fieldset>
 </form>
