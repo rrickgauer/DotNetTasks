@@ -2,8 +2,8 @@ import { ApiChecklistClones } from "../api/api-checklist-clones";
 import { ApiChecklists } from "../api/api-checklists";
 import { CloneChecklistForm } from "../domain/forms/clone-checklist-form";
 import { UpdateChecklistForm } from "../domain/forms/update-checklist-form";
-import { ChecklistModel } from "../domain/models/checklist";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
+import { ServiceUtilities } from "./service-utilities";
 
 
 
@@ -11,15 +11,22 @@ export class ChecklistServices
 {
     #api = new ApiChecklists();
 
-
+    /**
+     * Get the html for an open checklist cark
+     */
     getAllChecklistHtml = async () =>
     {
         const response = await this.#api.getAll();
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
 
         return await response.text();
     }
 
+    /**
+     * Create a new checklist
+     * @param {string} title the title of the checklist
+     * @returns the created checklist json object
+     */
     createNewChecklist = async (title) =>
     {
         const checklistData = {
@@ -30,15 +37,21 @@ export class ChecklistServices
         const formData = HttpRequestMapper.toFormData(checklistData);
         
         const response = await this.#api.post(formData);
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
         
         return await response.json();
     }
 
+
+    /**
+     * Get the html for an open checklist
+     * @param {string} checklistId the checklist id
+     * @returns the html for the checklist
+     */
     getChecklistHtml = async (checklistId) =>
     {
         const response = await this.#api.get(checklistId);
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
 
         return await response.text();
     }
@@ -53,7 +66,7 @@ export class ChecklistServices
     {
         const response = await this.#api.delete(checklistId);
 
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
 
         return response.ok;
     }
@@ -69,7 +82,7 @@ export class ChecklistServices
         const formData = HttpRequestMapper.toFormData(udpateChecklistForm);
         
         const response = await this.#api.put(checklistId, formData);
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
         
         return await response.json();
     }
@@ -87,26 +100,12 @@ export class ChecklistServices
         
         // const response = await this.#api.put(checklistId, formData);
         const response = await apiChecklistClones.post(formData);
-        this.#handleBadResponse(response);
+        await ServiceUtilities.handleBadResponse(response);
         
         return await response.json();
     }
 
-
-
-    /**
-     * Handle a bad response
-     * @param {Response} response The response to handle
-     */
-    #handleBadResponse = async (response) =>
-    {
-        if (!response.ok)
-        {
-            const text = await response.text();
-            throw new Error(text);
-        }
-    }
-
+    
 
 
 }

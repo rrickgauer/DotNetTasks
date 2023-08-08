@@ -69,3 +69,12 @@ class ChecklistResponse(IMappable):
     createdOn  : Opt[datetime] = None
     countItems : Opt[int]      = None
 
+
+@dataclass
+class ChecklistItemResponse(IMappable):
+    id         : Opt[str]      = None
+    content    : Opt[str]      = None
+    createdOn  : Opt[datetime] = None
+    position   : Opt[int]      = None
+    isComplete : Opt[bool]     = None
+

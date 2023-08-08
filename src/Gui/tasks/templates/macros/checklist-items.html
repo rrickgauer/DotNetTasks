@@ -1,0 +1,76 @@
+
+{# 
+
+    id         : Opt[str]     
+    content    : Opt[str]     
+    createdOn  : Opt[datetime]
+    position   : Opt[int]     
+    isComplete : Opt[bool]    
+#}
+
+
+{% macro get_checklist_items(checklist_items) -%}
+
+    {% for item in checklist_items %}
+        {{ get_checklist_item(item) }}
+    {% endfor %}
+
+{%- endmacro %}
+
+
+
+
+
+
+{% macro get_checklist_item(item) -%}
+
+<div class="checklist-item {{ 'complete' if item.isComplete }}" data-checklist-item-id="{{ item.id }}" data-checklist-item-position="{{ item.position }}">
+
+    {# - Item Display - #}
+    <div class="checklist-item-display">
+        <div class="d-flex align-items-baseline justify-content-between">
+            <div class="d-flex align-items-center">
+                
+                {# - Is Complete - #}
+                <div class="form-check">
+                    <input class="form-check-input position-static checklist-item-checkbox" type="checkbox" {{ 'checked' if item.isComplete }}>
+                </div>
+
+                {# - Content - #}
+                <span class="checklist-item-content-text mb-0" title="Edit item">{{ item.content }}</span>
+            </div>
+
+            {# - Dropdown menu - #}
+            <div class="dropdown">
+                <button type="button" class="close" data-toggle="dropdown">
+                    <i class="bx bx-dots-horizontal"></i>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right checklist-item-dropdown-menu">
+                    <button class="dropdown-item" type="button" data-js-action="edit">Edit</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" type="button" data-js-action="move-up">Move up</button>
+                    <button class="dropdown-item" type="button" data-js-action="move-down">Move down</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" type="button" data-js-action="duplicate">Duplicate</button>
+                    <button class="dropdown-item" type="button" data-js-action="move-list">Move to another list</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" type="button" data-js-action="delete">Delete</button>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    {# - Edit Item - #}
+    <div class="checklist-item-edit">
+        <form class="checklist-item-content-form d-flex">
+            <input class="form-control form-control-sm checklist-item-content-form-input" type="text" required>
+            <button class="btn btn-xs no-focus-outline text-success checklist-item-content-form-btn save" type="submit">Save</button>
+            <button class="btn btn-xs no-focus-outline text-danger checklist-item-content-form-btn cancel" type="button">Cancel</button>
+        </form>
+    </div>
+</div>
+
+{%- endmacro %}

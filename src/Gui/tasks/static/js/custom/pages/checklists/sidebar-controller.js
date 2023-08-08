@@ -66,9 +66,9 @@ export class SidebarController
      */
     #addEventListeners = () =>
     {
-        this.sidebar.closeSidebarButton.addEventListener(NativeEvents.CLICK, this.closeSidebar);
+        this.sidebar.closeSidebarButton.addEventListener(NativeEvents.Click, this.closeSidebar);
         
-        this.sidebar.openNewChecklistFormButton.addEventListener(NativeEvents.CLICK, (e) => 
+        this.sidebar.openNewChecklistFormButton.addEventListener(NativeEvents.Click, (e) => 
         {
             NewChecklistFormToggleEvent.invoke(this);
         });

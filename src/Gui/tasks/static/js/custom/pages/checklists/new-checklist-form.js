@@ -50,8 +50,8 @@ export class NewChecklistFormController
 
     #addEventListeners = () =>
     {
-        this.elements.inputTitle.addEventListener(NativeEvents.KEY_UP, this.#updateSubmitButtonDisabled);
-        this.elements.buttonCancel.addEventListener(NativeEvents.CLICK, this.toggleNewChecklistForm);
+        this.elements.inputTitle.addEventListener(NativeEvents.KeyUp, this.#updateSubmitButtonDisabled);
+        this.elements.buttonCancel.addEventListener(NativeEvents.Click, this.toggleNewChecklistForm);
 
         NewChecklistFormToggleEvent.addListener(this.toggleNewChecklistForm);
 
@@ -61,7 +61,7 @@ export class NewChecklistFormController
 
     #eventListenerFormSubmission = () =>
     {
-        this.elements.form.addEventListener(NativeEvents.SUBMIT, (e) => 
+        this.elements.form.addEventListener(NativeEvents.Submit, (e) => 
         {
             e.preventDefault();
             this.submitForm();

@@ -71,13 +71,13 @@ export class GeneralSettingsFormController
 
     #addEventListeners = () =>
     {
-        this.elements.form.addEventListener(NativeEvents.SUBMIT, async (e) => 
+        this.elements.form.addEventListener(NativeEvents.Submit, async (e) => 
         {
             e.preventDefault();
             await this.#handleFormSubmission();
         });
 
-        this.elements.inputTitle.addEventListener(NativeEvents.KEY_UP, (e) =>
+        this.elements.inputTitle.addEventListener(NativeEvents.KeyUp, (e) =>
         {
             this.#toggleSubmitButton();
         });

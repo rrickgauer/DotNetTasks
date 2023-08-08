@@ -52,6 +52,7 @@ class StartupService:
         self.app.register_blueprint(routes.api.bp_api_labels, url_prefix='/api/labels')
         self.app.register_blueprint(routes.api.bp_api_event_labels, url_prefix='/api/events/<uuid:event_id>/labels')
         self.app.register_blueprint(routes.api.bp_api_checklists, url_prefix='/api/checklists')
+        self.app.register_blueprint(routes.api.bp_api_checklist_items, url_prefix='/api/checklists/<uuid:checklist_id>/items')
 
         # home
         self.app.register_blueprint(routes.gui.bp_home, url_prefix='/')

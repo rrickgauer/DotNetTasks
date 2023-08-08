@@ -1,42 +1,80 @@
-
-{# 
+{#
 
     ChecklistResponse:
-        id         : Opt[UUID]     
-        title      : Opt[str]      
-        type       : Opt[str]      
-        createdOn  : Opt[datetime] 
-        countItems : Opt[int]      
+        id : Opt[UUID]
+        title : Opt[str]
+        type : Opt[str]
+        createdOn : Opt[datetime]
+        countItems : Opt[int]
 
 #}
 
 {% macro open_checklist_card(checklist) -%}
 
 
-    <div class="card open-checklist-container" data-checklist-id="{{ checklist.id }}">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline">
-                <h5>{{ checklist.title }}</h5>
+<div class="card open-checklist-container my-shadow" data-checklist-id="{{ checklist.id }}">
+    <div class="card-body">
 
-                <div class="d-flex align-items-center">
-                    <div class="dropdown">    
-                        <button type="button" class="close" data-toggle="dropdown">
-                            <i class="bx bx-dots-horizontal"></i>
-                        </button>
-    
-                        <div class="dropdown-menu dropdown-menu-right action-buttons">
-                            <a class="dropdown-item" href="/checklists/{{ checklist.id }}" title="Checklist settings">Settings</a>
-                            <button class="dropdown-item" type="button" data-js-action="delete" title="Delete the checklist">Delete</button>
-                        </div>
-                    </div>
-    
-                    <button type="button" class="close close-checklist-btn" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-baseline mb-3">
+            <h5>{{ checklist.title }}</h5>
+
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button type="button" class="close" data-toggle="dropdown">
+                        <i class="bx bx-dots-horizontal"></i>
                     </button>
+
+                    <div class="dropdown-menu dropdown-menu-right action-buttons">
+                        <a class="dropdown-item" href="/checklists/{{ checklist.id }}" title="Checklist settings">Settings</a>
+                        <button class="dropdown-item" type="button" data-js-action="delete" title="Delete the checklist">Delete</button>
+                    </div>
                 </div>
+
+                <button type="button" class="close close-checklist-btn" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
+
+
+
+        <div class="open-checklist-body loading">
+
+            <!-- Loading spinner -->
+            <div class="open-checklist-body-loading">
+                {% include 'includes/spinner-center.html' %}
+            </div>
+
+
+            <div class="open-checklist-body-container">
+                
+                <!-- New item form -->
+                <div class="open-checklist-body-new-item-form-container mb-3">
+                    <form class="open-checklist-body-new-item-form">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="New item..." required>
+
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary btn-create-item" type="submit" title="Create new item">+</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- list items -->
+                <div class="open-checklist-body-items-container">
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+
     </div>
+</div>
 
 
 {%- endmacro %}

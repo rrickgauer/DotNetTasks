@@ -53,7 +53,7 @@ export class ChecklistSidebarItem
      */
     #addListeners = () =>
     {
-        this.container.addEventListener(NativeEvents.CLICK, (e) => {
+        this.container.addEventListener(NativeEvents.Click, (e) => {
             this.toggle();
         });
     }

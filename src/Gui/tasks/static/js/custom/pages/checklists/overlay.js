@@ -19,7 +19,7 @@ export class ChecklistsOverlay
 
     #listenForOverlayClick = () =>
     {
-        document.querySelector('body').addEventListener(NativeEvents.CLICK, (e) => 
+        document.querySelector('body').addEventListener(NativeEvents.Click, (e) => 
         {
             if (e.target.classList.contains(ChecklistsOverlay.OverlayClass))
             {
