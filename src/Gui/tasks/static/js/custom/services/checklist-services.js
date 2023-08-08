@@ -2,7 +2,6 @@ import { ApiChecklistClones } from "../api/api-checklist-clones";
 import { ApiChecklists } from "../api/api-checklists";
 import { CloneChecklistForm } from "../domain/forms/clone-checklist-form";
 import { UpdateChecklistForm } from "../domain/forms/update-checklist-form";
-import { ChecklistModel } from "../domain/models/checklist";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 import { ServiceUtilities } from "./service-utilities";
 

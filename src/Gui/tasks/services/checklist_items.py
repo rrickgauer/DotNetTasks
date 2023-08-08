@@ -7,6 +7,7 @@ from tasks.apiwrapper import ApiWrapperChecklistItems
 from tasks.apiwrapper import ApiWrapperChecklistItemComplete
 from tasks.domain.models import ChecklistItemResponse
 from tasks.common.macros import ChecklistItemsMacro
+from tasks.common.macros import ChecklistItemMacro
 
 class ChecklistItemService:
 
@@ -29,6 +30,17 @@ class ChecklistItemService:
 
         html = ChecklistItemsMacro.render_html(checklist_items)
         return html
+
+
+    def create_item(self, checklist_item_data: dict) -> ChecklistItemResponse:
+        api = ApiWrapperChecklistItems(self.checklist_id)
+        response = api.post(checklist_item_data)
+        response_data = response.json()
+        return ChecklistItemResponse.from_dict(response_data)
+
+
+    def get_checklist_item_html(self, checklist_item: ChecklistItemResponse) -> Markup:
+        return ChecklistItemMacro.render_html(checklist_item)
 
     def mark_item_complete(self, checklist_item_id: UUID) -> requests.Response:
         """Mark the specified item as complete"""

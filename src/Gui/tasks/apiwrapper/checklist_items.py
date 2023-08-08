@@ -15,6 +15,12 @@ class ApiWrapperChecklistItems(ApiWrapperBase):
     
     def get_all(self) -> requests.Response:
         return self._get_request(self.url)
+    
+    def post(self, data: dict) -> requests.Response:
+        return self._post_request(
+            url = self.url,
+            data = data,
+        )
         
     
     

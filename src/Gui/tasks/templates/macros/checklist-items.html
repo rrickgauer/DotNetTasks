@@ -24,7 +24,7 @@
 
 {% macro get_checklist_item(item) -%}
 
-<div class="checklist-item {{ 'complete' if item.isComplete }}" data-checklist-item-id="{{ item.id }}">
+<div class="checklist-item {{ 'complete' if item.isComplete }}" data-checklist-item-id="{{ item.id }}" data-checklist-item-position="{{ item.position }}">
 
     {# - Item Display - #}
     <div class="checklist-item-display">

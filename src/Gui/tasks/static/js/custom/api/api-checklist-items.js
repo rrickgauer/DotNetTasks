@@ -17,4 +17,17 @@ export class ApiChecklistItems
     {
         return await fetch(this.url);
     }
+
+    /**
+     * Send POST request
+     * @param {FormData} form the form data
+     * @returns the response
+     */
+    post = async (form) =>
+    {
+        return await fetch(this.url, {
+            method: HttpMethods.POST,
+            body: form,
+        })
+    }
 }

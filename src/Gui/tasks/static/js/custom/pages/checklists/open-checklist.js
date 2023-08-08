@@ -1,5 +1,6 @@
 import { NativeEvents } from "../../domain/constants/native-events";
 import { DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
+import { CreateChecklistItemForm } from "../../domain/forms/checklist-item-forms";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 import { ChecklistServices } from "../../services/checklist-services";
 import { OpenChecklistItem, OpenChecklistItemElements } from "./checklist-item";
@@ -47,6 +48,18 @@ export class OpenChecklistElements
 
         /** @type {HTMLDivElement} */
         this.itemsContainer = this.container.querySelector('.open-checklist-body-items-container');
+
+        /** @type {HTMLDivElement} */
+        this.newItemFormContainer = this.container.querySelector('.open-checklist-body-new-item-form-container');
+        
+        /** @type {HTMLFormElement} */
+        this.newItemForm = this.newItemFormContainer.querySelector('.open-checklist-body-new-item-form');
+        
+        /** @type {HTMLInputElement} */
+        this.newItemFormInput = this.newItemForm.querySelector('input[type="text"]');
+
+        /** @type {HTMLButtonElement} */
+        this.newItemFormSubmitButton = this.newItemForm.querySelector('.btn-create-item');
     }
 
 
@@ -67,6 +80,16 @@ export class OpenChecklist
     get isMetaDataLoaded()
     {
         return this.#isMetaDataLoaded;
+    }
+    
+    get newItemFormInputValue()
+    {
+        return this.elements.newItemFormInput.value;
+    }
+
+    set newItemFormInputValue(value)
+    {
+        this.elements.newItemFormInput.value = value;
     }
 
 
@@ -124,6 +147,13 @@ export class OpenChecklist
         {
             DeleteChecklistEvent.invoke(this, this.checklistId);
         });
+
+
+        this.elements.newItemForm.addEventListener(NativeEvents.SUBMIT, async (e) =>
+        {
+            e.preventDefault();
+            await this.#createNewItem();
+        });
     }
 
 
@@ -132,7 +162,6 @@ export class OpenChecklist
     {
         const checklistItemsHtml = await this.checklistItemServices.getChecklistItemsHtml();
         this.elements.itemsContainer.innerHTML = checklistItemsHtml;
-
         this.#initOpenChecklistItemsFromHtml();
     }
 
@@ -146,9 +175,19 @@ export class OpenChecklist
 
         for (const itemHtmlElement of itemsHtml)
         {
-            const openChecklistItem = new OpenChecklistItem(itemHtmlElement, this.checklistId);
-            this.checklistItems.push(openChecklistItem);
+            this.#addChecklistItemHtml(itemHtmlElement);
         }
+    }
+
+
+    /**
+     * Add checklist item to the collection
+     * @param {HTMLElement} itemHtmlElement the item's html
+     */
+    #addChecklistItemHtml = (itemHtmlElement) =>
+    {
+        const openChecklistItem = new OpenChecklistItem(itemHtmlElement, this.checklistId);
+        this.checklistItems.push(openChecklistItem);
     }
 
 
@@ -161,6 +200,53 @@ export class OpenChecklist
     {
         this.elements.checklistItemsBody.classList.remove(OpenChecklistElements.ChecklistItemsLoadingClass);
     }
+
+
+
+    #createNewItem = async () =>
+    {
+        if (this.newItemFormInputValue.length < 1)
+        {
+            return;
+        }
+
+        const data = this.#getCreateChecklistItemForm();
+
+        this.newItemFormInputValue = "";
+
+        const itemHtml = await this.checklistItemServices.createNewItem(data);
+        this.elements.itemsContainer.insertAdjacentHTML("beforeend", itemHtml);
+        
+        this.#initOpenChecklistItemsFromHtml();
+    }
+
+    #getCreateChecklistItemForm = () =>
+    {
+        // const position = this.checklistItems.length;
+        const position = this.#getNextItemPosition();
+        const createChecklistItemForm = new CreateChecklistItemForm(this.newItemFormInputValue, position);
+        return createChecklistItemForm;
+    }
+
+
+    #getNextItemPosition = () =>
+    {
+        const sortedItems = this.checklistItems.toSorted((a, b) => {
+            return a.elements.positionAttributeValue > b.elements.checklistItemIdAttributeValue;
+        });
+
+        if (sortedItems.length == 0)
+        {
+            return 1;
+        }
+
+        const lastElement = sortedItems.pop();
+        return lastElement.elements.positionAttributeValue + 1;
+    }
+
+
+
+
 
     
 }

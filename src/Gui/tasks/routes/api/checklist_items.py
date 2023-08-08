@@ -33,6 +33,20 @@ def get_checklist_items(checklist_id: UUID):
 
 
 #------------------------------------------------------
+# POST: /api/checklists/:checklistId/items/:itemId
+#------------------------------------------------------
+@bp_api_checklist_items.post('')
+@security.login_required
+def post_checklist_items(checklist_id: UUID):
+
+    service = ChecklistItemService(checklist_id)
+    checklist_item = service.create_item(flask.request.form.to_dict())
+    html = service.get_checklist_item_html(checklist_item)
+
+    return html
+
+
+#------------------------------------------------------
 # PUT: /api/checklists/:checklistId/items/:itemId/complete
 #------------------------------------------------------
 @bp_api_checklist_items.put('<uuid:checklist_item_id>/complete')

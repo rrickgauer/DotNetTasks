@@ -1,5 +1,7 @@
 import { ApiChecklistItemComplete } from "../api/api-checklist-item-complete";
 import { ApiChecklistItems } from "../api/api-checklist-items";
+import { CreateChecklistItemForm } from "../domain/forms/checklist-item-forms";
+import { HttpRequestMapper } from "../mappers/http-request-mapper";
 import { ServiceUtilities } from "./service-utilities";
 
 
@@ -40,5 +42,18 @@ export class ChecklistItemServices
         const response = await api.delete();
         await ServiceUtilities.handleBadResponse(response);
         return response.ok;
+    }
+
+
+    /**
+     * Create a new checklist item
+     * @param {CreateChecklistItemForm} newItemForm
+     */
+    createNewItem = async (newItemForm) =>
+    {
+        const formData = HttpRequestMapper.toFormData(newItemForm);
+        const response = await this.apiChecklistItems.post(formData);
+        await ServiceUtilities.handleBadResponse(response);
+        return await response.text();
     }
 }
