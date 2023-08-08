@@ -1,4 +1,22 @@
+{# 
+    
+    data:
+        - checklist
+            - id         : Opt[UUID]    
+            - title      : Opt[str]     
+            - type       : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - countItems : Opt[int]    
+            
+        - checklist_items:
+            - id         : Opt[str]     
+            - content    : Opt[str]     
+            - createdOn  : Opt[datetime]
+            - position   : Opt[int]     
+            - isComplete : Opt[bool]    
+#}
 
-<p class="text-muted mt-3 mb-0"">Once you delete a list, there is no going back. Please be certain.</p>
+
+<p class="text-muted mt-3 mb-0">Once you delete a list, there is no going back. Please be certain.</p>
 
 <button class="btn btn-sm btn-danger btn-delete-checklist mt-3 mb-0"" type="button">Delete checklist</button>

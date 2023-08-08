@@ -1,4 +1,4 @@
-import { BoostrapConstants } from "../../domain/constants/bootstrap-classes";
+import { BootstrapClasses } from "../../domain/constants/bootstrap-classes";
 import { NativeEvents } from "../../domain/constants/native-events";
 import { NewChecklistFormSubmittedEvent, NewChecklistFormToggleEvent } from "../../domain/events/events";
 import { SpinnerButton } from "../../helpers/spinner-button";
@@ -40,9 +40,9 @@ export class NewChecklistFormController
     }
 
     
-    openNewChecklistForm   = () => this.elements.container.classList.remove(BoostrapConstants.DISPLAY_NONE);
-    closeNewChecklistForm  = () => this.elements.container.classList.add(BoostrapConstants.DISPLAY_NONE);
-    toggleNewChecklistForm = () => this.elements.container.classList.toggle(BoostrapConstants.DISPLAY_NONE);
+    openNewChecklistForm   = () => this.elements.container.classList.remove(BootstrapClasses.DISPLAY_NONE);
+    closeNewChecklistForm  = () => this.elements.container.classList.add(BootstrapClasses.DISPLAY_NONE);
+    toggleNewChecklistForm = () => this.elements.container.classList.toggle(BootstrapClasses.DISPLAY_NONE);
     inputValue             = () => this.elements.inputTitle.value;
     enableSubmitButton     = () => Utililties.enableElement(this.elements.buttonSubmit);
     disableSubmitButton    = () => Utililties.disableElement(this.elements.buttonSubmit);

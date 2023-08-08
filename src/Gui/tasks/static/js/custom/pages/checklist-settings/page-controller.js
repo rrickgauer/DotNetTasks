@@ -4,6 +4,7 @@ import { ChecklistModel } from "../../domain/models/checklist";
 import { UrlMethods } from "../../helpers/url-methods";
 import { CloneChecklistController } from "./clone-checklist-controller";
 import { DeleteChecklistController } from "./delete-checklist-controller";
+import { ExportChecklistItemsController } from "./export-items-controller";
 import { GeneralSettingsFormController } from "./general-settings-form-controller"
 
 
@@ -16,6 +17,7 @@ export class ChecklistSettingsPageController
         this.generalSettingsForm = new GeneralSettingsFormController(this.checklistId);
         this.deleteChecklistController = new DeleteChecklistController(this.checklistId);
         this.cloneChecklistController = new CloneChecklistController(this.checklistId);
+        this.exportItemsController = new ExportChecklistItemsController();
     }
 
     init = () =>
@@ -23,6 +25,7 @@ export class ChecklistSettingsPageController
         this.generalSettingsForm.init();
         this.deleteChecklistController.init();
         this.cloneChecklistController.init();
+        this.exportItemsController.init();
         this.#addEventListeners();
     }
 

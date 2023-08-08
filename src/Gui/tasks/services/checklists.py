@@ -5,6 +5,7 @@ from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.apiwrapper import ApiWrapperChecklistClones
 from tasks.domain import models
 from tasks.domain.views import ChecklistSettingsPageView
+from .checklist_items import ChecklistItemService
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
 from tasks.common.macros import OpenChecklistCardMarco
@@ -51,8 +52,11 @@ def save_checklist(checklist_id: UUID, data: dict) -> requests.Response:
 
 def get_settings_page_view(checklist_id: UUID) -> ChecklistSettingsPageView:
     
+    checklist_item_service = ChecklistItemService(checklist_id)
+
     result = ChecklistSettingsPageView(
-        checklist = get_checklist(checklist_id)
+        checklist = get_checklist(checklist_id),
+        checklist_items = checklist_item_service.get_checklist_items(),
     )
 
     return result

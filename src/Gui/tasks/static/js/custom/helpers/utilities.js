@@ -97,4 +97,9 @@ export class Utililties
         element.removeAttribute('disabled');
     }
 
+    static copyTextToClipboard = (text) =>
+    {
+        navigator.clipboard.writeText(text);
+    }
+
 }
