@@ -25,6 +25,16 @@ class ApiWrapperChecklistItems(ApiWrapperBase):
     def delete(self, checklist_item_id: UUID) -> requests.Response:
         url = f'{self.url}/{checklist_item_id}'
         return self._delete_request(url)
+    
+    def put(self, checklist_item_id: UUID, data: dict) -> requests.Response:
+        """Send PUT request to external api"""
+        
+        url = f'{self.url}/{checklist_item_id}'
+        
+        return self._put_request(
+            url = url,
+            data = data
+        )
         
     
     

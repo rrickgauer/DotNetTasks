@@ -11,3 +11,14 @@ export class CreateChecklistItemForm
     }
 }
 
+
+export class UpdateChecklistItemForm
+{
+    constructor(content, position, isComplete)
+    {
+        this.content = content;
+        this.position = position;
+        this.isComplete = isComplete;
+    }
+}
+

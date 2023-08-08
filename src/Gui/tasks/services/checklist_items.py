@@ -67,6 +67,17 @@ class ChecklistItemService:
         api = ApiWrapperChecklistItems(self.checklist_id)
         response = api.delete(checklist_item_id)
         return response
+    
+
+    def update_checklist_item(self, checklist_item_id: UUID, checklist_data: dict) -> ChecklistItemResponse:
+        api = ApiWrapperChecklistItems(self.checklist_id)
+        
+        response = api.put(checklist_item_id, checklist_data)
+        response_data = response.json()
+        
+        updated_item = ChecklistItemResponse.from_dict(response_data)
+
+        return updated_item
         
         
 

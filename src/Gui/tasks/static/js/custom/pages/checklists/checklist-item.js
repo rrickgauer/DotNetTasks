@@ -1,5 +1,6 @@
 import { NativeEvents } from "../../domain/constants/native-events";
 import { ChecklistItemDeleteButtonClickedEvent } from "../../domain/events/events";
+import { UpdateChecklistItemForm } from "../../domain/forms/checklist-item-forms";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 
 
@@ -10,6 +11,8 @@ export class DropdownActions
     static MoveDown = 'move-down';
     static Duplicate = 'duplicate';
     static Delete = 'delete';
+    static MoveList = 'move-list'
+    static Edit = 'edit';
 }
 
 
@@ -29,10 +32,10 @@ export class OpenChecklistItemElements
 
     static ChecklistItemIdAttribute = 'data-checklist-item-id';
     static DropdownMenuItemActionAttribute = 'data-js-action';
-
     static ChecklistItemPositionAttribute = 'data-checklist-item-position';
 
     static IsCompleteClass = 'complete';
+    static ShowEditFormClass = 'edit';
 
     constructor(container)
     {
@@ -61,7 +64,7 @@ export class OpenChecklistItemElements
         this.editFormButtonSave = this.container.querySelector(`.${OpenChecklistItemElements.EditFormButtonsClass}.save`);
 
         /** @type {HTMLButtonElement} */
-        this.editFormButtonSave = this.container.querySelector(`.${OpenChecklistItemElements.EditFormButtonsClass}.cancel`);
+        this.editFormButtonCancel = this.container.querySelector(`.${OpenChecklistItemElements.EditFormButtonsClass}.cancel`);
 
         /** @type {HTMLDivElement} */
         this.dropdownMenu = this.container.querySelector(`.${OpenChecklistItemElements.DropdownMenuClass}`);
@@ -77,6 +80,12 @@ export class OpenChecklistItemElements
         
         /** @type {HTMLButtonElement} */
         this.dropdownItemDelete = this.#getDropdownMenuItemButton(DropdownActions.Delete);
+        
+        /** @type {HTMLButtonElement} */
+        this.dropdownItemMoveList = this.#getDropdownMenuItemButton(DropdownActions.MoveList);
+
+        /** @type {HTMLButtonElement} */
+        this.dropdownItemEdit = this.#getDropdownMenuItemButton(DropdownActions.Edit);
     }
 
     /**
@@ -127,7 +136,6 @@ export class OpenChecklistItemElements
 
     get positionAttributeValue()
     {
-        // return parseInt(this.container.getAttribute('data-checklist-item-position'));
         return parseInt(this.container.getAttribute(OpenChecklistItemElements.ChecklistItemPositionAttribute));
     }
 
@@ -142,6 +150,63 @@ export class OpenChecklistItemElements
 
 export class OpenChecklistItem
 {
+    //#region - Getters/Setters
+
+    get itemId()
+    {
+        return this.elements.checklistItemIdAttributeValue;
+    }
+
+    get position()
+    {
+        return this.elements.positionAttributeValue;
+    }
+
+    set position(value)
+    {
+        this.elements.positionAttributeValue = value;
+    }
+
+    get isEditFormVisible()
+    {
+        return this.elements.container.classList.contains(OpenChecklistItemElements.ShowEditFormClass);
+    }
+
+    set isEditFormVisible(value)
+    {
+        if (value)
+        {
+            this.elements.container.classList.add(OpenChecklistItemElements.ShowEditFormClass);
+        }
+        else
+        {
+            this.elements.container.classList.remove(OpenChecklistItemElements.ShowEditFormClass);
+        }
+    }
+
+    get editFormInputValue()
+    {
+        return this.elements.editFormInput.value;
+    }
+
+    set editFormInputValue(value)
+    {
+        this.elements.editFormInput.value = value;
+    }
+
+    get contentDisplay()
+    {
+        return this.elements.contentDisplay.innerText;
+    }
+
+    set contentDisplay(value)
+    {
+        this.elements.contentDisplay.innerText = value;
+    }
+
+    //#endregion
+
+
     constructor(htmlElement, checklistId)
     {
         this.elements = new OpenChecklistItemElements(htmlElement);
@@ -151,21 +216,15 @@ export class OpenChecklistItem
     }
 
 
-    get itemId()
-    {
-        return this.elements.checklistItemIdAttributeValue;
-    }
-
-
     #addEventListeners = () =>
     {
-        this.elements.checkbox.addEventListener(NativeEvents.CHANGE, (e) => 
+        this.elements.checkbox.addEventListener(NativeEvents.Change, (e) => 
         {
             this.#toggleItemComplete();
         });
 
 
-        this.elements.dropdownItemDelete.addEventListener(NativeEvents.CLICK, (e) =>
+        this.elements.dropdownItemDelete.addEventListener(NativeEvents.Click, (e) =>
         {
             ChecklistItemDeleteButtonClickedEvent.invoke(this, {
                 checklistId: this.checklistId,
@@ -173,20 +232,38 @@ export class OpenChecklistItem
             });
         });
 
-        this.elements.dropdownItemMoveUp.addEventListener(NativeEvents.CLICK, (e) =>
+        this.elements.dropdownItemMoveUp.addEventListener(NativeEvents.Click, (e) =>
         {
             alert('moveup');
         });
 
-        this.elements.dropdownItemMoveDown.addEventListener(NativeEvents.CLICK, (e) =>
+        this.elements.dropdownItemMoveDown.addEventListener(NativeEvents.Click, (e) =>
         {
             alert('move down');
         });
 
-        this.elements.dropdownItemDuplicate.addEventListener(NativeEvents.CLICK, (e) =>
+        this.elements.dropdownItemDuplicate.addEventListener(NativeEvents.Click, (e) =>
         {
             alert('duplicate');
         });
+
+        this.elements.contentDisplay.addEventListener(NativeEvents.Click, (e) => {
+            this.#openEditForm();
+        });
+
+        this.elements.dropdownItemEdit.addEventListener(NativeEvents.Click, (e) => {
+            this.#openEditForm();
+        });
+
+        this.elements.editForm.addEventListener(NativeEvents.Submit, async (e) => {
+            e.preventDefault();
+            this.#handleEditFormSubmission();
+        });
+
+        this.elements.editFormButtonCancel.addEventListener(NativeEvents.Click, (e) => {
+            this.#cancelEdit();
+        });
+
     }
 
 
@@ -209,6 +286,48 @@ export class OpenChecklistItem
     remove = () =>
     {
         this.elements.container.remove();
+    }
+
+
+    #openEditForm = () =>
+    {
+        this.editFormInputValue = this.contentDisplay;
+        this.isEditFormVisible = true;
+    }
+
+    #handleEditFormSubmission = async () =>
+    {
+        if (this.editFormInputValue.length === 0)
+        {
+            return;
+        }
+
+        this.#saveItemEdit();
+        this.contentDisplay = this.editFormInputValue;
+        this.isEditFormVisible = false;
+    }
+
+    #saveItemEdit = async () =>
+    {
+        const updateForm = new UpdateChecklistItemForm(this.editFormInputValue, this.position, this.elements.hasCompleteClass);
+
+        try 
+        {
+            const response = await this.checklistItemService.updateChecklistItem(this.itemId, updateForm);
+            console.log(response);
+        }
+        catch(error)
+        {
+            alert('Error saving changes to checklist item.');
+            console.error(error);
+        }        
+    }
+
+
+
+    #cancelEdit = () =>
+    {
+        this.isEditFormVisible = false;
     }
 
 }

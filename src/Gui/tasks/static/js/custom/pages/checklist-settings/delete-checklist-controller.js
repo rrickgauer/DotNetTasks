@@ -30,7 +30,7 @@ export class DeleteChecklistController
 
     #addEventListeners = () =>
     {
-        this.pageElements.deleteChecklistButton.addEventListener(NativeEvents.CLICK, this.#deleteChecklist);
+        this.pageElements.deleteChecklistButton.addEventListener(NativeEvents.Click, this.#deleteChecklist);
     }
     
 

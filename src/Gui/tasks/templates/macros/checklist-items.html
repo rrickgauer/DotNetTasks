@@ -37,7 +37,7 @@
                 </div>
 
                 {# - Content - #}
-                <span class="checklist-item-content-text mb-0">{{ item.content }}</span>
+                <span class="checklist-item-content-text mb-0" title="Edit item">{{ item.content }}</span>
             </div>
 
             {# - Dropdown menu - #}
@@ -47,10 +47,13 @@
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-right checklist-item-dropdown-menu">
+                    <button class="dropdown-item" type="button" data-js-action="edit">Edit</button>
+                    <div class="dropdown-divider"></div>
                     <button class="dropdown-item" type="button" data-js-action="move-up">Move up</button>
                     <button class="dropdown-item" type="button" data-js-action="move-down">Move Down</button>
                     <div class="dropdown-divider"></div>
                     <button class="dropdown-item" type="button" data-js-action="duplicate">Duplicate</button>
+                    <button class="dropdown-item" type="button" data-js-action="move-list">Move to another list</button>
                     <div class="dropdown-divider"></div>
                     <button class="dropdown-item" type="button" data-js-action="delete">Delete</button>
                 </div>
@@ -63,8 +66,8 @@
     {# - Edit Item - #}
     <div class="checklist-item-edit">
         <form class="checklist-item-content-form d-flex">
-            <input class="form-control form-control-sm checklist-item-content-form-input" type="text" required value="Hey botch">
-            <button class="btn btn-xs no-focus-outline text-success checklist-item-content-form-btn save" type="button">Save</button>
+            <input class="form-control form-control-sm checklist-item-content-form-input" type="text" required>
+            <button class="btn btn-xs no-focus-outline text-success checklist-item-content-form-btn save" type="submit">Save</button>
             <button class="btn btn-xs no-focus-outline text-danger checklist-item-content-form-btn cancel" type="button">Cancel</button>
         </form>
     </div>

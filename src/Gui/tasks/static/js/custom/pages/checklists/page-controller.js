@@ -46,7 +46,7 @@ export class PageController
      */
     #addEventListeners = () =>
     {
-        this.pageElements.openSidebarButton.addEventListener(NativeEvents.CLICK, this.#openSidebar);
+        this.pageElements.openSidebarButton.addEventListener(NativeEvents.Click, this.#openSidebar);
 
         ChecklistsSidebarItemOpenedEvent.addListener(async (e) => 
         {

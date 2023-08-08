@@ -1,6 +1,6 @@
 import { ApiChecklistItemComplete } from "../api/api-checklist-item-complete";
 import { ApiChecklistItems } from "../api/api-checklist-items";
-import { CreateChecklistItemForm } from "../domain/forms/checklist-item-forms";
+import { CreateChecklistItemForm, UpdateChecklistItemForm } from "../domain/forms/checklist-item-forms";
 import { HttpRequestMapper } from "../mappers/http-request-mapper";
 import { ServiceUtilities } from "./service-utilities";
 
@@ -62,5 +62,22 @@ export class ChecklistItemServices
     {
         const response = await this.apiChecklistItems.delete(itemId);
         await ServiceUtilities.handleBadResponse(response);
+    }
+
+
+    /**
+     * Update the checklist item
+     * @param {UpdateChecklistItemForm} updateChecklistItemForm 
+     */
+    updateChecklistItem = async (itemId, updateChecklistItemForm) =>
+    {
+        console.log({itemId, updateChecklistItemForm});
+
+        const form = HttpRequestMapper.toFormData(updateChecklistItemForm);
+        
+        const response = await this.apiChecklistItems.put(itemId, form);
+        await ServiceUtilities.handleBadResponse(response);
+        
+        return await response.json();
     }
 }

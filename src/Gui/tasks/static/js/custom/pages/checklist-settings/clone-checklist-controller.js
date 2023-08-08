@@ -57,13 +57,13 @@ export class CloneChecklistController
 
     #addEventListeners = () =>
     {
-        this.elements.form.addEventListener(NativeEvents.SUBMIT, async (e) =>
+        this.elements.form.addEventListener(NativeEvents.Submit, async (e) =>
         {
             e.preventDefault();
             await this.#submitForm();
         }); 
 
-        this.elements.titleInput.addEventListener(NativeEvents.KEY_UP, this.#handleTitleInputChange);
+        this.elements.titleInput.addEventListener(NativeEvents.KeyUp, this.#handleTitleInputChange);
     }
 
     #submitForm = async () =>

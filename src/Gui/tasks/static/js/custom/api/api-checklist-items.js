@@ -39,4 +39,19 @@ export class ApiChecklistItems
             method: HttpMethods.DELETE,
         });
     }
+
+    /**
+     * Send a PUT request
+     * @param {string} checklistItemId 
+     * @param {FormData} form 
+     */
+    put = async (checklistItemId, form) =>
+    {   
+        const url = `${this.url}/${checklistItemId}`;
+
+        return await fetch(url, {
+            method: HttpMethods.PUT,
+            body: form,
+        });
+    }
 }

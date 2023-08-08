@@ -138,18 +138,18 @@ export class OpenChecklist
 
     #addListeners = () =>
     {
-        this.elements.closeButton.addEventListener(NativeEvents.CLICK, (e) => 
+        this.elements.closeButton.addEventListener(NativeEvents.Click, (e) => 
         {
             OpenChecklistCloseButtonClickedEvent.invoke(this, this.checklistId);
         });
 
-        this.elements.deleteButton.addEventListener(NativeEvents.CLICK, (e) =>
+        this.elements.deleteButton.addEventListener(NativeEvents.Click, (e) =>
         {
             DeleteChecklistEvent.invoke(this, this.checklistId);
         });
 
 
-        this.elements.newItemForm.addEventListener(NativeEvents.SUBMIT, async (e) =>
+        this.elements.newItemForm.addEventListener(NativeEvents.Submit, async (e) =>
         {
             e.preventDefault();
             await this.#createNewItem();
@@ -230,26 +230,39 @@ export class OpenChecklist
 
     #getCreateChecklistItemForm = () =>
     {
-        // const position = this.checklistItems.length;
-        const position = this.#getNextItemPosition();
+        const position = this.#getLargestItemPositionValue() + 1;
+
         const createChecklistItemForm = new CreateChecklistItemForm(this.newItemFormInputValue, position);
+
         return createChecklistItemForm;
     }
 
 
-    #getNextItemPosition = () =>
+    /**
+     * Get the largest checklist item's position value
+     * @returns the greatest position value for the current checklist items
+     */
+    #getLargestItemPositionValue = () =>
     {
-        const sortedItems = this.checklistItems.toSorted((a, b) => {
-            return a.elements.positionAttributeValue > b.elements.checklistItemIdAttributeValue;
-        });
-
-        if (sortedItems.length == 0)
+        // if no elements return 0
+        if (this.checklistItems.length === 0)
         {
-            return 1;
+            return 0;
+        }
+        // if only 1 element return its position
+        else if (this.checklistItems.length === 1)
+        {
+            return this.checklistItems[0].position;
         }
 
+        // sort the items by position
+        const sortedItems = this.checklistItems.toSorted((a, b) => {
+            return a.position > b.position;
+        });
+
+        // return the last element's (the one with the greatest position value)
         const lastElement = sortedItems.pop();
-        return lastElement.elements.positionAttributeValue + 1;
+        return lastElement.position;
     }
 
 

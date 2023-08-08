@@ -14,6 +14,7 @@ from uuid import UUID
 import flask
 from tasks.common import security
 from tasks.services.checklist_items import ChecklistItemService
+import flasklib
 
 # module blueprint
 bp_api_checklist_items = flask.Blueprint('api_checklist_items', __name__)
@@ -56,6 +57,26 @@ def delete_item(checklist_id: UUID, checklist_item_id: UUID):
     service = ChecklistItemService(checklist_id)
     response = service.delete_checklist_item(checklist_item_id)
     return (response.text, response.status_code)
+
+
+
+#------------------------------------------------------
+# PUT: /api/checklists/:checklistId/items/:itemId
+#------------------------------------------------------
+@bp_api_checklist_items.put('<uuid:checklist_item_id>')
+@security.login_required
+def put_item(checklist_id: UUID, checklist_item_id: UUID):
+
+    service = ChecklistItemService(checklist_id)
+    updated_checklist_item = service.update_checklist_item(checklist_item_id, flask.request.form.to_dict())
+
+    return flasklib.responses.get(updated_checklist_item)
+    
+
+
+    
+
+
 
 
 #------------------------------------------------------
