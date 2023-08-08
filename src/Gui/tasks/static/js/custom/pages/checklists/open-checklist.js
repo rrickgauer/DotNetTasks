@@ -1,5 +1,5 @@
 import { NativeEvents } from "../../domain/constants/native-events";
-import { DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
+import { ChecklistItemDeleteButtonClickedEvent, DeleteChecklistEvent, OpenChecklistCloseButtonClickedEvent } from "../../domain/events/events";
 import { CreateChecklistItemForm } from "../../domain/forms/checklist-item-forms";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 import { ChecklistServices } from "../../services/checklist-services";
@@ -154,6 +154,14 @@ export class OpenChecklist
             e.preventDefault();
             await this.#createNewItem();
         });
+
+        ChecklistItemDeleteButtonClickedEvent.addListener(async (e) => 
+        {
+            if (e.data.checklistId == this.checklistId)
+            {
+                await this.#deleteChecklistItem(e.data.itemId);
+            }
+        });
     }
 
 
@@ -245,9 +253,45 @@ export class OpenChecklist
     }
 
 
+    #deleteChecklistItem = async (itemId) =>
+    {
+        this.checklistItemServices.deleteChecklistItem(itemId);
+
+        const checklistItem = this.#getChecklistItem(itemId);
+        checklistItem.remove();
+
+        this.checklistItems = this.checklistItems.filter(c => c.itemId !== itemId);
+    }
 
 
 
+
+    /**
+     * Get the specified checklist
+     * @param {string} checklistId 
+     */
+    #getChecklistItem = (itemId) =>
+    {
+        const index = this.#getChecklistItemIndex(itemId);
+        return this.checklistItems[index];
+    }
+
+
+    /**
+     * Get the index of the specified checklist within the objects openChecklists collection
+     * @param {string} itemId 
+     */
+    #getChecklistItemIndex = (itemId) =>
+    {
+        const index = this.checklistItems.findIndex(c => c.itemId === itemId);
+
+        if (index == -1)
+        {
+            throw new Error(`There is no checklist item with this id: ${itemId}`);
+        }
+
+        return index;
+    }
     
 }
 

@@ -33,7 +33,7 @@ def get_checklist_items(checklist_id: UUID):
 
 
 #------------------------------------------------------
-# POST: /api/checklists/:checklistId/items/:itemId
+# POST: /api/checklists/:checklistId/items
 #------------------------------------------------------
 @bp_api_checklist_items.post('')
 @security.login_required
@@ -44,6 +44,18 @@ def post_checklist_items(checklist_id: UUID):
     html = service.get_checklist_item_html(checklist_item)
 
     return html
+
+
+#------------------------------------------------------
+# DELETE: /api/checklists/:checklistId/items/:itemId
+#------------------------------------------------------
+@bp_api_checklist_items.delete('<uuid:checklist_item_id>')
+@security.login_required
+def delete_item(checklist_id: UUID, checklist_item_id: UUID):
+
+    service = ChecklistItemService(checklist_id)
+    response = service.delete_checklist_item(checklist_item_id)
+    return (response.text, response.status_code)
 
 
 #------------------------------------------------------

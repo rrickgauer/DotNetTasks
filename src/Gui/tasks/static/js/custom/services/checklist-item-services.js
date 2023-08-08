@@ -56,4 +56,11 @@ export class ChecklistItemServices
         await ServiceUtilities.handleBadResponse(response);
         return await response.text();
     }
+
+
+    deleteChecklistItem = async (itemId) =>
+    {
+        const response = await this.apiChecklistItems.delete(itemId);
+        await ServiceUtilities.handleBadResponse(response);
+    }
 }

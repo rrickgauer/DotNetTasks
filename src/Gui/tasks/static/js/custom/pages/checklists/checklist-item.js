@@ -1,4 +1,5 @@
 import { NativeEvents } from "../../domain/constants/native-events";
+import { ChecklistItemDeleteButtonClickedEvent } from "../../domain/events/events";
 import { ChecklistItemServices } from "../../services/checklist-item-services";
 
 
@@ -166,7 +167,10 @@ export class OpenChecklistItem
 
         this.elements.dropdownItemDelete.addEventListener(NativeEvents.CLICK, (e) =>
         {
-            
+            ChecklistItemDeleteButtonClickedEvent.invoke(this, {
+                checklistId: this.checklistId,
+                itemId: this.itemId,
+            });
         });
 
         this.elements.dropdownItemMoveUp.addEventListener(NativeEvents.CLICK, (e) =>
@@ -199,6 +203,12 @@ export class OpenChecklistItem
         {
             this.checklistItemService.markItemIncomplete(this.itemId);
         }
+    }
+
+
+    remove = () =>
+    {
+        this.elements.container.remove();
     }
 
 }

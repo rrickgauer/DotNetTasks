@@ -62,6 +62,12 @@ class ChecklistItemService:
         else:
             return api.delete()
         
+
+    def delete_checklist_item(self, checklist_item_id: UUID) -> requests.Response:
+        api = ApiWrapperChecklistItems(self.checklist_id)
+        response = api.delete(checklist_item_id)
+        return response
+        
         
 
     

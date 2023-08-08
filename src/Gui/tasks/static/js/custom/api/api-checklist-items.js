@@ -28,6 +28,15 @@ export class ApiChecklistItems
         return await fetch(this.url, {
             method: HttpMethods.POST,
             body: form,
-        })
+        });
+    }
+
+    delete = async (checklistItemId) =>
+    {
+        const url = `${this.url}/${checklistItemId}`;
+
+        return await fetch(url, {
+            method: HttpMethods.DELETE,
+        });
     }
 }

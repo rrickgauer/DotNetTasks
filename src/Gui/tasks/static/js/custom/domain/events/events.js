@@ -23,3 +23,7 @@ export class DeleteChecklistEvent extends BaseEvent {}
 export class ChecklistSettingsGeneralFormSubmittedEvent extends BaseEvent {}
 export class ChecklistSettingsChecklistDeletedEvent extends BaseEvent {}
 export class ChecklistSettingsChecklistClonedEvent extends BaseEvent {}
+
+
+// checklist items
+export class ChecklistItemDeleteButtonClickedEvent extends BaseEvent {}

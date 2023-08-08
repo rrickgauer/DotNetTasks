@@ -21,6 +21,10 @@ class ApiWrapperChecklistItems(ApiWrapperBase):
             url = self.url,
             data = data,
         )
+    
+    def delete(self, checklist_item_id: UUID) -> requests.Response:
+        url = f'{self.url}/{checklist_item_id}'
+        return self._delete_request(url)
         
     
     
