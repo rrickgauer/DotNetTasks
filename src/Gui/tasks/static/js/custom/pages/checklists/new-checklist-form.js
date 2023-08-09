@@ -21,9 +21,6 @@ export class NewChecklistFormElements
 
         /** @type {HTMLButtonElement} */
         this.buttonSubmit = this.form.querySelector('.save');
-
-        /** @type {HTMLButtonElement} */
-        this.buttonCancel = this.form.querySelector('.cancel');
     }
 }
 
@@ -51,7 +48,6 @@ export class NewChecklistFormController
     #addEventListeners = () =>
     {
         this.elements.inputTitle.addEventListener(NativeEvents.KeyUp, this.#updateSubmitButtonDisabled);
-        this.elements.buttonCancel.addEventListener(NativeEvents.Click, this.toggleNewChecklistForm);
 
         NewChecklistFormToggleEvent.addListener(this.toggleNewChecklistForm);
 

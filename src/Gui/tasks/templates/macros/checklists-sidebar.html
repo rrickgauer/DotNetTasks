@@ -11,7 +11,7 @@
 {% macro get_checklists_sidebar(checklists) -%}
 
     {% for checklist in checklists %}
-        <button type="button" class="list-group-item list-group-item-action" data-checklist-id="{{ checklist.id }}" title="{{ checklist.title }}">
+        <button type="button" class="list-group-item list-group-item-action no-focus-outline" data-checklist-id="{{ checklist.id }}" title="{{ checklist.title }}">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="text-truncate">{{ checklist.title }}</div>
                 <span class="badge badge-secondary badge-pill ml-3">{{ checklist.countItems }}</span>
