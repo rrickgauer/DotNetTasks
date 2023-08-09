@@ -7,6 +7,7 @@ from tasks.config import get_config
 from tasks.config import IConfig
 from flasklib.errors import RequestError
 import requests
+import flask
 
 
 class ApiWrapperBase:

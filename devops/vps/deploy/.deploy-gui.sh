@@ -35,5 +35,5 @@ cd /var/www/DotNetTasks/src/Gui/tasks/static/js
 rollup -c rollup.config.js
 
 # startup the script
-cd /var/www/DotNetTasks/scripts/vps
+cd /var/www/DotNetTasks/devops/vps/deploy
 ./start-gui.sh

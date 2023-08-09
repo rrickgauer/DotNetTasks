@@ -5,7 +5,7 @@ echo ''
 cd /var/www/DotNetTasks
 git pull
 
-cd /var/www/DotNetTasks/scripts/vps
+cd /var/www/DotNetTasks/devops/vps/deploy
 
 ./.deploy-api.sh
 ./.deploy-gui.sh
