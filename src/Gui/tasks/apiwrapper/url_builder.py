@@ -1,17 +1,10 @@
-"""
-********************************************************************************************
-
-This class can build all the urls for the api.
-
-********************************************************************************************
-"""
-
 from __future__ import annotations
 from datetime import date
 from uuid import UUID
 from tasks.config.routines import get_config
 
 class ApiUrlBuilder:
+    """Url builder for the external api.ryanrickgauer.tasks.com"""
 
     def __init__(self):
         self.config = get_config()
@@ -26,7 +19,7 @@ class ApiUrlBuilder:
     #------------------------------------------------------
     # Build the events api url
     #------------------------------------------------------
-    def events(self, event_id) -> str:
+    def events(self, event_id: UUID) -> str:
         return f'{self.api_url}/events/{event_id}'
 
     def password(self) -> str:
@@ -41,16 +34,16 @@ class ApiUrlBuilder:
     def email_verifications(self) -> str:
         return f'{self.api_url}/email-verifications'
 
-    def email_verifications_confirmation(self, email_verification_id) -> str:
+    def email_verifications_confirmation(self, email_verification_id: UUID) -> str:
         return f'{self.api_url}/email-verifications/{email_verification_id}/confirm'
 
     def labels(self) -> str:
         return f'{self.api_url}/labels'
 
-    def label(self, label_id) -> str:
+    def label(self, label_id: UUID) -> str:
         return f'{self.api_url}/labels/{label_id}'
 
-    def event_labels(self, event_id) -> str:
+    def event_labels(self, event_id: UUID) -> str:
         return f'{self.events(event_id)}/labels'
     
     def checklists(self) -> str:

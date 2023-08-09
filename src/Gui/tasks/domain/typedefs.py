@@ -1,6 +1,7 @@
 from __future__ import annotations
 import typing
 from .models import EventRecurrence
+from typing import Callable
 
 
 #------------------------------------------------------
@@ -9,3 +10,6 @@ from .models import EventRecurrence
 #   value = list of event recurrences
 #------------------------------------------------------
 DailyRecurrenceMapType = typing.Dict[str, typing.List[EventRecurrence]]
+
+
+callback = Callable
