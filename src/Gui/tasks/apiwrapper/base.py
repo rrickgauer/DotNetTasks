@@ -1,7 +1,7 @@
 
 
 from __future__ import annotations
-from tasks.common import ApiUrlBuilder
+from .url_builder import ApiUrlBuilder
 from tasks.common import security
 from tasks.config import get_config
 from tasks.config import IConfig

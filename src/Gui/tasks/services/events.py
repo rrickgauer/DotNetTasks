@@ -12,7 +12,7 @@ from uuid import UUID
 import flask
 import requests
 from tasks.domain.models.api_responses import EventApiResponse
-from tasks.common.api_url_builder import ApiUrlBuilder
+from tasks.apiwrapper import ApiUrlBuilder
 from tasks.common import security
 from tasks.common.structs import BaseReturn
 

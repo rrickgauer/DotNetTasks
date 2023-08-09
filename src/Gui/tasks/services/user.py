@@ -6,7 +6,7 @@ from tasks.common.structs import BaseReturn
 from tasks.domain import models
 from tasks.common import security
 import requests
-from tasks.common import ApiUrlBuilder
+from tasks.apiwrapper import ApiUrlBuilder
 
 
 #------------------------------------------------------

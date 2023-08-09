@@ -14,7 +14,7 @@ import requests
 from tasks.domain.models.api_responses import LabelResponse
 from tasks.common import security
 from tasks.common.structs import BaseReturn
-from tasks.common import ApiUrlBuilder
+from tasks.apiwrapper import ApiUrlBuilder
 
 @dataclass
 class GetLabelsResult(BaseReturn):

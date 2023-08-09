@@ -12,7 +12,7 @@ from uuid import UUID
 import requests
 from tasks.common import security
 from tasks.common.structs import BaseReturn
-from tasks.common import ApiUrlBuilder
+from tasks.apiwrapper import ApiUrlBuilder
 
 #------------------------------------------------------
 # Send a request to the api for a single event cancellation 

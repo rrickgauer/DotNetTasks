@@ -1,3 +1,4 @@
+from .url_builder import ApiUrlBuilder as ApiUrlBuilder
 from .base import ApiWrapperBase as ApiWrapperBase
 from .checklists import ApiWrapperChecklists as ApiWrapperChecklists
 from .checklist_clones import ApiWrapperChecklistClones as ApiWrapperChecklistClones
