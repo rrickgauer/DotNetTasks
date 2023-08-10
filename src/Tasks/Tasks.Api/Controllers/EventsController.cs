@@ -10,6 +10,7 @@ using Tasks.Service.Security;
 using Tasks.Service.Auth;
 using Tasks.Api.Controllers.Bases;
 using Tasks.Service.Domain.Enums;
+using Tasks.Service.Domain.Parms;
 
 namespace Tasks.Api.Controllers;
 
@@ -78,11 +79,12 @@ public class EventsController : AuthorizedControllerBase
     /// PUT: /events/eventId
     /// </summary>
     /// <param name="eventId"></param>
-    /// <param name="eventBody"></param>
+    /// <param name="eventForm"></param>
     /// <returns></returns>
     [HttpPut("{eventId}")]
-    public async Task<ActionResult<Event>> PutEventAsync(Guid eventId, [FromForm] Event eventBody)
+    public async Task<ActionResult<Event>> PutEventAsync(Guid eventId, [FromForm] ModifyEventForm eventForm)
     {
+        // make sure client can update/create the event
         var putEventStatus = await _eventServices.GetPutEventStatusAsync(eventId, CurrentUserId);
 
         if (putEventStatus == PutEventStatus.Forbid)
@@ -90,10 +92,17 @@ public class EventsController : AuthorizedControllerBase
             return Forbid();
         }
 
-        // save the event data
-        eventBody.Id = eventId;
-        eventBody.UserId = CurrentUserId;
-        await _eventServices.UpdateEventAsync(eventBody);
+        // copy over the request form data into an Event domain model
+        Event model = new()
+        {
+            Id = eventId,
+            UserId = CurrentUserId,
+        };
+
+        eventForm.CopyFieldsToModel(model);
+
+        // save the event into the database
+        await _eventServices.UpdateEventAsync(model);
 
         // get the complete event data
         var updatedEvent = await _eventServices.GetEventAsync(eventId);
@@ -114,14 +123,20 @@ public class EventsController : AuthorizedControllerBase
     /// <param name="eventFromBody"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Event>> CreateEventAsync([FromForm] Event eventFromBody)
+    public async Task<ActionResult<Event>> CreateEventAsync([FromForm] ModifyEventForm eventForm)
     {
-        eventFromBody.UserId = CurrentUserId;
-        Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody);
+        Event model = new()
+        {
+            Id = Guid.NewGuid(),
+            UserId = CurrentUserId,
+        };
+
+        eventForm.CopyFieldsToModel(model);
+
+        Event newEvent = await _eventServices.CreateNewEventAsync(model);
 
         // return it
         return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event
     }
-
 
 }

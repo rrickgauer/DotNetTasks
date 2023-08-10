@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using Tasks.Service.CustomAttributes;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Parms;
 
 namespace Tasks.Service.Utilities;
 
@@ -35,6 +37,27 @@ public static class AttributeUtilities
         return attr;
     }
 
+
+    /// <summary>
+    /// Copy over the property values with matching names from the TSource into the TTarget
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TTarget"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public static void CopyOverProperties<TSource, TTarget>(TSource source, TTarget target)
+    {
+        var sourceProperties = typeof(TSource).GetProperties();
+        var targetProperties = typeof(TTarget).GetProperties();
+
+        foreach (var prop in sourceProperties)
+        {
+            var sourceValue = prop.GetValue(source);
+
+            var targetProperty = targetProperties.Where(p => p.Name == prop.Name).FirstOrDefault();
+            targetProperty?.SetValue(target, sourceValue);
+        }
+    }
 
 
 

@@ -39,14 +39,15 @@ public class Event
 	[SqlColumn("ends_at")] 
 	public TimeSpan? EndsAt { get; set; }
 
-	[SqlColumn("frequency"), JsonConverter(typeof(JsonStringEnumConverter))] 
+	[SqlColumn("frequency")] 
+	[JsonConverter(typeof(JsonStringEnumConverter))] 
 	public Frequency? Frequency { get; set; }
 
 	[SqlColumn("separation")] 
 	public uint? Separation { get; set; }
 
-	[SqlColumn("created_on")] 
-	public DateTime? CreatedOn { get; set; }
+	[SqlColumn("created_on")]
+	public DateTime? CreatedOn { get; set; } = DateTime.Now;
 
 	[SqlColumn("recurrence_day")] 
 	public int? RecurrenceDay { get; set; }

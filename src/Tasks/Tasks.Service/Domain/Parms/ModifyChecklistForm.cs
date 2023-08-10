@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json.Serialization;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Domain.Parms;
 
@@ -19,7 +20,6 @@ public class ModifyChecklistForm : IModelParms<Checklist>
     // IModelParms
     public void CopyFieldsToModel(Checklist model)
     {
-        model.Title = Title;
-        model.ListType = Type;
+        AttributeUtilities.CopyOverProperties(this, model);
     }
 }
