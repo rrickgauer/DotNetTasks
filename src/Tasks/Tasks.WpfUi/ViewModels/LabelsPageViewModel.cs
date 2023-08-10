@@ -105,7 +105,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         var labelId = Guid.NewGuid();
         var userId = _applicationServices.CurrentUserId;
 
-        var result = await _labelServices.UpdateLabelAsync(labelId, userId, newLabelForm);
+        var result = await _labelServices.SaveLabelAsync(labelId, userId, newLabelForm);
 
         return result.Successful;
     }

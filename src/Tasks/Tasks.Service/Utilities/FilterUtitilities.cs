@@ -27,6 +27,8 @@ public static class FilterUtitilities
 
 
     public static Guid GetEventIdRouteValue(ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, "eventId");
+    public static Guid GetChecklistIdRouteValue(ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, "checklistId");
+    public static Guid GetLabelIdRouteValue(ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, "labelId");
 
 
     /// <summary>

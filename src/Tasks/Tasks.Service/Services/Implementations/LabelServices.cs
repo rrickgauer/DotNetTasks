@@ -37,9 +37,9 @@ public class LabelServices : ILabelServices
     /// <param name="userId"></param>
     /// <param name="updateLabelForm"></param>
     /// <returns></returns>
-    public async Task<ModifyLabelResponse> UpdateLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
+    public async Task<SaveLabelResponse> SaveLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
     {
-        ModifyLabelResponse result = new()
+        SaveLabelResponse result = new()
         {
             Successful = true,
         };
@@ -108,8 +108,6 @@ public class LabelServices : ILabelServices
 
         return true;
     }
-
-
 
     /// <summary>
     /// Get the specified label that belongs to the given user.

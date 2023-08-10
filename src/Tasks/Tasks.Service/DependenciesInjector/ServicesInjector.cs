@@ -60,6 +60,7 @@ public static class ServicesInjector
         .AddScoped<ChecklistAuthFilters>()
         .AddScoped<ChecklistItemAuthFilter>()
         .AddScoped<EventAuthFilter>()
+        .AddScoped<LabelAuthFilter>()
 
         .AddScoped<CustomHeaderFilter>();
     }

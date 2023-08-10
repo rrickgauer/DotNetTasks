@@ -25,7 +25,7 @@ public class ChecklistAuthFilters : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var clientId = FilterUtitilities.GetClientId(context);
-        var checklistId = FilterUtitilities.GetRequestRouteValue<Guid>(context, "checklistId");
+        var checklistId = FilterUtitilities.GetChecklistIdRouteValue(context);
 
         var checklist = await _checklistServices.GetChecklistAsync(checklistId);
 

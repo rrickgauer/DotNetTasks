@@ -23,7 +23,7 @@ public class LabelServicesResponses
     /// <summary>
     /// Response for Put/Post Label request
     /// </summary>
-    public class ModifyLabelResponse : DataResponse<Label>
+    public class SaveLabelResponse : DataResponse<Label>
     {
         public override Label? Data { get; set; }
     }
