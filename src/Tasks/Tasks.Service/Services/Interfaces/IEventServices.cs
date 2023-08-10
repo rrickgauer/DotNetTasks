@@ -10,5 +10,5 @@ public interface IEventServices
     public Task<bool> DeleteEventAsync(Guid eventId);
     public Task<Event> UpdateEventAsync(Event eventData);
     public Task<bool> ClientOwnsEventAsync(Guid eventId, Guid userId);
-    public Task<Event> CreateNewEventAsync(Event eventData, Guid userId);
+    public Task<Event> CreateNewEventAsync(Event eventData);
 }

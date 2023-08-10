@@ -9,7 +9,7 @@ Service methods for event labels
 from __future__ import annotations
 from uuid import UUID
 import requests
-from tasks.common.api_url_builder import ApiUrlBuilder
+from tasks.apiwrapper import ApiUrlBuilder
 from tasks.common import security
 import flask
 

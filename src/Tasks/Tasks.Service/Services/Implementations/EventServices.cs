@@ -99,7 +99,7 @@ public class EventServices : IEventServices
     /// </summary>
     /// <param name="eventData"></param>
     /// <returns></returns>
-    public async Task<Event> CreateNewEventAsync(Event eventData, Guid userId)
+    public async Task<Event> CreateNewEventAsync(Event eventData)
     {
         Event newEvent = eventData;
 

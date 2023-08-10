@@ -11,13 +11,12 @@ api endpoints
 from __future__ import annotations
 from dataclasses import asdict
 from datetime import date
-import json
 from uuid import UUID
 import flask
 from tasks.common import security
 from tasks import services
 from http import HTTPStatus
-
+import flasklib
 
 # module blueprint
 bp_api_events = flask.Blueprint('api_events', __name__)
@@ -63,12 +62,8 @@ def delete_all_events(event_id: UUID):
 @bp_api_events.delete('<uuid:event_id>/<date:date_val>')
 @security.login_required
 def delete_single_occurence(event_id: UUID, date_val: date=None):
-    result = services.cancellations.create_cancellation(event_id, date_val)
-
-    if not result.successful:
-        return (str(result.error), HTTPStatus.BAD_REQUEST)
-
-    return ('', HTTPStatus.NO_CONTENT)
+    services.cancellations.cancel_event(event_id, date_val)
+    return flasklib.responses.deleted()
 
 
 #------------------------------------------------------
@@ -80,11 +75,8 @@ def delete_single_occurence(event_id: UUID, date_val: date=None):
 @bp_api_events.delete('<uuid:event_id>/<date:date_val>/remaining')
 @security.login_required
 def delete_occurence_and_following(event_id: UUID, date_val: date):
-    # create a cancellation record on the given occurence date
-    cancellation_request_result = services.cancellations.create_cancellation(event_id, date_val)
-
-    if not cancellation_request_result.successful:
-        return (str(cancellation_request_result.error), HTTPStatus.BAD_REQUEST)
+    # cancel the event
+    services.cancellations.cancel_event(event_id, date_val)
 
     # fetch the event model from the api
     get_event_request_result = services.events.get_event_model(event_id)

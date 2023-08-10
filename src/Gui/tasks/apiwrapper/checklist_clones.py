@@ -2,6 +2,7 @@ from __future__ import annotations
 from uuid import UUID
 import requests
 from .base import ApiWrapperBase
+from . import routines as apiroutines
 
 
 class ApiWrapperChecklistClones(ApiWrapperBase):
@@ -10,10 +11,10 @@ class ApiWrapperChecklistClones(ApiWrapperBase):
         
         super().__init__()
         self.checklist_id = checklist_id
-        self.url = self.url_builder.checklist_clones(self.checklist_id)
+        self.url = self._url_builder.checklist_clones(self.checklist_id)
     
     def post(self, data: dict) -> requests.Response:
-        return self._post_request(self.url, data=data)
+        return apiroutines.request_post(self.url, data=data)
     
 
     
