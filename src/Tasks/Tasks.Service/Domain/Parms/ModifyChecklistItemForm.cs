@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Domain.Parms;
 
@@ -17,8 +18,6 @@ public class ModifyChecklistItemForm : IModelParms<ChecklistItem>
     // IModelParms
     public void CopyFieldsToModel(ChecklistItem model)
     {
-        model.Content = Content;
-        model.IsComplete = IsComplete;
-        model.Position = Position;
+        AttributeUtilities.CopyOverProperties(this, model);
     }
 }
