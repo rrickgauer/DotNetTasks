@@ -7,5 +7,5 @@ from tasks.config import IConfig
 class ApiWrapperBase:
 
     def __init__(self):
-        self.url_builder = ApiUrlBuilder()
-        self.config: IConfig = get_config()
+        self._url_builder = ApiUrlBuilder()
+        self._config: IConfig = get_config()

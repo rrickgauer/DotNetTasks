@@ -16,7 +16,7 @@ class ApiWrapperChecklistItemComplete(ApiWrapperBase):
 
     @property
     def url(self):
-        return self.url_builder.checklist_item_complete(self.checklist_id, self.checklist_item_id)
+        return self._url_builder.checklist_item_complete(self.checklist_id, self.checklist_item_id)
 
 
     def put(self) -> requests.Response:

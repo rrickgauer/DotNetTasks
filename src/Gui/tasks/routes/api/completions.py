@@ -10,11 +10,13 @@ api endpoints
 
 from __future__ import annotations
 from datetime import date
-from http import HTTPStatus
 from uuid import UUID
 import flask
+import flasklib
 from tasks.common import security
 from tasks import services
+from tasks.domain.models import EventCompletion
+
 
 # module blueprint
 bp_api_completions = flask.Blueprint('api_completions', __name__)
@@ -27,12 +29,20 @@ bp_api_completions = flask.Blueprint('api_completions', __name__)
 @security.login_required
 def event_completetions(event_id: UUID, on_date: date):
     
+    completion = EventCompletion(
+        event_id = event_id,
+        on_date  = on_date,
+    )
+
     if flask.request.method == 'DELETE':
-        result = services.completions.delete_event_completion()
+        services.completions.remove_completion(completion)
+        return flasklib.responses.deleted()
+    
     else:
-        result = services.completions.create_event_completion()
+        response = services.completions.create_completion(completion)
+        return flasklib.responses.created(response.text)
 
-    if not result.successful:
-        return (str(result.error), HTTPStatus.BAD_REQUEST)
 
-    return (result.data, HTTPStatus.OK)
+    
+
+    

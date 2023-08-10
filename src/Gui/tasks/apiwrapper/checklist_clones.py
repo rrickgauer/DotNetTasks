@@ -11,7 +11,7 @@ class ApiWrapperChecklistClones(ApiWrapperBase):
         
         super().__init__()
         self.checklist_id = checklist_id
-        self.url = self.url_builder.checklist_clones(self.checklist_id)
+        self.url = self._url_builder.checklist_clones(self.checklist_id)
     
     def post(self, data: dict) -> requests.Response:
         return apiroutines.request_post(self.url, data=data)

@@ -8,48 +8,56 @@ from typing import Callable
 #------------------------------------------------------
 # Send a GET request
 #------------------------------------------------------
-def request_get(url: str, parms: dict=None, data: dict=None) -> requests.Response:
+def request_get(url: str, parms: dict=None, data: dict=None, authorize: bool=True, validate: bool=True) -> requests.Response:
     return send_request(
         url               = url,
         requests_callback = requests.get,
         parms             = parms,
         data              = data,
+        authorize         = authorize,
+        validate          = validate,
     )
 
 
 #------------------------------------------------------
 # Send a PUT request
 #------------------------------------------------------
-def request_put(url: str, parms: dict=None, data: dict=None) -> requests.Response:
+def request_put(url: str, parms: dict=None, data: dict=None, authorize: bool=True, validate: bool=True) -> requests.Response:
     return send_request(
         url               = url,
         requests_callback = requests.put,
         parms             = parms,
         data              = data,
+        authorize         = authorize,
+        validate          = validate,
     )
 
 
 #------------------------------------------------------
 # Send a POST request
 #------------------------------------------------------
-def request_post(url: str, parms: dict=None, data: dict=None) -> requests.Response:
+def request_post(url: str, parms: dict=None, data: dict=None, authorize: bool=True, validate: bool=True) -> requests.Response:
     return send_request(
         url               = url,
         requests_callback = requests.post,
         parms             = parms,
         data              = data,
+        authorize         = authorize,
+        validate          = validate,
     )
 
 
 #------------------------------------------------------
 # Send a DELETE request
 #------------------------------------------------------
-def request_delete(url: str, parms: dict=None, data: dict=None) -> requests.Response:
+def request_delete(url: str, parms: dict=None, data: dict=None, authorize: bool=True, validate: bool=True) -> requests.Response:
     return send_request(
         url               = url,
         requests_callback = requests.delete,
         parms             = parms,
         data              = data,
+        authorize         = authorize,
+        validate          = validate,
     )
 
 

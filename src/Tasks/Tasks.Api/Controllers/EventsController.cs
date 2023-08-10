@@ -134,8 +134,8 @@ public class EventsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Event>> CreateEventAsync([FromForm] Event eventFromBody)
     {
-
-        Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody, CurrentUserId);
+        eventFromBody.UserId = CurrentUserId;
+        Event newEvent = await _eventServices.CreateNewEventAsync(eventFromBody);
 
         // return it
         return Created($"{Request.Path}/{newEvent.Id}", newEvent);    // created a new event

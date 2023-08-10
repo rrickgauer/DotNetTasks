@@ -13,7 +13,7 @@ class ApiWrapperChecklistItems(ApiWrapperBase):
         super().__init__()
         
         self.checklist_id = checklist_id
-        self.url = self.url_builder.checklist_items(self.checklist_id)
+        self.url = self._url_builder.checklist_items(self.checklist_id)
     
     def get_all(self) -> requests.Response:
         """Send a GET request"""

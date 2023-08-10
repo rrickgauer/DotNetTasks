@@ -10,7 +10,7 @@ class ApiWrapperChecklists(ApiWrapperBase):
         """Wrapper for the external checklist api resources"""
 
         super().__init__()
-        self._url = self.url_builder.checklists()
+        self._url = self._url_builder.checklists()
 
 
     def get_all(self) -> requests.Response:

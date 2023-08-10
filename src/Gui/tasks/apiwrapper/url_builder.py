@@ -15,6 +15,10 @@ class ApiUrlBuilder:
     #------------------------------------------------------
     def cancellations(self, event_id, day: date) -> str:
         return f'{self.api_url}/cancellations/{event_id}/{day.isoformat()}'
+    
+    
+    def completions(self, event_id: UUID, day: date) -> str:
+        return f'{self.api_url}/completions/{event_id}/{day.isoformat()}'
 
     #------------------------------------------------------
     # Build the events api url
