@@ -24,6 +24,11 @@ public static class FilterUtitilities
         return SecurityMethods.GetUserIdFromRequest(context.HttpContext.Request).Value;
     }
 
+
+
+    public static Guid GetEventIdRouteValue(ActionExecutingContext context) => GetRequestRouteValue<Guid>(context, "eventId");
+
+
     /// <summary>
     /// Get the specified request value with the matching key.
     /// </summary>

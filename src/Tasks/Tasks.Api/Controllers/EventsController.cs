@@ -7,17 +7,19 @@ using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
+using Tasks.Service.Auth;
+using Tasks.Api.Controllers.Bases;
+using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Api.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("events")]
-public class EventsController : ControllerBase
+public class EventsController : AuthorizedControllerBase
 {
     #region - Private members -
     private readonly IEventServices _eventServices;
-    private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
 
 
@@ -51,14 +53,10 @@ public class EventsController : ControllerBase
     /// <param name="eventId"></param>
     /// <returns></returns>
     [HttpGet("{eventId}")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<ActionResult<Event>> GetEventAsync(Guid eventId)
     {
-        var e = await _eventServices.GetEventAsync(eventId, CurrentUserId);
-
-        if (e == null)
-        {
-            return NotFound();
-        }
+        var e = await _eventServices.GetEventAsync(eventId);
 
         return Ok(e);
     }
@@ -69,25 +67,10 @@ public class EventsController : ControllerBase
     /// <param name="eventId"></param>
     /// <returns></returns>
     [HttpDelete("{eventId}")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<IActionResult> DeleteEventAsync(Guid eventId)
     {
-        // make sure the user owns this event
-        var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
-
-        if (userEvent == null)
-        {
-            return NotFound();
-        }
-
-        // delete the event from database 
-
-        var successfulDeletion = await _eventServices.DeleteEventAsync(eventId);
-
-        if (!successfulDeletion)
-        {
-            return BadRequest("There was an error deleting the event.");
-        }
-
+        await _eventServices.DeleteEventAsync(eventId);
         return NoContent();
     }
 
@@ -98,25 +81,24 @@ public class EventsController : ControllerBase
     /// <param name="eventBody"></param>
     /// <returns></returns>
     [HttpPut("{eventId}")]
-    public async Task<ActionResult<Event>> UpdateEventAsync(Guid eventId, [FromForm] Event eventBody)
+    public async Task<ActionResult<Event>> PutEventAsync(Guid eventId, [FromForm] Event eventBody)
     {
-        Event? existingEvent = await _eventServices.GetEventAsync(eventId);
+        var putEventStatus = await _eventServices.GetPutEventStatusAsync(eventId, CurrentUserId);
 
-        // check if an event with this id already exists or is owned by another user
-        if (existingEvent != null && existingEvent.UserId != CurrentUserId)
+        if (putEventStatus == PutEventStatus.Forbid)
         {
             return Forbid();
         }
 
-        // set the event to the id in the url and save it
+        // save the event data
         eventBody.Id = eventId;
         eventBody.UserId = CurrentUserId;
-
         await _eventServices.UpdateEventAsync(eventBody);
 
-        var updatedEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
+        // get the complete event data
+        var updatedEvent = await _eventServices.GetEventAsync(eventId);
 
-        if (existingEvent == null)
+        if (putEventStatus == PutEventStatus.Create)
         {
             return Created($"{Request.Path}", updatedEvent);    // created a new event
         }
