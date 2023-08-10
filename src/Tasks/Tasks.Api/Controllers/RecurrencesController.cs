@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
 using Tasks.Service.Validation;
 using Tasks.Service.Domain.Responses.Custom;
+using Tasks.Service.Auth;
+using Tasks.Api.Controllers.Bases;
 
 #pragma warning disable CS8629 // Nullable value type may be null.
 
@@ -22,13 +23,10 @@ namespace Tasks.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("recurrences")]
-public class RecurrencesController : ControllerBase
+public class RecurrencesController : AuthorizedControllerBase
 {
     #region Private members
-    private readonly IConfigs _configuration;
     private readonly IRecurrenceServices _recurrenceServices;
-    private readonly IEventServices _eventServices;
-    private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
 
     /// <summary>
@@ -37,11 +35,9 @@ public class RecurrencesController : ControllerBase
     /// </summary>
     /// <param name="configs"></param>
     /// <param name="recurrenceServices"></param>
-    public RecurrencesController(IConfigs configs, IRecurrenceServices recurrenceServices, IEventServices eventServices)
+    public RecurrencesController(IRecurrenceServices recurrenceServices)
     {
-        _configuration = configs;
         _recurrenceServices = recurrenceServices;
-        _eventServices = eventServices;
     }
 
     /// <summary>
@@ -78,6 +74,7 @@ public class RecurrencesController : ControllerBase
     /// <param name="eventId"></param>
     /// <returns></returns>
     [HttpGet("{eventId}")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<ActionResult<IEnumerable<GetRecurrencesResponse>>> GetEventRecurrencesAsync([FromRoute] Guid eventId, [FromQuery] GetRecurrencesQueryParms requestParms)
     {
         RecurrenceRetrieval retrieval = new(requestParms, CurrentUserId);
@@ -92,16 +89,8 @@ public class RecurrencesController : ControllerBase
             return BadRequest(ex.Message);
         }
 
-        // make sure the user owns the requested event
-        var userEvent = await _eventServices.GetEventAsync(eventId, CurrentUserId);
-
-        if (userEvent is null)
-        {
-            return NotFound();
-        }
-
         // fill out the remaining EventRecurrenceRetrieval property values
-        retrieval.UserId = SecurityMethods.GetUserIdFromRequest(Request).Value;
+        retrieval.UserId = CurrentUserId;
 
         // get the recurrences
         var eventRecurrences = await _recurrenceServices.GetRecurrencesAsync(retrieval, eventId);
