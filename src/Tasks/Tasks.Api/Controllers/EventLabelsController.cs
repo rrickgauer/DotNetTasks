@@ -6,6 +6,7 @@ using Tasks.Service.Domain.Parms;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
+using Tasks.Service.Auth;
 
 namespace Tasks.Api.Controllers;
 
@@ -46,6 +47,8 @@ public class EventLabelsController : ControllerBase
     /// <param name="eventLabelRequest">Url parms</param>
     /// <returns></returns>
     [HttpPut("{eventId}/labels/{labelId}")]
+    [ServiceFilter(typeof(EventAuthFilter))]
+    [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<ActionResult<EventLabel>> PutAsync([FromRoute] EventLabelRequestParms eventLabelRequest)
     {
         EventLabel? newEventLabel = await _eventLabelServices.CreateAsync(eventLabelRequest, CurrentUserId);
@@ -66,16 +69,9 @@ public class EventLabelsController : ControllerBase
     /// <param name="eventId"></param>
     /// <returns></returns>
     [HttpGet("{eventId}/labels")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<LabelsCollection> GetAsync([FromRoute] Guid eventId)
     {
-        // make sure the client owns the event
-        var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
-
-        if (!clientOwnsEvent)
-        {
-            return NotFound();
-        }
-
         // now, fetch the labels that have been assigned to the event
         var labels = await _eventLabelServices.GetEventLabelsAsync(eventId, CurrentUserId);
 
@@ -90,16 +86,9 @@ public class EventLabelsController : ControllerBase
     /// <param name="labelIds"></param>
     /// <returns></returns>
     [HttpPut("{eventId}/labels")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<LabelsCollection> BatchPutAsync([FromRoute] Guid eventId, [FromBody] IEnumerable<Guid> labelIds)
     {
-        // make sure the client owns the event
-        var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
-
-        if (!clientOwnsEvent)
-        {
-            return NotFound();
-        }
-
         // make sure the client owns all of the given label ids
         var labelsAreValid = await _labelServices.ClientOwnsLabelsAsync(CurrentUserId, labelIds);
 
