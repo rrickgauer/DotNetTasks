@@ -1,6 +1,7 @@
 ﻿/***********************************************************************
- 
-This filter ensures that the client has authorization for viewing a Checklist.
+
+- Ensures the event id has a matching record in the database.
+- Ensures the client has authorization to access the event.
  
 ************************************************************************/
 
@@ -12,31 +13,31 @@ using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Auth;
 
-public class ChecklistAuthFilters : IAsyncActionFilter
+public class EventAuthFilter : IAsyncActionFilter
 {
-    private readonly IChecklistServices _checklistServices;
 
-    public ChecklistAuthFilters(IChecklistServices checklistServices)
+    private readonly IEventServices _eventServices;
+
+    public EventAuthFilter(IEventServices eventServices)
     {
-        _checklistServices = checklistServices;
+        _eventServices = eventServices;
     }
-
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var clientId = FilterUtitilities.GetClientId(context);
-        var checklistId = FilterUtitilities.GetChecklistIdRouteValue(context);
+        var eventId = FilterUtitilities.GetEventIdRouteValue(context);
 
-        var checklist = await _checklistServices.GetChecklistAsync(checklistId);
+        var eventRecord = await _eventServices.GetEventAsync(eventId);
 
-        // does checklist exist?
-        if (checklist == null)
+        // does event exist?
+        if (eventRecord == null)
         {
             throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 
         // is client authorized to view it?
-        if (checklist.UserId != clientId)
+        if (eventRecord.UserId != clientId)
         {
             throw new HttpResponseException(HttpStatusCode.Forbidden);
         }

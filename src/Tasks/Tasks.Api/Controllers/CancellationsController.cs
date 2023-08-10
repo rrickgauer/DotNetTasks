@@ -5,6 +5,7 @@ using Tasks.Service.Domain.Models;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
+using Tasks.Service.Auth;
 
 namespace Tasks.Api.Controllers;
 
@@ -44,16 +45,9 @@ public class CancellationsController : ControllerBase
     /// <param name="onDate"></param>
     /// <returns></returns>
     [HttpPut("{eventId}/{onDate}")]
+    [ServiceFilter(typeof(EventAuthFilter))]
     public async Task<ActionResult<EventAction>> CreateCancellationAsync([FromRoute] Guid eventId, [FromRoute] DateTime onDate)
     {
-        // make sure user owns the event before marking it complete
-        var clientOwnsEvent = await _eventServices.ClientOwnsEventAsync(eventId, CurrentUserId);
-
-        if (!clientOwnsEvent)
-        {
-            return NotFound();
-        }
-
         // save it to the database
         var newCompletion = await _eventCompletionServices.SaveEventCancellationAsync(eventId, onDate);
 

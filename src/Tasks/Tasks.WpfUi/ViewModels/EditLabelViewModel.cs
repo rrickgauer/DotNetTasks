@@ -78,7 +78,7 @@ public partial class EditLabelViewModel : ObservableObject, INavigationAware
         };
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        var response = await _labelServices.UpdateLabelAsync(Label.Id.Value, _applicationServices.CurrentUserId, updateLabelForm);
+        var response = await _labelServices.SaveLabelAsync(Label.Id.Value, _applicationServices.CurrentUserId, updateLabelForm);
 
         IsEnabled = true;
 

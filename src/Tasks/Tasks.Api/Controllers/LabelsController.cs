@@ -6,6 +6,7 @@ using Tasks.Service.Domain.Parms;
 using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
+using Tasks.Service.Auth;
 
 namespace Tasks.Api.Controllers;
 
@@ -55,6 +56,7 @@ public class LabelsController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("{labelId}")]
+    [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<ActionResult<Label>> Get([FromRoute] Guid labelId)
     {
         var result = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
@@ -81,7 +83,7 @@ public class LabelsController : ControllerBase
     [HttpPut("{labelId}")]
     public async Task<ActionResult<Label>> Put([FromRoute] Guid labelId, [FromForm] UpdateLabelForm form)
     {
-        var updatedLabel = await _labelServices.UpdateLabelAsync(labelId, CurrentUserId, form);
+        var updatedLabel = await _labelServices.SaveLabelAsync(labelId, CurrentUserId, form);
 
         if (!updatedLabel.Successful)
         {
@@ -102,19 +104,10 @@ public class LabelsController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpDelete("{labelId}")]
+    [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<IActionResult> Delete([FromRoute] Guid labelId)
     {
         var deleteLabelResult = await _labelServices.DeleteLabelAsync(labelId, CurrentUserId);
-
-        if (!deleteLabelResult.Successful)
-        {
-            return BadRequest(deleteLabelResult);
-        }
-
-        if (deleteLabelResult.Data is null)
-        {
-            return NotFound();
-        }
 
         return NoContent();
     }

@@ -2,8 +2,7 @@
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
-using Tasks.Service.Mappers;
-
+using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -86,7 +85,7 @@ public class EventServices : IEventServices
     /// </summary>
     /// <param name="e"></param>
     /// <returns></returns>
-    public async Task<bool> ModifyEventAsync(Event e)
+    public async Task<bool> SaveEventAsync(Event e)
     {
         int numRowsAffected = await _eventRepository.ModifyEventAsync(e);
 
@@ -97,17 +96,17 @@ public class EventServices : IEventServices
     /// <summary>
     /// Create a new event
     /// </summary>
-    /// <param name="eventData"></param>
+    /// <param name="e"></param>
     /// <returns></returns>
-    public async Task<Event> CreateNewEventAsync(Event eventData)
+    public async Task<Event> CreateNewEventAsync(Event e)
     {
-        Event newEvent = eventData;
+        Event newEvent = e;
 
         // create a new event object
         newEvent.Id = Guid.NewGuid();
 
         // save it in the database
-        await ModifyEventAsync(newEvent);
+        await SaveEventAsync(newEvent);
 
         return newEvent;
     }
@@ -139,8 +138,32 @@ public class EventServices : IEventServices
     public async Task<Event> UpdateEventAsync(Event eventBody)
     {
         // save it in the database
-        await ModifyEventAsync(eventBody);
+        await SaveEventAsync(eventBody);
 
         return eventBody;
+    }
+
+    /// <summary>
+    /// Check if an event with this id already exists or is owned by another user.
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<PutEventStatus> GetPutEventStatusAsync(Guid eventId, Guid userId)
+    {
+        var existingEvent = await GetEventAsync(eventId);
+
+        PutEventStatus result = PutEventStatus.Update;
+        
+        if (existingEvent == null)
+        {
+            result = PutEventStatus.Create;         // event will be created
+        }
+        else if (existingEvent.UserId != userId)
+        {
+            result = PutEventStatus.Forbid;         // event is already owned by another user
+        }
+
+        return result;
     }
 }
