@@ -2,7 +2,6 @@
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
-using Tasks.Service.Mappers;
 using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Service.Services.Implementations;
