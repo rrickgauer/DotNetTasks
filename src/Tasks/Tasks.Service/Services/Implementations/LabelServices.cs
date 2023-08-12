@@ -1,11 +1,11 @@
 ﻿using System.Data;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
-using Tasks.Service.Domain.Responses;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
-using static Tasks.Service.Domain.Responses.Basic.LabelServicesResponses;
 using Tasks.Service.Mappers;
+using System.Net;
+using Tasks.Service.Errors;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -36,20 +36,20 @@ public class LabelServices : ILabelServices
     /// <param name="userId"></param>
     /// <param name="updateLabelForm"></param>
     /// <returns></returns>
-    public async Task<SaveLabelResponse> SaveLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
+    /// <exception cref="HttpResponseException"></exception>
+    public async Task<Label?> SaveLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
     {
-        SaveLabelResponse result = new()
-        {
-            Successful = true,
-        };
-
         // verify that the user can update the label
         var dataRow = await _labelRepository.SelectLabelAsync(labelId);
 
         if (!UserCanUpdateLabel(dataRow, labelId, userId, out Label? label))
         {
-            result.Data = null;
-            return result;
+            throw new HttpResponseException(HttpStatusCode.Forbidden);
+        }
+
+        if (label == null)
+        {
+            return null;
         }
 
         // copy over the existing (or new) label's data into the one we are going to send to the repo
@@ -59,10 +59,10 @@ public class LabelServices : ILabelServices
         // have the repository update it in the database
         await _labelRepository.ModifyLabelAsync(label);
 
-        result.Data = label;
-
-        return result;
+        return label;
     }
+
+
 
 
     /// <summary>
@@ -102,31 +102,23 @@ public class LabelServices : ILabelServices
         return true;
     }
 
+
+
     /// <summary>
     /// Get the specified label that belongs to the given user.
     /// </summary>
-    /// <param name="labelId">Label id</param>
-    /// <param name="userId">User id</param>
+    /// <param name="labelId"></param>
+    /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<GetLabelResponse> GetLabelAsync(Guid labelId, Guid userId)
+    public async Task<Label?> GetLabelAsync(Guid labelId, Guid userId)
     {
-        GetLabelResponse result = new() { Successful = true };
+        var labels = await GetLabelsAsync(userId);
 
-        // get all the user's labels
-        var getLabelsResponse = await GetLabelsAsync(userId);
-
-        if (!getLabelsResponse.Successful || getLabelsResponse.Data is null)
-        {
-            ResponseUtilities.TransferResponseData(getLabelsResponse, result);
-            return result;
-        }
-        
-        // get the label out of the collection whose Id matches the given labelId
-        // otherwise set the data to null
-        result.Data = getLabelsResponse.Data.Where(l => l.Id == labelId).FirstOrDefault();
+        var result = labels.Where(l => l.Id == labelId).FirstOrDefault();
 
         return result;
     }
+
 
 
     /// <summary>
@@ -134,61 +126,35 @@ public class LabelServices : ILabelServices
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<GetLabelsResponse> GetLabelsAsync(Guid userId)
+    public async Task<IEnumerable<Label>> GetLabelsAsync(Guid userId)
     {
-        GetLabelsResponse result = new()
-        {
-            Successful = true,
-        };
-
         // fetch a DataTable from the repository
         var datatable = await _labelRepository.SelectLabelsAsync(userId);
 
-        result.Data = _mapperServices.ToModels<Label>(datatable);
+        var labels =  _mapperServices.ToModels<Label>(datatable);
 
-        return result;
+        return labels;
     }
 
 
-    /// <summary>
-    /// Delete the label
-    /// </summary>
-    /// <param name="labelId"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
-    public async Task<DeleteLabelResponse> DeleteLabelAsync(Guid labelId, Guid userId)
+    public async Task<int> DeleteLabelAsync(Guid labelId, Guid userId)
     {
-        DeleteLabelResponse result = new()
+
+        Label label = new()
         {
-            Successful = true,
+            Id = labelId,
+            UserId = userId,
         };
-
-        // verify that the label exists in the database
-        var dataRow = await _labelRepository.SelectLabelAsync(labelId);
-
-        if (dataRow is null)
-        {
-            result.Data = null;
-            return result;
-        }
-
-
-        // make sure the user owns the label
-        Label label = _mapperServices.ToModel<Label>(dataRow);
-
-        if (label.UserId != userId)
-        {
-            result.Data = null;
-            return result;
-        }
 
         // delete the label from the database
         var numRecords = await _labelRepository.DeleteLabelAsync(label);
 
-        result.Data = numRecords;
-
-        return result;
+        return numRecords;
     }
+
+
+
+
 
 
     /// <summary>
@@ -199,16 +165,7 @@ public class LabelServices : ILabelServices
     /// <returns></returns>
     public async Task<bool> ClientOwnsLabelsAsync(Guid userId, IEnumerable<Guid> labelIds)
     {
-        // get all the user's current labels
-        GetLabelsResponse getLabelsResponse = await GetLabelsAsync(userId);
-
-        if (!getLabelsResponse.Successful && getLabelsResponse.Exception != null)
-        {
-            throw getLabelsResponse.Exception;
-        }
-
-        // extract the LabelId's from each of the user's Label objects
-        var userLabelIds = from label in getLabelsResponse.Data select label.Id;
+        var userLabelIds = await GetUserLabelIds(userId);
 
         // ensure that all of the specified label ids are within the user's label id list
         foreach(var labelId in labelIds)
@@ -220,6 +177,21 @@ public class LabelServices : ILabelServices
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Get all the ids for each label that is owned by the specified user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    private async Task<IEnumerable<Guid>> GetUserLabelIds(Guid userId)
+    {
+        var labels = await GetLabelsAsync(userId);
+
+        // extract the LabelId's from each of the user's Label objects
+        var labelIds = labels.Select(l => l.Id.Value);
+
+        return labelIds;
 
     }
 }

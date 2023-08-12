@@ -22,7 +22,7 @@ public class LabelAuthFilter : IAsyncActionFilter
         var clientId = FilterUtitilities.GetClientId(context);
         var labelId = FilterUtitilities.GetLabelIdRouteValue(context);
 
-        var label = (await _labelServices.GetLabelAsync(labelId, clientId)).Data;
+        var label = await _labelServices.GetLabelAsync(labelId, clientId);
 
         if (label == null)
         {
