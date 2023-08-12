@@ -1,9 +1,8 @@
-﻿using Tasks.Service.Configurations;
-using Tasks.Service.Domain.Models;
+﻿using Tasks.Service.Domain.Models;
 using Tasks.Service.Repositories.Interfaces;
-using static Tasks.Service.Domain.Responses.Basic.RepositoryResponses;
 using MySql.Data.MySqlClient;
 using Tasks.Service.Repositories.Commands;
+using System.Data;
 
 namespace Tasks.Service.Repositories.Implementations;
 
@@ -23,36 +22,24 @@ public class LabelRepository : ILabelRepository
         _dbConnection = dbConnection;
     }
 
+
+
     /// <summary>
-    /// Get all the labels for a user
+    /// Select all label records for the specified user
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public async Task<SelectAllResponse> SelectLabelsAsync(Guid userId)
+    public async Task<DataTable> SelectLabelsAsync(Guid userId)
     {
-        SelectAllResponse result = new()
-        {
-            Successful = true,
-        };
-
         MySqlCommand command = new(LabelCommands.SelectAllByUserId);
 
         command.Parameters.AddWithValue("@user_id", userId);
 
-        result.Data = await _dbConnection.FetchAllAsync(command);
-
-        return result;
+        return await _dbConnection.FetchAllAsync(command);
     }
 
-
-    public async Task<ModifyResponse> ModifyLabelAsync(Label label)
+    public async Task<int> ModifyLabelAsync(Label label)
     {
-        ModifyResponse result = new()
-        {
-            Successful = true,
-        };
-
         MySqlCommand command = new(LabelCommands.Modify);
 
         command.Parameters.AddWithValue("@id", label.Id);
@@ -61,47 +48,32 @@ public class LabelRepository : ILabelRepository
         command.Parameters.AddWithValue("@color", label.Color);
         command.Parameters.AddWithValue("@created_on", label.CreatedOn);
 
-        result.Data = await _dbConnection.ModifyAsync(command);
-
-        return result;
+        return await _dbConnection.ModifyAsync(command);
     }
+
 
     /// <summary>
     /// Get the a the label data row that has the given id
     /// </summary>
     /// <param name="labelId"></param>
     /// <returns></returns>
-    public async Task<SelectResponse> SelectLabelAsync(Guid labelId)
+    public async Task<DataRow?> SelectLabelAsync(Guid labelId)
     {
-        SelectResponse result = new()
-        {
-            Successful = true,
-        };
-
         MySqlCommand command = new(LabelCommands.SelectById);
 
         command.Parameters.AddWithValue("@id", labelId);
 
-        result.Data = await _dbConnection.FetchAsync(command);
-
-        return result;
-
+        return await _dbConnection.FetchAsync(command);
     }
 
-    public async Task<ModifyResponse> DeleteLabelAsync(Label label)
-    {
-        ModifyResponse result = new()
-        {
-            Successful = true,
-        };
 
+    public async Task<int> DeleteLabelAsync(Label label)
+    {
         MySqlCommand command = new(LabelCommands.DeleteByIdAndUserId);
 
         command.Parameters.AddWithValue("@id", label.Id);
         command.Parameters.AddWithValue("@user_id", label.UserId);
 
-        result.Data = await _dbConnection.ModifyAsync(command);
-
-        return result;
+        return await _dbConnection.ModifyAsync(command);
     }
 }

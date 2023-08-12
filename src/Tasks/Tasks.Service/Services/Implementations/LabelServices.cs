@@ -4,7 +4,6 @@ using Tasks.Service.Domain.Parms;
 using Tasks.Service.Domain.Responses;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
-using static Tasks.Service.Domain.Responses.Basic.RepositoryResponses;
 using static Tasks.Service.Domain.Responses.Basic.LabelServicesResponses;
 using Tasks.Service.Mappers;
 
@@ -45,7 +44,7 @@ public class LabelServices : ILabelServices
         };
 
         // verify that the user can update the label
-        DataRow? dataRow = (await _labelRepository.SelectLabelAsync(labelId)).Data;
+        var dataRow = await _labelRepository.SelectLabelAsync(labelId);
 
         if (!UserCanUpdateLabel(dataRow, labelId, userId, out Label? label))
         {
@@ -58,13 +57,7 @@ public class LabelServices : ILabelServices
         label.Color = updateLabelForm.Color;
 
         // have the repository update it in the database
-        var repoResponse = await _labelRepository.ModifyLabelAsync(label);
-
-        if (!repoResponse.Successful)
-        {
-            ResponseUtilities.TransferResponseData(repoResponse, result);
-            return result;
-        }
+        await _labelRepository.ModifyLabelAsync(label);
 
         result.Data = label;
 
@@ -149,22 +142,13 @@ public class LabelServices : ILabelServices
         };
 
         // fetch a DataTable from the repository
-        var repoResult = await _labelRepository.SelectLabelsAsync(userId);
+        var datatable = await _labelRepository.SelectLabelsAsync(userId);
 
-        if (!result.Successful)
-        {
-            ResponseUtilities.TransferResponseData(repoResult, result);
-            return result;
-        }
-
-
-        // map out the records to models
-        DataTable dataTable = repoResult.Data ?? (new());
-
-        result.Data = _mapperServices.ToModels<Label>(dataTable);
+        result.Data = _mapperServices.ToModels<Label>(datatable);
 
         return result;
     }
+
 
     /// <summary>
     /// Delete the label
@@ -180,16 +164,17 @@ public class LabelServices : ILabelServices
         };
 
         // verify that the label exists in the database
-        var selectResult = await _labelRepository.SelectLabelAsync(labelId);
+        var dataRow = await _labelRepository.SelectLabelAsync(labelId);
 
-        if (!selectResult.Successful || selectResult.Data is null)
+        if (dataRow is null)
         {
-            ResponseUtilities.TransferResponseData(selectResult, result);
+            result.Data = null;
             return result;
         }
 
+
         // make sure the user owns the label
-        Label label = _mapperServices.ToModel<Label>(selectResult.Data);
+        Label label = _mapperServices.ToModel<Label>(dataRow);
 
         if (label.UserId != userId)
         {
@@ -198,15 +183,9 @@ public class LabelServices : ILabelServices
         }
 
         // delete the label from the database
-        ModifyResponse deleteResult = await _labelRepository.DeleteLabelAsync(label);
+        var numRecords = await _labelRepository.DeleteLabelAsync(label);
 
-        if (!selectResult.Successful || selectResult.Data is null)
-        {
-            ResponseUtilities.TransferResponseData(selectResult, result);
-            return result;
-        }
-
-        result.Data = deleteResult.Data;
+        result.Data = numRecords;
 
         return result;
     }
