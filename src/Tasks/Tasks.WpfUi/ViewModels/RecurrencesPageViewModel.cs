@@ -222,7 +222,7 @@ public partial class RecurrencesPageViewModel : ObservableObject, INavigationAwa
     /// </summary>
     public async void LoadLabelFilters()
     {
-        var userLabels = (await _labelServices.GetLabelsAsync(_applicationServices.CurrentUserId)).Data;
+        var userLabels = await _labelServices.GetLabelsAsync(_applicationServices.CurrentUserId);
         userLabels ??= new List<Label>();
         
         LabelFilters = userLabels.Select(label => new LabelFilter(label, false)).ToList();

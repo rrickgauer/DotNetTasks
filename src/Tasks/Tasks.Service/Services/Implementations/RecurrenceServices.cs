@@ -67,7 +67,7 @@ public class RecurrenceServices : IRecurrenceServices
         // get the user's events, labels, and EventLabels from each of the services
         var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
         var events      = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
-        var labels      = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
+        var labels      = await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId);
         var recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval);
         
         List<GetRecurrencesResponse> responses = new();
@@ -127,7 +127,7 @@ public class RecurrenceServices : IRecurrenceServices
     {
         // get the user's events, labels, and EventLabels from each of the services
         var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
-        var labels = (await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId)).Data;
+        var labels = await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId);
         var recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval, eventId);
 
         Event? e = await _eventServices.GetEventAsync(eventId);

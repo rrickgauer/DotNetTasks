@@ -40,14 +40,9 @@ public class LabelsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Label>>> GetAll()
     {
-        var result = await _labelServices.GetLabelsAsync(CurrentUserId);
+        var labels = await _labelServices.GetLabelsAsync(CurrentUserId);
 
-        if (!result.Successful)
-        {
-            return BadRequest(result);
-        }
-
-        return Ok(result);
+        return Ok(labels);
     }
 
 
@@ -59,19 +54,9 @@ public class LabelsController : ControllerBase
     [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<ActionResult<Label>> Get([FromRoute] Guid labelId)
     {
-        var result = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+        var label = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
 
-        if (!result.Successful)
-        {
-            return BadRequest(result);
-        }
-
-        if (result.Data is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(result);
+        return Ok(label);
     }
 
 
@@ -85,12 +70,7 @@ public class LabelsController : ControllerBase
     {
         var updatedLabel = await _labelServices.SaveLabelAsync(labelId, CurrentUserId, form);
 
-        if (!updatedLabel.Successful)
-        {
-            return BadRequest(updatedLabel);
-        }
-
-        if (updatedLabel.Data is null)
+        if (updatedLabel == null)
         {
             return NotFound();
         }
@@ -107,7 +87,7 @@ public class LabelsController : ControllerBase
     [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<IActionResult> Delete([FromRoute] Guid labelId)
     {
-        var deleteLabelResult = await _labelServices.DeleteLabelAsync(labelId, CurrentUserId);
+        await _labelServices.DeleteLabelAsync(labelId, CurrentUserId);
 
         return NoContent();
     }

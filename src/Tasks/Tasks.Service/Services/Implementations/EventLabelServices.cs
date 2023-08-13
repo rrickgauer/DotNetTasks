@@ -110,7 +110,7 @@ public class EventLabelServices : IEventLabelServices
     /// <returns></returns>
     public async Task<IEnumerable<LabelAssignment>> GetUserEventLabelAssignmentsAsync(Guid eventId, Guid userId)
     {
-        var labels = (await _labelServices.GetLabelsAsync(userId)).Data;
+        var labels = await _labelServices.GetLabelsAsync(userId);
         var eventLabels = await GetEventLabelsAsync(eventId, userId);
         var result = new List<LabelAssignment>();
 
