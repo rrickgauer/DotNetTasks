@@ -1,11 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
 using Tasks.Service.Services.Interfaces;
@@ -14,7 +11,6 @@ using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
-using Xceed.Wpf.Toolkit;
 
 namespace Tasks.WpfUi.ViewModels;
 
@@ -70,15 +66,14 @@ public partial class EditLabelViewModel : ObservableObject, INavigationAware
 
         IsEnabled = false;
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         var updateLabelForm = new UpdateLabelForm
         {
             Color = Label.Color,
             Name = Label.Name,
         };
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        await _labelServices.SaveLabelAsync(Label.Id.Value, _applicationServices.CurrentUserId, updateLabelForm);
+
+        await _labelServices.SaveLabelAsync(Label);
 
         IsEnabled = true;
 

@@ -8,5 +8,5 @@ public interface ILabelRepository
     public Task<DataTable> SelectLabelsAsync(Guid userId);
     public Task<int> ModifyLabelAsync(Label label);
     public Task<DataRow?> SelectLabelAsync(Guid labelId);
-    public Task<int> DeleteLabelAsync(Label label);
+    public Task<int> DeleteLabelAsync(Guid labelId);
 }
