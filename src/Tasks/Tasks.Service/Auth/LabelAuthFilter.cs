@@ -22,11 +22,16 @@ public class LabelAuthFilter : IAsyncActionFilter
         var clientId = FilterUtitilities.GetClientId(context);
         var labelId = FilterUtitilities.GetLabelIdRouteValue(context);
 
-        var label = await _labelServices.GetLabelAsync(labelId, clientId);
+        var label = await _labelServices.GetLabelAsync(labelId);
 
         if (label == null)
         {
             throw new HttpResponseException(HttpStatusCode.NotFound);
+        }
+
+        else if (label.UserId != clientId)
+        {
+            throw new HttpResponseException(HttpStatusCode.Forbidden);
         }
 
         await next();

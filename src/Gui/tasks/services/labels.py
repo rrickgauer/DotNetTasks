@@ -35,7 +35,7 @@ def get_labels() -> GetLabelsResult:
         result.error = response.text
 
     # serialize the json objects into label models
-    labels = response.json().get('data', [])
+    labels = response.json()
     
     # result.data  = _serialize_labels(labels)
     result.data  = LabelResponse.from_dicts(labels)

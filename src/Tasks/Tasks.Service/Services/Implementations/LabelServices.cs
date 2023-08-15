@@ -37,29 +37,12 @@ public class LabelServices : ILabelServices
     /// <param name="updateLabelForm"></param>
     /// <returns></returns>
     /// <exception cref="HttpResponseException"></exception>
-    public async Task<Label?> SaveLabelAsync(Guid labelId, Guid userId, UpdateLabelForm updateLabelForm)
+    public async Task<Label?> SaveLabelAsync(Label label)
     {
-        // verify that the user can update the label
-        var dataRow = await _labelRepository.SelectLabelAsync(labelId);
-
-        if (!UserCanUpdateLabel(dataRow, labelId, userId, out Label? label))
-        {
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
-        }
-
-        if (label == null)
-        {
-            return null;
-        }
-
-        // copy over the existing (or new) label's data into the one we are going to send to the repo
-        label.Name = updateLabelForm.Name;
-        label.Color = updateLabelForm.Color;
-
         // have the repository update it in the database
         await _labelRepository.ModifyLabelAsync(label);
 
-        return label;
+        return await GetLabelAsync(label.Id.Value);
     }
 
 
@@ -110,15 +93,17 @@ public class LabelServices : ILabelServices
     /// <param name="labelId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<Label?> GetLabelAsync(Guid labelId, Guid userId)
+    public async Task<Label?> GetLabelAsync(Guid labelId)
     {
-        var labels = await GetLabelsAsync(userId);
+        var datarow = await _labelRepository.SelectLabelAsync(labelId);
 
-        var result = labels.Where(l => l.Id == labelId).FirstOrDefault();
+        if (datarow == null)
+        {
+            return null;
+        }
 
-        return result;
+        return _mapperServices.ToModel<Label>(datarow);
     }
-
 
 
     /// <summary>
@@ -137,24 +122,17 @@ public class LabelServices : ILabelServices
     }
 
 
-    public async Task<int> DeleteLabelAsync(Guid labelId, Guid userId)
-    {
-
-        Label label = new()
-        {
-            Id = labelId,
-            UserId = userId,
-        };
-
+    /// <summary>
+    /// Delete the specified label
+    /// </summary>
+    /// <param name="labelId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<int> DeleteLabelAsync(Guid labelId)
+    { 
         // delete the label from the database
-        var numRecords = await _labelRepository.DeleteLabelAsync(label);
-
-        return numRecords;
+        return await _labelRepository.DeleteLabelAsync(labelId);
     }
-
-
-
-
 
 
     /// <summary>

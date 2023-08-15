@@ -40,10 +40,9 @@ public sealed class LabelCommands
             color = new_values.color";
 
 
-    public const string DeleteByIdAndUserId = @"
+    public const string Delete = @"
         DELETE FROM 
             Labels
         WHERE 
-            id = @id
-            AND user_id = @user_id";
+            id = @id";
 }

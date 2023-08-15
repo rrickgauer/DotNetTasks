@@ -7,6 +7,7 @@ using Tasks.Service.Configurations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Security;
 using Tasks.Service.Auth;
+using Tasks.Api.Controllers.Bases;
 
 namespace Tasks.Api.Controllers;
 
@@ -14,12 +15,11 @@ namespace Tasks.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("labels")]
-public class LabelsController : ControllerBase
+public class LabelsController : AuthorizedControllerBase
 {
     #region Private members
     private readonly IConfigs _configs;
     private readonly ILabelServices _labelServices;
-    private Guid CurrentUserId => SecurityMethods.GetUserIdFromRequest(Request).Value;
     #endregion
 
     /// <summary>
@@ -54,7 +54,8 @@ public class LabelsController : ControllerBase
     [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<ActionResult<Label>> Get([FromRoute] Guid labelId)
     {
-        var label = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+        //var label = await _labelServices.GetLabelAsync(labelId, CurrentUserId);
+        var label = await _labelServices.GetLabelAsync(labelId);
 
         return Ok(label);
     }
@@ -68,7 +69,17 @@ public class LabelsController : ControllerBase
     [HttpPut("{labelId}")]
     public async Task<ActionResult<Label>> Put([FromRoute] Guid labelId, [FromForm] UpdateLabelForm form)
     {
-        var updatedLabel = await _labelServices.SaveLabelAsync(labelId, CurrentUserId, form);
+        Label label = new()
+        {
+            Id = labelId,
+            UserId = CurrentUserId,
+            CreatedOn = DateTime.Now,
+        };
+
+        form.CopyFieldsToModel(label);
+
+
+        var updatedLabel = await _labelServices.SaveLabelAsync(label);
 
         if (updatedLabel == null)
         {
@@ -87,12 +98,9 @@ public class LabelsController : ControllerBase
     [ServiceFilter(typeof(LabelAuthFilter))]
     public async Task<IActionResult> Delete([FromRoute] Guid labelId)
     {
-        await _labelServices.DeleteLabelAsync(labelId, CurrentUserId);
+        await _labelServices.DeleteLabelAsync(labelId);
 
         return NoContent();
     }
-
-
-
 
 }

@@ -96,16 +96,16 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
     /// <returns></returns>
     public async Task<bool> CreateNewLabel(string name, Color color)
     {
-        UpdateLabelForm newLabelForm = new()
+        Label newLabel = new()
         {
+            Id = Guid.NewGuid(),
             Name = name,
+            UserId = _applicationServices.CurrentUserId,
             Color = color.ToHexString(),
+            CreatedOn = DateTime.Now,
         };
 
-        var labelId = Guid.NewGuid();
-        var userId = _applicationServices.CurrentUserId;
-
-        var result = await _labelServices.SaveLabelAsync(labelId, userId, newLabelForm);
+        var result = await _labelServices.SaveLabelAsync(newLabel);
 
         return result != null;
     }
@@ -180,7 +180,7 @@ public partial class LabelsPageViewModel : ObservableObject, INavigationAware
         ShowProgress = true;
         ShowLabels = false;
 
-        await _labelServices.DeleteLabelAsync(SelectedLabel.Id.Value, _applicationServices.CurrentUserId);
+        await _labelServices.DeleteLabelAsync(SelectedLabel.Id.Value);
 
         await LoadLabelsAsync();
     }
