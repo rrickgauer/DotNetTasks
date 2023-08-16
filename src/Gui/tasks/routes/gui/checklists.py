@@ -36,11 +36,13 @@ def checklist_settings_page(checklist_id: UUID):
 
 
 #------------------------------------------------------
-# tasks.com/checklists/:checklistId
+# tasks.com/checklists/:checklistId/labels
 #------------------------------------------------------
 @bp_checklists.route('<uuid:checklist_id>/labels')
 @security.login_required
 def checklist_settings_labels_page(checklist_id: UUID):
-    
     page_view = checklist_services.get_labels_checklist_settings_page_view(checklist_id)
+
+    print(flask.json.dumps(page_view, indent=4))
+
     return flask.render_template('pages/checklist-settings/labels/index.html', data=page_view)

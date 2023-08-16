@@ -11,6 +11,7 @@ from .checklist_items import ChecklistItemService
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
 from tasks.common.macros import OpenChecklistCardMarco
+from .checklist_labels import ChecklistLabelsService
 from markupsafe import Markup
 from flasklib.errors import RequestError
 
@@ -71,8 +72,10 @@ def get_general_checklist_settings_page_view(checklist_id: UUID) -> GeneralCheck
 def get_labels_checklist_settings_page_view(checklist_id: UUID) -> LabelsChecklistSettingsPageView:
     """Get the page view for the labels checklist settings page"""
 
+    checklist_labels_service = ChecklistLabelsService(checklist_id)
+
     result = LabelsChecklistSettingsPageView(
-        
+        labels = checklist_labels_service.get_labels(),
     )
 
     _set_base_page_view_data(result, checklist_id)

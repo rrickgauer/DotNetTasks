@@ -7,5 +7,6 @@ from .checklist_item_complete import ApiWrapperChecklistItemComplete as ApiWrapp
 from .event_cancellations import ApiWrapperEventCancellations as ApiWrapperEventCancellations
 from .event_completion import ApiWrapperEventCompletion as ApiWrapperEventCompletion
 from .event_labels import ApiWrapperEventLabels as ApiWrapperEventLabels
+from .checklist_labels import ApiWrapperChecklistLabels as ApiWrapperChecklistLabels
 
 from . import routines as routines 
