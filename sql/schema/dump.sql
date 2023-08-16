@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
@@ -57,6 +57,24 @@ CREATE TABLE `Checklist_Label_Assignments` (
   KEY `label_id` (`label_id`),
   CONSTRAINT `Checklist_Label_Assignments_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Checklist_Label_Assignments_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `Labels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Checklist_Labels`
+--
+
+DROP TABLE IF EXISTS `Checklist_Labels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklist_Labels` (
+  `checklist_id` char(36) NOT NULL,
+  `label_id` char(36) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`checklist_id`,`label_id`),
+  KEY `label_id` (`label_id`),
+  CONSTRAINT `Checklist_Labels_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Checklist_Labels_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `Labels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -277,6 +295,28 @@ CREATE TABLE `Users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `View_Checklist_Labels`
+--
+
+DROP TABLE IF EXISTS `View_Checklist_Labels`;
+/*!50001 DROP VIEW IF EXISTS `View_Checklist_Labels`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Checklist_Labels` AS SELECT 
+ 1 AS `checklist_id`,
+ 1 AS `checklist_user_id`,
+ 1 AS `checklist_title`,
+ 1 AS `checklist_type_id`,
+ 1 AS `checklist_created_on`,
+ 1 AS `label_id`,
+ 1 AS `label_user_id`,
+ 1 AS `label_name`,
+ 1 AS `label_color`,
+ 1 AS `label_created_on`,
+ 1 AS `created_on`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary view structure for view `View_Checklists`
@@ -1488,6 +1528,24 @@ DELIMITER ;
 USE `Tasks_Dev`;
 
 --
+-- Final view structure for view `View_Checklist_Labels`
+--
+
+/*!50001 DROP VIEW IF EXISTS `View_Checklist_Labels`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `View_Checklist_Labels` AS select `a`.`checklist_id` AS `checklist_id`,`c`.`user_id` AS `checklist_user_id`,`c`.`title` AS `checklist_title`,`c`.`checklist_type_id` AS `checklist_type_id`,`c`.`created_on` AS `checklist_created_on`,`a`.`label_id` AS `label_id`,`l`.`user_id` AS `label_user_id`,`l`.`name` AS `label_name`,`l`.`color` AS `label_color`,`l`.`created_on` AS `label_created_on`,`a`.`created_on` AS `created_on` from ((`Checklist_Labels` `a` left join `Checklists` `c` on((`c`.`id` = `a`.`checklist_id`))) left join `Labels` `l` on((`l`.`id` = `a`.`label_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `View_Checklists`
 --
 
@@ -1586,8 +1644,8 @@ USE `Tasks_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 20:51:42
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- Dump completed on 2023-08-16  9:21:50
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
@@ -1646,4 +1704,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 20:51:45
+-- Dump completed on 2023-08-16  9:21:56

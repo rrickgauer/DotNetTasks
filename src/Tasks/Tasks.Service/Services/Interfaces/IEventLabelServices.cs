@@ -6,12 +6,11 @@ namespace Tasks.Service.Services.Interfaces;
 
 public interface IEventLabelServices
 {
-    Task<EventLabel?> CreateAsync(EventLabelRequestParms eventLabelRequestParms, Guid userId);
-    Task<IEnumerable<Label>> GetEventLabelsAsync(Guid eventId, Guid userId);
+    Task<IEnumerable<Label>> GetAssignedLabelsAsync(Guid eventId);
     string GetUri(EventLabel eventLabel);
     Task<int> CreateBatchAsync(EventLabelsBatchRequest eventLabelsBatchRequest);
-    Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId);
-    Task<IEnumerable<LabelAssignment>> GetUserEventLabelAssignmentsAsync(Guid eventId, Guid userId);
-
-    Task<bool> DeleteAsync(Guid eventId, Guid labelId);
+    Task<IEnumerable<EventLabel>> GetAll(Guid userId);
+    Task<IEnumerable<LabelAssignment>> GetLabelAssignmentsForEvent(Guid eventId, Guid userId);
+    Task<EventLabel?> SaveAsync(EventLabelForm eventLabelRequestParms);
+    Task<bool> DeleteAsync(EventLabelForm eventLabelForm);
 }

@@ -34,11 +34,11 @@ public class ChecklistServices : IChecklistServices
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<ChecklistTableView>> GetUserChecklistsAsync(Guid userId)
+    public async Task<IEnumerable<ChecklistView>> GetUserChecklistsAsync(Guid userId)
     {
         var datatable = await _checklistRepository.SelectUserChecklistsAsync(userId);
 
-        var checklists = _mapperServices.ToModels<ChecklistTableView>(datatable);
+        var checklists = _mapperServices.ToModels<ChecklistView>(datatable);
 
         return checklists;
     }
@@ -48,14 +48,14 @@ public class ChecklistServices : IChecklistServices
     /// </summary>
     /// <param name="checklistId"></param>
     /// <returns></returns>
-    public async Task<ChecklistTableView?> GetChecklistAsync(Guid checklistId)
+    public async Task<ChecklistView?> GetChecklistAsync(Guid checklistId)
     {
         var datarow = await _checklistRepository.SelectChecklistAsync(checklistId);
 
         if (datarow == null)
             return null;
 
-        var model = _mapperServices.ToModel<ChecklistTableView>(datarow);
+        var model = _mapperServices.ToModel<ChecklistView>(datarow);
 
         return model;
     }
@@ -93,7 +93,7 @@ public class ChecklistServices : IChecklistServices
     /// </summary>
     /// <param name="checklist"></param>
     /// <returns></returns>
-    public async Task<ChecklistTableView> SaveChecklistAsync(Checklist checklist)
+    public async Task<ChecklistView> SaveChecklistAsync(Checklist checklist)
     {
         // save the changes
         await _checklistRepository.SaveChecklistAsync(checklist);
@@ -119,7 +119,7 @@ public class ChecklistServices : IChecklistServices
     /// <param name="existingChecklistId"></param>
     /// <param name="newChecklistTitle"></param>
     /// <returns></returns>
-    public async Task<ChecklistTableView> CopyChecklistAsync(Guid existingChecklistId, string newChecklistTitle)
+    public async Task<ChecklistView> CopyChecklistAsync(Guid existingChecklistId, string newChecklistTitle)
     {
         // create the new checklist first...
         var copiedChecklist = await CreateCopiedChecklistAsync(existingChecklistId, newChecklistTitle);
@@ -138,7 +138,7 @@ public class ChecklistServices : IChecklistServices
     /// <param name="checklistId">The checklist to copy</param>
     /// <param name="title">The title of the new checklist</param>
     /// <returns></returns>
-    private async Task<ChecklistTableView> CreateCopiedChecklistAsync(Guid checklistId, string title)
+    private async Task<ChecklistView> CreateCopiedChecklistAsync(Guid checklistId, string title)
     {
         var existingChecklist = await GetChecklistAsync(checklistId);
 
