@@ -55,7 +55,6 @@ class UserSignUpResponse(IMappable):
 @dataclass
 class LabelResponse(IMappable):
     id        : Opt[UUID]     = None
-    userId    : Opt[UUID]     = None
     name      : Opt[str]      = None
     color     : Opt[str]      = None
     createdOn : Opt[datetime] = None

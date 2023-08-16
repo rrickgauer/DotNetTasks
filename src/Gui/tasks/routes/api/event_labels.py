@@ -29,7 +29,7 @@ bp_api_event_labels = flask.Blueprint('api_event_labels', __name__)
 @security.login_required
 def get_event_labels(event_id: UUID):
     labels = services.event_labels.get_event_labels(event_id)
-    return flask.jsonify(labels.json())
+    return flask.jsonify(labels)
 
 #------------------------------------------------------
 # PUT: /api/events/:event_id/labels
