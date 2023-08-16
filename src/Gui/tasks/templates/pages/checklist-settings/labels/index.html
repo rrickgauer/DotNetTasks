@@ -1,0 +1,33 @@
+{#
+
+data:
+    - checklist
+        - id : Opt[UUID]
+        - title : Opt[str]
+        - type : Opt[str]
+        - createdOn : Opt[datetime]
+        - countItems : Opt[int]
+#}
+
+{% extends 'pages/checklist-settings/checklist-settings-base.html' %}
+
+{% block title %}Labels{% endblock %}
+
+{% block nav_link_labels %}active{% endblock %}
+
+{% block settings_content %}
+
+<div class="container">
+    <h2>Labels</h2>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block footer %}
+<script src="/static/js/dist/checklist-settings.labels.bundle.js"></script>
+{% endblock %}
+
+

@@ -1,9 +1,9 @@
-import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
-import { UpdateChecklistForm } from "../../domain/forms/update-checklist-form";
-import { SpinnerButton } from "../../helpers/spinner-button";
-import { Utililties } from "../../helpers/utilities";
-import { ChecklistServices } from "../../services/checklist-services";
+import { NativeEvents } from "../../../domain/constants/native-events";
+import { ChecklistSettingsGeneralFormSubmittedEvent } from "../../../domain/events/events";
+import { UpdateChecklistForm } from "../../../domain/forms/update-checklist-form";
+import { SpinnerButton } from "../../../helpers/spinner-button";
+import { Utililties } from "../../../helpers/utilities";
+import { ChecklistServices } from "../../../services/checklist-services";
 
 
 export class GeneralSettingsFormElements

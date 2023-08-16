@@ -9,9 +9,22 @@ from typing import Optional as Opt
 from typing import List
 
 
+
 @dataclass
-class ChecklistSettingsPageView(PageView):
-    checklist      : Opt[ChecklistResponse]           = None
+class BaseChecklistSettingsPageView(PageView):
+    checklist : Opt[ChecklistResponse] = None
+
+
+@dataclass
+class GeneralChecklistSettingsPageView(BaseChecklistSettingsPageView):
     checklist_items: Opt[List[ChecklistItemResponse]] = None
+
+
+@dataclass
+class LabelsChecklistSettingsPageView(BaseChecklistSettingsPageView):
+    checklist      : Opt[ChecklistResponse] = None
+
+
+
 
 

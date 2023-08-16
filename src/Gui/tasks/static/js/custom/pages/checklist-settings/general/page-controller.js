@@ -1,11 +1,13 @@
-import { AlertPageTopBase, AlertPageTopDanger, AlertPageTopSuccess } from "../../components/page-alerts/alert-page-top";
-import { ChecklistSettingsChecklistClonedEvent, ChecklistSettingsChecklistDeletedEvent, ChecklistSettingsGeneralFormSubmittedEvent } from "../../domain/events/events";
-import { ChecklistModel } from "../../domain/models/checklist";
-import { UrlMethods } from "../../helpers/url-methods";
+"use strict"
+
+import { AlertPageTopBase, AlertPageTopDanger, AlertPageTopSuccess } from "../../../components/page-alerts/alert-page-top";
+import { ChecklistSettingsChecklistClonedEvent, ChecklistSettingsChecklistDeletedEvent, ChecklistSettingsGeneralFormSubmittedEvent } from "../../../domain/events/events";
+import { ChecklistModel } from "../../../domain/models/checklist";
+import { UrlMethods } from "../../../helpers/url-methods";
 import { CloneChecklistController } from "./clone-checklist-controller";
 import { DeleteChecklistController } from "./delete-checklist-controller";
 import { ExportChecklistItemsController } from "./export-items-controller";
-import { GeneralSettingsFormController } from "./general-settings-form-controller"
+import { GeneralSettingsFormController } from "./general-settings-form-controller";
 
 
 export class ChecklistSettingsPageController

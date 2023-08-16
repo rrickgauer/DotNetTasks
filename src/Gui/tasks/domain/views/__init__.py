@@ -1,3 +1,6 @@
 
 from .page_view import PageView as PageView
-from .checklist_settings_page_view import ChecklistSettingsPageView as ChecklistSettingsPageView
+
+from .checklist_settings_page_view import BaseChecklistSettingsPageView as BaseChecklistSettingsPageView
+from .checklist_settings_page_view import GeneralChecklistSettingsPageView as GeneralChecklistSettingsPageView
+from .checklist_settings_page_view import LabelsChecklistSettingsPageView as LabelsChecklistSettingsPageView
