@@ -42,21 +42,27 @@ data:
     <button type="button" class="btn btn-sm btn-standard btn-block" data-toggle="collapse" data-target="#collapse-checklist-labels">Labels</button>
 
     <div class="collapse" id="collapse-checklist-labels">
-        <div class="card card-body mt-2">
-            <div class="checklist-labels-container container-loading">
+        <div class="card mt-2">
+            
+            <div class="card-body">
+                <div class="checklist-labels-container container-loading">
+                    <div class="container-loading-spinner">
+                        {% include 'includes/spinner-center.html' %}
+                    </div>
+        
+                    <div class="container-loading-content">
+                        <form id="checklist-labels-form">
+                            
+                            {% for label in data.labels %}
+                                {{ get_checklist_label_html(label) }}
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                <div class="container-loading-spinner">
-                    {% include 'includes/spinner-center.html' %}
-                </div>
-    
-                <div class="container-loading-content">
-                    <form id="checklist-labels-form">
-                        
-                        {% for label in data.labels %}
-                            {{ get_checklist_label_html(label) }}
-                        {% endfor %}
-                    </form>
-                </div>
+            <div class="card-footer">
+                <a href="/labels">Edit labels</a>
             </div>
         </div>
     </div>
