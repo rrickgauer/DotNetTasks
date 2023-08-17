@@ -9,10 +9,8 @@ Endpoints for the api checklists
 """
 
 from __future__ import annotations
-from http import HTTPStatus
 from uuid import UUID
 import flask
-from flasklib import responses
 from tasks.common import security
 from tasks.services.checklist_labels import ChecklistLabelsService
 
@@ -43,6 +41,7 @@ def delete_checklist_label(checklist_id: UUID, label_id: UUID):
     
     service = ChecklistLabelsService(checklist_id)
     response = service.delete_label(label_id)
+
     return (response.content, response.status_code)
 
 

@@ -1,14 +1,11 @@
-
 from __future__ import annotations
 from uuid import UUID
 from typing import List
-import flask
+import requests
 from tasks.domain.models import LabelResponse
 from tasks.domain.models import LabelAssignment
 from tasks.apiwrapper import ApiWrapperChecklistLabels
 from . import labels as labels_service
-from tasks.common import utilities
-
 
 
 class ChecklistLabelsService:
@@ -61,10 +58,10 @@ class ChecklistLabelsService:
     
 
 
-    def assign_label(self, label_id: UUID):
+    def assign_label(self, label_id: UUID) -> requests.Response:
         return self._api.put(label_id)
 
-    def delete_label(self, label_id: UUID):
+    def delete_label(self, label_id: UUID) -> requests.Response:
         return self._api.delete(label_id)
 
 

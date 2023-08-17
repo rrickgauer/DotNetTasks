@@ -52,13 +52,11 @@ export class ChecklistLabel
         this.checklistId = checklistId;
         this.elements = new ChecklistLabelElements(containerElement);
         this.checklistLabelService = new ChecklistLabelServices(this.checklistId);
-    }
 
-
-    init = () =>
-    {
         this.#addListeners();
     }
+
+
 
 
     #addListeners = () =>

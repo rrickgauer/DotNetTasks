@@ -5,8 +5,6 @@ from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.apiwrapper import ApiWrapperChecklistClones
 from tasks.domain import models
 from tasks.domain.views import GeneralChecklistSettingsPageView
-from tasks.domain.views import LabelsChecklistSettingsPageView
-from tasks.domain.views import BaseChecklistSettingsPageView
 from .checklist_items import ChecklistItemService
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
@@ -58,34 +56,15 @@ def get_general_checklist_settings_page_view(checklist_id: UUID) -> GeneralCheck
     """Get the page view for the general checklist settings page"""
     
     checklist_item_service = ChecklistItemService(checklist_id)
-
-    result = GeneralChecklistSettingsPageView(
-        checklist_items = checklist_item_service.get_checklist_items(),
-    )
-
-    _set_base_page_view_data(result, checklist_id)
-
-    return result
-
-
-
-def get_labels_checklist_settings_page_view(checklist_id: UUID) -> LabelsChecklistSettingsPageView:
-    """Get the page view for the labels checklist settings page"""
-
     checklist_labels_service = ChecklistLabelsService(checklist_id)
 
-    result = LabelsChecklistSettingsPageView(
-        labels = checklist_labels_service.get_labels(),
+    page_view = GeneralChecklistSettingsPageView(
+        checklist       = get_checklist(checklist_id),
+        checklist_items = checklist_item_service.get_checklist_items(),
+        labels          = checklist_labels_service.get_labels(),
     )
 
-    _set_base_page_view_data(result, checklist_id)
-
-    return result
-
-
-def _set_base_page_view_data(page_view: BaseChecklistSettingsPageView, checklist_id: UUID):
-    """Fetch the checklist data for the given page view"""
-    page_view.checklist = get_checklist(checklist_id)
+    return page_view
 
 
 def get_checklist(checklist_id: UUID):

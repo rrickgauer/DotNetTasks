@@ -1,30 +1,20 @@
-
-
 from __future__ import annotations
 from dataclasses import dataclass
-from .page_view import PageView
 from tasks.domain.models import ChecklistResponse
 from tasks.domain.models import ChecklistItemResponse
 from tasks.domain.models import LabelAssignment
 from typing import Optional as Opt
 from typing import List
-
-
-
-@dataclass
-class BaseChecklistSettingsPageView(PageView):
-    checklist : Opt[ChecklistResponse] = None
+from flasklib.mappers import IMappable
 
 
 @dataclass
-class GeneralChecklistSettingsPageView(BaseChecklistSettingsPageView):
-    checklist_items: Opt[List[ChecklistItemResponse]] = None
+class GeneralChecklistSettingsPageView(IMappable):
+    checklist       : Opt[ChecklistResponse]           = None
+    checklist_items : Opt[List[ChecklistItemResponse]] = None
+    labels          : Opt[LabelAssignment]             = None
 
 
-@dataclass
-class LabelsChecklistSettingsPageView(BaseChecklistSettingsPageView):
-    checklist : Opt[ChecklistResponse] = None
-    labels    : Opt[LabelAssignment]   = None
 
 
 

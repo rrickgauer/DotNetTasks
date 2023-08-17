@@ -7,88 +7,46 @@ data:
         - type : Opt[str]
         - createdOn : Opt[datetime]
         - countItems : Opt[int]
-
+    
     - checklist_items:
-        - id : Opt[str]
-        - content : Opt[str]
+        - id         : Opt[str]      
+        - content    : Opt[str]      
+        - createdOn  : Opt[datetime] 
+        - position   : Opt[int]      
+        - isComplete : Opt[bool]     
+
+    - labels
+        - id        : Opt[UUID]    
+        - name      : Opt[str]     
+        - color     : Opt[str]     
         - createdOn : Opt[datetime]
-        - position : Opt[int]
-        - isComplete : Opt[bool]
 #}
 
-{% extends 'pages/checklist-settings/checklist-settings-base.html' %}
+
+{% extends 'base.html' %}
 
 {% block title %}General{% endblock %}
 
-{% block nav_link_general %}active{% endblock %}
+{% block content %}
 
+<div class="container">
+    <div class="row mt-5">
+        
+        <div class="col-sm-12 col-md-8">
+            {% include 'pages/checklist-settings/general/main/main-page.html' %}
+        </div>
 
-{% block settings_content %}
+        <div class="col-sm-12 col-md-4">
+            {% include 'pages/checklist-settings/general/sidebar.html' %}
+        </div>
 
-
-<!-- General -->
-<div class="container checklist-settings-container">
-
-    {{ section_header('General') }}
-
-    <div class="section-content">
-        {% include 'pages/checklist-settings/general/general.html' %}
     </div>
-
 </div>
-
-
-<!-- Clone -->
-<div class="container checklist-settings-container">
-
-    {{ section_header('Clone') }}
-
-    <div class="section-content">
-        {% include 'pages/checklist-settings/general/clone.html' %}
-    </div>
-
-</div>
-
-
-<!-- Export -->
-<div class="container checklist-settings-container">
-
-    {{ section_header('Export') }}
-
-    <div class="section-content">
-        {% include 'pages/checklist-settings/general/export.html' %}
-    </div>
-
-</div>
-
-
-<!-- Danger zone -->
-<div class="container checklist-settings-container">
-    {{ section_header('Danger Zone') }}
-
-    <div class="section-content">
-        {% include 'pages/checklist-settings/general/danger.html' %}
-    </div>
-
-</div>
-
 
 {% endblock %}
-
-
 
 
 {% block footer %}
 <script src="/static/js/dist/checklist-settings.general.bundle.js"></script>
 {% endblock %}
 
-
-{% macro section_header(title) -%}
-
-
-<div class="checklists-settings-section-header">
-    <h2>{{ title }}</h2>
-    <hr>
-</div>
-
-{%- endmacro %}
