@@ -12,6 +12,9 @@ from __future__ import annotations
 import flask
 from .services.startup import StartupService
 
+import urllib3
+urllib3.disable_warnings()
+
 app = flask.Flask(__name__)
 
 startup = StartupService(app)

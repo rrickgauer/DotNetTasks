@@ -1,7 +1,7 @@
+"use strict"
+
 import { ApiChecklistLabels } from "../api/api-checklist-labels";
 import { ServiceUtilities } from "./service-utilities";
-
-
 
 export class ChecklistLabelServices
 {
@@ -10,7 +10,6 @@ export class ChecklistLabelServices
     
     /** @type {ApiChecklistLabels} */
     #api;
-
 
     constructor(checklistId)
     {
@@ -30,5 +29,14 @@ export class ChecklistLabelServices
     {
         const response = await this.#api.delete(labelId);
         await ServiceUtilities.handleBadResponse(response);
+    }
+
+    getAssignedLabelsHtml = async () =>
+    {
+        const response = await this.#api.getAll();
+        
+        await ServiceUtilities.handleBadResponse(response);
+
+        return await response.text();
     }
 }

@@ -61,7 +61,7 @@ def get_general_checklist_settings_page_view(checklist_id: UUID) -> GeneralCheck
     page_view = GeneralChecklistSettingsPageView(
         checklist       = get_checklist(checklist_id),
         checklist_items = checklist_item_service.get_checklist_items(),
-        labels          = checklist_labels_service.get_labels(),
+        labels          = checklist_labels_service.get_all_label_assignments(),
     )
 
     return page_view

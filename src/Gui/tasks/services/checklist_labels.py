@@ -1,11 +1,13 @@
 from __future__ import annotations
 from uuid import UUID
 from typing import List
+from markupsafe import Markup
 import requests
 from tasks.domain.models import LabelResponse
 from tasks.domain.models import LabelAssignment
 from tasks.apiwrapper import ApiWrapperChecklistLabels
 from . import labels as labels_service
+from tasks.common.macros import OpenChecklistLabelsMacro
 
 
 class ChecklistLabelsService:
@@ -15,7 +17,7 @@ class ChecklistLabelsService:
         self._api = ApiWrapperChecklistLabels(self._checklist_id)
 
 
-    def get_labels(self) -> List[LabelAssignment]:
+    def get_all_label_assignments(self) -> List[LabelAssignment]:
         """Get the assigned labels for the checklist"""
 
         labels = self._get_user_label_assignments()
@@ -45,12 +47,7 @@ class ChecklistLabelsService:
     def _get_checklist_label_ids(self) -> List[UUID]:
         """Get the ids of each label that has been assigned to the current checklist"""
 
-        # request data from api
-        response = self._api.get_all()
-        
-        # serialize the response into domain objects
-        data = response.json()
-        checklist_labels = LabelResponse.from_dicts(data)
+        checklist_labels = self.get_checklist_labels()
 
         ids = [l.id for l in checklist_labels]
 
@@ -65,6 +62,21 @@ class ChecklistLabelsService:
         return self._api.delete(label_id)
 
 
+    def get_checklist_labels(self) -> List[LabelResponse]:
+        """Get all the labels assigned to the checklist"""
+
+        # request data from api
+        response = self._api.get_all()
+        
+        # serialize the response into domain objects
+        data = response.json()
+        checklist_labels = LabelResponse.from_dicts(data)
+
+        return checklist_labels
+    
+
+    def get_open_checklist_card_labels_html(self, labels) -> Markup:
+        return OpenChecklistLabelsMacro.render_html(labels)
     
 
 

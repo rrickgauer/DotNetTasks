@@ -56,7 +56,7 @@ export class OpenChecklistsController
         try 
         {
             checklist.showChecklistItemsSpinner();
-            await checklist.fetchItems();
+            await checklist.fetchChecklistData();
         }
         catch(error)
         {

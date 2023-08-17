@@ -1,0 +1,19 @@
+
+
+{% macro get_open_checklist_labels(labels) -%}
+
+    {% for label in labels %}
+        {{ get_open_checklist_label(label) }}
+    {% endfor %}
+
+{%- endmacro %}
+
+
+{% macro get_open_checklist_label(label) -%}
+
+<div class="open-checklist-body-label mr-1" data-label-id="{{ label.id }}" title="{{ label.name }}">
+    <i class="bx bxs-circle" style="color: {{ label.color }};"></i>
+</div>
+    
+
+{%- endmacro %}

@@ -32,4 +32,10 @@ export class ApiChecklistLabels
             method: HttpMethods.PUT,
         });
     }
+
+
+    getAll = async () =>
+    {
+        return await fetch(this.url);
+    }
 }
