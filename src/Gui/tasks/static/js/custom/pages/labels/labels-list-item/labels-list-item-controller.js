@@ -88,13 +88,15 @@ export class LabelsListItemController
         const response = await this.api.get(labelId);
         const data = await response.json();
 
+        console.log(data);
+
         const label = new Label();
 
-        label.color     = data.data.color;
-        label.createdOn = data.data.createdOn;
-        label.id        = data.data.id;
-        label.name      = data.data.name;
-        label.userId    = data.data.userId;
+        label.color     = data.color;
+        label.createdOn = data.createdOn;
+        label.id        = data.id;
+        label.name      = data.name;
+        label.userId    = data.userId;
 
         return label;
     }
