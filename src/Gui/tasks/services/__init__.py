@@ -12,4 +12,4 @@ from . import event_labels as event_labels
 from . import startup as startup
 
 from .checklist_items import ChecklistItemService as ChecklistItemService
-from.checklist_labels import ChecklistLabelsService as ChecklistLabelsService
+from .checklist_labels import ChecklistLabelsService as ChecklistLabelsService

@@ -21,3 +21,13 @@ class ApiWrapperChecklistLabels(ApiWrapperBase):
         return apiroutines.request_get(
             url = self.url,
         )
+    
+    def put(self, label_id: UUID) -> requests.Response:
+        return apiroutines.request_put(
+            url = f'{self.url}/{label_id}',
+        )
+    
+    def delete(self, label_id: UUID) -> requests.Response:
+        return apiroutines.request_delete(
+            url = f'{self.url}/{label_id}',
+        )

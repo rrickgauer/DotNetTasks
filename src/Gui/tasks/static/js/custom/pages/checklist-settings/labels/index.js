@@ -1,3 +1,6 @@
+import { LabelsPageController } from "./labels-page-controller";
+
+
 
 
 $(document).ready(function() 
@@ -8,5 +11,8 @@ $(document).ready(function()
 
 function setup()
 {
-    // alert('labels');
+    const pageController = new LabelsPageController();
+    pageController.init();
+
+    console.log(pageController);
 }

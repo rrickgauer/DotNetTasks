@@ -58,6 +58,14 @@ class ChecklistLabelsService:
         ids = [l.id for l in checklist_labels]
 
         return ids
+    
+
+
+    def assign_label(self, label_id: UUID):
+        return self._api.put(label_id)
+
+    def delete_label(self, label_id: UUID):
+        return self._api.delete(label_id)
 
 
     

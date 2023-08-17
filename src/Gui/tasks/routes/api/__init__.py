@@ -10,3 +10,4 @@ from .labels import bp_api_labels as bp_api_labels
 from .event_labels import bp_api_event_labels as bp_api_event_labels
 from .checklists import bp_api_checklists as bp_api_checklists
 from .checklist_items import bp_api_checklist_items as bp_api_checklist_items
+from .checklist_labels import bp_api_checklist_labels as bp_api_checklist_labels
