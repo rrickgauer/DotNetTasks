@@ -43,6 +43,6 @@ def checklist_settings_page(checklist_id: UUID):
 def checklist_settings_labels_page(checklist_id: UUID):
     page_view = checklist_services.get_labels_checklist_settings_page_view(checklist_id)
 
-    print(flask.json.dumps(page_view, indent=4))
+    # print(flask.json.dumps(page_view, indent=4))
 
     return flask.render_template('pages/checklist-settings/labels/index.html', data=page_view)

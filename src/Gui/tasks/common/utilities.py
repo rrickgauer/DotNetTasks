@@ -1,6 +1,7 @@
 
 from __future__ import annotations
 from tasks import config
+import flask
 
 #------------------------------------------------------
 # Build a complete url for a gui endpoint
@@ -12,4 +13,9 @@ def build_gui_url(endpoint: str) -> str:
     url    = f'{prefix}{endpoint}'
     return url
 
+
+def dump(data):
+    print(flask.json.dumps(data, indent=4))
         
+
+    

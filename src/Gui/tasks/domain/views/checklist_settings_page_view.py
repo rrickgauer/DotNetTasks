@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from .page_view import PageView
 from tasks.domain.models import ChecklistResponse
 from tasks.domain.models import ChecklistItemResponse
-from tasks.domain.models import LabelResponse
+from tasks.domain.models import LabelAssignment
 from typing import Optional as Opt
 from typing import List
 
@@ -24,7 +24,7 @@ class GeneralChecklistSettingsPageView(BaseChecklistSettingsPageView):
 @dataclass
 class LabelsChecklistSettingsPageView(BaseChecklistSettingsPageView):
     checklist : Opt[ChecklistResponse] = None
-    labels    : Opt[LabelResponse]     = None
+    labels    : Opt[LabelAssignment]   = None
 
 
 

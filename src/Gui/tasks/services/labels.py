@@ -11,7 +11,7 @@ import flask
 from dataclasses import dataclass
 from uuid import UUID
 import requests
-from tasks.domain.models.api_responses import LabelResponse
+from tasks.domain.models import LabelResponse
 from tasks.common import security
 from tasks.common.structs import BaseReturn
 from tasks.apiwrapper import ApiUrlBuilder

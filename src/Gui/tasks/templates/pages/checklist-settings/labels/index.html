@@ -7,9 +7,29 @@ data:
         - type : Opt[str]
         - createdOn : Opt[datetime]
         - countItems : Opt[int]
+    
+    - labels
+        - id        : Opt[UUID]    
+        - name      : Opt[str]     
+        - color     : Opt[str]     
+        - createdOn : Opt[datetime]
 #}
 
 {% extends 'pages/checklist-settings/checklist-settings-base.html' %}
+
+
+{% macro get_checklist_label_html(label) %}
+    <div class="form-check form-check-checklist-label" data-label-id="{{ label.id }}">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="labels" value="{{ label.id }}" {{ 'checked' if label.isAssigned}}>
+            <div class="d-flex">
+                <div class="mr-2"><i class="bx bxs-circle" style="color: {{ label.color }};"></i></div>
+                <div class="mr-2">{{ label.name }}</div>
+            </div>
+        </label>
+    </div>
+{% endmacro %}
+
 
 {% block title %}Labels{% endblock %}
 
@@ -17,13 +37,29 @@ data:
 
 {% block settings_content %}
 
+
 <div class="container">
-    <h2>Labels</h2>
+    <div class="card card-body my-shadow">
+        <div class="checklist-labels-container container-loading">
+
+            <div class="container-loading-spinner">
+                {% include 'includes/spinner-center.html' %}
+            </div>
+
+            <div class="container-loading-content">
+                <form id="checklist-labels-form">
+                    
+                    {% for label in data.labels %}
+                        {{ get_checklist_label_html(label) }}
+                    {% endfor %}
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
-
-
 
 
 {% block footer %}

@@ -10,9 +10,13 @@ from .api_responses import RecurrenceResponse as RecurrenceResponse
 from .api_responses import EventApiResponse as EventApiResponse
 from .api_responses import UserSignUpUserResponse as UserSignUpUserResponse
 from .api_responses import UserSignUpResponse as UserSignUpResponse
-from .api_responses import LabelResponse as LabelResponse
+
 from .api_responses import ChecklistResponse as ChecklistResponse
 from .api_responses import ChecklistItemResponse as ChecklistItemResponse
+
+
+from .label import LabelResponse as LabelResponse
+from .label import LabelAssignment as LabelAssignment
 
 
 

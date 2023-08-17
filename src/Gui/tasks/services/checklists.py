@@ -15,6 +15,7 @@ from .checklist_labels import ChecklistLabelsService
 from markupsafe import Markup
 from flasklib.errors import RequestError
 
+
 def get_checklists() -> List[models.ChecklistResponse]:
     """Get all the user's checklists"""
 
@@ -53,7 +54,6 @@ def save_checklist(checklist_id: UUID, data: dict) -> requests.Response:
     return response
 
 
-
 def get_general_checklist_settings_page_view(checklist_id: UUID) -> GeneralChecklistSettingsPageView:
     """Get the page view for the general checklist settings page"""
     
@@ -84,8 +84,8 @@ def get_labels_checklist_settings_page_view(checklist_id: UUID) -> LabelsCheckli
 
 
 def _set_base_page_view_data(page_view: BaseChecklistSettingsPageView, checklist_id: UUID):
+    """Fetch the checklist data for the given page view"""
     page_view.checklist = get_checklist(checklist_id)
-
 
 
 def get_checklist(checklist_id: UUID):
