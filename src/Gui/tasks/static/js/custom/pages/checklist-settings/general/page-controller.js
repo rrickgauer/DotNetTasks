@@ -39,7 +39,7 @@ export class ChecklistSettingsPageController
 
     constructor()
     {
-        this.checklistId                = UrlMethods.getPathValue(1);
+        this.#checklistId               = UrlMethods.getPathValue(1);
         this.#generalSettingsForm       = new GeneralSettingsFormController(this.#checklistId);
         this.#deleteChecklistController = new DeleteChecklistController(this.#checklistId);
         this.#cloneChecklistController  = new CloneChecklistController(this.#checklistId);
