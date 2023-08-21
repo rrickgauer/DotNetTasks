@@ -5,6 +5,7 @@ from uuid import UUID
 from tasks.domain.enums import EventFrequency
 from flasklib.mappers import IMappable
 from typing import Optional as Opt
+from .label import LabelResponse
 
 #------------------------------------------------------
 # Json object returned from the api for retrieving recurrences
@@ -51,14 +52,6 @@ class UserSignUpResponse(IMappable):
     successful: Opt[bool]                      = None
     user      : Opt[UserSignUpUserResponse] = None
     error     : Opt[str]                       = None
-
-@dataclass
-class LabelResponse(IMappable):
-    id        : Opt[UUID]     = None
-    userId    : Opt[UUID]     = None
-    name      : Opt[str]      = None
-    color     : Opt[str]      = None
-    createdOn : Opt[datetime] = None
 
 
 @dataclass

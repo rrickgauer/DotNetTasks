@@ -22,6 +22,20 @@ textarea {
 }
 
 
+.container-loading {
+    & {
+        .container-loading-spinner {display: none;}
+        .container-loading-content {display: block;}
+    }
+
+    &.loading {
+        .container-loading-spinner {display: block;}
+        .container-loading-content {display: none;}
+    }
+}
+
+
+
 // card bg shadow
 .my-shadow {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
@@ -209,6 +223,38 @@ textarea {
     .checklists-sidebar-header {
         display: block;
     }
+
+
+    .checklist-sidebar-items .list-group-item {
+
+        border: none;
+        
+        
+        // border-bottom: 1px solid $custom-color-gray-lighter;
+
+        padding: 12px 0px;
+
+
+
+        &.active {
+            background-color: inherit;
+            color: inherit;
+
+            .checklist-text {
+                border-left: 4px solid $custom-color-primary;
+            }
+
+            .checklist-title {
+                font-weight: bolder;
+            }
+        }
+
+        &.active:hover {
+            background-color: #f8f9fa;
+            color: #495057;
+            
+        }
+    }
 }
 
 
@@ -256,6 +302,8 @@ $sidenav-lg-width: 500px;
     min-width: 100%;
     margin: 10px 10px;
     scroll-snap-align: center;
+    border-top: 3px solid $custom-color-primary;
+    background-color: $custom-color-gray-lightest;
 }
 
 @media screen and (min-width: 768px) {
@@ -280,6 +328,16 @@ $sidenav-lg-width: 500px;
 
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 // show/hide checklist item edit form
 .checklist-item {

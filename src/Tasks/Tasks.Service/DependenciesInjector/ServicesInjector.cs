@@ -39,7 +39,8 @@ public static class ServicesInjector
         .AddScoped<IEventLabelServices, EventLabelServices>()
         .AddScoped<IChecklistServices, ChecklistServices>()
         .AddScoped<IChecklistItemServices, ChecklistItemServices>()
-        
+        .AddScoped<IChecklistLabelServices, ChecklistLabelServices>()
+
         .AddSingleton<IMapperServices, MapperServices>()
         
 
@@ -53,6 +54,7 @@ public static class ServicesInjector
         .AddScoped<IEventLabelRepository, EventLabelRepository>()
         .AddScoped<IChecklistRepository, ChecklistRepository>()
         .AddScoped<IChecklistItemRepository, ChecklistItemRepository>()
+        .AddScoped<IChecklistLabelRepository, ChecklistLabelRepository>()
 
         .AddTransient<DbConnection>()
 

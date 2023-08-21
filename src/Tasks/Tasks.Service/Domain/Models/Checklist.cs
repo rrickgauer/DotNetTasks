@@ -5,7 +5,7 @@ using Tasks.Service.Domain.TableView;
 
 namespace Tasks.Service.Domain.Models;
 
-public class Checklist : ITableViewModel<ChecklistTableView, Checklist>
+public class Checklist : ITableViewModel<ChecklistView, Checklist>, ITableViewModel<ChecklistLabelView, Checklist>
 {
     [SqlColumn("id")]
     public Guid? Id { get; set; }
@@ -28,7 +28,7 @@ public class Checklist : ITableViewModel<ChecklistTableView, Checklist>
 
 
     // ITableViewModel
-    public static explicit operator Checklist(ChecklistTableView other)
+    public static explicit operator Checklist(ChecklistView other)
     {
         Checklist checklist = new()
         {
@@ -41,6 +41,20 @@ public class Checklist : ITableViewModel<ChecklistTableView, Checklist>
 
         return checklist;
 
+    }
+
+    public static explicit operator Checklist(ChecklistLabelView other)
+    {
+        Checklist checklist = new()
+        {
+            Id = other.ChecklistId,
+            Title = other.ChecklistTitle,
+            UserId = other.ChecklistUserId,
+            ListType = other.ChecklistTypeId.Value,
+            CreatedOn = other.ChecklistCreatedOn.Value,
+        };
+
+        return checklist;
     }
 }
 

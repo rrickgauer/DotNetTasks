@@ -1,0 +1,52 @@
+{#
+
+data:
+    - checklist
+        - id : Opt[UUID]
+        - title : Opt[str]
+        - type : Opt[str]
+        - createdOn : Opt[datetime]
+        - countItems : Opt[int]
+    
+    - checklist_items:
+        - id         : Opt[str]      
+        - content    : Opt[str]      
+        - createdOn  : Opt[datetime] 
+        - position   : Opt[int]      
+        - isComplete : Opt[bool]     
+
+    - labels
+        - id        : Opt[UUID]    
+        - name      : Opt[str]     
+        - color     : Opt[str]     
+        - createdOn : Opt[datetime]
+#}
+
+
+{% extends 'base.html' %}
+
+{% block title %}General{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+        
+        <div class="col-sm-12 col-md-8">
+            {% include 'pages/checklist-settings/general/main/main-page.html' %}
+        </div>
+
+        <div class="col-sm-12 col-md-4">
+            {% include 'pages/checklist-settings/general/sidebar.html' %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block footer %}
+<script src="/static/js/dist/checklist-settings.general.bundle.js"></script>
+{% endblock %}
+

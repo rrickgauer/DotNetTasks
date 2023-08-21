@@ -31,7 +31,7 @@ def checklists_page():
 @bp_checklists.route('<uuid:checklist_id>')
 @security.login_required
 def checklist_settings_page(checklist_id: UUID):
-    
-    page_view = checklist_services.get_settings_page_view(checklist_id)
-    return flask.render_template('pages/checklist-settings/index.html', data=page_view)
-    
+    page_view = checklist_services.get_general_checklist_settings_page_view(checklist_id)
+    return flask.render_template('pages/checklist-settings/general/index.html', data=page_view)
+
+

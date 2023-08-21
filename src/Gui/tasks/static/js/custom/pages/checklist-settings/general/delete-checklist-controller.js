@@ -1,6 +1,6 @@
-import { NativeEvents } from "../../domain/constants/native-events";
-import { ChecklistSettingsChecklistDeletedEvent } from "../../domain/events/events";
-import { ChecklistServices } from "../../services/checklist-services";
+import { NativeEvents } from "../../../domain/constants/native-events";
+import { ChecklistSettingsChecklistDeletedEvent } from "../../../domain/events/events";
+import { ChecklistServices } from "../../../services/checklist-services";
 
 
 export class DeleteChecklistElements

@@ -40,12 +40,16 @@ public class EventLabelServices : IEventLabelServices
     /// <param name="eventLabelRequestParms"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<EventLabel?> CreateAsync(EventLabelRequestParms eventLabelRequestParms, Guid userId)
+    public async Task<EventLabel?> SaveAsync(EventLabelForm eventLabelRequestParms)
     {
-        EventLabel eventLabel = (EventLabel)eventLabelRequestParms;
-        eventLabel.CreatedOn = DateTime.Now;
+        EventLabel eventLabel = new()
+        {
+            CreatedOn = DateTime.Now,
+        };
 
-        int numRecords = await _eventLabelRepository.InsertAsync(eventLabel, userId);
+        eventLabelRequestParms.CopyFieldsToModel(eventLabel);
+
+        int numRecords = await _eventLabelRepository.InsertAsync(eventLabel);
 
         if (numRecords <= 0)
         {
@@ -69,9 +73,9 @@ public class EventLabelServices : IEventLabelServices
     /// <param name="eventId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<Label>> GetEventLabelsAsync(Guid eventId, Guid userId)
+    public async Task<IEnumerable<Label>> GetAssignedLabelsAsync(Guid eventId)
     {
-        DataTable dataTable = await _eventLabelRepository.SelectAllAsync(eventId, userId);
+        DataTable dataTable = await _eventLabelRepository.SelectAllForEventAsync(eventId);
 
         return _mapperServices.ToModels<Label>(dataTable);   
     }
@@ -92,7 +96,7 @@ public class EventLabelServices : IEventLabelServices
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<EventLabel>> GetUserEventLabelsAsync(Guid userId)
+    public async Task<IEnumerable<EventLabel>> GetAll(Guid userId)
     {
         DataTable dataTable = await _eventLabelRepository.SelectAllAsync(userId);
 
@@ -108,10 +112,10 @@ public class EventLabelServices : IEventLabelServices
     /// <param name="eventId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<LabelAssignment>> GetUserEventLabelAssignmentsAsync(Guid eventId, Guid userId)
+    public async Task<IEnumerable<LabelAssignment>> GetLabelAssignmentsForEvent(Guid eventId, Guid userId)
     {
         var labels = await _labelServices.GetLabelsAsync(userId);
-        var eventLabels = await GetEventLabelsAsync(eventId, userId);
+        var eventLabels = await GetAssignedLabelsAsync(eventId);
         var result = new List<LabelAssignment>();
 
         foreach (var label in labels)
@@ -139,9 +143,9 @@ public class EventLabelServices : IEventLabelServices
     /// <param name="labelId"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<bool> DeleteAsync(Guid eventId, Guid labelId)
+    public async Task<bool> DeleteAsync(EventLabelForm form)
     {
-        var numRecords = await _eventLabelRepository.DeleteAsync(eventId, labelId);
+        var numRecords = await _eventLabelRepository.DeleteAsync(form.EventId, form.LabelId);
 
         if (numRecords == 1)
         {

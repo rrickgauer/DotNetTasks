@@ -4,7 +4,7 @@ using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Service.Domain.TableView;
 
-public class ChecklistTableView : ITableView
+public class ChecklistView : ITableView
 {
     // ITableView
     [JsonIgnore]

@@ -65,7 +65,7 @@ public class RecurrenceServices : IRecurrenceServices
     public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval)
     {
         // get the user's events, labels, and EventLabels from each of the services
-        var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
+        var eventLabels = await _eventLabelServices.GetAll(recurrenceRetrieval.UserId);
         var events      = await _eventServices.GetUserEventsAsync(recurrenceRetrieval.UserId);
         var labels      = await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId);
         var recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval);
@@ -126,7 +126,7 @@ public class RecurrenceServices : IRecurrenceServices
     public async Task<IEnumerable<GetRecurrencesResponse>> GetRecurrencesAsync(RecurrenceRetrieval recurrenceRetrieval, Guid eventId)
     {
         // get the user's events, labels, and EventLabels from each of the services
-        var eventLabels = await _eventLabelServices.GetUserEventLabelsAsync(recurrenceRetrieval.UserId);
+        var eventLabels = await _eventLabelServices.GetAll(recurrenceRetrieval.UserId);
         var labels = await _labelServices.GetLabelsAsync(recurrenceRetrieval.UserId);
         var recurrences = await GetRecurrecesFromDbAsync(recurrenceRetrieval, eventId);
 

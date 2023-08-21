@@ -49,9 +49,9 @@ public class EventLabelsController : ControllerBase
     [HttpPut("{eventId}/labels/{labelId}")]
     [ServiceFilter(typeof(EventAuthFilter))]
     [ServiceFilter(typeof(LabelAuthFilter))]
-    public async Task<ActionResult<EventLabel>> PutAsync([FromRoute] EventLabelRequestParms eventLabelRequest)
+    public async Task<ActionResult<EventLabel>> PutAsync([FromRoute] EventLabelForm eventLabelRequest)
     {
-        EventLabel? newEventLabel = await _eventLabelServices.CreateAsync(eventLabelRequest, CurrentUserId);
+        EventLabel? newEventLabel = await _eventLabelServices.SaveAsync(eventLabelRequest);
 
         if (newEventLabel is null)
         {
@@ -73,7 +73,7 @@ public class EventLabelsController : ControllerBase
     public async Task<LabelsCollection> GetAsync([FromRoute] Guid eventId)
     {
         // now, fetch the labels that have been assigned to the event
-        var labels = await _eventLabelServices.GetEventLabelsAsync(eventId, CurrentUserId);
+        var labels = await _eventLabelServices.GetAssignedLabelsAsync(eventId);
 
         return Ok(labels);
     }
@@ -102,7 +102,7 @@ public class EventLabelsController : ControllerBase
         var insertResult = await _eventLabelServices.CreateBatchAsync(eventLabelsBatchRequest);
 
         // now, fetch the newly assigned labels
-        var labels = await _eventLabelServices.GetEventLabelsAsync(eventId, CurrentUserId);
+        var labels = await _eventLabelServices.GetAssignedLabelsAsync(eventId);
 
         return Ok(labels);
     }

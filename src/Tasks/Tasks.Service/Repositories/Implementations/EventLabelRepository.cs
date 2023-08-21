@@ -22,7 +22,6 @@ public class EventLabelRepository : IEventLabelRepository
     public EventLabelRepository(DbConnection dbConnection)
     {
         _dbConnection = dbConnection;
-        
     }
 
     /// <summary>
@@ -31,18 +30,15 @@ public class EventLabelRepository : IEventLabelRepository
     /// <param name="eventLabel"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<int> InsertAsync(EventLabel eventLabel, Guid userId)
+    public async Task<int> InsertAsync(EventLabel eventLabel)
     {
         MySqlCommand command = new(EventLabelCommands.Insert);
 
         command.Parameters.AddWithValue("@event_id", eventLabel.EventId);
         command.Parameters.AddWithValue("@label_id", eventLabel.LabelId);
         command.Parameters.AddWithValue("@created_on", eventLabel.CreatedOn);
-        command.Parameters.AddWithValue("@user_id", userId);
 
-        int numRecords = await _dbConnection.ModifyAsync(command);
-
-        return numRecords;
+        return await _dbConnection.ModifyAsync(command);
     }
 
     /// <summary>
@@ -51,12 +47,11 @@ public class EventLabelRepository : IEventLabelRepository
     /// <param name="eventId"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public async Task<DataTable> SelectAllAsync(Guid eventId, Guid userId)
+    public async Task<DataTable> SelectAllForEventAsync(Guid eventId)
     {
         MySqlCommand command = new(EventLabelCommands.SelectAllByIdAndUserId);
 
         command.Parameters.AddWithValue("@event_id", eventId);
-        command.Parameters.AddWithValue("@user_id", userId);
 
         DataTable records = await _dbConnection.FetchAllAsync(command);
 

@@ -4,13 +4,15 @@ import requests
 from tasks.apiwrapper import ApiWrapperChecklists
 from tasks.apiwrapper import ApiWrapperChecklistClones
 from tasks.domain import models
-from tasks.domain.views import ChecklistSettingsPageView
+from tasks.domain.views import GeneralChecklistSettingsPageView
 from .checklist_items import ChecklistItemService
 from typing import List
 from tasks.common.macros import ChecklistsSidebarMacro
 from tasks.common.macros import OpenChecklistCardMarco
+from .checklist_labels import ChecklistLabelsService
 from markupsafe import Markup
 from flasklib.errors import RequestError
+
 
 def get_checklists() -> List[models.ChecklistResponse]:
     """Get all the user's checklists"""
@@ -50,17 +52,19 @@ def save_checklist(checklist_id: UUID, data: dict) -> requests.Response:
     return response
 
 
-def get_settings_page_view(checklist_id: UUID) -> ChecklistSettingsPageView:
+def get_general_checklist_settings_page_view(checklist_id: UUID) -> GeneralChecklistSettingsPageView:
+    """Get the page view for the general checklist settings page"""
     
     checklist_item_service = ChecklistItemService(checklist_id)
+    checklist_labels_service = ChecklistLabelsService(checklist_id)
 
-    result = ChecklistSettingsPageView(
-        checklist = get_checklist(checklist_id),
+    page_view = GeneralChecklistSettingsPageView(
+        checklist       = get_checklist(checklist_id),
         checklist_items = checklist_item_service.get_checklist_items(),
+        labels          = checklist_labels_service.get_all_label_assignments(),
     )
 
-    return result
-
+    return page_view
 
 
 def get_checklist(checklist_id: UUID):
