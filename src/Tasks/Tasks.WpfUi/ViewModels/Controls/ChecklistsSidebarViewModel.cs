@@ -141,6 +141,22 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
         SetChecklistIsSelected(checklistId, true);
     }
 
+    public async Task<bool> DeleteChecklistTaskAsync(Guid checklistId)
+    {
+        var checklist = GetChecklistById(checklistId);
+
+        checklist.IsSelectedChangedEvent -= ChecklistIsSelectedChangedEvent;
+
+        if (!Checklists.Remove(checklist))
+        {
+            return false;
+        }
+
+        await _checklistServices.DeleteChecklistAsync(checklistId);
+
+        return true;
+    }
+
 
     #endregion
 
