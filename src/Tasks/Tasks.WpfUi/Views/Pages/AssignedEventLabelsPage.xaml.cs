@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Tasks.WpfUi.ViewModels;
+using Tasks.WpfUi.ViewModels.Pages;
 using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.Views.Pages;

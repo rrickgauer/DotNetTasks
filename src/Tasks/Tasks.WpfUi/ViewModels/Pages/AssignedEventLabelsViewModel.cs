@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
@@ -15,7 +12,7 @@ using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
-namespace Tasks.WpfUi.ViewModels;
+namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class AssignedEventLabelsViewModel : ObservableObject, INavigationAware
 {

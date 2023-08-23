@@ -7,7 +7,7 @@ using Wpf.Ui.Controls;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
-namespace Tasks.WpfUi.ViewModels;
+namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class ContainerViewModel : ObservableObject
 {
@@ -83,6 +83,15 @@ public partial class ContainerViewModel : ObservableObject
                 PageTag = "recurrences",
                 Icon = SymbolRegular.CalendarLtr32,
                 PageType = typeof(Views.Pages.RecurrencesPage),
+                Visibility = System.Windows.Visibility.Visible,
+            },
+
+            new NavigationItem()
+            {
+                Content = "Checklists",
+                PageTag = "checklists",
+                Icon = SymbolRegular.CheckboxChecked24,
+                PageType = typeof(Views.Pages.Checklists.ChecklistsPage),
                 Visibility = System.Windows.Visibility.Visible,
             },
 

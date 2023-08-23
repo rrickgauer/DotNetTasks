@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Tasks.WpfUi.ViewModels;
+using Tasks.WpfUi.ViewModels.Pages;
 using Wpf.Ui.Common.Interfaces;
 using LabelModel = Tasks.Service.Domain.Models.Label;
 

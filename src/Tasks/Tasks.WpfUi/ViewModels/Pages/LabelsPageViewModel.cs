@@ -3,23 +3,19 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Tasks.Service.Domain.Models;
-using Tasks.Service.Domain.Parms;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
-using Tasks.Service.Utilities;
 using Tasks.WpfUi.Helpers;
-using Tasks.WpfUi.Views.Windows;
 using Wpf.Ui.Mvvm.Contracts;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Controls.Interfaces;
 using System.Windows;
 
-namespace Tasks.WpfUi.ViewModels;
+namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class LabelsPageViewModel : ObservableObject, INavigationAware
 {
