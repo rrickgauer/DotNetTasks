@@ -129,6 +129,21 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
     #endregion
 
 
+    #region - Public Methods -
+
+    public void CloseChecklist(Guid checklistId)
+    {
+        SetChecklistIsSelected(checklistId, false);
+    }
+
+    public void OpenChecklist(Guid checklistId)
+    {
+        SetChecklistIsSelected(checklistId, true);
+    }
+
+
+    #endregion
+
     #region - Private Methods -
 
     /// <summary>
@@ -221,6 +236,28 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
 
         return checklistView;
     }
+
+
+
+    private ChecklistSidebarDisplayModel GetChecklistById(Guid checklistId)
+    {
+        return Checklists.Where(c => c.Model.Id == checklistId).First();
+    }
+
+
+    private void SetChecklistIsSelected(Guid checklistId, bool isSelected)
+    {
+        var checklist = GetChecklistById(checklistId);
+        SetIsSelectedQuietly(checklist, isSelected);
+    }
+
+    private void SetIsSelectedQuietly(ChecklistSidebarDisplayModel checklist, bool isSelected)
+    {
+        checklist.IsSelectedChangedEvent -= ChecklistIsSelectedChangedEvent;
+        checklist.IsSelected = isSelected;
+        checklist.IsSelectedChangedEvent += ChecklistIsSelectedChangedEvent;
+    }
+
 
     #endregion
 

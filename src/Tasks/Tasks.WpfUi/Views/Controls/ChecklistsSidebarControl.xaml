@@ -104,13 +104,6 @@
                                 <ColumnDefinition Width=".2*" />
                             </Grid.ColumnDefinitions>
 
-                            <!--<Grid.ContextMenu>
-                                <ContextMenu>
-                                    <ui:MenuItem Header="Edit"/>
-                                    <ui:MenuItem Header="Delete"/>
-                                </ContextMenu>
-                            </Grid.ContextMenu>-->
-
                             <Grid.Resources>
                                 <Style TargetType="Grid">
                                     <Style.Triggers>
@@ -123,10 +116,11 @@
 
 
                             <TextBlock Text="{Binding DisplayTitle}"
-                                        Style="{StaticResource SidebarTextStyle}"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left" 
-                                        VerticalAlignment="Center" FontSize="16" />
+                                       ToolTip="{Binding Model.Title}"
+                                       Style="{StaticResource SidebarTextStyle}"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left" 
+                                       VerticalAlignment="Center" FontSize="16" />
 
                             <ui:Badge Appearance="Light" 
                                         Grid.Column="1"

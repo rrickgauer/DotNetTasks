@@ -19,12 +19,44 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
         <!--Sidebar checklists control-->
-        <Border Grid.Column="0" Padding="8">
+        <Border Grid.Column="0" 
+                Grid.Row="0"
+                Visibility="{Binding ViewModel.IsProgressRingVisible, Converter={StaticResource BoolToVisibilityInverseConverter}}"
+                d:Visibility="Visible"
+                Padding="8" >
             <UserControls:ChecklistsSidebarControl />
-            
         </Border>
+
+        <!--Open checklists-->
+        <Border Grid.Column="1" 
+                Grid.Row="0"
+                Visibility="{Binding ViewModel.IsProgressRingVisible, Converter={StaticResource BoolToVisibilityInverseConverter}}"
+                d:Visibility="Visible"
+                Padding="8">
+            <ListView ItemsSource="{Binding ViewModel.OpenChecklistControls}"
+                  d:ItemsSource="{d:SampleData ItemCount=5}"
+                  ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Border>
+
+        
+        <!--Progress ring loading indicator-->
+        <ui:ProgressRing Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="0"
+                         IsIndeterminate="True"
+                         Visibility="{Binding ViewModel.IsProgressRingVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                         d:Visibility="Collapsed" />
 
     </Grid>
 </ui:UiPage>
