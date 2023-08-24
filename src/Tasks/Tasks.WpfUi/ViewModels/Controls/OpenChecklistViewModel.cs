@@ -1,13 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Interfaces;
+using Tasks.WpfUi.Messaging;
+using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Messaging;
+using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
 
-public partial class OpenChecklistViewModel : ObservableObject
+public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices = App.GetService<IChecklistServices>();
@@ -16,12 +21,7 @@ public partial class OpenChecklistViewModel : ObservableObject
     #region - Public Properties -
     public Guid ChecklistId { get; private set; }
     public bool IsChecklistLoaded => Checklist != null;
-    #endregion
 
-    #region - Events -
-    public event EventHandler<Guid> CloseOpenChecklistEvent;
-    public event EventHandler<Guid> OpenChecklistSettingsPageEvent;
-    public event EventHandler<Guid> DeleteOpenChecklistEvent;
     #endregion
 
     #region - Generated Properties -
@@ -49,6 +49,7 @@ public partial class OpenChecklistViewModel : ObservableObject
     public OpenChecklistViewModel(Guid checklistId)
     {
         ChecklistId = checklistId;
+        RegisterMessenger();
     }
 
     #endregion
@@ -61,7 +62,9 @@ public partial class OpenChecklistViewModel : ObservableObject
     [RelayCommand]
     private void CloseButtonClicked()
     {
-        CloseOpenChecklistEvent?.Invoke(this, ChecklistId);
+        //CloseOpenChecklistEvent?.Invoke(this, ChecklistId);
+
+        TaskMessengerServices.Send(new CloseOpenChecklistMessage(ChecklistId));
     }
 
     /// <summary>
@@ -70,7 +73,9 @@ public partial class OpenChecklistViewModel : ObservableObject
     [RelayCommand]
     private void OpenChecklistSettingsPage()
     {
-        OpenChecklistSettingsPageEvent?.Invoke(this, ChecklistId);
+        //OpenChecklistSettingsPageEvent?.Invoke(this, ChecklistId);
+
+        TaskMessengerServices.Send(new OpenChecklistSettingsPageMessage(ChecklistId));
     }
 
     /// <summary>
@@ -79,7 +84,9 @@ public partial class OpenChecklistViewModel : ObservableObject
     [RelayCommand]
     private void DeleteOpenChecklist()
     {
-        DeleteOpenChecklistEvent?.Invoke(this, ChecklistId);
+        //DeleteOpenChecklistEvent?.Invoke(this, ChecklistId);
+
+        TaskMessengerServices.Send(new DeleteChecklistMessage(ChecklistId));
     }
 
 
@@ -98,6 +105,22 @@ public partial class OpenChecklistViewModel : ObservableObject
         Checklist = await _checklistServices.GetChecklistAsync(ChecklistId);
 
         IsProgressBarVisible = false;
+    }
+
+
+    #endregion
+
+
+    #region - ITaskMessenger -
+    public void RegisterMessenger()
+    {
+        WeakReferenceMessenger.Default.RegisterAll(this);
+    }
+
+    public void CleanUp()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.Cleanup();
     }
 
     #endregion
