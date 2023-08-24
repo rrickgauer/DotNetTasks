@@ -1,19 +1,26 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Tasks.Service.Services.Interfaces;
-using Tasks.WpfUi.DisplayModels;
+using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
 using Tasks.WpfUi.ViewModels.Controls;
 using Tasks.WpfUi.Views.Controls;
 using Wpf.Ui.Common.Interfaces;
+using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Pages;
 
-public partial class ChecklistsViewModel : ObservableObject, INavigationAware
+public partial class ChecklistsViewModel : ObservableObject, INavigationAware, ITaskMessenger,
+    IRecipient<CloseOpenChecklistMessage>,
+    IRecipient<DeleteChecklistMessage>,
+    IRecipient<OpenChecklistSettingsPageMessage>,
+    IRecipient<OpenChecklistControlMessage>
+
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices;
@@ -21,7 +28,8 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
     private readonly CustomAlertServices _customAlertServices;
 
     private Queue<Guid> OpenChecklistControlIds => new(OpenChecklistControls.Select(c => c.ViewModel.ChecklistId));
-    private Queue<Guid> OpenChecklistIdsCache = new();
+    
+    private readonly Queue<Guid> OpenChecklistIdsCache = new();
 
     #endregion
 
@@ -52,42 +60,32 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
         _checklistsSidebarViewModel = checklistsSidebarViewModel;
         _customAlertServices = customAlertServices;
 
-        _checklistsSidebarViewModel.ChecklistSelectedEvent += OnSidebarChecklistSelectedEvent;
+        RegisterMessenger();
     }
 
 
-    #region - Event Handlers -
+    #region - ITaskMessenger Event Handlers -
 
-    /// <summary>
-    /// Event handler for when a sidebar checklist item is selected
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="checklistId"></param>
-    private async void OnSidebarChecklistSelectedEvent(object? sender, ChecklistSidebarDisplayModel checklistSidebarDisplayModel)
+    public async void Receive(OpenChecklistControlMessage message)
     {
-        if (checklistSidebarDisplayModel.IsSelected)
-        {
-            await OpenChecklistAsync(checklistSidebarDisplayModel.Model.Id.Value);
-        }
-        else
-        {
-            CloseChecklist(checklistSidebarDisplayModel.Model.Id.Value);
-        }
+        await OpenChecklistAsync(message.Value);
     }
 
-    private void OnCloseOpenChecklistEvent(object? sender, Guid checklistId)
+    
+    public void Receive(CloseOpenChecklistMessage message)
     {
-        CloseChecklist(checklistId);
+        CloseChecklist(message.Value);
     }
 
-    private async void OnDeleteOpenChecklistEvent(object? sender, Guid checklistId)
+    public async void Receive(DeleteChecklistMessage message)
     {
-        await DeleteChecklistAsync(checklistId);
+        await DeleteChecklistAsync(message.Value);
     }
 
-    private void OnOpenChecklistSettingsPageEvent(object? sender, Guid checklistId)
+    public void Receive(OpenChecklistSettingsPageMessage message)
     {
         // open checklist settings page
+        var checklistId = message.Value;
     }
 
     #endregion
@@ -136,14 +134,10 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
     /// </summary>
     /// <param name="checklistId"></param>
     /// <returns></returns>
-    private OpenChecklistControl CreateNewOpenChecklistControl(Guid checklistId)
+    private static OpenChecklistControl CreateNewOpenChecklistControl(Guid checklistId)
     {
         OpenChecklistControl control = new(checklistId);
         
-        control.ViewModel.CloseOpenChecklistEvent += OnCloseOpenChecklistEvent;
-        control.ViewModel.OpenChecklistSettingsPageEvent += OnOpenChecklistSettingsPageEvent;
-        control.ViewModel.DeleteOpenChecklistEvent += OnDeleteOpenChecklistEvent;
-
         return control;
     }
 
@@ -156,9 +150,6 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
     {
         // remove the open checklist control
         RemoveOpenChecklistControl(checklistId);
-
-        // close the checklist in the sidebar
-        _checklistsSidebarViewModel.CloseChecklist(checklistId);
     }
 
     /// <summary>
@@ -170,9 +161,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
         var control = GetOpenChecklistControl(checklistId);
 
         // unsubscribe to all its event listeners
-        control.ViewModel.CloseOpenChecklistEvent -= OnCloseOpenChecklistEvent;
-        control.ViewModel.OpenChecklistSettingsPageEvent -= OnOpenChecklistSettingsPageEvent;
-        control.ViewModel.DeleteOpenChecklistEvent -= OnDeleteOpenChecklistEvent;
+        control.ViewModel.CleanUp();
 
         // remove it from the list
         OpenChecklistControls.Remove(control);
@@ -267,6 +256,22 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware
     public async void OnNavigatedTo()
     {
         await LoadDataAsync();
+    }
+
+    #endregion
+
+
+    #region - ITaskMessenger -
+
+    public void RegisterMessenger()
+    {
+        WeakReferenceMessenger.Default.RegisterAll(this);
+    }
+
+    public void CleanUp()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.Cleanup();
     }
 
     #endregion

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,11 +11,13 @@ using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.DisplayModels;
+using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
+using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
 
-public partial class ChecklistsSidebarViewModel : ObservableObject
+public partial class ChecklistsSidebarViewModel : ObservableObject, ITaskMessenger, IRecipient<CloseOpenChecklistMessage>
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices;
@@ -24,9 +27,6 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
     private Guid CurrentUserId => _wpfApplicationServices.CurrentUserId;
     #endregion
 
-    #region - Events -
-    public event EventHandler<ChecklistSidebarDisplayModel> ChecklistSelectedEvent;
-    #endregion
 
 
     #region - Generated Properties -
@@ -71,6 +71,8 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
         _checklistServices = checklistServices;
         _wpfApplicationServices = wpfApplicationServices;
         _customAlertServices = customAlertServices;
+
+        RegisterMessenger();
     }
 
 
@@ -145,7 +147,7 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
     {
         var checklist = GetChecklistById(checklistId);
 
-        checklist.IsSelectedChangedEvent -= ChecklistIsSelectedChangedEvent;
+        checklist.CleanUp();
 
         if (!Checklists.Remove(checklist))
         {
@@ -160,6 +162,12 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
 
     #endregion
 
+
+    public void Receive(CloseOpenChecklistMessage message)
+    {
+        CloseChecklist(message.Value);
+    }
+
     #region - Private Methods -
 
     /// <summary>
@@ -168,7 +176,12 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
     public async Task LoadChecklistsAsync()
     {
         Checklists = await GetChecklistsAsync();
-        RegisterChecklistDisplayModelEvents(Checklists);
+
+        foreach (var checklist in Checklists)
+        {
+            checklist.RegisterMessenger();
+        }
+        
     }
 
     /// <summary>
@@ -182,31 +195,6 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
         var displayModels = checklists.Select(m => new ChecklistSidebarDisplayModel(m));
 
         return new(displayModels);        
-    }
-
-    /// <summary>
-    /// Register the event handlers for the given list of checklists
-    /// </summary>
-    /// <param name="checklists"></param>
-    private void RegisterChecklistDisplayModelEvents(IEnumerable<ChecklistSidebarDisplayModel> checklists)
-    {
-        foreach (var checklist in checklists)
-        {
-            checklist.IsSelectedChangedEvent += ChecklistIsSelectedChangedEvent;
-        }
-    }
-
-    /// <summary>
-    /// Event handler for when a checklist is selected
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ChecklistIsSelectedChangedEvent(object? sender, EventArgs args)
-    {
-        if (sender is ChecklistSidebarDisplayModel checklist)
-        {
-            ChecklistSelectedEvent?.Invoke(this, checklist);
-        }
     }
 
     /// <summary>
@@ -253,30 +241,35 @@ public partial class ChecklistsSidebarViewModel : ObservableObject
         return checklistView;
     }
 
-
+    private void SetChecklistIsSelected(Guid checklistId, bool isSelected)
+    {
+        var checklist = GetChecklistById(checklistId);
+        checklist.SetIsSelectedQuietly(isSelected);
+    }
 
     private ChecklistSidebarDisplayModel GetChecklistById(Guid checklistId)
     {
         return Checklists.Where(c => c.Model.Id == checklistId).First();
     }
 
+    #endregion
 
-    private void SetChecklistIsSelected(Guid checklistId, bool isSelected)
+
+    #region - ss
+
+    public void RegisterMessenger()
     {
-        var checklist = GetChecklistById(checklistId);
-        SetIsSelectedQuietly(checklist, isSelected);
+        WeakReferenceMessenger.Default.RegisterAll(this);
     }
 
-    private void SetIsSelectedQuietly(ChecklistSidebarDisplayModel checklist, bool isSelected)
+    public void CleanUp()
     {
-        checklist.IsSelectedChangedEvent -= ChecklistIsSelectedChangedEvent;
-        checklist.IsSelected = isSelected;
-        checklist.IsSelectedChangedEvent += ChecklistIsSelectedChangedEvent;
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.Cleanup();
     }
 
 
     #endregion
-
 
 
 

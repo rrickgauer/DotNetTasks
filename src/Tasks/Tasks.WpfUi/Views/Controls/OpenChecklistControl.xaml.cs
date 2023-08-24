@@ -16,6 +16,8 @@ public partial class OpenChecklistControl : UserControl, INavigableView<OpenChec
     public OpenChecklistControl(Guid checklistId)
     {
         ViewModel = new(checklistId);
+        ViewModel.RegisterMessenger();
+
         DataContext = this;
 
         InitializeComponent();
