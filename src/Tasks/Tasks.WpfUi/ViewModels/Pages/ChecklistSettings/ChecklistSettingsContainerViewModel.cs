@@ -59,6 +59,8 @@ public partial class ChecklistSettingsContainerViewModel : ObservableObject, INa
     {
         _checklistServices = checklistServices;
 
+        App.GetService<ChecklistSettingsGeneralViewModel>().RegisterMessenger();
+
         _navigationItemsList = GetNavItems();
 
         RegisterMessenger();
