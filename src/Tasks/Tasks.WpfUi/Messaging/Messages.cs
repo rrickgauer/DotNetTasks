@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using System;
-using Tasks.WpfUi.DisplayModels;
 
 namespace Tasks.WpfUi.Messaging;
 
