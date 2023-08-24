@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Tasks.WpfUi.ViewModels.Pages;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
@@ -11,19 +12,20 @@ namespace Tasks.WpfUi.Views
     /// </summary>
     public partial class Container : INavigationWindow
     {
-        public ViewModels.ContainerViewModel ViewModel
+        public ContainerViewModel ViewModel
         {
             get;
         }
 
-        public Container(ViewModels.ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService)
+        public Container(ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService, ISnackbarService snackbarService)
         {
             ViewModel = viewModel;
             DataContext = this;
 
             InitializeComponent();
             SetPageService(pageService);
-
+            
+            snackbarService.SetSnackbarControl(RootSnackbar);
             navigationService.SetNavigationControl(RootNavigation);
         }
 

@@ -1,18 +1,19 @@
-﻿using Wpf.Ui.Common.Interfaces;
+﻿using Tasks.WpfUi.ViewModels.Pages;
+using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.Views.Pages
 {
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class DashboardPage : INavigableView<ViewModels.DashboardViewModel>
+    public partial class DashboardPage : INavigableView<DashboardViewModel>
     {
-        public ViewModels.DashboardViewModel ViewModel
+        public DashboardViewModel ViewModel
         {
             get;
         }
 
-        public DashboardPage(ViewModels.DashboardViewModel viewModel)
+        public DashboardPage(DashboardViewModel viewModel)
         {
             ViewModel = viewModel;
 

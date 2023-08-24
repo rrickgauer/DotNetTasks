@@ -9,7 +9,7 @@ using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 
-namespace Tasks.WpfUi.ViewModels;
+namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class DashboardViewModel : ObservableObject, INavigationAware, INotifyPropertyChanged
 {

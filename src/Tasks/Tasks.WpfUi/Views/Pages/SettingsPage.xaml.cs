@@ -1,18 +1,19 @@
-﻿using Wpf.Ui.Common.Interfaces;
+﻿using Tasks.WpfUi.ViewModels.Pages;
+using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.Views.Pages;
 
 /// <summary>
 /// Interaction logic for SettingsPage.xaml
 /// </summary>
-public partial class SettingsPage : INavigableView<ViewModels.SettingsViewModel>
+public partial class SettingsPage : INavigableView<SettingsViewModel>
 {
-    public ViewModels.SettingsViewModel ViewModel
+    public SettingsViewModel ViewModel
     {
         get;
     }
 
-    public SettingsPage(ViewModels.SettingsViewModel viewModel)
+    public SettingsPage(SettingsViewModel viewModel)
     {
         ViewModel = viewModel;
 

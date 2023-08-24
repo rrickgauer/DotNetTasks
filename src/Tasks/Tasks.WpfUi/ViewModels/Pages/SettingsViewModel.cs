@@ -5,7 +5,7 @@ using System.Windows.Input;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 
-namespace Tasks.WpfUi.ViewModels;
+namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class SettingsViewModel : ObservableObject, INavigationAware
 {

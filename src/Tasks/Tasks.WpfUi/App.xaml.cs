@@ -7,16 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using Tasks.Service.Configurations;
-using Tasks.Service.Repositories.Implementations;
-using Tasks.Service.Repositories.Interfaces;
-using Tasks.Service.Services.Implementations;
-using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Models;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
 using Tasks.Service.Domain.CliArgs;
+using Tasks.Service.DependenciesInjector;
+using Tasks.WpfUi.ViewModels.Pages;
+using Tasks.WpfUi.ViewModels.Controls;
 
 namespace Tasks.WpfUi;
 
@@ -57,47 +55,54 @@ public partial class App
 
             services.AddSingleton<ISnackbarService, SnackbarService>();
 
+            services.AddSingleton<CustomAlertServices>();
+
             // Main window container with navigation
             services.AddScoped<INavigationWindow, Views.Container>();
-            services.AddScoped<ViewModels.ContainerViewModel>();
+            services.AddScoped<ContainerViewModel>();
 
             #region Pages and ViewModels
 
             // dashboard page (login)
             services.AddScoped<Views.Pages.DashboardPage>();
-            services.AddScoped<ViewModels.DashboardViewModel>();
+            services.AddScoped<DashboardViewModel>();
 
             // settings
             services.AddScoped<Views.Pages.SettingsPage>();
-            services.AddScoped<ViewModels.SettingsViewModel>();
+            services.AddScoped<SettingsViewModel>();
 
             // Recurrences
             services.AddScoped<Views.Pages.RecurrencesPage>();
-            services.AddScoped<ViewModels.RecurrencesPageViewModel>();
+            services.AddScoped<RecurrencesPageViewModel>();
 
             // Labels
             services.AddScoped<Views.Pages.LabelsPage>();
-            services.AddScoped<ViewModels.LabelsPageViewModel>();
+            services.AddScoped<LabelsPageViewModel>();
 
             // Edit label
             services.AddScoped<Views.Pages.EditLabelPage>();
-            services.AddScoped<ViewModels.EditLabelViewModel>();
+            services.AddScoped<EditLabelViewModel>();
 
             // View event
             services.AddScoped<Views.Pages.ViewEventPage>();
-            services.AddScoped<ViewModels.ViewEventPageViewModel>();
+            services.AddScoped<ViewEventPageViewModel>();
 
             // Assigned labels
             services.AddScoped<Views.Pages.AssignedEventLabelsPage>();
-            services.AddScoped<ViewModels.AssignedEventLabelsViewModel>();
+            services.AddScoped<AssignedEventLabelsViewModel>();
 
             // Account
             services.AddScoped<Views.Pages.AccountPage>();
-            services.AddScoped<ViewModels.AccountPageViewModel>();
+            services.AddScoped<AccountPageViewModel>();
 
             // Home
             services.AddScoped<Views.Pages.HomePage>();
-            services.AddScoped<ViewModels.HomePageViewModel>();
+            services.AddScoped<HomePageViewModel>();
+
+            services.AddScoped<Views.Pages.Checklists.ChecklistsPage>();
+            services.AddScoped<ChecklistsViewModel>();
+
+            services.AddScoped<ChecklistsSidebarViewModel>();
 
             #endregion
 
@@ -106,31 +111,12 @@ public partial class App
 
             if (_cliArgs.Debug)
             {
-                services.AddSingleton<IConfigs, ConfigurationDev>();
+                ServicesInjector.InjectDependencies(services, true);
             }
             else
             {
-                services.AddSingleton<IConfigs, ConfigurationProduction>();
+                ServicesInjector.InjectDependencies(services, false);
             }
-
-            services.AddScoped<IEventServices, EventServices>()
-                .AddScoped<IRecurrenceServices, RecurrenceServices>()
-                .AddScoped<IEventActionServices, EventActionServices>()
-                .AddScoped<IUserServices, UserServices>()
-                .AddScoped<IUserEmailVerificationServices, UserEmailVerificationServices>()
-                .AddScoped<ILabelServices, LabelServices>()
-                .AddScoped<IEventLabelServices, EventLabelServices>()
-
-                // repositories
-                .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IEventRepository, EventRepository>()
-                .AddScoped<IRecurrenceRepository, RecurrenceRepository>()
-                .AddScoped<IEventActionRepository, EventActionRepository>()
-                .AddScoped<IUserEmailVerificationRepository, UserEmailVerificationRepository>()
-                .AddScoped<ILabelRepository, LabelRepository>()
-                .AddScoped<IEventLabelRepository, EventLabelRepository>();
-
-
 
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

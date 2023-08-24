@@ -20,4 +20,16 @@ public static class MessageBoxServices
 
         MessageBox.Show(displayMessage);
     }
+
+    public static bool Confirm(string message, string caption)
+    {
+        var result = MessageBox.Show(message, caption, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
