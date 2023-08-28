@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Tasks.WpfUi.Views.Controls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
-             Width="400"
+             Width="500"
              Margin="8"
              mc:Ignorable="d" 
              d:Foreground="White"
@@ -26,10 +26,11 @@
 
                 <!--Content-->
                 <Grid Visibility="{Binding ViewModel.IsProgressBarVisible, Converter={StaticResource BoolToVisibilityInverseConverter}}"
-                        d:Visibility="Visible">
+                      d:Visibility="Visible">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     
                     <!--Header-->
@@ -103,6 +104,10 @@
 
                     </Grid>
 
+
+                    <Border Grid.Row="1">
+                        <ContentControl Content="{Binding ViewModel.ChecklistItemsControl}"/>
+                    </Border>
 
                 </Grid>
 

@@ -7,7 +7,7 @@ using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
-using Tasks.WpfUi.Messaging;
+using Tasks.WpfUi.Views.Controls;
 using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
@@ -19,6 +19,9 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices = App.GetService<IChecklistServices>();
+
+    private ChecklistItemsViewModel ChecklistItemsViewModel => ChecklistItemsControl.ViewModel;
+
     #endregion
 
     #region - Public Properties -
@@ -41,6 +44,13 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     [ObservableProperty]
     private bool _isProgressBarVisible = true;
 
+
+    /// <summary>
+    /// ChecklistItemsControl
+    /// </summary>
+    [ObservableProperty]
+    private ChecklistItemsControl _checklistItemsControl;
+
     #endregion
 
     #region - Initialization -
@@ -52,6 +62,9 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     public OpenChecklistViewModel(Guid checklistId)
     {
         ChecklistId = checklistId;
+
+        ChecklistItemsControl = new(new(checklistId));
+
         RegisterMessenger();
     }
 
@@ -105,12 +118,13 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 
         Checklist = await _checklistServices.GetChecklistAsync(ChecklistId);
 
+        await ChecklistItemsViewModel.LoadChecklistItemsAsync();
+
         IsProgressBarVisible = false;
     }
 
 
     #endregion
-
 
     #region - ITaskMessenger -
     public void RegisterMessenger()
