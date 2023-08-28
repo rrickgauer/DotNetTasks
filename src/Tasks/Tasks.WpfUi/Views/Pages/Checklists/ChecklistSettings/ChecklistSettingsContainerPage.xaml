@@ -10,24 +10,26 @@
           d:DesignHeight="450" d:DesignWidth="800"
           Title="ChecklistSettingsContainerPage">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <Border >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0">
-            <ui:NavigationFluent Items="{Binding ViewModel.NavigationItems}"/>
-        </Border>
+            <Border Grid.Column="0">
+                <ui:NavigationFluent Items="{Binding ViewModel.NavigationItems}"/>
+            </Border>
 
 
-        <Border Grid.Column="1">
+            <Border Grid.Column="1" Padding="32,0">
 
-            <Frame x:Name="SettingsFrame" />
+                <Frame x:Name="SettingsFrame" />
 
-        </Border>
+            </Border>
         
         
         
-    </Grid>
+        </Grid>
+    </Border>
 </ui:UiPage>

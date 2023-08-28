@@ -1,11 +1,21 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿#pragma warning disable CS8603 // Possible null reference return.
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using Tasks.Service.Domain.Enums;
+using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Interfaces;
-using Tasks.WpfUi.Helpers;
+using Tasks.Service.Utilities;
+using Tasks.WpfUi.Helpers.ModelForms;
 using Tasks.WpfUi.Messaging;
+using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 using static Tasks.WpfUi.Messaging.Messages;
 
@@ -15,57 +25,134 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     IRecipient<OpenChecklistSettingsPageMessage>
 {
 
+    #region - Private Members -
     private readonly IChecklistServices _checklistServices;
+    private readonly CustomAlertServices _customAlertServices;
 
     private Guid _checklistId = Guid.Empty;
-
     private ChecklistView? _checklist = null;
 
+    #endregion
+
+    #region - Public Properties -
+
+    public IEnumerable<ChecklistType> ChecklistTypes => EnumUtilities.GetEnumEntries<ChecklistType>();
+
+    #endregion
+
+    #region - Generated Properties -
 
     /// <summary>
     /// ChecklistTitle
     /// </summary>
     [ObservableProperty]
-    private string _checklistTitle = string.Empty; 
+    [property: ModelFormProperty(nameof(ChecklistView.Title))]
+    [NotifyCanExecuteChangedFor(nameof(SaveGeneralSettingsChangesCommand))]
+    private string _checklistTitle = string.Empty;
+
+    /// <summary>
+    /// SelectedListType
+    /// </summary>
+    [ObservableProperty]
+    [property: ModelFormProperty(nameof(ChecklistView.ListType))]
+    private ChecklistType _selectedListType = ChecklistType.List;
+
+    /// <summary>
+    /// IsProgressSpinnerShowing
+    /// </summary>
+    [ObservableProperty]
+    private bool _isProgressSpinnerShowing = false;
 
 
+    /// <summary>
+    /// CloneChecklistInput
+    /// </summary>
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CloneCommand))]
+    private string _cloneChecklistInput = string.Empty;
 
-    public ChecklistSettingsGeneralViewModel(IChecklistServices checklistServices)
+    /// <summary>
+    /// OpenClonedChecklist
+    /// </summary>
+    [ObservableProperty]
+    private bool _openClonedChecklist = false;
+
+    #endregion
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="checklistServices"></param>
+    public ChecklistSettingsGeneralViewModel(IChecklistServices checklistServices, CustomAlertServices customAlertServices)
     {
         _checklistServices = checklistServices;
+        _customAlertServices = customAlertServices;
 
         RegisterMessenger();
     }
 
 
+    #region - Commands -
 
-    
+    /// <summary>
+    /// SaveGeneralSettingsChangesCommand
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand(CanExecute = nameof(CanSaveGeneralSettingsChangesAsync))]
+    private async Task SaveGeneralSettingsChangesAsync()
+    {
+        IsProgressSpinnerShowing = true;
+        await SaveBasicChecklistFormAsync();
+        IsProgressSpinnerShowing = false;
+    }
+
+    /// <summary>
+    /// CloneCommand
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand(CanExecute = nameof(CanClone))]
+    private async Task CloneAsync()
+    {
+        IsProgressSpinnerShowing = true;
+    }
 
 
+    #endregion
 
+    #region - Can Execute -
 
+    private bool CanSaveGeneralSettingsChangesAsync() => !string.IsNullOrWhiteSpace(ChecklistTitle);
+    private bool CanClone() => !string.IsNullOrWhiteSpace(CloneChecklistInput);
+
+    #endregion
 
     #region - Messenger Handling -
     public void Receive(OpenChecklistSettingsPageMessage message)
     {
         _checklistId = message.Value;
     }
-    #endregion
 
+    #endregion
 
     #region - INavigationAware -
     public void OnNavigatedFrom()
     {
-        //throw new NotImplementedException();
+        IsProgressSpinnerShowing = true;
     }
 
     public async void OnNavigatedTo()
     {
+        IsProgressSpinnerShowing = true;
+        
         await LoadChecklistDataAsync();
+        CloneChecklistInput = string.Empty;
+        
+        IsProgressSpinnerShowing = false;
+
     }
     #endregion
 
-    #region - INavigationAware -
+    #region - ITaskMessenger -
 
     public void RegisterMessenger()
     {
@@ -88,8 +175,7 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
 
     #endregion
 
-
-    #region - INavigationAware -
+    #region - IModelForm -
 
     /// <summary>
     /// Get an updated model
@@ -98,23 +184,14 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     /// <exception cref="NotImplementedException"></exception>
     public ChecklistView BuildModel()
     {
-
         if (_checklist == null)
         {
             throw new NullReferenceException(nameof(_checklist));
         }
 
-        ChecklistView view = new()
-        {
-            Title      = ChecklistTitle,
-            CountItems = _checklist.CountItems,
-            CreatedOn  = _checklist.CreatedOn,
-            Id         = _checklistId,
-            ListType   = _checklist.ListType,
-            UserId     = _checklist.UserId,
-        };
+        ModelFormUtilities.SetModelPropertyValues(this, _checklist);
 
-        return view;
+        return _checklist;
     }
 
     /// <summary>
@@ -124,15 +201,26 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     /// <exception cref="NotImplementedException"></exception>
     public void SetPropertyValues(ChecklistView model)
     {
-        ChecklistTitle = model.Title;
+        ModelFormUtilities.SetFormPropertyValues(model, this);
+    }
+
+    /// <summary>
+    /// Get a list of the properties to copy
+    /// </summary>
+    /// <returns></returns>
+    public List<PropertyInfo> GetPropertiesToCopy()
+    {
+        return ModelFormUtilities.GetModelFormProperties<ChecklistSettingsGeneralViewModel>();
     }
 
     #endregion
 
-
-
     #region - Private Methods -
 
+    /// <summary>
+    /// Load the checklist data
+    /// </summary>
+    /// <returns></returns>
     private async Task LoadChecklistDataAsync()
     {
         _checklist = await _checklistServices.GetChecklistAsync(_checklistId);
@@ -143,10 +231,21 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
         }
     }
 
+    /// <summary>
+    /// Update the database with the current general settings form values
+    /// </summary>
+    /// <returns></returns>
+    private async Task SaveBasicChecklistFormAsync()
+    {
+        var model = (Checklist)BuildModel();
+
+        _checklist = await _checklistServices.SaveChecklistAsync(model);
+
+        _customAlertServices.Successful("Changes saved!");
+    }
+
 
 
     #endregion
-
-
 
 }

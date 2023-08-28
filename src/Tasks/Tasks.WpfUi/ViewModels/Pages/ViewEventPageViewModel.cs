@@ -8,6 +8,7 @@ using System.Windows;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Utilities;
 using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;
@@ -57,7 +58,7 @@ public partial class ViewEventPageViewModel : ObservableObject, INavigationAware
     private bool _formIsEnabled = true;
 
     [ObservableProperty]
-    private IEnumerable<Frequency> _frequencyOptions = Enum.GetValues(typeof(Frequency)).Cast<Frequency>();
+    private IEnumerable<Frequency> _frequencyOptions = EnumUtilities.GetEnumEntries<Frequency>();
 
     [ObservableProperty]
     private bool _eventExists = false;
