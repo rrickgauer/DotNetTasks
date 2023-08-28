@@ -52,7 +52,11 @@
                     <!--Content-->
                     <TextBlock Text="{Binding ViewModel.Content}"
                                Style="{StaticResource TextStyle}"
+                               Cursor="Hand"
                                d:Text="Content text block">
+                        <TextBlock.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ViewModel.EditCommand}" />
+                        </TextBlock.InputBindings>
                         
                         <!--Dropdown Menu-->
                         <TextBlock.ContextMenu>

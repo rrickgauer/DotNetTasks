@@ -85,7 +85,7 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
-    private async Task Edit()
+    private void Edit()
     {
         ToggleEditFormVisibility();
     }
