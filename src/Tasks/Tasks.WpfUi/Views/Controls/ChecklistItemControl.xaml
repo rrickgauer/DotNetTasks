@@ -45,14 +45,14 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                     <!--Is Complete-->
                     <CheckBox VerticalAlignment="Center"
-                              Command="{Binding ViewModel.SaveChangesCommand}"
+                              Command="{Binding ViewModel.CompleteCommand}"
                               Padding="0"
                               IsChecked="{Binding ViewModel.IsComplete, Mode=TwoWay}" MinWidth="32" />
 
                     <!--Content-->
                     <TextBlock Text="{Binding ViewModel.Content}"
                                Style="{StaticResource TextStyle}"
-                               d:Text="Content text block" >
+                               d:Text="Content text block">
                         
                         <!--Dropdown Menu-->
                         <TextBlock.ContextMenu>

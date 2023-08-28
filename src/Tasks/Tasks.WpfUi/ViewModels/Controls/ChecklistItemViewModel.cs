@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private readonly IChecklistItemServices _checklistItemServices = App.GetService<IChecklistItemServices>();
     private readonly CustomAlertServices _customAlertServices = App.GetService<CustomAlertServices>();
     private ChecklistItem _checklistItem;
+
+    private Guid _checklistItemId => _checklistItem.Id.Value;
+
     #endregion
 
     #region - Public Properties -
@@ -104,10 +108,23 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private async Task SaveChangesAsync()
     {
         await UpdateItemAsync();
-        
         DisplayEditForm = false;
+    }
 
-
+    /// <summary>
+    /// CompleteCommand
+    /// </summary>
+    [RelayCommand]
+    private void Complete()
+    {
+        if (IsComplete)
+        {
+            _checklistItemServices.MarkItemCompleteAsync(_checklistItemId);
+        }
+        else
+        {
+            _checklistItemServices.MarkItemIncompleteAsync(_checklistItemId);
+        }
     }
 
 
