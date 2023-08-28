@@ -125,6 +125,20 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
         IsProgressSpinnerShowing = false;
     }
 
+    /// <summary>
+    /// DeleteCommand
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    private async Task DeleteAsync()
+    {
+        IsProgressSpinnerShowing = true;
+
+        await DeleteChecklistAsync();
+
+        IsProgressSpinnerShowing = false;
+    }
+
 
     #endregion
 
@@ -273,6 +287,29 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     private void ViewClonedChecklist(Guid clonedChecklistId)
     {
         WeakReferenceMessenger.Default.Send(new OpenClonedChecklistMessage(clonedChecklistId));
+        NavigateToChecklistsPage();
+    }
+
+
+    private async Task DeleteChecklistAsync()
+    {
+        if (!MessageBoxServices.Confirm("Are you sure you want to delete this checklist?", "Delete Checklist"))
+        {
+            return;
+        }
+
+        await _checklistServices.DeleteChecklistAsync(_checklistId);
+
+        _customAlertServices.Successful("Checklist was deleted successfully");
+
+        WeakReferenceMessenger.Default.Send(new ChecklistDeletedMessage(_checklistId));
+
+        NavigateToChecklistsPage();
+    }
+
+    private void NavigateToChecklistsPage()
+    {
+        OnNavigatedFrom();
         _navigationService.Navigate(typeof(ChecklistsPage));
     }
 

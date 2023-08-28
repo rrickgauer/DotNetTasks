@@ -4,5 +4,5 @@ public enum ChecklistSettingsPages
 {
     General,
     Labels,
-    Clone,
+    Items,
 }

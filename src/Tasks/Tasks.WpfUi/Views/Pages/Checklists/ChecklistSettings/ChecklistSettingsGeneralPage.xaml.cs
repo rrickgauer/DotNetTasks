@@ -1,20 +1,19 @@
 ﻿using Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 using Wpf.Ui.Common.Interfaces;
 
-namespace Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings
+namespace Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings;
+
+/// <summary>
+/// Interaction logic for ChecklistSettingsGeneralPage.xaml
+/// </summary>
+public partial class ChecklistSettingsGeneralPage : INavigableView<ChecklistSettingsGeneralViewModel>
 {
-    /// <summary>
-    /// Interaction logic for ChecklistSettingsGeneralPage.xaml
-    /// </summary>
-    public partial class ChecklistSettingsGeneralPage : INavigableView<ChecklistSettingsGeneralViewModel>
+    public ChecklistSettingsGeneralViewModel ViewModel { get; set; }
+
+    public ChecklistSettingsGeneralPage(ChecklistSettingsGeneralViewModel viewModel)
     {
-        public ChecklistSettingsGeneralViewModel ViewModel { get; set; }
+        ViewModel = viewModel;
 
-        public ChecklistSettingsGeneralPage(ChecklistSettingsGeneralViewModel viewModel)
-        {
-            ViewModel = viewModel;
-
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -105,13 +105,6 @@ public partial class App
             services.AddScoped<Views.Pages.Checklists.ChecklistsPage>();
             services.AddScoped<ChecklistsViewModel>();
 
-            //services.AddScoped<Views.Pages.Checklists.ChecklistSettingsPage>();
-            //services.AddScoped<ChecklistSettingsViewModel>();
-
-            //services.AddScoped<GeneralPage>();
-            //services.AddScoped<GeneralSettingsViewModel>();
-
-
             services.AddScoped<ChecklistSettingsContainerPage>();
             services.AddScoped<ChecklistSettingsContainerViewModel>();
 
@@ -120,6 +113,9 @@ public partial class App
 
             services.AddScoped<ChecklistSettingsLabelsPage>();
             services.AddScoped<ChecklistSettingsLabelsViewModel>();
+
+            services.AddScoped<ChecklistSettingsItemsPage>();
+            services.AddScoped<ChecklistSettingsItemsViewModel>();
 
 
             services.AddScoped<ChecklistsSidebarViewModel>();

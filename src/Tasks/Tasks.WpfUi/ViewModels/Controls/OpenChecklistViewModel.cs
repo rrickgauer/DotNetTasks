@@ -87,7 +87,7 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     {
         //DeleteOpenChecklistEvent?.Invoke(this, ChecklistId);
 
-        TaskMessengerServices.Send(new DeleteChecklistMessage(ChecklistId));
+        TaskMessengerServices.Send(new DeleteOpenChecklistMessage(ChecklistId));
     }
 
 

@@ -12,6 +12,7 @@ public partial class ChecklistSettingsContainerPage : INavigableView<ChecklistSe
 
     public ChecklistSettingsGeneralPage GeneralPage { get; } = App.GetService<ChecklistSettingsGeneralPage>();
     public ChecklistSettingsLabelsPage LabelsPage { get; } = App.GetService<ChecklistSettingsLabelsPage>();
+    public ChecklistSettingsItemsPage ItemsPage { get; } = App.GetService<ChecklistSettingsItemsPage>();
 
     public ChecklistSettingsContainerPage(ChecklistSettingsContainerViewModel viewModel)
     {
@@ -34,6 +35,11 @@ public partial class ChecklistSettingsContainerPage : INavigableView<ChecklistSe
             case Helpers.ChecklistSettingsPages.Labels:
                 SettingsFrame.Navigate(LabelsPage);
                 LabelsPage.ViewModel.OnNavigatedTo();
+                break;
+
+            case Helpers.ChecklistSettingsPages.Items:
+                SettingsFrame.Navigate(ItemsPage);
+                ItemsPage.ViewModel.OnNavigatedTo();
                 break;
         }
     }

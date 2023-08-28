@@ -9,9 +9,7 @@
            d:DataContext="{d:DesignInstance local:ChecklistSettingsGeneralPage, IsDesignTimeCreatable=False}"
            d:DesignWidth="800"
            d:Foreground="White"
-           
            Scrollable="True"
-           
            Title="ChecklistSettingsGeneralPage">
     <ui:UiPage.Resources>
         
@@ -132,6 +130,27 @@
                         <CheckBox Content="Open cloned checklist"
                                   Margin="0,0,8,0"
                                   IsChecked="{Binding ViewModel.OpenClonedChecklist, Mode=TwoWay}" />
+                    </StackPanel>
+
+                </StackPanel>
+
+                
+                <!--Delete checklist section-->
+                <StackPanel>
+                    <Border Style="{StaticResource BorderSectionStyle}">
+                        <TextBlock Text="Danger Zone" Style="{StaticResource TextHeaderStyle}"  />
+                    </Border>
+
+                    <TextBlock Text="One you delete a checklist, there is no going back. Please be certain."
+                               Margin="0,24,0,0"/>
+
+                    <!--Clone Action Buttons-->
+                    <StackPanel Style="{StaticResource SectionBottomStyle}">
+
+                        <ui:Button Content="Delete checklist" 
+                                   Margin="0,0,16,0"
+                                   Command="{Binding ViewModel.DeleteCommand}"
+                                   Appearance="Danger" />
                     </StackPanel>
 
                 </StackPanel>

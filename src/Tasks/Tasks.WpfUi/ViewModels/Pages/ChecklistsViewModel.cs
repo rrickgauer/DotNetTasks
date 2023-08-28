@@ -21,12 +21,11 @@ namespace Tasks.WpfUi.ViewModels.Pages;
 
 public partial class ChecklistsViewModel : ObservableObject, INavigationAware, ITaskMessenger,
     IRecipient<CloseOpenChecklistMessage>,
-    IRecipient<DeleteChecklistMessage>,
+    IRecipient<DeleteOpenChecklistMessage>,
     IRecipient<OpenChecklistSettingsPageMessage>,
     IRecipient<OpenClonedChecklistMessage>,
+    IRecipient<ChecklistDeletedMessage>,
     IRecipient<OpenChecklistControlMessage>
-
-
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices;
@@ -36,7 +35,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
 
     private Queue<Guid> OpenChecklistControlIds => new(OpenChecklistControls.Select(c => c.ViewModel.ChecklistId));
     
-    private readonly Queue<Guid> OpenChecklistIdsCache = new();
+    private readonly Queue<Guid> ChecklistsCache = new();
 
     #endregion
 
@@ -85,7 +84,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
         CloseChecklist(message.Value);
     }
 
-    public async void Receive(DeleteChecklistMessage message)
+    public async void Receive(DeleteOpenChecklistMessage message)
     {
         await DeleteChecklistAsync(message.Value);
     }
@@ -98,11 +97,24 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
     public void Receive(OpenClonedChecklistMessage message)
     {
         // clear out cache
-        OpenChecklistIdsCache.Clear();
+        ChecklistsCache.Clear();
         CloseOpenControls();
 
         // add the newly cloned checklist to the cache
-        OpenChecklistIdsCache.Enqueue(message.Value);
+        ChecklistsCache.Enqueue(message.Value);
+    }
+
+    public void Receive(ChecklistDeletedMessage message)
+    {
+        var cache = ChecklistsCache.ToList();
+        cache.Remove(message.Value);
+
+        ChecklistsCache.Clear();
+
+        foreach (var checklistId in cache)
+        {
+            ChecklistsCache.Enqueue(checklistId);
+        }
     }
 
     #endregion
@@ -229,7 +241,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
         }
         finally
         {
-            OpenChecklistIdsCache.Clear();
+            ChecklistsCache.Clear();
             IsProgressRingVisible = false;
         }
 
@@ -241,7 +253,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
     /// <returns></returns>
     private async Task LoadOpenChecklistsAsync()
     {
-        await Task.WhenAll(OpenChecklistIdsCache.Select(id => OpenChecklistAsync(id)));
+        await Task.WhenAll(ChecklistsCache.Select(id => OpenChecklistAsync(id)));
     }
 
     /// <summary>
@@ -249,7 +261,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
     /// </summary>
     private void InitOpenChecklistsInSidebar()
     {
-        foreach (var openChecklistId in OpenChecklistIdsCache)
+        foreach (var openChecklistId in ChecklistsCache)
         {
             _checklistsSidebarViewModel.OpenChecklist(openChecklistId);
         }
@@ -259,7 +271,7 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
     {
         foreach (var openChecklistId in OpenChecklistControlIds)
         {
-            OpenChecklistIdsCache.Enqueue(openChecklistId);
+            ChecklistsCache.Enqueue(openChecklistId);
         }
     }
 

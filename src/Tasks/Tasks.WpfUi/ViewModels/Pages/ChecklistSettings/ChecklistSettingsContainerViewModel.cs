@@ -60,6 +60,7 @@ public partial class ChecklistSettingsContainerViewModel : ObservableObject, INa
         _checklistServices = checklistServices;
 
         App.GetService<ChecklistSettingsGeneralViewModel>().RegisterMessenger();
+        App.GetService<ChecklistSettingsItemsViewModel>().RegisterMessenger();
 
         _navigationItemsList = GetNavItems();
 
@@ -145,16 +146,25 @@ public partial class ChecklistSettingsContainerViewModel : ObservableObject, INa
             {
                 Content = "General",
                 PageTag = nameof(ChecklistSettingsPages.General),
-                Icon = SymbolRegular.CalendarLtr32,
+                Icon = SymbolRegular.Settings20,
                 Command = PageChangeCommand,
                 CommandParameter = ChecklistSettingsPages.General,
             },
 
             new NavigationItem()
             {
+                Content = "Items",
+                PageTag = nameof(ChecklistSettingsPages.Items),
+                Icon = SymbolRegular.TaskListSquareDatabase20,
+                Command = PageChangeCommand,
+                CommandParameter = ChecklistSettingsPages.Items,
+            },
+
+            new NavigationItem()
+            {
                 Content = "Labels",
                 PageTag = nameof(ChecklistSettingsPages.Labels),
-                Icon = SymbolRegular.CalendarLtr32,
+                Icon = SymbolRegular.Tag20,
                 Command = PageChangeCommand,
                 CommandParameter = ChecklistSettingsPages.Labels,
             },
