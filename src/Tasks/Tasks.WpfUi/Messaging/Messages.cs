@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using System;
-using Tasks.WpfUi.DisplayModels;
 
 namespace Tasks.WpfUi.Messaging;
 
@@ -16,9 +15,9 @@ public class Messages
         public OpenChecklistSettingsPageMessage(Guid checklistId) : base(checklistId) { }
     }
 
-    public sealed class DeleteChecklistMessage : ValueChangedMessage<Guid>
+    public sealed class DeleteOpenChecklistMessage : ValueChangedMessage<Guid>
     {
-        public DeleteChecklistMessage(Guid checklistId) : base(checklistId) { }
+        public DeleteOpenChecklistMessage(Guid checklistId) : base(checklistId) { }
     }
 
     public sealed class OpenChecklistControlMessage : ValueChangedMessage<Guid>
@@ -26,6 +25,15 @@ public class Messages
         public OpenChecklistControlMessage(Guid checklistId) : base(checklistId) { }
     }
 
+    public sealed class OpenClonedChecklistMessage : ValueChangedMessage<Guid>
+    {
+        public OpenClonedChecklistMessage(Guid checklistId) : base(checklistId) { }
+    }
 
+
+    public sealed class ChecklistDeletedMessage : ValueChangedMessage<Guid>
+    {
+        public ChecklistDeletedMessage(Guid checklistId) : base(checklistId) { }
+    }
 
 }

@@ -15,6 +15,9 @@ using Tasks.Service.Domain.CliArgs;
 using Tasks.Service.DependenciesInjector;
 using Tasks.WpfUi.ViewModels.Pages;
 using Tasks.WpfUi.ViewModels.Controls;
+using Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
+using Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings;
+using Tasks.WpfUi.Messaging;
 
 namespace Tasks.WpfUi;
 
@@ -102,6 +105,19 @@ public partial class App
             services.AddScoped<Views.Pages.Checklists.ChecklistsPage>();
             services.AddScoped<ChecklistsViewModel>();
 
+            services.AddScoped<ChecklistSettingsContainerPage>();
+            services.AddScoped<ChecklistSettingsContainerViewModel>();
+
+            services.AddScoped<ChecklistSettingsGeneralViewModel>();
+            services.AddScoped<ChecklistSettingsGeneralPage>();
+
+            services.AddScoped<ChecklistSettingsLabelsPage>();
+            services.AddScoped<ChecklistSettingsLabelsViewModel>();
+
+            services.AddScoped<ChecklistSettingsItemsPage>();
+            services.AddScoped<ChecklistSettingsItemsViewModel>();
+
+
             services.AddScoped<ChecklistsSidebarViewModel>();
 
             #endregion
@@ -150,6 +166,9 @@ public partial class App
         // save the cli args that were passed into the application
         var applicationServices = GetService<WpfApplicationServices>();
         applicationServices.CliArgs = e.Args.ToList();
+
+        ITaskMessenger checklistSettingsViewModel = GetService<ChecklistSettingsContainerViewModel>();
+        checklistSettingsViewModel.RegisterMessenger();
     }
 
     /// <summary>

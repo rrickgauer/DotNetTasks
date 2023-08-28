@@ -12,6 +12,9 @@ using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
 
+
+
+
 public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 {
     #region - Private Members -
@@ -73,8 +76,6 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     [RelayCommand]
     private void OpenChecklistSettingsPage()
     {
-        //OpenChecklistSettingsPageEvent?.Invoke(this, ChecklistId);
-
         TaskMessengerServices.Send(new OpenChecklistSettingsPageMessage(ChecklistId));
     }
 
@@ -86,7 +87,7 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     {
         //DeleteOpenChecklistEvent?.Invoke(this, ChecklistId);
 
-        TaskMessengerServices.Send(new DeleteChecklistMessage(ChecklistId));
+        TaskMessengerServices.Send(new DeleteOpenChecklistMessage(ChecklistId));
     }
 
 
