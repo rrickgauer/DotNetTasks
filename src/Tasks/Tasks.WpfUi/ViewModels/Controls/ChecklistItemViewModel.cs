@@ -8,6 +8,7 @@ using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Helpers.ModelForms;
 using Tasks.WpfUi.Messaging;
+using Tasks.WpfUi.Services;
 //using System.Threading.Tasks;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
@@ -15,7 +16,8 @@ namespace Tasks.WpfUi.ViewModels.Controls;
 public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, IModelForm<ChecklistItem>
 {
     #region - Private Members -
-    private readonly IChecklistItemServices _checklistItemServices;
+    private readonly IChecklistItemServices _checklistItemServices = App.GetService<IChecklistItemServices>();
+    private readonly CustomAlertServices _customAlertServices = App.GetService<CustomAlertServices>();
     private ChecklistItem _checklistItem;
     #endregion
 
@@ -37,6 +39,7 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     /// Content
     /// </summary>
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveChangesCommand))]
     [property: ModelFormProperty(nameof(ChecklistItem.Content))]
     private string _content = string.Empty;
 
@@ -93,8 +96,23 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
         int x = 10;
     }
 
+    /// <summary>
+    /// Save changes command
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand(CanExecute = nameof(CanSaveChanges))]
+    private async Task SaveChangesAsync()
+    {
+        await UpdateItemAsync();
+        
+        DisplayEditForm = false;
+
+
+    }
+
 
     #endregion
+
 
 
 
@@ -135,6 +153,22 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private void ToggleEditFormVisibility()
     {
         DisplayEditForm = !DisplayEditForm;
+    }
+
+    private bool CanSaveChanges()
+    {
+        if (string.IsNullOrWhiteSpace(Content))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private async Task UpdateItemAsync()
+    {
+        await _checklistItemServices.SaveChecklistItemAsync(ChecklistItem);
     }
 
 
