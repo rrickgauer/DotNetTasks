@@ -53,11 +53,8 @@
             <ui:ProgressRing IsIndeterminate="True" />
         </Border>
 
-        <Border Padding="0,0,24,0">
-            
-        
-            <StackPanel Grid.Row="1" 
-                        Margin="0,0,0,64"
+        <Border Padding="0,0,24,0" Grid.Row="1">
+            <StackPanel Margin="0,0,0,64"
                         d:Visibility="Visible"
                         Visibility="{Binding ViewModel.IsProgressSpinnerShowing, Converter={StaticResource BoolToVisibilityInverseConverter}}">
 
@@ -71,12 +68,16 @@
                     <Label Target="{Binding ElementName=ChecklistTitleInput}" 
                            Content="Title" 
                            Style="{StaticResource FormLabelStyle}" />
-            
+
                     <ui:TextBox Text="{Binding ViewModel.ChecklistTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Name="ChecklistTitleInput"
-                                d:Text="Title" />
-            
-            
+                                d:Text="Title">
+                        <ui:TextBox.InputBindings>
+                            <KeyBinding Key="Return" Modifiers="Ctrl" Command="{Binding ViewModel.SaveGeneralSettingsChangesCommand}" />
+                        </ui:TextBox.InputBindings>
+                    </ui:TextBox>
+
+
                     <!--List Type-->
                     <Label Target="{Binding ElementName=ChecklistTypeInput}" 
                            Content="Type" 
@@ -88,7 +89,7 @@
 
                     <!--General Settings Action Buttons-->
                     <StackPanel Style="{StaticResource SectionBottomStyle}">
-                
+
                         <ui:Button Content="Save changes" 
                                    Margin="0,0,8,0"
                                    Command="{Binding ViewModel.SaveGeneralSettingsChangesCommand}"
@@ -97,7 +98,6 @@
                         <ui:Button Content="Reset" />
                     </StackPanel>
                 </StackPanel>
-
 
                 <!--Clone Section-->
                 <StackPanel>
@@ -113,10 +113,11 @@
 
                     <ui:TextBox Text="{Binding ViewModel.CloneChecklistInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Name="CloneChecklistInput"
-                                d:Text="Clone list input" />
-
-
-
+                                d:Text="Clone list input">
+                        <ui:TextBox.InputBindings>
+                            <KeyBinding Key="Return" Modifiers="Ctrl" Command="{Binding ViewModel.CloneCommand}" />
+                        </ui:TextBox.InputBindings>
+                    </ui:TextBox>
 
 
                     <!--Clone Action Buttons-->
@@ -134,7 +135,6 @@
 
                 </StackPanel>
 
-                
                 <!--Delete checklist section-->
                 <StackPanel>
                     <Border Style="{StaticResource BorderSectionStyle}">
@@ -156,7 +156,6 @@
                 </StackPanel>
 
             </StackPanel>
-
         </Border>
     </Grid>
 </ui:UiPage>
