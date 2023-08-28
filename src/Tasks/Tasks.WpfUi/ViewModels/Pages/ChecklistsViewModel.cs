@@ -23,7 +23,9 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
     IRecipient<CloseOpenChecklistMessage>,
     IRecipient<DeleteChecklistMessage>,
     IRecipient<OpenChecklistSettingsPageMessage>,
+    IRecipient<OpenClonedChecklistMessage>,
     IRecipient<OpenChecklistControlMessage>
+
 
 {
     #region - Private Members -
@@ -90,10 +92,17 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
 
     public void Receive(OpenChecklistSettingsPageMessage message)
     {
-        // open checklist settings page
-        //var checklistId = message.Value;
-
         _navigationService.Navigate(typeof(ChecklistSettingsContainerPage));
+    }
+
+    public void Receive(OpenClonedChecklistMessage message)
+    {
+        // clear out cache
+        OpenChecklistIdsCache.Clear();
+        CloseOpenControls();
+
+        // add the newly cloned checklist to the cache
+        OpenChecklistIdsCache.Enqueue(message.Value);
     }
 
     #endregion
@@ -246,6 +255,19 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
         }
     }
 
+    private void CacheOpenControls()
+    {
+        foreach (var openChecklistId in OpenChecklistControlIds)
+        {
+            OpenChecklistIdsCache.Enqueue(openChecklistId);
+        }
+    }
+
+    private void CloseOpenControls()
+    {
+        OpenChecklistControls.Clear();
+    }
+
 
     #endregion
 
@@ -253,12 +275,8 @@ public partial class ChecklistsViewModel : ObservableObject, INavigationAware, I
 
     public void OnNavigatedFrom()
     {
-        foreach (var openChecklistId in OpenChecklistControlIds)
-        {
-            OpenChecklistIdsCache.Enqueue(openChecklistId);
-        }
-
-        OpenChecklistControls.Clear();
+        CacheOpenControls();
+        CloseOpenControls();
     }
 
     public async void OnNavigatedTo()

@@ -25,6 +25,11 @@ public class Messages
         public OpenChecklistControlMessage(Guid checklistId) : base(checklistId) { }
     }
 
+    public sealed class OpenClonedChecklistMessage : ValueChangedMessage<Guid>
+    {
+        public OpenClonedChecklistMessage(Guid checklistId) : base(checklistId) { }
+    }
+
 
 
 }

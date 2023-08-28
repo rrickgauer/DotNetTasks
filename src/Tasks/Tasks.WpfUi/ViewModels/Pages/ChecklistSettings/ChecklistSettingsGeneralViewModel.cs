@@ -16,7 +16,10 @@ using Tasks.Service.Utilities;
 using Tasks.WpfUi.Helpers.ModelForms;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Views.Pages.Checklists;
 using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
@@ -28,6 +31,7 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     #region - Private Members -
     private readonly IChecklistServices _checklistServices;
     private readonly CustomAlertServices _customAlertServices;
+    private readonly INavigation _navigationService;
 
     private Guid _checklistId = Guid.Empty;
     private ChecklistView? _checklist = null;
@@ -83,10 +87,11 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     /// Constructor
     /// </summary>
     /// <param name="checklistServices"></param>
-    public ChecklistSettingsGeneralViewModel(IChecklistServices checklistServices, CustomAlertServices customAlertServices)
+    public ChecklistSettingsGeneralViewModel(IChecklistServices checklistServices, CustomAlertServices customAlertServices, INavigationService navigationService)
     {
         _checklistServices = checklistServices;
         _customAlertServices = customAlertServices;
+        _navigationService = navigationService.GetNavigationControl();
 
         RegisterMessenger();
     }
@@ -114,6 +119,10 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
     private async Task CloneAsync()
     {
         IsProgressSpinnerShowing = true;
+
+        await CloneChecklistAsync();
+
+        IsProgressSpinnerShowing = false;
     }
 
 
@@ -242,6 +251,29 @@ public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavi
         _checklist = await _checklistServices.SaveChecklistAsync(model);
 
         _customAlertServices.Successful("Changes saved!");
+    }
+
+
+    private async Task CloneChecklistAsync()
+    {
+        var clonedChecklist = await _checklistServices.CopyChecklistAsync(_checklistId, CloneChecklistInput);
+
+        if (OpenClonedChecklist)
+        {
+            ViewClonedChecklist(clonedChecklist.Id.Value);
+        }
+
+        CloneChecklistInput = string.Empty;
+        OpenClonedChecklist = false;
+
+        _customAlertServices.Successful("Checklist was cloned successfully");
+
+    }
+
+    private void ViewClonedChecklist(Guid clonedChecklistId)
+    {
+        WeakReferenceMessenger.Default.Send(new OpenClonedChecklistMessage(clonedChecklistId));
+        _navigationService.Navigate(typeof(ChecklistsPage));
     }
 
 
