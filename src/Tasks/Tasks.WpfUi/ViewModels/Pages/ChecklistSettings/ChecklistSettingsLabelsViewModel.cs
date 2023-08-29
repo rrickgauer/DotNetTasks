@@ -31,6 +31,11 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
     [ObservableProperty]
     private ObservableCollection<ChecklistLabelDisplayModel> _labels = new();
 
+    /// <summary>
+    /// IsLoading
+    /// </summary>
+    [ObservableProperty]
+    private bool _isLoading = false;
 
     #endregion
 
@@ -55,7 +60,9 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
 
     public async void OnNavigatedTo()
     {
+        IsLoading = true;
         await LoadAssignmentsAsync();
+        IsLoading = false;
     }
 
     #endregion

@@ -17,53 +17,64 @@
     </ui:UiPage.Resources>
 
     <Border>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
 
-            <Border Grid.Row="0">
-                <TextBlock Text="Labels" />
+        <StackPanel>
+
+            <Border Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                    d:Visibility="Collapsed" 
+                    Margin="16">
+                <ui:ProgressRing IsIndeterminate="True" />
             </Border>
 
-            <Border Grid.Row="1">
+            <Grid Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}"
+                  d:Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <ListView ItemsSource="{Binding ViewModel.Labels}"
-                          ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                          Name="AssignedLabelsListView"
-                          d:ItemsSource="{d:SampleData ItemCount=5}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border>
-                                <CheckBox IsChecked="{Binding IsAssigned, Mode=TwoWay}"
-                                          Command="{Binding Source={StaticResource Proxy}, Path=Data.ViewModel.AssignCommand}"
-                                          CommandParameter="{Binding}">
-                                    <StackPanel Orientation="Horizontal">
+                <Border Grid.Row="0">
+                    <TextBlock Text="Labels" />
+                </Border>
 
-                                        <Ellipse Style="{StaticResource LabelCircleStyle}"
-                                                 Margin="0,0,10,0" 
-                                                 VerticalAlignment="Center" 
-                                                 d:Stroke="Red"
-                                                 d:Fill="Red"
-                                                 Stroke="{Binding Model.Color}" 
-                                                 Fill="{Binding Model.Color}" />
+                <Border Grid.Row="1">
 
-                                        <TextBlock Text="{Binding Model.Name}" 
-                                                   d:Text="Label name" />
-                                    </StackPanel>
-                                </CheckBox>
+                    <ListView ItemsSource="{Binding ViewModel.Labels}"
+                              ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                              Name="AssignedLabelsListView"
+                              d:ItemsSource="{d:SampleData ItemCount=5}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <CheckBox IsChecked="{Binding IsAssigned, Mode=TwoWay}"
+                                              Command="{Binding Source={StaticResource Proxy}, Path=Data.ViewModel.AssignCommand}"
+                                              CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                     Margin="0,0,10,0" 
+                                                     VerticalAlignment="Center" 
+                                                     d:Stroke="Red"
+                                                     d:Fill="Red"
+                                                     Stroke="{Binding Model.Color}" 
+                                                     Fill="{Binding Model.Color}" />
+
+                                            <TextBlock Text="{Binding Model.Name}" 
+                                                       d:Text="Label name" />
+                                        </StackPanel>
+                                    </CheckBox>
                    
                                 
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     
-                </ListView>
+                    </ListView>
                 
                 
-            </Border>
+                </Border>
             
-        </Grid>
+            </Grid>
+        </StackPanel>
     </Border>
 </ui:UiPage>
