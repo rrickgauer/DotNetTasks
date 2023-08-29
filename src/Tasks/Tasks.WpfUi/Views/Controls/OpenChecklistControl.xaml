@@ -119,10 +119,17 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <ui:TextBox Grid.Column="0"/>
-                            
+                            <ui:TextBox Grid.Column="0"
+                                        Text="{Binding ViewModel.NewItemText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                
+                                <ui:TextBox.InputBindings>
+                                    <KeyBinding Key="Return" Modifiers="Ctrl" Command="{Binding ViewModel.NewItemCommand}" />
+                                </ui:TextBox.InputBindings>
+                            </ui:TextBox>
+
                             <ui:Button Grid.Column="1"
                                        Content="+" 
+                                       Command="{Binding ViewModel.NewItemCommand}"
                                        Appearance="Success"
                                        ToolTip="Create new item"
                                        VerticalAlignment="Stretch"

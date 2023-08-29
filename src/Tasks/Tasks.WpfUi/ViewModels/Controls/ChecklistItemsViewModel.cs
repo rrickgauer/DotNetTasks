@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
@@ -90,6 +91,17 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
         Items = await GetItemControlsAsync();
     }
 
+    public async Task<ChecklistItem> AddNewChecklistItemAsync(string content)
+    {
+        var newItem = await CreateNewItemAsync(content);
+
+        var control = new ChecklistItemControl(new(newItem, _messengerToken));
+
+        Items.Add(control);
+
+        return newItem;
+    }
+
 
 
 
@@ -127,6 +139,25 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
 
         return control;
     }
+
+
+    private async Task<ChecklistItem> CreateNewItemAsync(string content)
+    {
+        ChecklistItem newItem = new()
+        {
+            Content = content,
+            ChecklistId = ChecklistId,
+            IsComplete = false,
+            Id = Guid.NewGuid(),
+            CreatedOn = DateTime.Now,
+            Position = 0,
+        };
+
+        await _checklistItemServices.SaveChecklistItemAsync(newItem);
+
+        return newItem;
+    }
+
 
 
     #endregion

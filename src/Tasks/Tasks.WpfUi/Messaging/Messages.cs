@@ -40,4 +40,6 @@ public class Messages
     {
         public OpenChecklistItemDeletedMessage(Guid checklistId) : base(checklistId) { }
     }
+
+
 }

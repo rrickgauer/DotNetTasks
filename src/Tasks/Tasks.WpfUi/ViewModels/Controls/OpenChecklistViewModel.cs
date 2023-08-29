@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Threading.Tasks;
+using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Messaging;
@@ -16,6 +17,7 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices = App.GetService<IChecklistServices>();
+    private readonly IChecklistItemServices _checklistItemServices = App.GetService<IChecklistItemServices>();
     private ChecklistItemsViewModel ChecklistItemsViewModel => ChecklistItemsControl.ViewModel;
 
     //private readonly Guid _messengerToken = new(@"f99abb5a-ba56-4a37-858c-ea280c226b56");
@@ -49,6 +51,13 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     /// </summary>
     [ObservableProperty]
     private ChecklistItemsControl _checklistItemsControl;
+
+    /// <summary>
+    /// NewItemText
+    /// </summary>
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NewItemCommand))]
+    private string _newItemText = string.Empty;
 
     #endregion
 
@@ -98,6 +107,28 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
         TaskMessengerServices.Send(new DeleteOpenChecklistMessage(ChecklistId));
     }
 
+    [RelayCommand(CanExecute = nameof(CanCreateNewChecklistItem))]
+    private async Task NewItemAsync()
+    {
+        await ChecklistItemsViewModel.AddNewChecklistItemAsync(NewItemText);
+        NewItemText = string.Empty;
+    }
+
+
+    #endregion
+
+    #region - ITaskMessenger -
+    public void RegisterMessenger()
+    {
+        //WeakReferenceMessenger.Default.RegisterAll(this);
+        WeakReferenceMessenger.Default.RegisterAll(this, _messengerToken);
+    }
+
+    public void CleanUp()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this, _messengerToken);
+        WeakReferenceMessenger.Default.Cleanup();
+    }
 
     #endregion
 
@@ -118,21 +149,24 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
         IsProgressBarVisible = false;
     }
 
+    #endregion
+
+
+
+    #region - Private Methods -
+
+
+    private bool CanCreateNewChecklistItem()
+    {
+        if (string.IsNullOrWhiteSpace(NewItemText))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
     #endregion
 
-    #region - ITaskMessenger -
-    public void RegisterMessenger()
-    {
-        //WeakReferenceMessenger.Default.RegisterAll(this);
-        WeakReferenceMessenger.Default.RegisterAll(this, _messengerToken);
-    }
-
-    public void CleanUp()
-    {
-        WeakReferenceMessenger.Default.UnregisterAll(this, _messengerToken);
-        WeakReferenceMessenger.Default.Cleanup();
-    }
-
-    #endregion
 }
