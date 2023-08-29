@@ -1,5 +1,8 @@
-﻿using Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
+﻿using Tasks.WpfUi.Messaging;
+using Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 using Wpf.Ui.Common.Interfaces;
+
+using SettingsControl = Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings.IChecklistSettingsPage<Tasks.WpfUi.ViewModels.Pages.ChecklistSettings.IChecklistSettings>;
 
 namespace Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings;
 
@@ -10,15 +13,20 @@ public partial class ChecklistSettingsContainerPage : INavigableView<ChecklistSe
 {
     public ChecklistSettingsContainerViewModel ViewModel { get; set; }
 
-    public ChecklistSettingsGeneralPage GeneralPage { get; } = App.GetService<ChecklistSettingsGeneralPage>();
-    public ChecklistSettingsLabelsPage LabelsPage { get; } = App.GetService<ChecklistSettingsLabelsPage>();
-    public ChecklistSettingsItemsPage ItemsPage { get; } = App.GetService<ChecklistSettingsItemsPage>();
+    private readonly SettingsControl GeneralPage = App.GetService<ChecklistSettingsGeneralPage>();
+    private readonly SettingsControl LabelsPage = App.GetService<ChecklistSettingsLabelsPage>();
+    private readonly SettingsControl ItemsPage = App.GetService<ChecklistSettingsItemsPage>();
 
     public ChecklistSettingsContainerPage(ChecklistSettingsContainerViewModel viewModel)
     {
         ViewModel = viewModel;
 
         ViewModel.SelectedPageChangedEvent += OnSelectedPageChangedEvent;
+
+        //GeneralPage.ViewModel.RegisterMessenger();
+        //LabelsPage.ViewModel.RegisterMessenger();
+        //ItemsPage.ViewModel.RegisterMessenger();
+
 
         InitializeComponent();
     }

@@ -11,34 +11,6 @@
            d:Foreground="White"
            Scrollable="True"
            Title="ChecklistSettingsGeneralPage">
-    <ui:UiPage.Resources>
-        
-        <Style TargetType="Label" x:Key="FormLabelStyle" BasedOn="{StaticResource {x:Type Label}}">
-            <Setter Property="Margin" Value="0,24,0,8" />
-        </Style>
-        
-        <Style TargetType="Border" x:Key="BorderSectionStyle">
-            <Setter Property="Padding" Value="0,16,0,8" />
-            <!--<Setter Property="Margin" Value="0, 32,0,0" />-->
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <SolidColorBrush Color="White" Opacity=".3" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="TextBlock" x:Key="TextHeaderStyle">
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="FontSize" Value="24" />
-        </Style>
-
-        <Style TargetType="StackPanel" x:Key="SectionBottomStyle">
-            <Setter Property="Margin" Value="0,24,0,64" />
-            <Setter Property="Orientation" Value="Horizontal" />
-
-        </Style>
-    </ui:UiPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -60,14 +32,14 @@
 
                 <!--General Settings-->
                 <StackPanel>
-                    <Border Style="{StaticResource BorderSectionStyle}">
-                        <TextBlock Text="General settings" Style="{StaticResource TextHeaderStyle}"  />
+                    <Border Style="{StaticResource ChecklistSettingsBorderSectionStyle}">
+                        <TextBlock Text="General settings" Style="{StaticResource ChecklistSettingsTextHeaderStyle}"  />
                     </Border>
 
                     <!--Title-->
                     <Label Target="{Binding ElementName=ChecklistTitleInput}" 
                            Content="Title" 
-                           Style="{StaticResource FormLabelStyle}" />
+                           Style="{StaticResource ChecklistSettingsFormLabelStyle}" />
 
                     <ui:TextBox Text="{Binding ViewModel.ChecklistTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Name="ChecklistTitleInput"
@@ -81,14 +53,14 @@
                     <!--List Type-->
                     <Label Target="{Binding ElementName=ChecklistTypeInput}" 
                            Content="Type" 
-                           Style="{StaticResource FormLabelStyle}" />
+                           Style="{StaticResource ChecklistSettingsFormLabelStyle}" />
 
                     <ComboBox Name="ChecklistTypeInput"
                               ItemsSource="{Binding ViewModel.ChecklistTypes}"
                               SelectedItem="{Binding ViewModel.SelectedListType, Mode=TwoWay}" />
 
                     <!--General Settings Action Buttons-->
-                    <StackPanel Style="{StaticResource SectionBottomStyle}">
+                    <StackPanel Style="{StaticResource ChecklistSettingsSectionBottomStyle}">
 
                         <ui:Button Content="Save changes" 
                                    Margin="0,0,8,0"
@@ -101,15 +73,15 @@
 
                 <!--Clone Section-->
                 <StackPanel>
-                    <Border Style="{StaticResource BorderSectionStyle}">
-                        <TextBlock Text="Clone" Style="{StaticResource TextHeaderStyle}"  />
+                    <Border Style="{StaticResource ChecklistSettingsBorderSectionStyle}">
+                        <TextBlock Text="Clone" Style="{StaticResource ChecklistSettingsTextHeaderStyle}"  />
                     </Border>
 
 
                     <!--Clone checklist title-->
                     <Label Target="{Binding ElementName=CloneChecklistInput}" 
                            Content="List name" 
-                           Style="{StaticResource FormLabelStyle}" />
+                           Style="{StaticResource ChecklistSettingsFormLabelStyle}" />
 
                     <ui:TextBox Text="{Binding ViewModel.CloneChecklistInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Name="CloneChecklistInput"
@@ -121,7 +93,7 @@
 
 
                     <!--Clone Action Buttons-->
-                    <StackPanel Style="{StaticResource SectionBottomStyle}">
+                    <StackPanel Style="{StaticResource ChecklistSettingsSectionBottomStyle}">
 
                         <ui:Button Content="Clone list" 
                                    Margin="0,0,16,0"
@@ -137,15 +109,15 @@
 
                 <!--Delete checklist section-->
                 <StackPanel>
-                    <Border Style="{StaticResource BorderSectionStyle}">
-                        <TextBlock Text="Danger Zone" Style="{StaticResource TextHeaderStyle}"  />
+                    <Border Style="{StaticResource ChecklistSettingsBorderSectionStyle}">
+                        <TextBlock Text="Danger Zone" Style="{StaticResource ChecklistSettingsTextHeaderStyle}"  />
                     </Border>
 
                     <TextBlock Text="One you delete a checklist, there is no going back. Please be certain."
                                Margin="0,24,0,0"/>
 
                     <!--Clone Action Buttons-->
-                    <StackPanel Style="{StaticResource SectionBottomStyle}">
+                    <StackPanel Style="{StaticResource ChecklistSettingsSectionBottomStyle}">
 
                         <ui:Button Content="Delete checklist" 
                                    Margin="0,0,16,0"

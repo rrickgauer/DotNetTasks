@@ -7,7 +7,7 @@ namespace Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings;
 /// <summary>
 /// Interaction logic for ChecklistSettingsItemsPage.xaml
 /// </summary>
-public partial class ChecklistSettingsItemsPage : INavigableView<ChecklistSettingsItemsViewModel>
+public partial class ChecklistSettingsItemsPage : IChecklistSettingsPage<ChecklistSettingsItemsViewModel>
 {
     public ChecklistSettingsItemsViewModel ViewModel { get; set; }
 
