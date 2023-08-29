@@ -150,13 +150,35 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
             IsComplete = false,
             Id = Guid.NewGuid(),
             CreatedOn = DateTime.Now,
-            Position = 0,
+            Position = GetNewItemPosition(),
         };
+
 
         await _checklistItemServices.SaveChecklistItemAsync(newItem);
 
         return newItem;
     }
+
+    /// <summary>
+    /// Get the position for a new item.
+    /// </summary>
+    /// <returns></returns>
+    private uint GetNewItemPosition()
+    {
+        uint result = 1;
+
+        if (Items.Count == 0)
+        {
+            return result;
+        }
+
+        var positions = Items.Select(i => i.ViewModel.ChecklistItem.Position).OrderDescending().ToList();
+        
+        result = positions.First() + 1;
+
+        return result;
+    }
+
 
 
 
