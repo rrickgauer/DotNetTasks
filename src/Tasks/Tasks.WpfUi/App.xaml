@@ -128,8 +128,36 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
-            
+
+
+
+            <!--Checklist settings styles-->
+            <Style TargetType="Label" x:Key="ChecklistSettingsFormLabelStyle" BasedOn="{StaticResource {x:Type Label}}">
+                <Setter Property="Margin" Value="0,24,0,8" />
+            </Style>
+
+            <Style TargetType="Border" x:Key="ChecklistSettingsBorderSectionStyle">
+                <Setter Property="Padding" Value="0,16,0,8" />
+                <!--<Setter Property="Margin" Value="0, 32,0,0" />-->
+                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="White" Opacity=".3" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="ChecklistSettingsTextHeaderStyle">
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="24" />
+            </Style>
+
+            <Style TargetType="StackPanel" x:Key="ChecklistSettingsSectionBottomStyle">
+                <Setter Property="Margin" Value="0,24,0,64" />
+                <Setter Property="Orientation" Value="Horizontal" />
+
+            </Style>
+
 
         </ResourceDictionary>
 
