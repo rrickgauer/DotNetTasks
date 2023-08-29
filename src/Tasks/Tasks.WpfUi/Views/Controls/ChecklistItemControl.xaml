@@ -112,7 +112,7 @@
                     <!--Cancel changes button-->
                     <ui:Button Appearance="Danger" 
                                Icon="Dismiss20" 
-                               Command="{Binding ViewModel.EditCommand}"
+                               Command="{Binding ViewModel.EditCancelCommand}"
                                ToolTip="Cancel changes"
                                VerticalAlignment="Stretch" />
 

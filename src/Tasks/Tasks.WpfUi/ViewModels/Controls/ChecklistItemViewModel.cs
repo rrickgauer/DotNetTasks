@@ -95,6 +95,14 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
         ToggleEditFormVisibility();
     }
 
+    [RelayCommand]
+    private void EditCancel()
+    {
+        Content = _checklistItem.Content;
+        ToggleEditFormVisibility();
+    }
+
+
     /// <summary>
     /// DeleteCommand
     /// </summary>
