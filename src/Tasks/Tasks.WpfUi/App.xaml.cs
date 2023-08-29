@@ -169,6 +169,10 @@ public partial class App
 
         ITaskMessenger checklistSettingsViewModel = GetService<ChecklistSettingsContainerViewModel>();
         checklistSettingsViewModel.RegisterMessenger();
+
+        GetService<ChecklistSettingsGeneralViewModel>().RegisterMessenger();
+        GetService<ChecklistSettingsLabelsViewModel>().RegisterMessenger();
+        GetService<ChecklistSettingsItemsViewModel>().RegisterMessenger();
     }
 
     /// <summary>

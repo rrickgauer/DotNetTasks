@@ -24,7 +24,7 @@ using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 
-public partial class ChecklistSettingsGeneralViewModel : ObservableObject, INavigationAware, ITaskMessenger, IModelForm<ChecklistView>,
+public partial class ChecklistSettingsGeneralViewModel : ObservableObject, IChecklistSettings, IModelForm<ChecklistView>,
     IRecipient<OpenChecklistSettingsPageMessage>
 {
 

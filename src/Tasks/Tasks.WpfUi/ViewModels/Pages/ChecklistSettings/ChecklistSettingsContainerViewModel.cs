@@ -17,7 +17,7 @@ using Wpf.Ui.Common;
 
 namespace Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 
-public partial class ChecklistSettingsContainerViewModel : ObservableObject, INavigationAware, ITaskMessenger, IRecipient<OpenChecklistSettingsPageMessage>
+public partial class ChecklistSettingsContainerViewModel : ObservableObject, IChecklistSettings, IRecipient<OpenChecklistSettingsPageMessage>
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices;
@@ -98,7 +98,7 @@ public partial class ChecklistSettingsContainerViewModel : ObservableObject, INa
 
     public void OnNavigatedFrom()
     {
-        //throw new NotImplementedException();
+        PageChange(ChecklistSettingsPages.General);
     }
 
     public void OnNavigatedTo()

@@ -1,16 +1,69 @@
 ﻿<ui:UiPage x:Class="Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings.ChecklistSettingsLabelsPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings"
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      mc:Ignorable="d" 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+           xmlns:local="clr-namespace:Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings"
+           xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           xmlns:helpers="clr-namespace:Tasks.WpfUi.Helpers"
+           mc:Ignorable="d" 
            d:DataContext="{d:DesignInstance local:ChecklistSettingsLabelsPage, IsDesignTimeCreatable=False}"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ChecklistSettingsLabelsPage">
+           d:DesignHeight="450" 
+           d:DesignWidth="800"
+           d:Foreground="White"
+           Title="ChecklistSettingsLabelsPage">
+    <ui:UiPage.Resources>
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
+    </ui:UiPage.Resources>
 
-    <Grid>
-        <TextBlock Text="Labels" />
-    </Grid>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0">
+                <TextBlock Text="Labels" />
+            </Border>
+
+            <Border Grid.Row="1">
+
+                <ListView ItemsSource="{Binding ViewModel.Labels}"
+                          ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                          Name="AssignedLabelsListView"
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <CheckBox IsChecked="{Binding IsAssigned, Mode=TwoWay}"
+                                          Command="{Binding Source={StaticResource Proxy}, Path=Data.ViewModel.AssignCommand}"
+                                          CommandParameter="{Binding}">
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <Ellipse Style="{StaticResource LabelCircleStyle}"
+                                                 Margin="0,0,10,0" 
+                                                 VerticalAlignment="Center" 
+                                                 d:Stroke="Red"
+                                                 d:Fill="Red"
+                                                 Stroke="{Binding Model.Color}" 
+                                                 Fill="{Binding Model.Color}" />
+
+                                        <TextBlock Text="{Binding Model.Name}" 
+                                                   d:Text="Label name" />
+                                    </StackPanel>
+                                </CheckBox>
+                   
+                                
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                </ListView>
+                
+                
+            </Border>
+            
+        </Grid>
+    </Border>
 </ui:UiPage>

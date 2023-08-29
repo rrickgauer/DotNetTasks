@@ -1,15 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tasks.WpfUi.Messaging;
-using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 
-public partial class ChecklistSettingsItemsViewModel : ObservableObject, INavigationAware, ITaskMessenger
+public partial class ChecklistSettingsItemsViewModel : ObservableObject, IChecklistSettings
 {
 
 
@@ -36,6 +31,16 @@ public partial class ChecklistSettingsItemsViewModel : ObservableObject, INaviga
     public void RegisterMessenger()
     {
         //throw new NotImplementedException();
+
+        try
+        {
+            WeakReferenceMessenger.Default.RegisterAll(this);
+        }
+        catch(InvalidOperationException)
+        {
+            // idk
+        }
+
     }
 
     public void CleanUp()
