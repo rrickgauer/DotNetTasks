@@ -36,4 +36,10 @@ public class Messages
         public ChecklistDeletedMessage(Guid checklistId) : base(checklistId) { }
     }
 
+    public sealed class OpenChecklistItemDeletedMessage : ValueChangedMessage<Guid>
+    {
+        public OpenChecklistItemDeletedMessage(Guid checklistId) : base(checklistId) { }
+    }
+
+
 }
