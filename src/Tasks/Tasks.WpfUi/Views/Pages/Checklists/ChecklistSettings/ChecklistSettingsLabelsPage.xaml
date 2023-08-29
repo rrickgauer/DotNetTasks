@@ -73,7 +73,9 @@
 
                         <!--Clone Action Buttons-->
                         <StackPanel Style="{StaticResource ChecklistSettingsSectionBottomStyle}">
-                            <ui:Button Content="Edit labels" Margin="0,0,16,0" />
+                            <ui:Button Content="Edit labels" 
+                                       Command="{Binding ViewModel.EditLabelsCommand}"
+                                       Margin="0,0,16,0" />
                         </StackPanel>
                     </StackPanel>
                     

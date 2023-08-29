@@ -6,9 +6,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.DisplayModels;
 using Tasks.WpfUi.Services;
+using Tasks.WpfUi.Views.Pages;
+using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
@@ -20,6 +24,7 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
     private readonly ILabelServices _labelServices;
     private readonly IChecklistLabelServices _checklistLabelServices;
     private readonly WpfApplicationServices _applicationServices;
+    private readonly INavigation _navigation;
 
     private Guid _currentUserId => _applicationServices.CurrentUserId;
     private Guid _checklistId = Guid.Empty;
@@ -40,11 +45,12 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
     #endregion
 
 
-    public ChecklistSettingsLabelsViewModel(ILabelServices labelServices, IChecklistLabelServices checklistLabelServices, WpfApplicationServices applicationServices)
+    public ChecklistSettingsLabelsViewModel(ILabelServices labelServices, IChecklistLabelServices checklistLabelServices, WpfApplicationServices applicationServices, INavigationService navigationService)
     {
         _labelServices = labelServices;
         _checklistLabelServices = checklistLabelServices;
         _applicationServices = applicationServices;
+        _navigation = navigationService.GetNavigationControl();
 
         RegisterMessenger();
     }
@@ -71,15 +77,6 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
 
     public void RegisterMessenger()
     {
-
-
-        
-
-        //if (!WeakReferenceMessenger.Default.IsRegistered(this))
-        //{
-            //int x = 10;
-        //}
-
         try
         {
             WeakReferenceMessenger.Default.RegisterAll(this);
@@ -117,6 +114,12 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
     private void Assign(ChecklistLabelDisplayModel label)
     {
         SaveAssignmentAsync(label);
+    }
+
+    [RelayCommand]
+    private void EditLabels()
+    {
+        _navigation.Navigate(typeof(LabelsPage));
     }
 
     #endregion
