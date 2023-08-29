@@ -12,15 +12,14 @@ using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
 
-
-
-
 public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
 {
     #region - Private Members -
     private readonly IChecklistServices _checklistServices = App.GetService<IChecklistServices>();
-
     private ChecklistItemsViewModel ChecklistItemsViewModel => ChecklistItemsControl.ViewModel;
+
+    //private readonly Guid _messengerToken = new(@"f99abb5a-ba56-4a37-858c-ea280c226b56");
+    private readonly Guid _messengerToken = Guid.NewGuid();
 
     #endregion
 
@@ -63,7 +62,7 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     {
         ChecklistId = checklistId;
 
-        ChecklistItemsControl = new(new(checklistId));
+        ChecklistItemsControl = new(new(checklistId, _messengerToken));
 
         RegisterMessenger();
     }
@@ -78,8 +77,6 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     [RelayCommand]
     private void CloseButtonClicked()
     {
-        //CloseOpenChecklistEvent?.Invoke(this, ChecklistId);
-
         TaskMessengerServices.Send(new CloseOpenChecklistMessage(ChecklistId));
     }
 
@@ -98,8 +95,6 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     [RelayCommand]
     private void DeleteOpenChecklist()
     {
-        //DeleteOpenChecklistEvent?.Invoke(this, ChecklistId);
-
         TaskMessengerServices.Send(new DeleteOpenChecklistMessage(ChecklistId));
     }
 
@@ -129,12 +124,13 @@ public partial class OpenChecklistViewModel : ObservableObject, ITaskMessenger
     #region - ITaskMessenger -
     public void RegisterMessenger()
     {
-        WeakReferenceMessenger.Default.RegisterAll(this);
+        //WeakReferenceMessenger.Default.RegisterAll(this);
+        WeakReferenceMessenger.Default.RegisterAll(this, _messengerToken);
     }
 
     public void CleanUp()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.UnregisterAll(this, _messengerToken);
         WeakReferenceMessenger.Default.Cleanup();
     }
 

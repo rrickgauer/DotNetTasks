@@ -4,12 +4,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Controls;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using static Tasks.WpfUi.Messaging.Messages;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
@@ -21,6 +19,8 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
     #region - Private Members -
     private readonly IChecklistItemServices _checklistItemServices = App.GetService<IChecklistItemServices>();
     private readonly CustomAlertServices _customAlertServices = App.GetService<CustomAlertServices>();
+
+    private readonly Guid _messengerToken;
     #endregion
 
     #region - Public Properties -
@@ -41,9 +41,10 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
 
     #region - Init -
 
-    public ChecklistItemsViewModel(Guid checklistId)
+    public ChecklistItemsViewModel(Guid checklistId, Guid messengerToken)
     {
         ChecklistId = checklistId;
+        _messengerToken = messengerToken;
         
         RegisterMessenger();
     }
@@ -54,12 +55,14 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
     #region - ITaskMessenger -
     public void RegisterMessenger()
     {
-        WeakReferenceMessenger.Default.RegisterAll(this);
+        WeakReferenceMessenger.Default.RegisterAll(this, _messengerToken);
+
+        //WeakReferenceMessenger.Default.RegisterAll()
     }
 
     public void CleanUp()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.UnregisterAll(this, _messengerToken);
         WeakReferenceMessenger.Default.Cleanup();
     }
 
@@ -102,7 +105,7 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
     {
         var items = await _checklistItemServices.GetChecklistItemsAsync(ChecklistId);
 
-        var controls = items.Select(i => new ChecklistItemControl(new(i))).ToList();
+        var controls = items.Select(i => new ChecklistItemControl(new(i, _messengerToken))).ToList();
 
         return new(controls);
     }
@@ -111,6 +114,9 @@ public partial class ChecklistItemsViewModel : ObservableObject, ITaskMessenger,
     private void RemoveChecklistItemControl(Guid checklistItemId)
     {
         var control = GetChecklistItemControl(checklistItemId);
+
+        control.ViewModel.CleanUp();
+
         Items.Remove(control);
     }
     

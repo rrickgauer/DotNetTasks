@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Tasks.WpfUi.Views.Controls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
+             d:Foreground="White"
              d:DataContext="{d:DesignInstance local:ChecklistItemsControl, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
@@ -15,6 +16,7 @@
         <Grid>
 
             <ListView ItemsSource="{Binding ViewModel.Items}"
+                      d:ItemsSource="{d:SampleData ItemCount=5}"
                       ItemContainerStyle="{StaticResource ListViewItemStyle}" />
 
         </Grid>

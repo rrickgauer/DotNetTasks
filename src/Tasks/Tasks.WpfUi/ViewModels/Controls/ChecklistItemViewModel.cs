@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
@@ -12,7 +11,6 @@ using Tasks.WpfUi.Helpers.ModelForms;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
 using static Tasks.WpfUi.Messaging.Messages;
-//using System.Threading.Tasks;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
 
@@ -23,7 +21,7 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private readonly CustomAlertServices _customAlertServices = App.GetService<CustomAlertServices>();
     private ChecklistItem _checklistItem;
 
-
+    private readonly Guid _messengerToken;
 
     #endregion
 
@@ -74,9 +72,11 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     /// Constructor
     /// </summary>
     /// <param name="checklistItemId"></param>
-    public ChecklistItemViewModel(ChecklistItem checklistItem)
+    public ChecklistItemViewModel(ChecklistItem checklistItem, Guid messengerToken)
     {
         ChecklistItem = checklistItem;
+        _messengerToken = messengerToken;
+        
         RegisterMessenger();
     }
 
@@ -104,7 +104,7 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     {
         DeleteItemAsync();
 
-        WeakReferenceMessenger.Default.Send(new OpenChecklistItemDeletedMessage(ChecklistItemId));
+        WeakReferenceMessenger.Default.Send(new OpenChecklistItemDeletedMessage(ChecklistItemId), _messengerToken);
     }
 
     /// <summary>
@@ -143,12 +143,12 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     #region - ITaskMessenger -
     public void RegisterMessenger()
     {
-        WeakReferenceMessenger.Default.RegisterAll(this);
+        WeakReferenceMessenger.Default.RegisterAll(this, _messengerToken);
     }
 
     public void CleanUp()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.UnregisterAll(this, _messengerToken);
         WeakReferenceMessenger.Default.Cleanup();
     }
     #endregion

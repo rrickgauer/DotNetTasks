@@ -30,82 +30,113 @@
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0">
+
+                        <!--Header-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                     
-                    <!--Header-->
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                    
-                        <!--Checklist Title-->
-                        <TextBlock Text="{Binding ViewModel.Checklist.Title}"
-                                    Grid.Column="0"
-                                    d:Text="Checklist title" />
+                            <!--Checklist Title-->
+                            <TextBlock Text="{Binding ViewModel.Checklist.Title}"
+                                        Grid.Column="0"
+                                        d:Text="Checklist title" />
 
-                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
 
-                            <!--Checklist dropdown menu-->
-                            <ui:Button Icon="MoreHorizontal20"
-                                       Click="OpenChecklistDropdownMenuButton_Click"
-                                       Name="OpenChecklistDropdownMenuButton">
+                                <!--Checklist dropdown menu-->
+                                <ui:Button Icon="MoreHorizontal20"
+                                           Click="OpenChecklistDropdownMenuButton_Click"
+                                           Name="OpenChecklistDropdownMenuButton">
 
-                                <ui:Button.ContextMenu>
-                                    <ContextMenu DataContext="{Binding Source={StaticResource Proxy}, Path=Data}"
-                                                 d:DataContext="{d:DesignInstance local:OpenChecklistControl, IsDesignTimeCreatable=False}">
+                                    <ui:Button.ContextMenu>
+                                        <ContextMenu DataContext="{Binding Source={StaticResource Proxy}, Path=Data}"
+                                                     d:DataContext="{d:DesignInstance local:OpenChecklistControl, IsDesignTimeCreatable=False}">
                                         
-                                        <!--Open up the checklist page-->
-                                        <ui:MenuItem Header="Settings" 
-                                                     Command="{Binding ViewModel.OpenChecklistSettingsPageCommand}"
-                                                     ToolTip="Edit the checklist" />
+                                            <!--Open up the checklist page-->
+                                            <ui:MenuItem Header="Settings" 
+                                                         Command="{Binding ViewModel.OpenChecklistSettingsPageCommand}"
+                                                         ToolTip="Edit the checklist" />
 
-                                        <!--Delete the checklist-->
-                                        <ui:MenuItem Header="Delete" 
-                                                     Command="{Binding ViewModel.DeleteOpenChecklistCommand}"
-                                                     ToolTip="Delete the checklist" />
+                                            <!--Delete the checklist-->
+                                            <ui:MenuItem Header="Delete" 
+                                                         Command="{Binding ViewModel.DeleteOpenChecklistCommand}"
+                                                         ToolTip="Delete the checklist" />
 
-                                        <Separator />
+                                            <Separator />
 
-                                        <ui:MenuItem Header="Mark all items">
+                                            <ui:MenuItem Header="Mark all items">
                                             
-                                            <!--Mark items complete-->
-                                            <ui:MenuItem Header="Complete" 
-                                                         ToolTip="Mark all items complete"
-                                                         CommandParameter="{StaticResource TrueValue}" />
+                                                <!--Mark items complete-->
+                                                <ui:MenuItem Header="Complete" 
+                                                             ToolTip="Mark all items complete"
+                                                             CommandParameter="{StaticResource TrueValue}" />
 
-                                            <!--Mark items incomplete-->
-                                            <ui:MenuItem Header="Incomplete" 
-                                                         ToolTip="Mark all items incomplete"
-                                                         CommandParameter="{StaticResource FalseValue}" />
-                                        </ui:MenuItem>
+                                                <!--Mark items incomplete-->
+                                                <ui:MenuItem Header="Incomplete" 
+                                                             ToolTip="Mark all items incomplete"
+                                                             CommandParameter="{StaticResource FalseValue}" />
+                                            </ui:MenuItem>
 
-                                        <!--Show completed items-->
-                                        <ui:MenuItem Header="Show completed items" 
-                                                     ToolTip="Show all the completed items in the checklist"
-                                                     IsCheckable="True" />
+                                            <!--Show completed items-->
+                                            <ui:MenuItem Header="Show completed items" 
+                                                         ToolTip="Show all the completed items in the checklist"
+                                                         IsCheckable="True" />
 
-                                        <!--Remove completed items-->
-                                        <ui:MenuItem Header="Remove completed items" 
-                                                     ToolTip="Remove all the completed items from the checklist"/>
+                                            <!--Remove completed items-->
+                                            <ui:MenuItem Header="Remove completed items" 
+                                                         ToolTip="Remove all the completed items from the checklist"/>
 
-                                    </ContextMenu>
-                                </ui:Button.ContextMenu>
+                                        </ContextMenu>
+                                    </ui:Button.ContextMenu>
                             
-                            </ui:Button>
+                                </ui:Button>
                         
-                            <!--Close checklist button-->
-                            <ui:Button Icon="Dismiss20" 
-                                       Command="{Binding ViewModel.CloseButtonClickedCommand}"
-                                       Grid.Column="1"
-                                       ToolTip="Close this checklist" />
-                        </StackPanel>
+                                <!--Close checklist button-->
+                                <ui:Button Icon="Dismiss20" 
+                                           Command="{Binding ViewModel.CloseButtonClickedCommand}"
+                                           Grid.Column="1"
+                                           ToolTip="Close this checklist" />
+                            </StackPanel>
 
-                    </Grid>
+                        </Grid>
+
+                    </Border>
 
 
-                    <Border Grid.Row="1">
+                    <!--New checklist item form-->
+                    <Border Grid.Row="1" Margin="0,16,0,0">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ui:TextBox Grid.Column="0"/>
+                            
+                            <ui:Button Grid.Column="1"
+                                       Content="+" 
+                                       Appearance="Success"
+                                       ToolTip="Create new item"
+                                       VerticalAlignment="Stretch"
+                                       Margin="2,0,0,0"/>
+
+
+                        </Grid>
+                        
+                        
+                    </Border>
+                    
+
+                    <!--Checklist Items-->
+                    <Border Grid.Row="2">
                         <ContentControl Content="{Binding ViewModel.ChecklistItemsControl}"/>
                     </Border>
 
