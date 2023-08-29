@@ -4,12 +4,14 @@ using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.Helpers.ModelForms;
 using Tasks.WpfUi.Messaging;
 using Tasks.WpfUi.Services;
+using static Tasks.WpfUi.Messaging.Messages;
 //using System.Threading.Tasks;
 
 namespace Tasks.WpfUi.ViewModels.Controls;
@@ -21,11 +23,14 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private readonly CustomAlertServices _customAlertServices = App.GetService<CustomAlertServices>();
     private ChecklistItem _checklistItem;
 
-    private Guid _checklistItemId => _checklistItem.Id.Value;
+
 
     #endregion
 
     #region - Public Properties -
+
+    public Guid ChecklistItemId => _checklistItem.Id.Value;
+
 
     public ChecklistItem ChecklistItem
     {
@@ -95,9 +100,11 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
-    private async Task Delete()
+    private void Delete()
     {
-        int x = 10;
+        DeleteItemAsync();
+
+        WeakReferenceMessenger.Default.Send(new OpenChecklistItemDeletedMessage(ChecklistItemId));
     }
 
     /// <summary>
@@ -119,11 +126,11 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     {
         if (IsComplete)
         {
-            _checklistItemServices.MarkItemCompleteAsync(_checklistItemId);
+            _checklistItemServices.MarkItemCompleteAsync(ChecklistItemId);
         }
         else
         {
-            _checklistItemServices.MarkItemIncompleteAsync(_checklistItemId);
+            _checklistItemServices.MarkItemIncompleteAsync(ChecklistItemId);
         }
     }
 
@@ -186,6 +193,11 @@ public partial class ChecklistItemViewModel : ObservableObject, ITaskMessenger, 
     private async Task UpdateItemAsync()
     {
         await _checklistItemServices.SaveChecklistItemAsync(ChecklistItem);
+    }
+
+    private async void DeleteItemAsync()
+    {
+        await _checklistItemServices.DeleteChecklistItemAsync(ChecklistItemId);
     }
 
 
