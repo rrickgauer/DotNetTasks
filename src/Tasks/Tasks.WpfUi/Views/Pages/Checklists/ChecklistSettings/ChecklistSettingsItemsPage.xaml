@@ -32,41 +32,69 @@
 
                 <Border Margin="0,8">
 
-                    <ui:Card>
-                        <StackPanel>
+                    <Grid>
 
-                            <!--New item form-->
-                            <Border>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width=".3*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        
+                        <ui:Card Grid.Column="0">
+                            <StackPanel>
 
-                                    <!--Text input-->
-                                    <ui:TextBox Grid.Column="0"
+                                <!--New item form-->
+                                <Border>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Text input-->
+                                        <ui:TextBox Grid.Column="0"
                                                 Text="{Binding ViewModel.NewItemInputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <ui:TextBox.InputBindings>
-                                            <KeyBinding Key="Return" Modifiers="Ctrl" Command="{Binding ViewModel.NewItemCommand}" />
-                                        </ui:TextBox.InputBindings>
-                                    </ui:TextBox>
+                                            <ui:TextBox.InputBindings>
+                                                <KeyBinding Key="Return" Modifiers="Ctrl" Command="{Binding ViewModel.NewItemCommand}" />
+                                            </ui:TextBox.InputBindings>
+                                        </ui:TextBox>
 
-                                    <!--Submit button-->
-                                    <ui:Button Grid.Column="1"
+                                        <!--Submit button-->
+                                        <ui:Button Grid.Column="1"
                                                Content="+"
                                                VerticalAlignment="Stretch"
                                                Command="{Binding ViewModel.NewItemCommand}"
                                                ToolTip="Add new item"
                                                Appearance="Success" Margin="2,0,0,0" />
 
-                                </Grid>
-                            </Border>
+                                    </Grid>
+                                </Border>
 
-                            <!--Checklist items-->
-                            <ContentControl Content="{Binding ViewModel.ChecklistItemsControl}" />
+                                <!--Checklist items-->
+                                <ContentControl Content="{Binding ViewModel.ChecklistItemsControl}" />
 
-                        </StackPanel>
-                    </ui:Card>
+                            </StackPanel>
+                        </ui:Card>
+
+
+                        <Border Grid.Column="1"
+                                Padding="8,0">
+
+                            <StackPanel >
+
+                                <ui:Button Content="Export"
+                                           Command="{Binding ViewModel.ExportCommand}"
+                                           HorizontalAlignment="Stretch"/>
+
+                            </StackPanel>
+                        </Border>
+
+                        
+                        
+                    </Grid>
+                    
+
+
                    
                 </Border>
 

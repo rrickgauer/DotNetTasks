@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Service.Services.Interfaces;
+using Tasks.WpfUi.Services;
 using Tasks.WpfUi.ViewModels.Controls;
 using Tasks.WpfUi.Views.Controls;
 using static Tasks.WpfUi.Messaging.Messages;
@@ -16,6 +18,7 @@ public partial class ChecklistSettingsItemsViewModel : ObservableObject, ICheckl
 
     #region - Private Members
     private readonly IChecklistItemServices _checklistItemServices;
+    private readonly CustomAlertServices _customAlertServices;
 
     private Guid _checklistId = Guid.Empty;
     private Guid _messengerToken = Guid.NewGuid();
@@ -55,9 +58,10 @@ public partial class ChecklistSettingsItemsViewModel : ObservableObject, ICheckl
     /// Constructor
     /// </summary>
     /// <param name="checklistItemServices"></param>
-    public ChecklistSettingsItemsViewModel(IChecklistItemServices checklistItemServices) 
+    public ChecklistSettingsItemsViewModel(IChecklistItemServices checklistItemServices, CustomAlertServices customAlertServices) 
     {
         _checklistItemServices = checklistItemServices;
+        _customAlertServices = customAlertServices;
     }
 
     #endregion
@@ -126,6 +130,18 @@ public partial class ChecklistSettingsItemsViewModel : ObservableObject, ICheckl
     {
         await CreateNewItemAsync();
     }
+
+
+    [RelayCommand]
+    private async Task ExportAsync()
+    {
+        var data = await _checklistItemServices.GetExportItemsStringAsync(_checklistId);
+        
+        Clipboard.SetText(data);
+
+        _customAlertServices.Successful("Items copied to clipboard");
+    }
+
 
 
     #endregion

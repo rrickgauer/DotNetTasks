@@ -11,4 +11,5 @@ public interface IChecklistItemServices
     public Task<int> CopyChecklistItemsAsync(Guid sourceId, Guid destinationId);
     public Task<ChecklistItem?> MarkItemCompleteAsync(Guid itemId);
     public Task<ChecklistItem?> MarkItemIncompleteAsync(Guid itemId);
+    public Task<string> GetExportItemsStringAsync(Guid checklistId);
 }
