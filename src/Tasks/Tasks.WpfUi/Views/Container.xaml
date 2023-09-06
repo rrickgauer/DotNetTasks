@@ -15,6 +15,7 @@
     WindowBackdropType="Mica"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
+    MinWidth="1200"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

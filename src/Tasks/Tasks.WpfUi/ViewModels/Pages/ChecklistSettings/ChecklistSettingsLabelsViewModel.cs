@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Navigation;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.DisplayModels;
 using Tasks.WpfUi.Services;
@@ -28,8 +27,6 @@ public partial class ChecklistSettingsLabelsViewModel : ObservableObject, ICheck
 
     private Guid _currentUserId => _applicationServices.CurrentUserId;
     private Guid _checklistId = Guid.Empty;
-
-
 
     #region - Generated Properties -
 

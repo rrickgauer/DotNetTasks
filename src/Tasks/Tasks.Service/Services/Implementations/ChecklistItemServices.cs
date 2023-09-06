@@ -12,7 +12,6 @@ public class ChecklistItemServices : IChecklistItemServices
     private readonly IMapperServices _mapperServices;
     #endregion
 
-
     /// <summary>
     /// Constructor
     /// </summary>
@@ -22,6 +21,27 @@ public class ChecklistItemServices : IChecklistItemServices
     {
         _repository = repository;
         _mapperServices = mapperServices;
+    }
+
+
+    /// <summary>
+    /// Get the string for exporting items
+    /// </summary>
+    /// <param name="checklistId"></param>
+    /// <returns></returns>
+    public async Task<string> GetExportItemsStringAsync(Guid checklistId)
+    {
+        var items = await GetChecklistItemsAsync(checklistId);
+
+        string result = string.Empty;
+
+        foreach(var item in items) 
+        {
+            string check = item.IsComplete ? "x" : " ";
+            result += $"- [{check}] {item.Content}{Environment.NewLine}";
+        }
+
+        return result;
     }
 
     /// <summary>
