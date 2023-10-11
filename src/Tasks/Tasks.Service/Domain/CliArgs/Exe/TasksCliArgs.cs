@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tasks.Service.Domain.CliArgs;
+namespace Tasks.Service.Domain.CliArgs.Exe;
 
 public class TasksCliArgs
 {
