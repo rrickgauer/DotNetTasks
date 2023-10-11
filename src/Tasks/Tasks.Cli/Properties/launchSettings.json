@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Tasks.Cli": {
+      "commandName": "Project"
+    },
+    "checklist clone": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist clone 3 --title BitchAss"
+    },
+    "label new": {
+      "commandName": "Project",
+      "commandLineArgs": "label new --title new.label"
+    }
+  }
+}
