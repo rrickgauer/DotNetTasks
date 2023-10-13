@@ -3,9 +3,13 @@
     "Tasks.Cli": {
       "commandName": "Project"
     },
-    "checklists": {
+    "checklist clone": {
       "commandName": "Project",
-      "commandLineArgs": "clone 3 --title BitchAss"
+      "commandLineArgs": "checklist clone 3 --title BitchAss"
+    },
+    "label new": {
+      "commandName": "Project",
+      "commandLineArgs": "label new --title new.label"
     }
   }
 }

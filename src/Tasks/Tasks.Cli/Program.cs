@@ -1,41 +1,25 @@
-﻿
-using System.CommandLine;
-using System.CommandLine.Invocation;
-
-var titleOption = new Option<string?>("--title", "Checklist title");
-
-var checklistReferenceArgument = new Argument<int>("checklistReference", "The checklist index");
+﻿using Microsoft.Extensions.DependencyInjection;
+using Tasks.Cli.CommandArgs;
+using Tasks.Cli.Controllers;
+using Tasks.Service.DependenciesInjector;
 
 
-Command cloneCommand = new("clone", "Clone the checklist")
-{
-    titleOption,
-    checklistReferenceArgument
-};
+#region - Dependency Injection -
+ServiceCollection serviceCollection = new();
 
-cloneCommand.SetHandler(Callback1, titleOption, checklistReferenceArgument);
+ServicesInjector.InjectDependencies(serviceCollection, true);
 
+serviceCollection.AddSingleton<TasksRootCommand>();
+serviceCollection.AddSingleton<ChecklistCommandGroup>();
+serviceCollection.AddSingleton<TasksRootCommand>();
+serviceCollection.AddSingleton<AppController>();
+serviceCollection.AddSingleton<ChecklistController>();
 
-Command checklistCommand = new("checklist")
-{
-    cloneCommand,
-};
+#endregion
 
-var rootCommand = new RootCommand("Tasks CLI")
-{
-    checklistCommand,
-};
+var services = serviceCollection.BuildServiceProvider();
 
+var appController = services.GetRequiredService<AppController>();
 
-return await rootCommand.InvokeAsync(args);
-
-
-
-
-static void Callback1(string? title, int checklistReference)
-{
-    int x = 10;
-
-    Console.WriteLine("in here bitch");
-}
+return await appController.RunApp(args);
 

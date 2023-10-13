@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Tasks.Service.Utilities;
@@ -27,11 +28,14 @@ public static class JsonUtilities
 
     public static string ToJsonString<T>(T payload)
     {
-        var result = JsonSerializer.Serialize(payload, options: new()
-        {
-            AllowTrailingCommas = true,
-            WriteIndented = true,
-        });
+        var result = JsonSerializer.Serialize(
+            payload, 
+            options: new()
+            {
+                AllowTrailingCommas = true,
+                WriteIndented = true,
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            });
 
         return result;
     }
