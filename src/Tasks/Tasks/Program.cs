@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Tasks.Service.Configurations;
-using Tasks.Service.Domain.CliArgs;
+using Tasks.Service.Domain.CliArgs.Exe;
 using Tasks.Service.Utilities;
 
 // parse the cli args

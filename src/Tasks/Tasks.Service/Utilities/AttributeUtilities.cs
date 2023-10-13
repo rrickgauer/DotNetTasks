@@ -16,15 +16,45 @@ public static class AttributeUtilities
     }
 
 
-    public static TAttribute GetPropertyAttribute<TAttribute, TClass>(string propertyName) where TAttribute : Attribute
+    public static IEnumerable<TAttribute> GetPropertyAttributes<TAttribute, TClass>(string propertyName) where TAttribute : Attribute
     {
-        Type t = typeof(TClass);
+        return GetPropertyAttributes<TAttribute>(propertyName, typeof(TClass));
+    }
+
+    public static IEnumerable<TAttribute> GetPropertyAttributes<TAttribute>(string propertyName, Type classType) where TAttribute : Attribute
+    {
+        Type t = classType;
 
         var prop = t.GetProperty(propertyName);
 
         if (prop is null)
         {
             throw new NotSupportedException($"{propertyName} is not a valid property for type {t}");
+        }
+
+        var attrs = prop.GetCustomAttributes<TAttribute>().ToList();
+
+        if (attrs.Count < 1)
+        {
+            throw new NotSupportedException($"{propertyName} does not have ${nameof(TAttribute)} assignment");
+        }
+
+        return attrs;
+    }
+
+
+    public static TAttribute GetPropertyAttribute<TAttribute, TClass>(string propertyName) where TAttribute : Attribute
+    {
+        return GetPropertyAttribute<TAttribute>(propertyName, typeof(TClass));
+    }
+
+    public static TAttribute GetPropertyAttribute<TAttribute>(string propertyName, Type classType) where TAttribute : Attribute
+    {
+        var prop = classType.GetProperty(propertyName);
+
+        if (prop is null)
+        {
+            throw new NotSupportedException($"{propertyName} is not a valid property for type {classType}");
         }
 
         var attr = prop.GetCustomAttribute<TAttribute>();
@@ -36,6 +66,21 @@ public static class AttributeUtilities
 
         return attr;
     }
+
+
+    public static IEnumerable<PropertyInfo> GetPropertiesWithAttribute<TAttribute, TClass>() where TAttribute : Attribute
+    {
+        return GetPropertiesWithAttribute<TAttribute>(typeof(TClass));
+    }
+
+    public static IEnumerable<PropertyInfo> GetPropertiesWithAttribute<TAttribute>(Type classType) where TAttribute : Attribute
+    {
+        var properties = classType.GetProperties().Where(p => p.GetCustomAttributes<TAttribute>().ToList().Count > 0);
+
+        return properties;
+    }
+
+
 
 
     /// <summary>
@@ -58,9 +103,5 @@ public static class AttributeUtilities
             targetProperty?.SetValue(target, sourceValue);
         }
     }
-
-
-
-
 
 }

@@ -11,13 +11,13 @@ using Tasks.WpfUi.Models;
 using Tasks.WpfUi.Services;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
-using Tasks.Service.Domain.CliArgs;
 using Tasks.Service.DependenciesInjector;
 using Tasks.WpfUi.ViewModels.Pages;
 using Tasks.WpfUi.ViewModels.Controls;
 using Tasks.WpfUi.ViewModels.Pages.ChecklistSettings;
 using Tasks.WpfUi.Views.Pages.Checklists.ChecklistSettings;
 using Tasks.WpfUi.Messaging;
+using Tasks.Service.Domain.CliArgs.Exe;
 
 namespace Tasks.WpfUi;
 
