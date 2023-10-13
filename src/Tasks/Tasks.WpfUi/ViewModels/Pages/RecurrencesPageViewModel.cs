@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.Parms;
 using Tasks.Service.Domain.Responses.Custom;
-
+using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Utilities;
 using Tasks.Service.Validation;
-using Tasks.WpfUi.Services;
 using Tasks.WpfUi.Views.Controls;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Common.Interfaces;

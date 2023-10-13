@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasks.Cli.Controllers;
 
-public interface IRoute<in T>
+public interface IRouteAsync<in T>
 {
-    public void Route(T args);
+    public Task RouteAsync(T args);
 }

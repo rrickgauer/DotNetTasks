@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
-using Tasks.WpfUi.Services;
+using Tasks.Service.Services.Implementations;
 using Wpf.Ui.Common.Interfaces;
 
 namespace Tasks.WpfUi.ViewModels.Pages;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Tasks.Service.Services.Implementations;
 using Tasks.WpfUi.Views;
 using Wpf.Ui.Mvvm.Contracts;
 

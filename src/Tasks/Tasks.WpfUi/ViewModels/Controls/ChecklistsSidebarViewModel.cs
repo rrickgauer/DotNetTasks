@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
+using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 using Tasks.WpfUi.DisplayModels;
 using Tasks.WpfUi.Messaging;
