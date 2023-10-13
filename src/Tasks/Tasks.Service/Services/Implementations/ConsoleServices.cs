@@ -1,6 +1,9 @@
 ﻿using Spectre.Console;
+using Spectre.Console.Json;
+using Spectre.Console.Rendering;
 using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Services.Interfaces;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -43,5 +46,34 @@ public class ConsoleServices : IConsoleServices
         return table;
     }
 
+    /// <summary>
+    /// Get the index of the selected choice 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="selectionPrompt"></param>
+    /// <param name="choices"></param>
+    /// <returns></returns>
+    public int GetSelectedPromptIndex<T>(SelectionPrompt<T> selectionPrompt, List<T> choices) where T : notnull
+    {
+        selectionPrompt.AddChoices(choices);
 
+        var selectedItem = AnsiConsole.Prompt(selectionPrompt);
+
+        return choices.IndexOf(selectedItem);
+    }
+
+    
+
+    public void PrintJsonObject<T>(T data)
+    {
+        var text = JsonUtilities.ToJsonString(data);
+
+        JsonText jsonText = new(text)
+        {
+            MemberStyle = Color.Green,
+        };
+
+        AnsiConsole.Write(new Panel(jsonText));
+
+    }
 }

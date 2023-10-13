@@ -11,8 +11,6 @@ public class LabelCommandGroup : CommandGroupBase
 
     public override Command TopLevelCommand { get; protected set; } = new("label", "Edit labels");
 
-    protected override Type CommandGroupType => typeof(LabelCommandGroup);
-
     [SubCommand]
     [AddOption(nameof(NameOption))]
     [AddOption(nameof(ColorOption))]

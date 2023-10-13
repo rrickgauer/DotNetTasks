@@ -23,9 +23,6 @@ public static class JsonUtilities
         await JsonSerializer.SerializeAsync(stream, payload);
     }
 
-
-
-
     public static string ToJsonString<T>(T payload)
     {
         var result = JsonSerializer.Serialize(

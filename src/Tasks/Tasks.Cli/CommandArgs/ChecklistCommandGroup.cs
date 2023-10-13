@@ -10,8 +10,6 @@ public class ChecklistCommandGroup : CommandGroupBase
 {
     private readonly ChecklistController _checklistController;
 
-    protected override Type CommandGroupType => typeof(ChecklistCommandGroup);
-
     [AddOption(nameof(IndexArgument))]
     public override Command TopLevelCommand { get; protected set; } = new("checklist");
 
