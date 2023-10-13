@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+using System.Reflection;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Utilities;
 
@@ -25,9 +26,7 @@ public abstract class CommandGroupBase
 
         foreach (var subCommand in subCommandProperties)
         {
-            var value = subCommand.GetValue(this) as Command;
-
-            if (value != null)
+            if (subCommand.GetValue(this) is Command value)
             {
                 TopLevelCommand.Add(value);
             }
@@ -38,36 +37,35 @@ public abstract class CommandGroupBase
 
     protected virtual void AddOptionsToCommands()
     {
-        var optionProperties = AttributeUtilities.GetPropertiesWithAttribute<AddToCommandAttribute>(CommandGroupType);
+        var optionProperties = AttributeUtilities.GetPropertiesWithAttribute<AddOptionAttribute>(CommandGroupType);
 
         foreach (var property in optionProperties)
         {
-            var value = property.GetValue(this);
-
-            if (value != null)
+            if (property.GetValue(this) is Command value)
             {
-                AddOptionArgumentToCommands(property.Name, value);
+                AddCommandOptions(property, value);
             }
 
         }
     }
 
-    protected virtual void AddOptionArgumentToCommands(string propertyName, object option)
+    protected virtual void AddCommandOptions(PropertyInfo commandProperty, Command command)
     {
-        var propertyAttributes = AttributeUtilities.GetPropertyAttributes<AddToCommandAttribute, ChecklistCommandGroup>(propertyName);
+        var optionPropertyNames = AttributeUtilities.GetPropertyAttributes<AddOptionAttribute>(commandProperty.Name, CommandGroupType).Select(a => a.OptionName);
 
-        var commandNames = propertyAttributes.Select(a => a.CommandName);
-
-        var commandProperties = typeof(ChecklistCommandGroup).GetProperties().Where(p => commandNames.Contains(p.Name));
-
-        foreach (var prop in commandProperties)
+        foreach (var optionName in optionPropertyNames)
         {
-            var command = prop.GetValue(this) as Command;
+            var rawValue = CommandGroupType.GetProperty(optionName)?.GetValue(this, null);
 
-            var basetype = option.GetType().BaseType;
-
-            dynamic optionParsed = option.GetType().BaseType == typeof(Option) ? (Option)option : (Argument)option;
-            command?.Add(optionParsed);
+            if (rawValue is Option optionValue)
+            {
+                command.Add(optionValue);
+            }
+            else if (rawValue is Argument argumentValue)
+            {
+                command.Add(argumentValue);
+            }
+            
         }
     }
 

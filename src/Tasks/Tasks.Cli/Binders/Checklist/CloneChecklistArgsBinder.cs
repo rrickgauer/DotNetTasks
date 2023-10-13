@@ -19,7 +19,7 @@ public class CloneChecklistArgsBinder : ArgsBinderBase<CloneChecklistArgs>, IVal
     {
         return new()
         {
-            ChecklistReference = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
+            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
             Title = bindingContext.ParseResult.GetValueForOption(TitleOption),
         };
     }

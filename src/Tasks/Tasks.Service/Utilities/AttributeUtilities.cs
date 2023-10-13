@@ -18,7 +18,12 @@ public static class AttributeUtilities
 
     public static IEnumerable<TAttribute> GetPropertyAttributes<TAttribute, TClass>(string propertyName) where TAttribute : Attribute
     {
-        Type t = typeof(TClass);
+        return GetPropertyAttributes<TAttribute>(propertyName, typeof(TClass));
+    }
+
+    public static IEnumerable<TAttribute> GetPropertyAttributes<TAttribute>(string propertyName, Type classType) where TAttribute : Attribute
+    {
+        Type t = classType;
 
         var prop = t.GetProperty(propertyName);
 
@@ -37,15 +42,19 @@ public static class AttributeUtilities
         return attrs;
     }
 
+
     public static TAttribute GetPropertyAttribute<TAttribute, TClass>(string propertyName) where TAttribute : Attribute
     {
-        Type t = typeof(TClass);
+        return GetPropertyAttribute<TAttribute>(propertyName, typeof(TClass));
+    }
 
-        var prop = t.GetProperty(propertyName);
+    public static TAttribute GetPropertyAttribute<TAttribute>(string propertyName, Type classType) where TAttribute : Attribute
+    {
+        var prop = classType.GetProperty(propertyName);
 
         if (prop is null)
         {
-            throw new NotSupportedException($"{propertyName} is not a valid property for type {t}");
+            throw new NotSupportedException($"{propertyName} is not a valid property for type {classType}");
         }
 
         var attr = prop.GetCustomAttribute<TAttribute>();
@@ -66,8 +75,6 @@ public static class AttributeUtilities
 
     public static IEnumerable<PropertyInfo> GetPropertiesWithAttribute<TAttribute>(Type classType) where TAttribute : Attribute
     {
-        var attrtype = typeof(TAttribute);
-
         var properties = classType.GetProperties().Where(p => p.GetCustomAttributes<TAttribute>().ToList().Count > 0);
 
         return properties;
@@ -96,9 +103,5 @@ public static class AttributeUtilities
             targetProperty?.SetValue(target, sourceValue);
         }
     }
-
-
-
-
 
 }

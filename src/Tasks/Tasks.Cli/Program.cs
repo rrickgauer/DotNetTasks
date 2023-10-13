@@ -4,16 +4,29 @@ using Tasks.Cli.Controllers;
 using Tasks.Service.DependenciesInjector;
 
 
-#region - Dependency Injection -
+
 ServiceCollection serviceCollection = new();
 
-ServicesInjector.InjectDependencies(serviceCollection, true);
+bool isDebug = false;
 
-serviceCollection.AddSingleton<TasksRootCommand>();
-serviceCollection.AddSingleton<ChecklistCommandGroup>();
-serviceCollection.AddSingleton<TasksRootCommand>();
-serviceCollection.AddSingleton<AppController>();
-serviceCollection.AddSingleton<ChecklistController>();
+#if DEBUG
+isDebug = true;
+#endif
+
+ServicesInjector.InjectDependencies(serviceCollection, isDebug);
+
+#region - Dependency Injection -
+
+serviceCollection
+    // command groups
+    .AddSingleton<TasksRootCommand>()
+    .AddSingleton<ChecklistCommandGroup>()
+    .AddSingleton<LabelCommandGroup>()
+
+    // controllers
+    .AddSingleton<AppController>()
+    .AddSingleton<ChecklistController>()
+    .AddSingleton<LabelController>();
 
 #endregion
 

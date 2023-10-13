@@ -1,6 +1,6 @@
 ﻿using Tasks.Service.Utilities;
 
-namespace Tasks.Service.Domain.CliArgs.Cli;
+namespace Tasks.Service.Domain.CliArgs.Cli.Contracts;
 
 public interface ICliArgs<T>
 {

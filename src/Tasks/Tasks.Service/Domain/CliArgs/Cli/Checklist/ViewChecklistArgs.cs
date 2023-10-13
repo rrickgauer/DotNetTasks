@@ -2,8 +2,7 @@
 
 namespace Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
-public class CloneChecklistArgs : IChecklistCliIndex, IChecklistCliTitle
+public class ViewChecklistArgs : IChecklistCliIndex
 {
     public int? Index { get; set; }
-    public string? Title { get; set; }
 }

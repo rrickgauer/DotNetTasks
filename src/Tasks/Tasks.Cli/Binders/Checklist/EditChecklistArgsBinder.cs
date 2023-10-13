@@ -24,7 +24,7 @@ public class EditChecklistArgsBinder : ArgsBinderBase<EditChecklistArgs>, IValue
     {
         return new()
         {
-            ChecklistReference = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
+            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
             Title = bindingContext.ParseResult.GetValueForOption(TitleOption),
         };
     }

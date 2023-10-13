@@ -40,7 +40,6 @@ public static class ServicesInjector
         .AddScoped<IChecklistServices, ChecklistServices>()
         .AddScoped<IChecklistItemServices, ChecklistItemServices>()
         .AddScoped<IChecklistLabelServices, ChecklistLabelServices>()
-
         .AddSingleton<IMapperServices, MapperServices>()
         
 

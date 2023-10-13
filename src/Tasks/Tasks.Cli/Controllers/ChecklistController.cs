@@ -6,6 +6,7 @@ public class ChecklistController :
     IRoute<CloneChecklistArgs>,
     IRoute<DeleteChecklistArgs>,
     IRoute<EditChecklistArgs>,
+    IRoute<ViewChecklistArgs>,
     IRoute<NewChecklistArgs>
 {
     public void Route(CloneChecklistArgs args)
@@ -26,5 +27,10 @@ public class ChecklistController :
     public void Route(NewChecklistArgs args)
     {
         Console.WriteLine("NewChecklistArgs");
+    }
+
+    public void Route(ViewChecklistArgs args)
+    {
+        Console.WriteLine("ViewAllChecklistArgs");
     }
 }

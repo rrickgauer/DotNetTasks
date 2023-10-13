@@ -9,7 +9,7 @@
     },
     "label new": {
       "commandName": "Project",
-      "commandLineArgs": "label new --title new.label"
+      "commandLineArgs": "checklist clone 3 --title BitchAss"
     }
   }
 }

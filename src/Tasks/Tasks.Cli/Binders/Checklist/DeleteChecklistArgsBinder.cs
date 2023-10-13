@@ -21,7 +21,7 @@ public class DeleteChecklistArgsBinder : ArgsBinderBase<DeleteChecklistArgs>, IV
     {
         return new()
         {
-            ChecklistReference = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
+            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
             Force = bindingContext.ParseResult.GetValueForOption(ForceOption),
         };
     }

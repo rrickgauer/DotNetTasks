@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using static Tasks.Service.Domain.CliArgs.Cli.Contracts.ChecklistCliContracts;
+using static Tasks.Service.Domain.CliArgs.Cli.Contracts.CommonCliContracts;
 
 namespace Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
-public class DeleteChecklistArgs
+public class DeleteChecklistArgs : IChecklistCliIndex, ICliDeleteFlag
 {
     public bool Force {  get; set; } = false;
-    public int? ChecklistReference { get; set; }
+    public int? Index { get; set; }
 }
