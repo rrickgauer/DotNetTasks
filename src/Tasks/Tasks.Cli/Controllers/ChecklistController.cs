@@ -68,8 +68,50 @@ public class ChecklistController :
     /// <returns></returns>
     public async Task RouteAsync(DeleteChecklistArgs args)
     {
-        Console.WriteLine("DeleteChecklistArgs");
+        var checklists = await GetCurrentChecklistsAsync();
+        
+        args.Index ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
+
+        if (!ConfirmDelete(args))
+        {
+            Console.WriteLine("Checklist NOT deleted!");
+            return;
+        }
+
+        var checklistId = GetChecklistIdFromIndex(checklists, args.Index.Value);
+
+        await _checklistServices.DeleteChecklistAsync(checklistId);
+
+        Console.WriteLine($"{Environment.NewLine}Deleted!{Environment.NewLine}");
+
+        await DisplayChecklistsTableAsync();
+
     }
+
+
+    private Guid GetChecklistIdFromIndex(List<ChecklistView> checklists, int index)
+    {
+        var checklistIdToCopy = checklists.ElementAtOrDefault(index)?.Id;
+
+        if (!checklistIdToCopy.HasValue)
+        {
+            throw new Exception("Invalid checklist");
+        }
+
+        return checklistIdToCopy.Value;
+    }
+
+    private bool ConfirmDelete(DeleteChecklistArgs args)
+    {
+        if (args.Force)
+        {
+            return true;
+        }
+
+        return AnsiConsole.Confirm("Are you sure you want to delete this checklist?");
+    }
+
+
 
     public async Task RouteAsync(EditChecklistArgs args)
     {
