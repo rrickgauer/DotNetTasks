@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Rendering;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
+using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Implementations;
@@ -24,7 +25,7 @@ public class ChecklistController :
     private readonly WpfApplicationServices _applicationServices;
     private readonly IConsoleServices _consoleServices;
 
-    private Guid _userId => _applicationServices.CurrentUserId;
+    private Guid _currentUserId => _applicationServices.CurrentUserId;
 
 
     private static ChecklistsSelection ChecklistsSelectionPrompt => new ChecklistsSelection()
@@ -60,7 +61,11 @@ public class ChecklistController :
 
 
 
-
+    /// <summary>
+    /// Delete the checklist
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(DeleteChecklistArgs args)
     {
         Console.WriteLine("DeleteChecklistArgs");
@@ -71,10 +76,42 @@ public class ChecklistController :
         Console.WriteLine("EditChecklistArgs");
     }
 
+    /// <summary>
+    /// Create a new checklist
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(NewChecklistArgs args)
     {
-        Console.WriteLine("NewChecklistArgs");
+        args.Title ??= AnsiConsole.Ask<string>("New checklist title: ");
+
+        var newChecklistModel = CreateNewChecklistModel(args);
+
+        var outputView = await _checklistServices.SaveChecklistAsync(newChecklistModel);
+
+        _consoleServices.PrintJsonObject(outputView);
     }
+
+    /// <summary>
+    /// Create a new checklist model from the cli args
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private Checklist CreateNewChecklistModel(NewChecklistArgs args)
+    {
+        Checklist newChecklist = new()
+        {
+            Id        = Guid.NewGuid(),
+            CreatedOn = DateTime.Now,
+            ListType  = ChecklistType.List,
+            Title     = args.Title,
+            UserId    = _currentUserId,
+        };
+
+        return newChecklist;
+    }
+
+
 
     /// <summary>
     /// View all the user's checklists
@@ -92,7 +129,7 @@ public class ChecklistController :
     /// <returns></returns>
     private async Task<List<ChecklistView>> GetCurrentChecklistsAsync()
     {
-        var checklists = await _checklistServices.GetUserChecklistsAsync(_userId);
+        var checklists = await _checklistServices.GetUserChecklistsAsync(_currentUserId);
 
         return checklists.ToList();
     }
@@ -102,7 +139,7 @@ public class ChecklistController :
     {
 
         // get the user's checklists
-        var checklists = await _checklistServices.GetUserChecklistsAsync(_userId);
+        var checklists = await _checklistServices.GetUserChecklistsAsync(_currentUserId);
 
         // generate the output table
         var table = _consoleServices.GetTableWithIndex(checklists);

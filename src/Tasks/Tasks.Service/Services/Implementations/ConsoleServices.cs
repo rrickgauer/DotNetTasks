@@ -31,6 +31,7 @@ public class ConsoleServices : IConsoleServices
         return table;
     }
 
+
     public Table GetTable<T>(IEnumerable<T> items) where T : ICliTable
     {
         Table table = new();
@@ -74,6 +75,7 @@ public class ConsoleServices : IConsoleServices
         };
 
         AnsiConsole.Write(new Panel(jsonText));
-
     }
+
+
 }
