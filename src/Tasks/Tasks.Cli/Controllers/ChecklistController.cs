@@ -115,8 +115,22 @@ public class ChecklistController :
 
     public async Task RouteAsync(EditChecklistArgs args)
     {
-        Console.WriteLine("EditChecklistArgs");
+        var checklists = await GetCurrentChecklistsAsync();
+
+        args.Index ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
+
+
+        var existingChecklist = (Checklist)checklists[args.Index.Value];
+
+        args.Title ??= AnsiConsole.Ask("Updated title: ", existingChecklist.Title ?? string.Empty);
+        
+        existingChecklist.Title = args.Title;
+
+        await _checklistServices.SaveChecklistAsync(existingChecklist);
+
+        Console.WriteLine($"{Environment.NewLine}Success!");
     }
+
 
     /// <summary>
     /// Create a new checklist
