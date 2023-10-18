@@ -11,4 +11,5 @@
 ./.import-tasks-data.sh
 
 ./.print-header.sh "Call setup procedures..."
-./.import-tasks-data.sh
+./.call-setup-procedures.sh
+

@@ -6,9 +6,9 @@ namespace Tasks.Cli.Binders.Checklist;
 
 public class ViewChecklistArgsBinder : ArgsBinderBase<ViewChecklistArgs>, IValueDescriptor<ViewChecklistArgs>
 {
-    public Argument<int?> IndexArgument { get; set; }
+    public Argument<uint?> IndexArgument { get; set; }
 
-    public ViewChecklistArgsBinder(Argument<int?> indexArgument)
+    public ViewChecklistArgsBinder(Argument<uint?> indexArgument)
     {
         IndexArgument = indexArgument;
     }
@@ -17,7 +17,7 @@ public class ViewChecklistArgsBinder : ArgsBinderBase<ViewChecklistArgs>, IValue
     {
         return new()
         {
-            Index = bindingContext.ParseResult.GetValueForArgument(IndexArgument),
+            CommandLineId = bindingContext.ParseResult.GetValueForArgument(IndexArgument),
         };
     }
 }

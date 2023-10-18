@@ -4,5 +4,5 @@ namespace Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
 public class ViewChecklistArgs : IChecklistCliIndex
 {
-    public int? Index { get; set; }
+    public uint? CommandLineId { get; set; }
 }

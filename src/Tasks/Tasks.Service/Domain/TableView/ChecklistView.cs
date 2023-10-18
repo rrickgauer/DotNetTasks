@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
-using Tasks.Service.Domain.Models;
 using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Domain.TableView;
@@ -18,6 +17,12 @@ public class ChecklistView : ITableView, ICliTable
 
     [SqlColumn("id")]
     public Guid? Id { get; set; }
+
+    [JsonIgnore]
+    [SqlColumn("command_line_reference")]
+    [CliTableColumn("Id")]
+    public uint? CommandLineReferenceId { get; set; }
+
 
     [JsonIgnore]
     [SqlColumn("user_id")]
@@ -40,6 +45,9 @@ public class ChecklistView : ITableView, ICliTable
     [SqlColumn("count_items")]
     public long CountItems { get; set; } = 0;
 
+
+    #region - ICliTable -
+
     public static void AddTableColumns(Table table)
     {
         var properties = AttributeUtilities.GetPropertiesWithAttribute<CliTableColumnAttribute, ChecklistView>();
@@ -58,6 +66,8 @@ public class ChecklistView : ITableView, ICliTable
     {
         return CreatedOn.ToString("MM/dd/yyyy hh:mm tt");
     }
+
+    #endregion
 
 
 }
