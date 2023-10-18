@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Diagnostics;
 using Tasks.Service.Configurations;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Utilities;
 
-namespace Tasks.WpfUi.Services;
+namespace Tasks.Service.Services.Implementations;
 
 public class WpfApplicationServices
 {
@@ -83,7 +78,7 @@ public class WpfApplicationServices
         StartNewProcess();
 
         // shut down the current process
-        Application.Current.Shutdown();
+        //Application.Current.Shutdown();
     }
 
     /// <summary>
@@ -125,7 +120,7 @@ public class WpfApplicationServices
 
         await JsonUtilities.WriteAsync(_configs.WpfUserCredentials.FullName, credentials, true);
     }
-    
+
     /// <summary>
     /// Get the user's credentials from the credentials file located in the local program data directory.
     /// Returns null if the credentials file was not found or is empty, etc...

@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+using System.Windows.Input;
 using Tasks.Cli.Binders.Checklist;
 using Tasks.Cli.Controllers;
 using Tasks.Service.CustomAttributes;
@@ -8,8 +9,6 @@ namespace Tasks.Cli.CommandArgs;
 public class ChecklistCommandGroup : CommandGroupBase
 {
     private readonly ChecklistController _checklistController;
-
-    protected override Type CommandGroupType => typeof(ChecklistCommandGroup);
 
     [AddOption(nameof(IndexArgument))]
     public override Command TopLevelCommand { get; protected set; } = new("checklist");
@@ -54,11 +53,11 @@ public class ChecklistCommandGroup : CommandGroupBase
 
     protected override void RegisterHandlers()
     {
-        CloneCommand.SetHandler(_checklistController.Route, CloneChecklistArgsBinder);
-        EditCommand.SetHandler(_checklistController.Route, EditChecklistArgsBinder);
-        NewCommand.SetHandler(_checklistController.Route, NewChecklistArgsBinder);
-        DeleteCommand.SetHandler(_checklistController.Route, DeleteChecklistArgsBinder);
-        TopLevelCommand.SetHandler(_checklistController.Route, ViewChecklistArgsBinder);
+        CloneCommand.SetHandler(_checklistController.RouteAsync, CloneChecklistArgsBinder);
+        EditCommand.SetHandler(_checklistController.RouteAsync, EditChecklistArgsBinder);
+        NewCommand.SetHandler(_checklistController.RouteAsync, NewChecklistArgsBinder);
+        DeleteCommand.SetHandler(_checklistController.RouteAsync, DeleteChecklistArgsBinder);
+        TopLevelCommand.SetHandler(_checklistController.RouteAsync, ViewChecklistArgsBinder);
     }
 
 }

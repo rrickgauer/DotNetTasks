@@ -1,33 +1,43 @@
-﻿using System.Text.Json.Serialization;
+﻿using Spectre.Console;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
+using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.TableView;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Domain.Models;
 
-public class Checklist : ITableViewModel<ChecklistView, Checklist>, ITableViewModel<ChecklistLabelView, Checklist>
+public class Checklist : ITableViewModel<ChecklistView, Checklist>, ITableViewModel<ChecklistLabelView, Checklist>, ICliTable
 {
     [SqlColumn("id")]
+    [CliTableColumn]
     public Guid? Id { get; set; }
 
     [JsonIgnore]
     [SqlColumn("user_id")]
+    [CliTableColumn("User fucking id")]
     public Guid? UserId { get; set; }
 
     [SqlColumn("title")]
+    [CliTableColumn]
     public string? Title { get; set; }
 
     [SqlColumn("checklist_type_id")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     [JsonPropertyName("type")]
+    [CliTableColumn]
     public ChecklistType ListType { get; set; } = ChecklistType.List;
 
     [SqlColumn("created_on")]
+    [CliTableColumn]
     public DateTime CreatedOn { get; set; } = DateTime.Now;
 
 
 
-    // ITableViewModel
+    #region - ITableViewModel -
+
     public static explicit operator Checklist(ChecklistView other)
     {
         Checklist checklist = new()
@@ -56,56 +66,24 @@ public class Checklist : ITableViewModel<ChecklistView, Checklist>, ITableViewMo
 
         return checklist;
     }
+
+    #endregion
+
+
+    public static void AddTableColumns(Table table)
+    {
+        var properties = AttributeUtilities.GetPropertiesWithAttribute<CliTableColumnAttribute>(typeof(Checklist));
+        var headers = properties.Select(p => p.GetCustomAttribute<CliTableColumnAttribute>().Header);
+
+        foreach(var header in headers)
+        {
+            table.AddColumn(header);
+        }
+    }
+
+
+
 }
 
 
 
-
-#region - DotnetLists Original -
-
-//public class Checklist : ITableViewModel<ChecklistTableView, Checklist>, ITableViewModel<LabelAssignmentTableView, Checklist>
-//{
-//    public Guid? Id { get; set; } = Guid.NewGuid();
-//    public string? Title { get; set; } = string.Empty;
-//    public string? Description { get; set; } = string.Empty;
-//    public ChecklistType ListType { get; set; } = ChecklistType.List;
-//    public DateTime CreatedOn { get; set; } = DateTime.Now;
-
-//    public List<ChecklistItem> Items { get; set; } = new();
-
-
-//    #region - ITableViewModel -
-
-//    public static Checklist FromView(ChecklistTableView view)
-//    {
-//        Checklist result = new()
-//        {
-//            Id = view.Id,
-//            Title = view.Title,
-//            Description = view.Description,
-//            ListType = view.ListType,
-//            CreatedOn = view.CreatedOn
-//        };
-
-//        return result;
-//    }
-
-
-//    public static Checklist FromView(LabelAssignmentTableView view)
-//    {
-//        Checklist result = new()
-//        {
-//            Id = view.ChecklistId,
-//            Title = view.ChecklistTitle,
-//            Description = view.ChecklistDescription,
-//            ListType = view.ChecklistType,
-//            CreatedOn = view.ChecklistCreatedOn,
-//        };
-
-//        return result;
-//    }
-
-//    #endregion
-//}
-
-#endregion

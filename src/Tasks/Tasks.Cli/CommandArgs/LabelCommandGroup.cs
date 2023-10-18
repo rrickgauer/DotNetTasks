@@ -11,8 +11,6 @@ public class LabelCommandGroup : CommandGroupBase
 
     public override Command TopLevelCommand { get; protected set; } = new("label", "Edit labels");
 
-    protected override Type CommandGroupType => typeof(LabelCommandGroup);
-
     [SubCommand]
     [AddOption(nameof(NameOption))]
     [AddOption(nameof(ColorOption))]
@@ -42,9 +40,9 @@ public class LabelCommandGroup : CommandGroupBase
 
     protected override void RegisterHandlers()
     {
-        NewCommand.SetHandler(_labelController.Route, new NewLabelArgsBinder(NameOption, ColorOption));
-        EditCommand.SetHandler(_labelController.Route, new EditLabelArgsBinder(IndexArgument, NameOption, ColorOption));
-        DeleteCommand.SetHandler(_labelController.Route, new DeleteLabelArgsBinder(IndexArgument, ForceOption));
-        TopLevelCommand.SetHandler(_labelController.Route, new ViewAllLabelArgsBinder());
+        NewCommand.SetHandler(_labelController.RouteAsync, new NewLabelArgsBinder(NameOption, ColorOption));
+        EditCommand.SetHandler(_labelController.RouteAsync, new EditLabelArgsBinder(IndexArgument, NameOption, ColorOption));
+        DeleteCommand.SetHandler(_labelController.RouteAsync, new DeleteLabelArgsBinder(IndexArgument, ForceOption));
+        TopLevelCommand.SetHandler(_labelController.RouteAsync, new ViewAllLabelArgsBinder());
     }
 }

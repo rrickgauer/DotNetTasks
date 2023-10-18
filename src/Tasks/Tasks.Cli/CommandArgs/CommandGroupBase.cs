@@ -7,7 +7,7 @@ namespace Tasks.Cli.CommandArgs;
 
 public abstract class CommandGroupBase
 {
-    protected abstract Type CommandGroupType { get; }
+    protected Type CommandGroupType => GetType();
     public abstract Command TopLevelCommand { get; protected set; }
     protected abstract void RegisterHandlers();
     

@@ -49,7 +49,16 @@ public class DbConnection
     {
         // setup a new database connection object
         using MySqlConnection conn = GetNewConnection();
-        await conn.OpenAsync();
+
+        try
+        {
+            await conn.OpenAsync();
+        }
+        catch(Exception ex)
+        {
+            int x = 10;
+        }
+        
         command.Connection = conn;
 
         // fill the datatable with the command results

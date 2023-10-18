@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Services.Interfaces;
-using Tasks.WpfUi.Services;
 using Wpf.Ui.Common.Interfaces;
 using Tasks.WpfUi.Helpers;
 using Wpf.Ui.Mvvm.Contracts;
 using Tasks.WpfUi.Views.Pages;
 using Wpf.Ui.Controls.Interfaces;
 using System.Windows;
+using Tasks.Service.Services.Implementations;
 
 namespace Tasks.WpfUi.ViewModels.Pages;
 

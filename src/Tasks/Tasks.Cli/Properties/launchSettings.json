@@ -10,6 +10,10 @@
     "label new": {
       "commandName": "Project",
       "commandLineArgs": "checklist clone 3 --title BitchAss"
+    },
+    "View all checklists cli": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist"
     }
   }
 }
