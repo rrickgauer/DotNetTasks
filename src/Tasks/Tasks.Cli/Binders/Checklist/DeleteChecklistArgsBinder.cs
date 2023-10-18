@@ -9,9 +9,9 @@ namespace Tasks.Cli.Binders.Checklist;
 public class DeleteChecklistArgsBinder : ArgsBinderBase<DeleteChecklistArgs>, IValueDescriptor<DeleteChecklistArgs> 
 {
     public Option<bool> ForceOption { get; set; }
-    public Argument<int?> ChecklistReferenceArgument { get; set; }
+    public Argument<uint?> ChecklistReferenceArgument { get; set; }
 
-    public DeleteChecklistArgsBinder(Option<bool> forceOption, Argument<int?> checklistReferenceArgument)
+    public DeleteChecklistArgsBinder(Option<bool> forceOption, Argument<uint?> checklistReferenceArgument)
     {
         ForceOption = forceOption;
         ChecklistReferenceArgument = checklistReferenceArgument;
@@ -21,7 +21,7 @@ public class DeleteChecklistArgsBinder : ArgsBinderBase<DeleteChecklistArgs>, IV
     {
         return new()
         {
-            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
+            CommandLineId = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
             Force = bindingContext.ParseResult.GetValueForOption(ForceOption),
         };
     }

@@ -50,11 +50,12 @@ public class ChecklistController :
 
         // prompt client for any missing arguments needed to perform the clone
         args.Title ??= AnsiConsole.Ask<string>("New checklist title: ");
-        args.Index ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
 
-        var checklistIdToCopy = checklists.ElementAt(args.Index.Value).Id.Value;
+        args.CommandLineId ??= _consoleServices.GetSelectedPrompt(ChecklistsSelectionPrompt, checklists).CommandLineReferenceId.Value;
 
-        var clonedChecklist = await _checklistServices.CopyChecklistAsync(checklistIdToCopy, args.Title);
+        var checklistToCopy = checklists.Where(c => c.CommandLineReferenceId == args.CommandLineId.Value).First();
+
+        var clonedChecklist = await _checklistServices.CopyChecklistAsync(checklistToCopy.Id.Value, args.Title);
 
         _consoleServices.PrintJsonObject(clonedChecklist);
     }
@@ -70,7 +71,7 @@ public class ChecklistController :
     {
         var checklists = await GetCurrentChecklistsAsync();
         
-        args.Index ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
+        args.CommandLineId ??= _consoleServices.GetSelectedPrompt(ChecklistsSelectionPrompt, checklists).CommandLineReferenceId.Value;
 
         if (!ConfirmDelete(args))
         {
@@ -78,7 +79,8 @@ public class ChecklistController :
             return;
         }
 
-        var checklistId = GetChecklistIdFromIndex(checklists, args.Index.Value);
+        //var checklistId = GetChecklistIdFromIndex(checklists, args.CommandLineId.Value);
+        var checklistId = checklists.Where(c => c.CommandLineReferenceId == args.CommandLineId.Value).First().Id.Value;
 
         await _checklistServices.DeleteChecklistAsync(checklistId);
 
@@ -117,10 +119,11 @@ public class ChecklistController :
     {
         var checklists = await GetCurrentChecklistsAsync();
 
-        args.Index ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
+        //args.CommandLineId ??= _consoleServices.GetSelectedPromptIndex(ChecklistsSelectionPrompt, checklists);
+        args.CommandLineId ??= _consoleServices.GetSelectedPrompt(ChecklistsSelectionPrompt, checklists).CommandLineReferenceId;
 
-
-        var existingChecklist = (Checklist)checklists[args.Index.Value];
+        //var existingChecklist = (Checklist)checklists[args.CommandLineId.Value];
+        Checklist existingChecklist = (Checklist)checklists.Where(c => c.CommandLineReferenceId == args.CommandLineId).First();
 
         args.Title ??= AnsiConsole.Ask("Updated title: ", existingChecklist.Title ?? string.Empty);
         
@@ -198,7 +201,7 @@ public class ChecklistController :
         var checklists = await _checklistServices.GetUserChecklistsAsync(_currentUserId);
 
         // generate the output table
-        var table = _consoleServices.GetTableWithIndex(checklists);
+        var table = _consoleServices.GetTable(checklists.OrderBy(c => c.CommandLineReferenceId));
 
         // Render the table to the console
         AnsiConsole.Write(table);

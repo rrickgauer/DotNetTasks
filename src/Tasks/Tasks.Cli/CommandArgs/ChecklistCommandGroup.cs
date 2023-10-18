@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.Windows.Input;
 using Tasks.Cli.Binders.Checklist;
 using Tasks.Cli.Controllers;
 using Tasks.Service.CustomAttributes;
@@ -34,7 +33,7 @@ public class ChecklistCommandGroup : CommandGroupBase
     public Command CloneCommand { get; private set; } = new("clone", "Clone a checklist");
 
 
-    public static Argument<int?> IndexArgument { get; private set; } = new("index", "Checklist index");
+    public static Argument<uint?> IndexArgument { get; private set; } = new("index", "Checklist index");
     public static Option<string?> TitleOption { get; private set; } = new("--title", "The checklist title");
     public static Option<bool> ForceOption { get; private set; } = new("--force", getDefaultValue: () => false, "Force the deletion");
 

@@ -3,6 +3,7 @@ mysqldump -u main -h 104.225.208.163 -p ^
 --column-statistics=FALSE ^
 --routines ^
 --events ^
+--triggers ^
 --add-drop-table ^
 --allow-keywords ^
 --no-create-db ^

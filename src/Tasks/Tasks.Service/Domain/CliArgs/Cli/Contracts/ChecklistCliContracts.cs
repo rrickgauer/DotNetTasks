@@ -10,7 +10,7 @@ public class ChecklistCliContracts
 {
     public interface IChecklistCliIndex
     {
-        public int? Index { get; set; }
+        public uint? CommandLineId { get; set; }
     }
 
     public interface IChecklistCliTitle

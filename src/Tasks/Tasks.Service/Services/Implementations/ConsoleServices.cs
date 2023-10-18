@@ -9,7 +9,12 @@ namespace Tasks.Service.Services.Implementations;
 
 public class ConsoleServices : IConsoleServices
 {
-
+    /// <summary>
+    /// Get an ansi table with order index
+    /// </summary>
+    /// <typeparam name="TCliTable"></typeparam>
+    /// <param name="items"></param>
+    /// <returns></returns>
     public Table GetTableWithIndex<TCliTable>(IEnumerable<TCliTable> items) where TCliTable : ICliTable
     {
         Table table = new();
@@ -31,7 +36,12 @@ public class ConsoleServices : IConsoleServices
         return table;
     }
 
-
+    /// <summary>
+    /// Get an ansi table
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="items"></param>
+    /// <returns></returns>
     public Table GetTable<T>(IEnumerable<T> items) where T : ICliTable
     {
         Table table = new();
@@ -48,23 +58,27 @@ public class ConsoleServices : IConsoleServices
     }
 
     /// <summary>
-    /// Get the index of the selected choice 
+    /// Get the selected prompt from a console prompt
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="selectionPrompt"></param>
     /// <param name="choices"></param>
     /// <returns></returns>
-    public int GetSelectedPromptIndex<T>(SelectionPrompt<T> selectionPrompt, List<T> choices) where T : notnull
+    public T GetSelectedPrompt<T>(SelectionPrompt<T> selectionPrompt, List<T> choices) where T : notnull
     {
         selectionPrompt.AddChoices(choices);
 
         var selectedItem = AnsiConsole.Prompt(selectionPrompt);
 
-        return choices.IndexOf(selectedItem);
+        return selectedItem;
     }
 
-    
 
+    /// <summary>
+    /// Print the json object
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
     public void PrintJsonObject<T>(T data)
     {
         var text = JsonUtilities.ToJsonString(data);

@@ -1,0 +1,1 @@
+mysql -u root -p < setup-procedures/setup-procedures.sql

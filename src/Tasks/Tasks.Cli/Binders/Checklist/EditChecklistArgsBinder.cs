@@ -12,9 +12,9 @@ namespace Tasks.Cli.Binders.Checklist;
 public class EditChecklistArgsBinder : ArgsBinderBase<EditChecklistArgs>, IValueDescriptor<EditChecklistArgs>
 {
     public Option<string?> TitleOption { get; set; }
-    public Argument<int?> ChecklistReferenceArgument { get; set; }
+    public Argument<uint?> ChecklistReferenceArgument { get; set; }
 
-    public EditChecklistArgsBinder(Option<string?> titleOption, Argument<int?> checklistReferenceArgument)
+    public EditChecklistArgsBinder(Option<string?> titleOption, Argument<uint?> checklistReferenceArgument)
     {
         TitleOption = titleOption;
         ChecklistReferenceArgument = checklistReferenceArgument;
@@ -24,7 +24,7 @@ public class EditChecklistArgsBinder : ArgsBinderBase<EditChecklistArgs>, IValue
     {
         return new()
         {
-            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
+            CommandLineId = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
             Title = bindingContext.ParseResult.GetValueForOption(TitleOption),
         };
     }
