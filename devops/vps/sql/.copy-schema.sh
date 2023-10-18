@@ -9,6 +9,7 @@ mysqldump \
 --user=main \
 --column-statistics=FALSE \
 --routines \
+--triggers \
 --events \
 --no-data \
 --password \

@@ -9,3 +9,6 @@
 
 ./.print-header.sh "Import the Tasks dump data..."
 ./.import-tasks-data.sh
+
+./.print-header.sh "Call setup procedures..."
+./.import-tasks-data.sh
