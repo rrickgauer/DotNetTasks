@@ -38,13 +38,6 @@ public class ChecklistCommandGroup : CommandGroupBase
     public static Option<bool> ForceOption { get; private set; } = new("--force", getDefaultValue: () => false, "Force the deletion");
 
 
-    public CloneChecklistArgsBinder CloneChecklistArgsBinder { get; private set; }   = new(TitleOption, IndexArgument);
-    public EditChecklistArgsBinder EditChecklistArgsBinder { get; private set; }     = new(TitleOption, IndexArgument);
-    public NewChecklistArgsBinder NewChecklistArgsBinder { get; private set; }       = new(TitleOption);
-    public DeleteChecklistArgsBinder DeleteChecklistArgsBinder { get; private set; } = new(ForceOption, IndexArgument);
-    public ViewChecklistArgsBinder ViewChecklistArgsBinder { get; private set; }     = new(IndexArgument);
-
-
     public ChecklistCommandGroup(ChecklistController checklistController)
     {
         _checklistController = checklistController;
@@ -52,11 +45,11 @@ public class ChecklistCommandGroup : CommandGroupBase
 
     protected override void RegisterHandlers()
     {
-        CloneCommand.SetHandler(_checklistController.RouteAsync, CloneChecklistArgsBinder);
-        EditCommand.SetHandler(_checklistController.RouteAsync, EditChecklistArgsBinder);
-        NewCommand.SetHandler(_checklistController.RouteAsync, NewChecklistArgsBinder);
-        DeleteCommand.SetHandler(_checklistController.RouteAsync, DeleteChecklistArgsBinder);
-        TopLevelCommand.SetHandler(_checklistController.RouteAsync, ViewChecklistArgsBinder);
+        CloneCommand.SetHandler(_checklistController.RouteAsync, new CloneChecklistArgsBinder());
+        EditCommand.SetHandler(_checklistController.RouteAsync, new EditChecklistArgsBinder());
+        NewCommand.SetHandler(_checklistController.RouteAsync, new NewChecklistArgsBinder());
+        DeleteCommand.SetHandler(_checklistController.RouteAsync, new DeleteChecklistArgsBinder());
+        TopLevelCommand.SetHandler(_checklistController.RouteAsync, new ViewChecklistArgsBinder());
     }
 
 }
