@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using Tasks.Cli.CommandArgs;
 
@@ -11,7 +10,7 @@ public class AppController
 
     public AppController(TasksRootCommand rootCommand)
     {
-        this._rootCommand = rootCommand;
+        _rootCommand = rootCommand;
     }
 
     public async Task<int> RunApp(string[] args)
@@ -19,7 +18,4 @@ public class AppController
         _rootCommand.SetupCommandGroups();
         return await _rootCommand.InvokeAsync(args);
     }
-
-
-
 }

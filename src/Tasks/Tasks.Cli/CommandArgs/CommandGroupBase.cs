@@ -65,7 +65,6 @@ public abstract class CommandGroupBase
             {
                 command.Add(argumentValue);
             }
-            
         }
     }
 

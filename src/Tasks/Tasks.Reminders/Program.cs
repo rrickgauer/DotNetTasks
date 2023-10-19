@@ -17,7 +17,7 @@ TasksRemindersCliArgs cliArgs = Parser.Default.ParseArguments<TasksRemindersCliA
 RemindersController controller = new(cliArgs);
 
 // inject all the dependencies into the services
-ServiceProvider serviceProvider = controller.GetServiceProvider();
+var serviceProvider = controller.GetServiceProvider();
 
 var userServices = serviceProvider.GetService<IUserServices>();
 var reminderServices = serviceProvider.GetService<IRemiderServices>();
