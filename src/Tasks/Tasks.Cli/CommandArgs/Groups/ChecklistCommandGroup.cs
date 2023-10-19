@@ -3,39 +3,39 @@ using Tasks.Cli.Binders.Checklist;
 using Tasks.Cli.Controllers;
 using Tasks.Service.CustomAttributes;
 
-namespace Tasks.Cli.CommandArgs;
+namespace Tasks.Cli.CommandArgs.Groups;
 
-public class ChecklistCommandGroup : CommandGroupBase
+public class ChecklistCommandGroup : CommandGroup
 {
     private readonly ChecklistController _checklistController;
 
     [AddOption(nameof(IndexArgument))]
-    public override Command TopLevelCommand { get; protected set; } = new("checklist");
+    public override Command TopLevelCommand { get; } = new("checklist");
 
 
     [SubCommand]
     [AddOption(nameof(TitleOption))]
-    public Command NewCommand { get; private set; } = new("new", "Create a new checklist");
+    public Command NewCommand { get; } = new("new", "Create a new checklist");
 
     [SubCommand]
     [AddOption(nameof(TitleOption))]
     [AddOption(nameof(IndexArgument))]
-    public Command EditCommand { get; private set; } = new("edit", "Edit an existing checklist");
+    public Command EditCommand { get; } = new("edit", "Edit an existing checklist");
 
     [SubCommand]
     [AddOption(nameof(IndexArgument))]
     [AddOption(nameof(ForceOption))]
-    public Command DeleteCommand { get; private set; } = new("delete", "Delete a checklist");
+    public Command DeleteCommand { get; } = new("delete", "Delete a checklist");
 
     [SubCommand]
     [AddOption(nameof(TitleOption))]
     [AddOption(nameof(IndexArgument))]
-    public Command CloneCommand { get; private set; } = new("clone", "Clone a checklist");
+    public Command CloneCommand { get; } = new("clone", "Clone a checklist");
 
 
-    public static Argument<uint?> IndexArgument { get; private set; } = new("index", "Checklist index");
-    public static Option<string?> TitleOption { get; private set; } = new("--title", "The checklist title");
-    public static Option<bool> ForceOption { get; private set; } = new("--force", getDefaultValue: () => false, "Force the deletion");
+    public static Argument<uint?> IndexArgument { get; } = new("index", "Checklist index");
+    public static Option<string?> TitleOption { get; } = new("--title", "The checklist title");
+    public static Option<bool> ForceOption { get; } = new("--force", getDefaultValue: () => false, "Force the deletion");
 
 
     public ChecklistCommandGroup(ChecklistController checklistController)

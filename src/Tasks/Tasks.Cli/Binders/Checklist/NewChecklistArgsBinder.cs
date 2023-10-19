@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
-using Tasks.Cli.CommandArgs;
+using Tasks.Cli.CommandArgs.Groups;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
@@ -10,17 +10,4 @@ public class NewChecklistArgsBinder : ArgsBinderBase<NewChecklistArgs>, IValueDe
 {
     [CopyTo(nameof(NewChecklistArgs.Title))]
     public Option<string?> TitleOption { get; set; } = ChecklistCommandGroup.TitleOption;
-
-    //public NewChecklistArgsBinder(Option<string?> titleOption)
-    //{
-    //    TitleOption = titleOption;
-    //}
-
-    //protected override NewChecklistArgs GetBoundValue(BindingContext bindingContext)
-    //{
-    //    return new()
-    //    {
-    //        Title = bindingContext.ParseResult.GetValueForOption(TitleOption),
-    //    };
-    //}
 }

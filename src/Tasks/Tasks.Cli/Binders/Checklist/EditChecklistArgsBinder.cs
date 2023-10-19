@@ -5,7 +5,7 @@ using System.CommandLine.Binding;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tasks.Cli.CommandArgs;
+using Tasks.Cli.CommandArgs.Groups;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
 

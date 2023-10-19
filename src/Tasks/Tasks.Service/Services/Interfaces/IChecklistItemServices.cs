@@ -1,4 +1,5 @@
 ﻿using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.TableView;
 
 namespace Tasks.Service.Services.Interfaces;
 
@@ -12,4 +13,9 @@ public interface IChecklistItemServices
     public Task<ChecklistItem?> MarkItemCompleteAsync(Guid itemId);
     public Task<ChecklistItem?> MarkItemIncompleteAsync(Guid itemId);
     public Task<string> GetExportItemsStringAsync(Guid checklistId);
+
+    public Task<IEnumerable<ChecklistItemView>> GetChecklistItemViewsAsync(Guid checklistId);
+    public Task<IEnumerable<ChecklistItemView>> GetItemsByChecklistCliReferenceAsync(uint checklistCommandLineReferenceId);
+
+
 }

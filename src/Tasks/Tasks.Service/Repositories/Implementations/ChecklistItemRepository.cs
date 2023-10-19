@@ -105,4 +105,22 @@ public class ChecklistItemRepository : IChecklistItemRepository
 
         return await _connection.ModifyAsync(command);
     }
+
+    public async Task<DataTable> SelectChecklistItemViewsAsync(Guid checklistId)
+    {
+        MySqlCommand command = new(ChecklistItemCommands.SelectAllViewChecklistItems);
+
+        command.Parameters.AddWithValue("@checklist_id", checklistId);
+
+        return await _connection.FetchAllAsync(command);
+    }
+
+    public async Task<DataTable> SelectChecklistItemViewsByCliIdAsync(uint checklistCommandLineReferenceId)
+    {
+        MySqlCommand command = new(ChecklistItemCommands.SelectAllByChecklistCliReference);
+
+        command.Parameters.AddWithValue("@checklist_command_line_reference", checklistCommandLineReferenceId);
+
+        return await _connection.FetchAllAsync(command);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tasks.Cli.CommandArgs;
+using Tasks.Cli.CommandArgs.Groups;
 using Tasks.Cli.Controllers;
 using Tasks.Service.DependenciesInjector;
 using Tasks.Service.Services.Implementations;
@@ -23,11 +24,13 @@ public class CliServicesInjector : ServicesInjector
             // command groups
             .AddSingleton<TasksRootCommand>()
             .AddSingleton<ChecklistCommandGroup>()
+            .AddSingleton<ChecklistItemCommandGroup>()
             .AddSingleton<LabelCommandGroup>()
 
             // controllers
             .AddSingleton<AppController>()
             .AddSingleton<ChecklistController>()
+            .AddSingleton<ChecklistItemController>()
             .AddSingleton<LabelController>();
 
     }

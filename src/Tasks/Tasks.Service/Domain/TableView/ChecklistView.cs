@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
+using Tasks.Service.Domain.Constants;
 using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Utilities;
@@ -64,7 +65,7 @@ public class ChecklistView : ITableView, ICliTable
 
     public string GetCreatedOnCliOutput()
     {
-        return CreatedOn.ToString("MM/dd/yyyy hh:mm tt");
+        return CreatedOn.ToString(DateFormatTokens.CliOutput);
     }
 
     #endregion

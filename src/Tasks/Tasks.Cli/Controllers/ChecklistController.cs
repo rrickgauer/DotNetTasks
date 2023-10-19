@@ -1,12 +1,10 @@
 ﻿using Spectre.Console;
-using Spectre.Console.Rendering;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
-using Tasks.Service.Utilities;
 
 
 using ChecklistsSelection = Spectre.Console.SelectionPrompt<Tasks.Service.Domain.TableView.ChecklistView>;
@@ -57,7 +55,7 @@ public class ChecklistController :
 
         var clonedChecklist = await _checklistServices.CopyChecklistAsync(checklistToCopy.Id.Value, args.Title);
 
-        _consoleServices.PrintJsonObject(clonedChecklist);
+        //_consoleServices.PrintJsonObject(clonedChecklist);
     }
 
 
@@ -131,7 +129,7 @@ public class ChecklistController :
 
         await _checklistServices.SaveChecklistAsync(existingChecklist);
 
-        Console.WriteLine($"{Environment.NewLine}Success!");
+        _consoleServices.DisplayCommandSuccess();
     }
 
 
@@ -148,7 +146,7 @@ public class ChecklistController :
 
         var outputView = await _checklistServices.SaveChecklistAsync(newChecklistModel);
 
-        _consoleServices.PrintJsonObject(outputView);
+        _consoleServices.DisplayCommandSuccess();
     }
 
     /// <summary>
@@ -196,12 +194,11 @@ public class ChecklistController :
 
     private async Task DisplayChecklistsTableAsync()
     {
-
         // get the user's checklists
         var checklists = await _checklistServices.GetUserChecklistsAsync(_currentUserId);
 
         // generate the output table
-        var table = _consoleServices.GetTable(checklists.OrderBy(c => c.CommandLineReferenceId));
+        var table = _consoleServices.BuildTable(checklists.OrderBy(c => c.CommandLineReferenceId));
 
         // Render the table to the console
         AnsiConsole.Write(table);

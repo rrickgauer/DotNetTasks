@@ -3,14 +3,15 @@ using System.Reflection;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Utilities;
 
-namespace Tasks.Cli.CommandArgs;
+namespace Tasks.Cli.CommandArgs.Groups;
 
-public abstract class CommandGroupBase
+public abstract class CommandGroup
 {
     protected Type CommandGroupType => GetType();
-    public abstract Command TopLevelCommand { get; protected set; }
+    //public abstract Command TopLevelCommand { get; protected set; }
+    public abstract Command TopLevelCommand { get; }
     protected abstract void RegisterHandlers();
-    
+
     public virtual void AddCommandsToRoot(RootCommand rootCommand)
     {
         RegisterHandlers();

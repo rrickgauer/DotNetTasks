@@ -3,35 +3,35 @@ using Tasks.Cli.Binders.Label;
 using Tasks.Cli.Controllers;
 using Tasks.Service.CustomAttributes;
 
-namespace Tasks.Cli.CommandArgs;
+namespace Tasks.Cli.CommandArgs.Groups;
 
-public class LabelCommandGroup : CommandGroupBase
+public class LabelCommandGroup : CommandGroup
 {
     private readonly LabelController _labelController;
 
-    public override Command TopLevelCommand { get; protected set; } = new("label", "Edit labels");
+    public override Command TopLevelCommand { get; } = new("label", "Edit labels");
 
     [SubCommand]
     [AddOption(nameof(NameOption))]
     [AddOption(nameof(ColorOption))]
-    public Command NewCommand { get; private set; } = new("new");
+    public Command NewCommand { get; } = new("new");
 
     [SubCommand]
     [AddOption(nameof(NameOption))]
     [AddOption(nameof(ColorOption))]
     [AddOption(nameof(IndexArgument))]
-    public Command EditCommand { get; private set; } = new("edit");
+    public Command EditCommand { get; } = new("edit");
 
     [SubCommand]
     [AddOption(nameof(IndexArgument))]
     [AddOption(nameof(ForceOption))]
-    public Command DeleteCommand { get; private set; } = new("delete");
+    public Command DeleteCommand { get; } = new("delete");
 
 
-    public static Argument<int?> IndexArgument { get; private set; } = new("Label index");
-    public static Option<string?> NameOption { get; private set; }   = new("--name", "Label name");
-    public static Option<string?> ColorOption { get; private set; }  = new("--color", "Label color");
-    public static Option<bool> ForceOption { get; private set; }     = new("--force", getDefaultValue: () => false, "Force the deletion");
+    public static Argument<int?> IndexArgument { get; } = new("Label index");
+    public static Option<string?> NameOption { get; } = new("--name", "Label name");
+    public static Option<string?> ColorOption { get; } = new("--color", "Label color");
+    public static Option<bool> ForceOption { get; } = new("--force", getDefaultValue: () => false, "Force the deletion");
 
     public LabelCommandGroup(LabelController labelController)
     {
