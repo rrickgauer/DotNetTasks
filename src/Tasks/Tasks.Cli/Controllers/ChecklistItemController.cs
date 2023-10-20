@@ -30,11 +30,55 @@ public class ChecklistItemController :
         _checklistServices = checklistServices;
     }
 
+    /// <summary>
+    /// Delete an item
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(DeleteChecklistItemArgs args)
     {
-        Console.Write($"{args.GetType()}");
+        if (CancelDelete(args))
+        {
+            return;
+        }
+
+        var checklistItems = await GetItemsInChecklist(args.ChecklistCommandLineId);
+        args.ItemCommandLineId ??= _consoleServices.GetSelectedPrompt(_itemSelectionPrompt, checklistItems).CommandLineReference;
+
+        var item = checklistItems.Where(i => i.CommandLineReference == args.ItemCommandLineId).FirstOrDefault();
+
+        if (item == null)
+        {
+            _consoleServices.HandleCliError($"No item has id \"{args.ItemCommandLineId}\"");
+            return;
+        }
+
+        await _checklistItemServices.DeleteChecklistItemAsync(item.Id.Value);
+
+        _consoleServices.DisplayCommandSuccess();
     }
 
+    /// <summary>
+    /// Confirm deletion
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private static bool CancelDelete(DeleteChecklistItemArgs args)
+    {
+        if (args.Force)
+        {
+            return false;
+        }
+
+        return !AnsiConsole.Confirm("Delete the item?: ");
+    }
+
+
+    /// <summary>
+    /// Edit an item
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(EditChecklistItemArgs args)
     {
         var items = await GetItemsInChecklist(args.ChecklistCommandLineId);
@@ -72,10 +116,6 @@ public class ChecklistItemController :
 
         _consoleServices.DisplayCommandSuccess();
     }
-
-
-
-
 
     /// <summary>
     /// Retrieve item from either the cli argument or from list selection prompt
@@ -130,7 +170,11 @@ public class ChecklistItemController :
     }
 
 
-
+    /// <summary>
+    /// Create a new item
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(NewChecklistItemArgs args)
     {
         var checklist = await _checklistServices.GetChecklistByCliReferenceAsync(args.ChecklistCommandLineId);
@@ -176,6 +220,11 @@ public class ChecklistItemController :
     }
 
 
+    /// <summary>
+    /// List all the items in the checklist
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public async Task RouteAsync(ListChecklistItemArgs args)
     {
         var items = await GetItemsInChecklist(args.ChecklistCommandLineId);
