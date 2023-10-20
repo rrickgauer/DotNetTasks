@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Json;
 using Spectre.Console.Rendering;
+using Tasks.Service.Domain.CliArgs.Errors;
 using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
 
@@ -18,4 +19,8 @@ public interface IConsoleServices
     public Table BuildTable<T>(IEnumerable<T> items) where T : ICliTable;
 
     public void DisplayCommandSuccess();
+
+    public void HandleCliError(CliError cliError);
+    public void HandleCliError(object? message);
+
 }

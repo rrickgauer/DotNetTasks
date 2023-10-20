@@ -113,6 +113,17 @@ public sealed class ChecklistItemCommands
             v.position ASC;";
 
 
+    public const string SelectByCommandLineReference = @"
+       SELECT
+            v.*
+        FROM
+            View_Checklist_Items v
+        WHERE
+            v.command_line_reference = @command_line_reference
+        LIMIT
+            1;";
+
+
 
 
 }

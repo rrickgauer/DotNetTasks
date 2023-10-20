@@ -7,4 +7,8 @@ public class CommonCliContracts
         public bool Force { get; set; }
     }
 
+    public interface ICliNoPromptsFlag
+    {
+        public bool NoPromptsFlag { get; set; }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Json;
 using Spectre.Console.Rendering;
+using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Service.Utilities;
@@ -25,5 +26,14 @@ public static class AnsiTableExtensions
     {
         AnsiConsole.Write(data);
         return data;
+    }
+
+    public static SelectionPrompt<T> BuildSelectionPrompt<T>() where T : ICliPromptSelection<T>
+    {
+        return new()
+        {
+            Converter = T.CliPromptSelectionConverter,
+            Title = T.CliPromptSelectionTitle,
+        };
     }
 }

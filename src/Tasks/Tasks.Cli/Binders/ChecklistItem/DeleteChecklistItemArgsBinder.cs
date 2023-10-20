@@ -13,8 +13,11 @@ public class DeleteChecklistItemArgsBinder : ArgsBinderBase<DeleteChecklistItemA
     [CopyTo(nameof(IChecklistItemCliChecklistId.ChecklistCommandLineId))]
     public Option<uint> ChecklistIdOption { get; set; } = ChecklistItemCommandGroup.ChecklistIdOption;
 
-    [CopyTo(nameof(IChecklistItemCliIndex.ItemCommandLineId), ParseFunctionName = nameof(BinderCasts.ParseUInt))]
-    public Argument<uint?> ItemReferenceArgument { get; set; } = ChecklistItemCommandGroup.ItemReferenceArgument;
+    //[CopyTo(nameof(IChecklistItemCliIndex.ItemCommandLineId), ParseFunctionName = nameof(BinderCasts.ParseUInt))]
+    //public Argument<uint?> ItemReferenceArgument { get; set; } = ChecklistItemCommandGroup.ItemReferenceArgument;
+
+    [CopyTo(nameof(IChecklistItemCliIndex.ItemCommandLineId))]
+    public Option<uint?> ItemReferenceArgument { get; set; } = ChecklistItemCommandGroup.ItemReferenceOption;
 
     [CopyTo(nameof(ICliDeleteFlag.Force))]
     public Option<bool> ForceDeleteOption { get; set; } = ChecklistItemCommandGroup.ForceDeleteOption;

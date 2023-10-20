@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Service.Domain.Enums;
+using Tasks.Service.Utilities;
 
 namespace Tasks.Cli.Binders;
 
@@ -24,6 +26,24 @@ public static class BinderCasts
         return null;
     }
 
-    
+
+    public static object? ParseCliChecklistItemStatus(object? value)
+    {
+        var enumItems = EnumUtilities.GetEnumEntries<CliChecklistItemStatus>();
+
+        foreach (var enumItem in enumItems)
+        {
+            var name = Enum.GetName(enumItem);
+
+            if (name == value?.ToString())
+            {
+                return enumItem;    
+            }
+        }
+
+        return null;
+
+    }
+
 
 }

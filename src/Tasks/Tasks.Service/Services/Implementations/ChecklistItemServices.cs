@@ -173,4 +173,18 @@ public class ChecklistItemServices : IChecklistItemServices
 
         return items;
     }
+
+    public async Task<ChecklistItemView?> GetItemByCommandLineReferenceAsync(uint commandLineReference)
+    {
+        var row = await _repository.SelectByCommandLinereferenceAsync(commandLineReference);
+
+        if (row == null)
+        {
+            return null;
+        }
+
+        var model = _mapperServices.ToModel<ChecklistItemView>(row);
+
+        return model;
+    }
 }

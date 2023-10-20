@@ -18,6 +18,10 @@
     "cli: items list": {
       "commandName": "Project",
       "commandLineArgs": "checklist-item --checklist 3 list --style json"
+    },
+    "CLI: Toggle item": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist-item edit --checklist 3 --no-prompts --status incomplete"
     }
   }
 }

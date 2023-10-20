@@ -1,6 +1,5 @@
 ﻿
 using Spectre.Console;
-using System.Reflection;
 using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.Constants;
@@ -9,12 +8,23 @@ using Tasks.Service.Utilities;
 
 namespace Tasks.Service.Domain.TableView;
 
-public class ChecklistItemView : ITableView, ICliTable
+public class ChecklistItemView : ITableView, ICliTable, ICliPromptSelection<ChecklistItemView>
 {
 
     #region - ITableView -
     [JsonIgnore]
     public string ViewName => "View_Checklist_Items";
+    #endregion
+
+
+    #region - ICliPromptSelection -
+
+    [JsonIgnore]
+    public static string CliPromptSelectionTitle => "Select item";
+
+    [JsonIgnore]
+    public static Func<ChecklistItemView, string> CliPromptSelectionConverter => (c) => $"{c.CommandLineReference} - {c.Content}";
+
     #endregion
 
 
@@ -75,7 +85,8 @@ public class ChecklistItemView : ITableView, ICliTable
         return columns.ToList();
     }
 
-
-
     #endregion
+
+
+
 }

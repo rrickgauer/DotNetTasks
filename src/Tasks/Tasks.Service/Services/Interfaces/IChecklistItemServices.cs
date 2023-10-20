@@ -16,6 +16,6 @@ public interface IChecklistItemServices
 
     public Task<IEnumerable<ChecklistItemView>> GetChecklistItemViewsAsync(Guid checklistId);
     public Task<IEnumerable<ChecklistItemView>> GetItemsByChecklistCliReferenceAsync(uint checklistCommandLineReferenceId);
-
+    public Task<ChecklistItemView?> GetItemByCommandLineReferenceAsync(uint commandLineReference);
 
 }

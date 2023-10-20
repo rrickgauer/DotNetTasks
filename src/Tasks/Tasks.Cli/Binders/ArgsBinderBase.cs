@@ -54,20 +54,16 @@ public class ArgsBinderBase<T> : BinderBase<T> where T : new()
 
     protected virtual object? GetArgumentValue(ParseResult parseResult, Argument parsedArgument, CopyToAttribute copyToAttribute)
     {
-        var parsedValueString = parseResult.GetValueForArgument(parsedArgument)?.ToString();
+        //var parsedValueString = parseResult.GetValueForArgument(parsedArgument)?.ToString();
+        var valueRaw = parseResult.GetValueForArgument(parsedArgument)?.ToString();
 
-        if (string.IsNullOrWhiteSpace(parsedValueString))
+        if (!copyToAttribute.HasParseFunction)
         {
-            return null;
+            return valueRaw;
         }
-        else if (!copyToAttribute.HasParseFunction)
-        {
-            return parsedValueString;
-        }
-
 
         var callback = typeof(BinderCasts).GetMethod(copyToAttribute.ParseFunctionName);
-        var parsedValue = callback?.Invoke(null, new[] { parsedValueString });
+        var parsedValue = callback?.Invoke(null, new[] { valueRaw });
 
         return parsedValue;
 

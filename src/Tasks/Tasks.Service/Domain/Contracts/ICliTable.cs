@@ -3,7 +3,6 @@ using System.Collections;
 using System.Reflection;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Utilities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tasks.Service.Domain.Contracts;
 

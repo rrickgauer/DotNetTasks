@@ -13,5 +13,6 @@ public interface IChecklistItemRepository
 
     public Task<DataTable> SelectChecklistItemViewsAsync(Guid checklistId);
     public Task<DataTable> SelectChecklistItemViewsByCliIdAsync(uint checklistCommandLineReferenceId);
+    public Task<DataRow?> SelectByCommandLinereferenceAsync(uint commandLineReference);
 }
     

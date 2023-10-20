@@ -1,12 +1,10 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Json;
-using Spectre.Console.Rendering;
-using System.Collections;
+using Tasks.Service.Domain.CliArgs.Errors;
 using Tasks.Service.Domain.Contracts;
 using Tasks.Service.Domain.Enums;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Utilities;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Tasks.Service.Services.Implementations;
 
@@ -98,13 +96,20 @@ public class ConsoleServices : IConsoleServices
         return jsonText;
     }
 
-
-
-
     public void DisplayCommandSuccess()
     {
         Console.WriteLine($"Done");
     }
 
- 
+    public void HandleCliError(CliError cliError)
+    {
+        HandleCliError(cliError.Message);
+    }
+
+    public void HandleCliError(object? message)
+    {
+        AnsiConsole.Markup($"[red]{message?.ToString()}[/]");
+    }
+
+
 }

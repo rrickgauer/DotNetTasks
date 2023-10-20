@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tasks.Cli.Controllers;
 using Tasks.Cli.Services;
+using Tasks.Service.Domain.CliArgs.Errors;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
 
@@ -23,4 +24,3 @@ await appServices.LogInUser(credentials.Email, credentials.Password);
 var appController = services.GetRequiredService<AppController>();
 
 return await appController.RunApp(args);
-

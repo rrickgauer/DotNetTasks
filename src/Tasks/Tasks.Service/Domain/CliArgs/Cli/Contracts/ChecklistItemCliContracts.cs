@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tasks.Service.Domain.Enums;
 
 namespace Tasks.Service.Domain.CliArgs.Cli.Contracts;
 
@@ -21,6 +17,11 @@ public class ChecklistItemCliContracts
     public interface IChecklistItemCliChecklistId
     {
         public uint ChecklistCommandLineId { get; set; }
+    }
+
+    public interface IChecklistItemCliStatus
+    {
+        public CliChecklistItemStatus? Status { get; set; }
     }
 
 }

@@ -123,4 +123,13 @@ public class ChecklistItemRepository : IChecklistItemRepository
 
         return await _connection.FetchAllAsync(command);
     }
+
+    public async Task<DataRow?> SelectByCommandLinereferenceAsync(uint commandLineReference)
+    {
+        MySqlCommand command = new(ChecklistItemCommands.SelectByCommandLineReference);
+
+        command.Parameters.AddWithValue("@command_line_reference", commandLineReference);
+
+        return await _connection.FetchAsync(command);
+    }
 }

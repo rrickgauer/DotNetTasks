@@ -36,4 +36,8 @@ public class SharedComponents
         return new("--style", () => defaultValue, description);
     }
 
+    public static Option<bool> NoPromptsOption()
+    {
+        return new("--no-prompts", () => false, "No prompts");
+    }
 }

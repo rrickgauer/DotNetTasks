@@ -5,8 +5,6 @@ using Tasks.Service.Domain.Models;
 using Tasks.Service.Domain.TableView;
 using Tasks.Service.Services.Implementations;
 using Tasks.Service.Services.Interfaces;
-
-
 using ChecklistsSelection = Spectre.Console.SelectionPrompt<Tasks.Service.Domain.TableView.ChecklistView>;
 
 namespace Tasks.Cli.Controllers;
