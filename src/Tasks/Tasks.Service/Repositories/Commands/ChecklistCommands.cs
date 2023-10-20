@@ -36,4 +36,15 @@ public sealed class ChecklistCommands
 
     public const string Delete = @"DELETE FROM Checklists WHERE id = @id";
 
+
+    public const string SelectByCommandLineReference = @"
+       SELECT
+            v.*
+        FROM
+            View_Checklists v
+        WHERE
+            v.command_line_reference = @command_line_reference
+        LIMIT
+            1;";
+
 }

@@ -12,6 +12,8 @@ public interface IChecklistServices
     public Task<ChecklistView> SaveChecklistAsync(Checklist checklist);
     public Task<int> DeleteChecklistAsync(Guid checklistId);
     public Task<ChecklistView> CopyChecklistAsync(Guid existingChecklistId, string newChecklistTitle);
+
+    public Task<ChecklistView?> GetChecklistByCliReferenceAsync(uint commandLineReference);
 }
 
 

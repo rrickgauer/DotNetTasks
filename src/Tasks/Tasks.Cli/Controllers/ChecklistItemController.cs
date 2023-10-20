@@ -17,15 +17,17 @@ public class ChecklistItemController :
     IRouteAsync<ListChecklistItemArgs>
 {
 
+    private readonly IChecklistServices _checklistServices;
     private readonly IChecklistItemServices _checklistItemServices;
     private readonly IConsoleServices _consoleServices;
 
     private static readonly SelectionPrompt<ChecklistItemView> _itemSelectionPrompt = AnsiTableExtensions.BuildSelectionPrompt<ChecklistItemView>();
 
-    public ChecklistItemController(IChecklistItemServices checklistItemServices, IConsoleServices consoleServices)
+    public ChecklistItemController(IChecklistItemServices checklistItemServices, IConsoleServices consoleServices, IChecklistServices checklistServices)
     {
         _checklistItemServices = checklistItemServices;
         _consoleServices = consoleServices;
+        _checklistServices = checklistServices;
     }
 
     public async Task RouteAsync(DeleteChecklistItemArgs args)
@@ -131,7 +133,46 @@ public class ChecklistItemController :
 
     public async Task RouteAsync(NewChecklistItemArgs args)
     {
-        Console.Write($"{args.GetType()}");
+        var checklist = await _checklistServices.GetChecklistByCliReferenceAsync(args.ChecklistCommandLineId);
+
+        if (checklist == null)
+        {
+            _consoleServices.HandleCliError($"Checklist ID \"{args.ChecklistCommandLineId}\" does not exist");
+            return;
+        }
+
+        args.Content ??= AnsiConsole.Ask<string>("Content: ");
+
+        var newItem = await BuildNewChecklistItemAsync(args, checklist.Id.Value);
+        await _checklistItemServices.SaveChecklistItemAsync((ChecklistItem)newItem);
+
+        _consoleServices.DisplayCommandSuccess();
+    }
+
+    private async Task<ChecklistItemView> BuildNewChecklistItemAsync(NewChecklistItemArgs args, Guid checklistId)
+    {
+        var items = await GetItemsInChecklist(args.ChecklistCommandLineId);
+        var position = GetNewItemPosition(items);
+
+        ChecklistItemView newItem = new()
+        {
+            Id = Guid.NewGuid(),
+            ChecklistId = checklistId,
+            Content = args.Content,
+            CreatedOn = DateTime.Now,
+            IsComplete = false,
+            Position = position,
+        };
+
+        return newItem;
+    }
+
+
+
+    private static uint GetNewItemPosition(IEnumerable<ChecklistItemView> items)
+    {
+        var position = (items.OrderByDescending(x => x.Position).FirstOrDefault()?.Position ?? 0) + 1;
+        return position;
     }
 
 

@@ -48,6 +48,15 @@ public class ChecklistRepository : IChecklistRepository
         return await _dbConnection.FetchAsync(command);
     }
 
+    public async Task<DataRow?> SelectChecklistByCommandLineReferenceAsync(uint commandLineReference)
+    {
+        MySqlCommand command = new(ChecklistCommands.SelectByCommandLineReference);
+
+        command.Parameters.AddWithValue("@command_line_reference", commandLineReference);
+
+        return await _dbConnection.FetchAsync(command);
+    }
+
     /// <summary>
     /// Update or Insert the specified checklist.
     /// The command initially inserts the checklist, but updates it if it already exists.

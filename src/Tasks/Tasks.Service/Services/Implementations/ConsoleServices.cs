@@ -10,8 +10,6 @@ namespace Tasks.Service.Services.Implementations;
 
 public class ConsoleServices : IConsoleServices
 {
-
-
     /// <summary>
     /// Get the selected prompt from a console prompt
     /// </summary>
@@ -98,7 +96,7 @@ public class ConsoleServices : IConsoleServices
 
     public void DisplayCommandSuccess()
     {
-        Console.WriteLine($"Done");
+        AnsiConsole.Markup("[green]Done[/]");
     }
 
     public void HandleCliError(CliError cliError)
