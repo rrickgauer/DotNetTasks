@@ -9,6 +9,7 @@ public class ListChecklistItemArgs : IChecklistItemCliChecklistId
 
     public bool Interactive { get; set; } = false;
     public CliDataOutputStyle Style { get; set; } = CliDataOutputStyle.Default;
+    public CliShowChecklistItemsOption FilterItems { get; set; } = CliShowChecklistItemsOption.All;
 }
 
 

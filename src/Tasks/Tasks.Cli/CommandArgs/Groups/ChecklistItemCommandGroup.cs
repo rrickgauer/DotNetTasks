@@ -43,6 +43,9 @@ public class ChecklistItemCommandGroup : CommandGroup
 
     public static Option<CliDataOutputStyle> TableOutputStyleOption { get; } = SharedComponents.GetTableOutputStyleOption();
 
+    // "Filter the items"
+    public static Option<CliShowChecklistItemsOption> FilterItemsOption { get; } = new("--filter", () => CliShowChecklistItemsOption.All, "Filter the items");
+
     public static Option<string?> ContentOption { get; } = new("--content", "The content of the item");
     public static Option<uint?> ItemReferenceOption { get; } = new("--item", "The item id");
 
@@ -94,6 +97,7 @@ public class ChecklistItemCommandGroup : CommandGroup
     [SubCommand]
     [AddOption(nameof(InteractiveOption))]
     [AddOption(nameof(TableOutputStyleOption))]
+    [AddOption(nameof(FilterItemsOption))]
     public Command ListCommand { get; protected set; } = new("list", "View all the items");
 
     #endregion

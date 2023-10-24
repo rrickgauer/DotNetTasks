@@ -228,7 +228,18 @@ public class ChecklistItemController :
     public async Task RouteAsync(ListChecklistItemArgs args)
     {
         var items = await GetItemsInChecklist(args.ChecklistCommandLineId);
-        _consoleServices.PrintCollection(items, args.Style);        
+
+        switch (args.FilterItems)
+        {
+            case CliShowChecklistItemsOption.Complete:
+                items = items.Where(i => i.IsComplete).ToList();
+                break;
+            case CliShowChecklistItemsOption.Incomplete:
+                items = items.Where(i => !i.IsComplete).ToList();
+                break;
+        }
+
+        _consoleServices.PrintCollection(items, args.Style);
     }
 
 

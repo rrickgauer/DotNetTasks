@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
 using Tasks.Cli.CommandArgs.Groups;
-using Tasks.Cli.CommandArgs.Helpers;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.ChecklistItem;
 using Tasks.Service.Domain.Enums;
@@ -19,5 +18,8 @@ public class ListChecklistItemArgsBinder : ArgsBinderBase<ListChecklistItemArgs>
 
     [CopyTo(nameof(ListChecklistItemArgs.Style))]
     public Option<CliDataOutputStyle> TableOutputStyleOption { get; set; } = ChecklistItemCommandGroup.TableOutputStyleOption;
+
+    [CopyTo(nameof(ListChecklistItemArgs.FilterItems))]
+    public Option<CliShowChecklistItemsOption> FilterItemsOption { get; set; } = ChecklistItemCommandGroup.FilterItemsOption;
 }
 
