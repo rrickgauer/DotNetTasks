@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tasks.Service.Domain.CliArgs.Cli.Contracts;
+﻿namespace Tasks.Service.Domain.CliArgs.Cli.Contracts;
 
 public class CommonCliContracts
 {
@@ -13,4 +7,8 @@ public class CommonCliContracts
         public bool Force { get; set; }
     }
 
+    public interface ICliNoPromptsFlag
+    {
+        public bool NoPromptsFlag { get; set; }
+    }
 }

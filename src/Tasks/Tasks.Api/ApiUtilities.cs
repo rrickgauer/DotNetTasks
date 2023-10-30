@@ -9,6 +9,7 @@ using Tasks.Service.Services.Interfaces;
 using Tasks.Service.DependenciesInjector;
 using Tasks.Service.Auth;
 using Tasks.Service.Converters;
+using Tasks.Api.Other;
 
 namespace Tasks.Api;
 
@@ -26,22 +27,29 @@ public static class ApiUtilities
         ConfigureControllers(builder);
         ConfigureIpAddress(builder);
 
-        // setup basic authentication
         builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
 
-        // inject depenedenencies
-        ServicesInjector.InjectDependencies(builder.Services, builder.Environment.IsDevelopment());
+        InjectDependencies(builder);
 
         return builder;
+    }
+
+    private static void InjectDependencies(WebApplicationBuilder builder)
+    {
+        bool isDevelopment = builder.Environment.IsDevelopment();
+        
+        ApiServicesInjector servicesInjector = new(isDevelopment, builder.Services);
+        servicesInjector.BuildServices();
     }
 
 
     private static void ConfigureControllers(WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers(options =>
+        builder.Services
+        .AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();
         })
@@ -49,13 +57,6 @@ public static class ApiUtilities
         {
             options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
         });
-
-
-
-        //builder.Services.AddControllers(options =>
-        //{
-        //    options.Filters.Add<HttpResponseExceptionFilter>();
-        //});
     }
 
     private static void ConfigureIpAddress(WebApplicationBuilder builder)

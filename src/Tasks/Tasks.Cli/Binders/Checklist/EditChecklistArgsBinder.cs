@@ -5,29 +5,17 @@ using System.CommandLine.Binding;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Cli.CommandArgs.Groups;
+using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
 namespace Tasks.Cli.Binders.Checklist;
 
 public class EditChecklistArgsBinder : ArgsBinderBase<EditChecklistArgs>, IValueDescriptor<EditChecklistArgs>
 {
-    public Option<string?> TitleOption { get; set; }
-    public Argument<uint?> ChecklistReferenceArgument { get; set; }
+    [CopyTo(nameof(EditChecklistArgs.Title))]
+    public Option<string?> TitleOption { get; set; } = ChecklistCommandGroup.TitleOption;
 
-    public EditChecklistArgsBinder(Option<string?> titleOption, Argument<uint?> checklistReferenceArgument)
-    {
-        TitleOption = titleOption;
-        ChecklistReferenceArgument = checklistReferenceArgument;
-    }
-
-    protected override EditChecklistArgs GetBoundValue(BindingContext bindingContext)
-    {
-        return new()
-        {
-            CommandLineId = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
-            Title = bindingContext.ParseResult.GetValueForOption(TitleOption),
-        };
-    }
-
-
+    [CopyTo(nameof(EditChecklistArgs.CommandLineId), ParseFunctionName = nameof(BinderCasts.ParseUInt))]
+    public Argument<uint?> ChecklistReferenceArgument { get; set; } = ChecklistCommandGroup.IndexArgument;
 }

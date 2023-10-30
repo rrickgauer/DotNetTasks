@@ -1,9 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 using Tasks.Service.CustomAttributes;
+using Tasks.Service.Domain.TableView;
 
 namespace Tasks.Service.Domain.Models;
 
-public class ChecklistItem
+public class ChecklistItem : ITableViewModel<ChecklistItemView, ChecklistItem>
 {
     [SqlColumn("id")]
     public Guid? Id { get; set; }
@@ -35,5 +36,18 @@ public class ChecklistItem
     {
         get => CompletedOn != null;
         set => CompletedOn = value ? DateTime.Now : null;
+    }
+
+    public static explicit operator ChecklistItem(ChecklistItemView other)
+    {
+        return new()
+        {
+            Id          = other.Id,
+            ChecklistId = other.ChecklistId,
+            Content     = other.Content,
+            CreatedOn   = other.CreatedOn,
+            CompletedOn = other.CompletedOn,
+            Position    = other.Position,
+        };
     }
 }

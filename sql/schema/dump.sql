@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
@@ -40,6 +40,46 @@ CREATE TABLE `Checklist_Items` (
   KEY `checklist_id` (`checklist_id`),
   CONSTRAINT `Checklist_Items_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`main`@`%`*/ /*!50003 TRIGGER `Checklist_Items_After_Insert` AFTER INSERT ON `Checklist_Items` FOR EACH ROW BEGIN
+
+    INSERT INTO 
+        Checklist_Items_Reference (checklist_item_id) 
+    VALUES 
+        (NEW.id);
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `Checklist_Items_Reference`
+--
+
+DROP TABLE IF EXISTS `Checklist_Items_Reference`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checklist_Items_Reference` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `checklist_item_id` char(36) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `checklist_item_id` (`checklist_item_id`),
+  CONSTRAINT `Checklist_Items_Reference_ibfk_1` FOREIGN KEY (`checklist_item_id`) REFERENCES `Checklist_Items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=514 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +190,7 @@ CREATE TABLE `Checklists_Reference` (
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `checklist_id` (`checklist_id`),
   CONSTRAINT `Checklists_Reference_ibfk_1` FOREIGN KEY (`checklist_id`) REFERENCES `Checklists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,6 +374,24 @@ CREATE TABLE `Users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `View_Checklist_Items`
+--
+
+DROP TABLE IF EXISTS `View_Checklist_Items`;
+/*!50001 DROP VIEW IF EXISTS `View_Checklist_Items`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `View_Checklist_Items` AS SELECT 
+ 1 AS `id`,
+ 1 AS `command_line_reference`,
+ 1 AS `checklist_id`,
+ 1 AS `content`,
+ 1 AS `position`,
+ 1 AS `created_on`,
+ 1 AS `completed_on`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `View_Checklist_Labels`
 --
 
@@ -365,6 +423,7 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `View_Checklists` AS SELECT 
  1 AS `id`,
+ 1 AS `command_line_reference`,
  1 AS `user_id`,
  1 AS `title`,
  1 AS `checklist_type_id`,
@@ -1465,6 +1524,42 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Initialize_Checklist_Item_Reference_Entries` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`main`@`%` PROCEDURE `Initialize_Checklist_Item_Reference_Entries`()
+BEGIN
+    
+
+INSERT INTO Checklist_Items_Reference (checklist_item_id)
+(
+    select c.id
+    from Checklist_Items c
+    where c.id not in 
+    (
+        SELECT cir.checklist_item_id
+        from Checklist_Items_Reference cir
+        where cir.checklist_item_id = c.id
+    )
+);
+
+
+    
+  
+  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `Modify_Event` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1601,6 +1696,24 @@ DELIMITER ;
 USE `Tasks_Dev`;
 
 --
+-- Final view structure for view `View_Checklist_Items`
+--
+
+/*!50001 DROP VIEW IF EXISTS `View_Checklist_Items`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `View_Checklist_Items` AS select `i`.`id` AS `id`,`r`.`id` AS `command_line_reference`,`i`.`checklist_id` AS `checklist_id`,`i`.`content` AS `content`,`i`.`position` AS `position`,`i`.`created_on` AS `created_on`,`i`.`completed_on` AS `completed_on` from (`Checklist_Items` `i` left join `Checklist_Items_Reference` `r` on((`r`.`checklist_item_id` = `i`.`id`))) group by `i`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `View_Checklist_Labels`
 --
 
@@ -1631,7 +1744,7 @@ USE `Tasks_Dev`;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`main`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `View_Checklists` AS select `c`.`id` AS `id`,`c`.`user_id` AS `user_id`,`c`.`title` AS `title`,`c`.`checklist_type_id` AS `checklist_type_id`,`c`.`created_on` AS `created_on`,count(`i`.`id`) AS `count_items` from (`Checklists` `c` left join `Checklist_Items` `i` on((`i`.`checklist_id` = `c`.`id`))) group by `c`.`id` */;
+/*!50001 VIEW `View_Checklists` AS select `c`.`id` AS `id`,`cr`.`id` AS `command_line_reference`,`c`.`user_id` AS `user_id`,`c`.`title` AS `title`,`c`.`checklist_type_id` AS `checklist_type_id`,`c`.`created_on` AS `created_on`,count(`i`.`id`) AS `count_items` from ((`Checklists` `c` left join `Checklist_Items` `i` on((`i`.`checklist_id` = `c`.`id`))) left join `Checklists_Reference` `cr` on((`cr`.`checklist_id` = `c`.`id`))) group by `c`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1717,8 +1830,8 @@ USE `Tasks_Dev`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-17 20:03:27
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- Dump completed on 2023-10-18  9:34:33
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: 104.225.208.163    Database: Tasks_Dev
 -- ------------------------------------------------------
@@ -1777,4 +1890,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-17 20:03:33
+-- Dump completed on 2023-10-18  9:34:37

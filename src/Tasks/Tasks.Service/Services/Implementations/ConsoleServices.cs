@@ -1,7 +1,8 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Json;
-using Spectre.Console.Rendering;
+using Tasks.Service.Domain.CliArgs.Errors;
 using Tasks.Service.Domain.Contracts;
+using Tasks.Service.Domain.Enums;
 using Tasks.Service.Services.Interfaces;
 using Tasks.Service.Utilities;
 
@@ -9,54 +10,6 @@ namespace Tasks.Service.Services.Implementations;
 
 public class ConsoleServices : IConsoleServices
 {
-    /// <summary>
-    /// Get an ansi table with order index
-    /// </summary>
-    /// <typeparam name="TCliTable"></typeparam>
-    /// <param name="items"></param>
-    /// <returns></returns>
-    public Table GetTableWithIndex<TCliTable>(IEnumerable<TCliTable> items) where TCliTable : ICliTable
-    {
-        Table table = new();
-
-        table.AddColumn("Index");
-        TCliTable.AddTableColumns(table);
-
-        var itemsList = items.ToList();
-
-        for (int count = 0; count < itemsList.Count; count++)
-        {
-            var item = itemsList[count];
-
-            var row = item.GetTableRow().Prepend($"{count}").ToArray();
-
-            table.AddRow(row);
-        }
-
-        return table;
-    }
-
-    /// <summary>
-    /// Get an ansi table
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="items"></param>
-    /// <returns></returns>
-    public Table GetTable<T>(IEnumerable<T> items) where T : ICliTable
-    {
-        Table table = new();
-        
-        T.AddTableColumns(table);
-
-        foreach (var item in items)
-        {
-            var row = item.GetTableRow();
-            table.AddRow(row.ToArray());
-        }
-
-        return table;
-    }
-
     /// <summary>
     /// Get the selected prompt from a console prompt
     /// </summary>
@@ -73,22 +26,87 @@ public class ConsoleServices : IConsoleServices
         return selectedItem;
     }
 
+    
 
+    /// <inheritdoc cref="PrintCollection{T}(IEnumerable{T}, CliDataOutputStyle)"/>
+    public void PrintCollection<T>(IEnumerable<T> data) where T : ICliTable
+    {
+        PrintCollection(data, CliDataOutputStyle.Default);
+    }
+    
     /// <summary>
-    /// Print the json object
+    /// Print the given collection
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="data"></param>
-    public void PrintJsonObject<T>(T data)
+    /// <param name="style"></param>
+    public void PrintCollection<T>(IEnumerable<T> data, CliDataOutputStyle style) where T : ICliTable
     {
-        var text = JsonUtilities.ToJsonString(data);
-
-        JsonText jsonText = new(text)
+        switch(style)
         {
-            MemberStyle = Color.Green,
+            case CliDataOutputStyle.Json:
+                BuildJsonText(data).Print();
+                break;
+
+            default:
+                BuildTable(data).SetCustomBorderStyle(style).Print();
+                break;
+        }
+    }
+
+
+    /// <summary>
+    /// Get an ansi table
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    public Table BuildTable<T>(IEnumerable<T> items) where T : ICliTable
+    {
+        Table table = new();
+
+        T.AddTableColumns(table);
+
+        foreach (var item in items)
+        {
+            var row = item.GetTableRow();
+            table.AddRow(row.ToArray());
+        }
+
+        return table;
+    }
+
+    public JsonText BuildJsonText<T>(IEnumerable<T> data) where T : ICliTable
+    {
+        var dataDict = data.Select(x => x.ToDict());
+
+        var payload = JsonUtilities.ToJsonString(dataDict);
+
+        JsonText jsonText = new(payload)
+        {
+            MemberStyle = Color.NavajoWhite1,
+            BooleanStyle = Color.Blue,
+            NullStyle = Color.DarkSlateGray1,
+            StringStyle = Color.Green,
+            NumberStyle = Color.Orange4,
         };
 
-        AnsiConsole.Write(new Panel(jsonText));
+        return jsonText;
+    }
+
+    public void DisplayCommandSuccess()
+    {
+        AnsiConsole.Markup("[green]Done[/]");
+    }
+
+    public void HandleCliError(CliError cliError)
+    {
+        HandleCliError(cliError.Message);
+    }
+
+    public void HandleCliError(object? message)
+    {
+        AnsiConsole.Markup($"[red]{message?.ToString()}[/]");
     }
 
 

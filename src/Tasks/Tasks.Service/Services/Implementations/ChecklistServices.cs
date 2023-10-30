@@ -29,6 +29,19 @@ public class ChecklistServices : IChecklistServices
         _checklistItemServices = checklistItemServices;
     }
 
+
+    public async Task<ChecklistView?> GetChecklistByCliReferenceAsync(uint commandLineReference)
+    {
+        var row = await _checklistRepository.SelectChecklistByCommandLineReferenceAsync(commandLineReference);
+
+        if (row == null)
+        {
+            return null;
+        }
+
+        return _mapperServices.ToModel<ChecklistView>(row);
+    }
+
     /// <summary>
     /// Get all the specified users checklists
     /// </summary>

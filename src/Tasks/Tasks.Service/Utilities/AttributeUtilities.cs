@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.Other;
 using Tasks.Service.Domain.Parms;
 
 namespace Tasks.Service.Utilities;
@@ -79,6 +80,22 @@ public static class AttributeUtilities
 
         return properties;
     }
+
+    public static IEnumerable<CustomAttributeProperty<TAttribute>> GetPropertiesWithAttributeDict<TAttribute>(Type classType) where TAttribute: Attribute
+    {
+        List<CustomAttributeProperty<TAttribute>> result = new();
+
+        var properties = GetPropertiesWithAttribute<TAttribute>(classType);
+
+        foreach (var prop in properties)
+        {
+            result.Add(new(prop));   
+        }
+
+        return result;
+    }
+
+
 
 
 

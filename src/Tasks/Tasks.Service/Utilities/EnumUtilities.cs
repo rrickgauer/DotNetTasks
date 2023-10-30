@@ -13,4 +13,8 @@ public static class EnumUtilities
     {
         return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
     }
+
+    
+
+    
 }

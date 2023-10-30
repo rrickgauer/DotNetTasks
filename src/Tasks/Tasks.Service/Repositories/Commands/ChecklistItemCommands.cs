@@ -91,6 +91,39 @@ public sealed class ChecklistItemCommands
 
 
 
+    public const string SelectAllViewChecklistItems = @"
+        SELECT
+            v.*
+        FROM
+            View_Checklist_Items v
+        WHERE
+            v.checklist_id = @checklist_id
+        ORDER BY
+            v.position ASC;";
+
+
+    public const string SelectAllByChecklistCliReference = @"
+        SELECT
+            v.*
+        FROM
+            View_Checklist_Items v
+        WHERE
+            v.checklist_command_line_reference = @checklist_command_line_reference
+        ORDER BY
+            v.position ASC;";
+
+
+    public const string SelectByCommandLineReference = @"
+       SELECT
+            v.*
+        FROM
+            View_Checklist_Items v
+        WHERE
+            v.command_line_reference = @command_line_reference
+        LIMIT
+            1;";
+
+
 
 
 }

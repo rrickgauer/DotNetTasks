@@ -1,4 +1,6 @@
-﻿using Tasks.Service.Domain.Models;
+﻿using System.Runtime.InteropServices;
+using Tasks.Service.Domain.Models;
+using Tasks.Service.Domain.TableView;
 using Tasks.Service.Repositories.Interfaces;
 using Tasks.Service.Services.Interfaces;
 
@@ -151,5 +153,38 @@ public class ChecklistItemServices : IChecklistItemServices
         await SaveChecklistItemAsync(checklistItem);
 
         return checklistItem;
+    }
+
+
+    public async Task<IEnumerable<ChecklistItemView>> GetChecklistItemViewsAsync(Guid checklistId)
+    {
+        var table = await _repository.SelectChecklistItemViewsAsync(checklistId);
+
+        var items = _mapperServices.ToModels<ChecklistItemView>(table);
+
+        return items;
+    }
+
+    public async Task<IEnumerable<ChecklistItemView>> GetItemsByChecklistCliReferenceAsync(uint checklistCommandLineReferenceId)
+    {
+        var table = await _repository.SelectChecklistItemViewsByCliIdAsync(checklistCommandLineReferenceId);
+
+        var items = _mapperServices.ToModels<ChecklistItemView>(table);
+
+        return items;
+    }
+
+    public async Task<ChecklistItemView?> GetItemByCommandLineReferenceAsync(uint commandLineReference)
+    {
+        var row = await _repository.SelectByCommandLinereferenceAsync(commandLineReference);
+
+        if (row == null)
+        {
+            return null;
+        }
+
+        var model = _mapperServices.ToModel<ChecklistItemView>(row);
+
+        return model;
     }
 }

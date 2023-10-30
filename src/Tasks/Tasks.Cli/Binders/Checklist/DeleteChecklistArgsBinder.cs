@@ -2,27 +2,17 @@
 
 using System.CommandLine;
 using System.CommandLine.Binding;
+using Tasks.Cli.CommandArgs.Groups;
+using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.Checklist;
 
 namespace Tasks.Cli.Binders.Checklist;
 
 public class DeleteChecklistArgsBinder : ArgsBinderBase<DeleteChecklistArgs>, IValueDescriptor<DeleteChecklistArgs> 
 {
-    public Option<bool> ForceOption { get; set; }
-    public Argument<uint?> ChecklistReferenceArgument { get; set; }
+    [CopyTo(nameof(DeleteChecklistArgs.Force))]
+    public Option<bool> ForceOption { get; set; } = ChecklistCommandGroup.ForceOption;
 
-    public DeleteChecklistArgsBinder(Option<bool> forceOption, Argument<uint?> checklistReferenceArgument)
-    {
-        ForceOption = forceOption;
-        ChecklistReferenceArgument = checklistReferenceArgument;
-    }
-
-    protected override DeleteChecklistArgs GetBoundValue(BindingContext bindingContext)
-    {
-        return new()
-        {
-            CommandLineId = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
-            Force = bindingContext.ParseResult.GetValueForOption(ForceOption),
-        };
-    }
+    [CopyTo(nameof(DeleteChecklistArgs.CommandLineId), ParseFunctionName = nameof(BinderCasts.ParseUInt))]
+    public Argument<uint?> ChecklistReferenceArgument { get; set; } = ChecklistCommandGroup.IndexArgument;
 }

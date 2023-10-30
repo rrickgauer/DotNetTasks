@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using System.Collections;
 using System.Reflection;
 using Tasks.Service.CustomAttributes;
 using Tasks.Service.Utilities;
@@ -8,6 +9,24 @@ namespace Tasks.Service.Domain.Contracts;
 public interface ICliTable
 {
     public static abstract void AddTableColumns(Table table);
+    
+    public Hashtable ToDict()
+    {
+        Hashtable result = new();
+
+        var props = AttributeUtilities.GetPropertiesWithAttributeDict<CliTableColumnAttribute>(GetType());
+
+        foreach (var prop in props)
+        {
+            string key = prop.Attribute.Header;
+            var value = prop.GetValueRaw(this);
+
+            result.Add(key, value);
+        }
+
+        return result;
+    }
+
 
     public List<string> GetTableRow()
     {

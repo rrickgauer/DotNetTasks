@@ -14,6 +14,18 @@
     "View all checklists cli": {
       "commandName": "Project",
       "commandLineArgs": "checklist"
+    },
+    "cli: items list": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist-item --checklist 3 list --style json"
+    },
+    "CLI: Toggle item": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist-item edit --checklist 3 --no-prompts --status incomplete"
+    },
+    "CLI: items new": {
+      "commandName": "Project",
+      "commandLineArgs": "checklist-item --checklist 3 new --content \"sup\""
     }
   }
 }
