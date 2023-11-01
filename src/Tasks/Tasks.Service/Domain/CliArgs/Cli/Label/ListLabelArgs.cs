@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasks.Service.Domain.CliArgs.Cli.Label;
 
-public class ViewAllLabelArgs
+public class ListLabelArgs
 {
 
 }

@@ -5,6 +5,6 @@ namespace Tasks.Service.Domain.CliArgs.Cli.Label;
 
 public class DeleteLabelArgs : ILabelCliIndex, ICliDeleteFlag
 {
-    public int? Index { get; set; }
+    public uint? Index { get; set; }
     public bool Force { get; set; } = false;
 }

@@ -1,26 +1,16 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
+using Tasks.Cli.CommandArgs.Groups;
+using Tasks.Service.CustomAttributes;
 using Tasks.Service.Domain.CliArgs.Cli.Label;
 
 namespace Tasks.Cli.Binders.Label;
 
 public class DeleteLabelArgsBinder : ArgsBinderBase<DeleteLabelArgs>, IValueDescriptor<DeleteLabelArgs>
 {
-    public Argument<int?> ChecklistReferenceArgument { get; set; }
-    public Option<bool> ForceOption { get; set; }
+    [CopyTo(nameof(DeleteLabelArgs.Index))]
+    public Option<uint?> ChecklistReferenceArgument { get; set; } = LabelCommandGroup.IndexOption;
 
-    public DeleteLabelArgsBinder(Argument<int?> checklistReferenceArgument, Option<bool> forceOption)
-    {
-        ChecklistReferenceArgument = checklistReferenceArgument;
-        ForceOption = forceOption;
-    }
-
-    protected override DeleteLabelArgs GetBoundValue(BindingContext bindingContext)
-    {
-        return new()
-        {
-            Index = bindingContext.ParseResult.GetValueForArgument(ChecklistReferenceArgument),
-            Force = bindingContext.ParseResult.GetValueForOption(ForceOption),
-        };
-    }
+    [CopyTo(nameof(DeleteLabelArgs.Force))]
+    public Option<bool> ForceOption { get; set; } = LabelCommandGroup.ForceOption;
 }

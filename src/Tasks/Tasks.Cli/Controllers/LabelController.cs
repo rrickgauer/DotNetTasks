@@ -6,7 +6,7 @@ public class LabelController :
     IRouteAsync<NewLabelArgs>,
     IRouteAsync<EditLabelArgs>,
     IRouteAsync<DeleteLabelArgs>,
-    IRouteAsync<ViewAllLabelArgs>
+    IRouteAsync<ListLabelArgs>
 {
     public async Task RouteAsync(NewLabelArgs args)
     {
@@ -23,7 +23,7 @@ public class LabelController :
         Console.WriteLine("delete label");
     }
 
-    public async Task RouteAsync(ViewAllLabelArgs args)
+    public async Task RouteAsync(ListLabelArgs args)
     {
         Console.WriteLine("view all labels");
     }
