@@ -12,6 +12,9 @@ export class ServiceUtilities
         if (!response.ok)
         {
             const text = await response.text();
+
+            // console.
+
             console.error({text});
             throw new Error(text);
         }
