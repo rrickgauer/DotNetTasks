@@ -45,8 +45,8 @@ public class LabelCommandGroup : CommandGroup
     protected override void RegisterHandlers()
     {
         NewCommand.SetHandler(_labelController.RouteAsync, new NewLabelArgsBinder(NameOption, ColorOption));
-        EditCommand.SetHandler(_labelController.RouteAsync, new EditLabelArgsBinder(IndexOption, NameOption, ColorOption));
-        DeleteCommand.SetHandler(_labelController.RouteAsync, new DeleteLabelArgsBinder(IndexOption, ForceOption));
+        //EditCommand.SetHandler(_labelController.RouteAsync, new EditLabelArgsBinder(IndexOption, NameOption, ColorOption));
+        //DeleteCommand.SetHandler(_labelController.RouteAsync, new DeleteLabelArgsBinder(IndexOption, ForceOption));
         TopLevelCommand.SetHandler(_labelController.RouteAsync, new ListLabelArgsBinder());
         ListCommand.SetHandler(_labelController.RouteAsync, new ListLabelArgsBinder());
     }
