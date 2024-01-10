@@ -20,6 +20,10 @@ def get_checklists() -> List[models.ChecklistResponse]:
     api = ApiWrapperChecklists()
     
     response = api.get_all()
+
+    if not response.ok:
+        return response.json()
+
     data = response.json()
     
     checklists = models.ChecklistResponse.from_dicts(data)
