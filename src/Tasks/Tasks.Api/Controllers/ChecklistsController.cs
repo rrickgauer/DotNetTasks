@@ -33,18 +33,10 @@ public class ChecklistsController : AuthorizedControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    //public async Task<ActionResult<IEnumerable<Checklist>>> GetChecklistsAsync()
-    public async Task<IActionResult> GetChecklistsAsync()
+    public async Task<ActionResult<IEnumerable<Checklist>>> GetChecklistsAsync()
     {
-        try
-        {
-            var lists = await _checklistServices.GetUserChecklistsAsync(CurrentUserId);
-            return Ok(lists);
-        }
-        catch(Exception ex)
-        {
-            return BadRequest(ex);
-        }
+        var lists = await _checklistServices.GetUserChecklistsAsync(CurrentUserId);
+        return Ok(lists);
 
     }
 
@@ -58,16 +50,8 @@ public class ChecklistsController : AuthorizedControllerBase
     [ServiceFilter(typeof(ChecklistAuthFilters))]
     public async Task<ActionResult<Checklist>> GetChecklistAsync(Guid checklistId)
     {
-        try
-        {
-            var checklist = await _checklistServices.GetChecklistAsync(checklistId);
-            return Ok(checklist);
-        }
-        catch(Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-       
+        var checklist = await _checklistServices.GetChecklistAsync(checklistId);
+        return Ok(checklist);
     }
 
 

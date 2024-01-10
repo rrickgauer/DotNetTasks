@@ -25,16 +25,6 @@ bp_api_checklists = flask.Blueprint('api_checklists', __name__)
 @bp_api_checklists.get('')
 @security.login_required
 def get_checklists():
-
-    # return ('from gui', 400)
-
-    # api = ApiWrapperChecklists()
-    # response = api.get_all()
-    
-    # if not response.ok:
-    #     return (response.json(), response.status_code)
-
-
     checklists = checklist_services.get_checklists()
     html = checklist_services.build_checklists_sidebar_html(checklists)
 
