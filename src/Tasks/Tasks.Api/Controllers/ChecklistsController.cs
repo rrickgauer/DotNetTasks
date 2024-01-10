@@ -36,8 +36,8 @@ public class ChecklistsController : AuthorizedControllerBase
     public async Task<ActionResult<IEnumerable<Checklist>>> GetChecklistsAsync()
     {
         var lists = await _checklistServices.GetUserChecklistsAsync(CurrentUserId);
-
         return Ok(lists);
+
     }
 
 
@@ -51,7 +51,6 @@ public class ChecklistsController : AuthorizedControllerBase
     public async Task<ActionResult<Checklist>> GetChecklistAsync(Guid checklistId)
     {
         var checklist = await _checklistServices.GetChecklistAsync(checklistId);
-
         return Ok(checklist);
     }
 

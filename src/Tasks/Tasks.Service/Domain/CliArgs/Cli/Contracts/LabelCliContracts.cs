@@ -20,6 +20,6 @@ public class LabelCliContracts
 
     public interface ILabelCliIndex
     {
-        public int? Index { get; set; }
+        public uint? Index { get; set; }
     }
 }

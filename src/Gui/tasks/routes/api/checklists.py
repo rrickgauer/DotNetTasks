@@ -14,6 +14,7 @@ from uuid import UUID
 import flask
 from tasks.common import security
 from tasks.services import checklists as checklist_services
+from tasks.apiwrapper import ApiWrapperChecklists
 
 # module blueprint
 bp_api_checklists = flask.Blueprint('api_checklists', __name__)

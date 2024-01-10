@@ -6,11 +6,11 @@ namespace Tasks.Cli.Binders.Label;
 
 public class EditLabelArgsBinder : ArgsBinderBase<EditLabelArgs>, IValueDescriptor<EditLabelArgs>
 {
-    public Argument<int?> IndexArgument { get; set; }
+    public Argument<uint?> IndexArgument { get; set; }
     public Option<string?> NameOption { get; set; }
     public Option<string?> ColorOption { get; set; }
 
-    public EditLabelArgsBinder(Argument<int?> indexArgument, Option<string?> nameOption, Option<string?> colorOption)
+    public EditLabelArgsBinder(Argument<uint?> indexArgument, Option<string?> nameOption, Option<string?> colorOption)
     {
         IndexArgument = indexArgument;
         NameOption = nameOption;
