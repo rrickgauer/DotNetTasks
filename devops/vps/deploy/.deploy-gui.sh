@@ -32,7 +32,8 @@ printf "\n\n\n"
 
 # Compile js
 cd /var/www/DotNetTasks/src/Gui/tasks/static/js
-rollup -c rollup.config.js
+# rollup -c rollup.config.js
+rollup -c rollup.config.mjs
 
 # startup the script
 cd /var/www/DotNetTasks/devops/vps/deploy
