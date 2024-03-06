@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IP_ADDRESS='104.225.208.163'
+IP_ADDRESS='104.225.208.103'
 
 echo 'Starting up front-end TESTING server...'
 
@@ -10,7 +10,7 @@ mod_wsgi-express start-server \
 --user www-data  \
 --group www-data  \
 --server-name tasks.ryanrickgauer.com  \
---port 5031   \
+--port 5021   \
 --access-log  \
 --log-level info   \
 --host $IP_ADDRESS \
